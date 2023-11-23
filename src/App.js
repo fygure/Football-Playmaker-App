@@ -1,25 +1,52 @@
 import React, { useState, useRef } from 'react';
-import { Stage, Layer, Rect, Text, Circle, Ring } from 'react-konva';
+import { Stage, Layer, Rect, Circle, Ring, Text } from 'react-konva';
 import Konva from 'konva';
 
-/* SHAPES! */
-
-const MyCircle = () => {
-  const circleRef = useRef();
-  const [color, setColor] = useState('orange');
-  const [position, setPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 }); // Track position
+// Custom Hook for common shape functionalities
+const useShape = (shapeType, initialPosition, initialColor) => {
+  const shapeRef = useRef();
+  const [color, setColor] = useState(initialColor);
+  const [position, setPosition] = useState(initialPosition);
 
   const handleClick = () => {
-    console.log(circleRef.current);
+    console.log(shapeRef.current);
     setColor(Konva.Util.getRandomColor());
   };
 
-  const handleDragMove = () => {
-    setPosition({
-      x: circleRef.current.x(),
-      y: circleRef.current.y(),
-    });
-  }
+  const handleDragStart = () => {
+    const currentPos = {
+      x: shapeRef.current.x(),
+      y: shapeRef.current.y(),
+    };
+    setPosition(currentPos);
+    console.log(`${shapeType} from (x:${currentPos.x}, y:${currentPos.y})`);
+  };
+
+  const handleDragEnd = () => {
+    const currentPos = {
+      x: shapeRef.current.x(),
+      y: shapeRef.current.y(),
+    };
+    setPosition(currentPos);
+    console.log(`${shapeType} to (x:${currentPos.x}, y:${currentPos.y})`);
+  };
+
+  return {
+    shapeRef,
+    color,
+    position,
+    handleClick,
+    handleDragStart,
+    handleDragEnd,
+  };
+};
+
+const MyCircle = () => {
+  const { shapeRef, color, position, handleClick, handleDragStart, handleDragEnd } = useShape(
+    'Circle',
+    { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+    'orange'
+  );
 
   return (
     <Circle
@@ -29,42 +56,20 @@ const MyCircle = () => {
       shadowBlur={5}
       fill={color}
       draggable
-      ref={circleRef}
+      ref={shapeRef}
       onClick={handleClick}
-      onDragMove={handleDragMove}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
     />
   );
-}
+};
 
 const MyRectangle = () => {
-  const rectRef = useRef();
-  const [color, setColor] = useState('green');
-  const [position, setPosition] = useState({ x: 50, y: 50 }); // Track position
-
-  const handleClick = () => {
-    console.log(rectRef.current);
-    setColor(Konva.Util.getRandomColor());
-  };
-
-  const handleDragStart = () => {
-    // Capture initial position on drag start
-    const currentPos = {
-      x: rectRef.current.x(),
-      y: rectRef.current.y(),
-    }
-    setPosition(currentPos);
-    console.log(`Rect from (x:${currentPos.x}, y:${currentPos.y})`)
-  };
-
-  const handleDragEnd = () => {
-    // Update position on drag end
-    const currentPos = {
-      x: rectRef.current.x(),
-      y: rectRef.current.y(),
-    }
-    setPosition(currentPos);
-    console.log(`Rect to (x:${currentPos.x}, y:${currentPos.y})`)
-  };
+  const { shapeRef, color, position, handleClick, handleDragStart, handleDragEnd } = useShape(
+    'Rectangle',
+    { x: 50, y: 50 },
+    'green'
+  );
 
   return (
     <Rect
@@ -78,50 +83,28 @@ const MyRectangle = () => {
       strokeRadius={12}
       cornerRadius={12}
       shadowBlur={5}
-      // opacity={0.5}
       onClick={handleClick}
-      ref={rectRef}
+      ref={shapeRef}
       draggable={true}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     />
   );
-}
+};
 
 const MyRing = () => {
-  const ringRef = useRef();
-  const [color, setColor] = useState('red');
-  const [position, setPosition] = useState({ x: 350, y: 80 }); // Track position
-
-  const handleClick = () => {
-    console.log(ringRef.current);
-    setColor(Konva.Util.getRandomColor);
-  }
-
-  const handleDragStart = () => {
-    const currentPos = {
-      x: ringRef.current.x(),
-      y: ringRef.current.y(),
-    }
-    setPosition(currentPos);
-    console.log(`Ring from (x:${currentPos.x}, y:${currentPos.y})`)
-  }
-
-  const handleDragEnd = () => {
-    const currentPos = {
-      x: ringRef.current.x(),
-      y: ringRef.current.y(),
-    }
-    setPosition(currentPos);
-    console.log(`Ring to (x:${currentPos.x}, y:${currentPos.y})`)
-  }
+  const { shapeRef, color, position, handleClick, handleDragStart, handleDragEnd } = useShape(
+    'Ring',
+    { x: 350, y: 80 },
+    'red'
+  );
 
   return (
     <Ring
       x={position.x}
       y={position.y}
       fill={color}
-      ref={ringRef}
+      ref={shapeRef}
       outerRadius={60}
       innerRadius={40}
       draggable={true}
@@ -129,9 +112,8 @@ const MyRing = () => {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     />
-  )
-}
-
+  );
+};
 
 function App() {
   return (
