@@ -1,7 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext, createContext } from 'react';
 import { Stage, Layer, Rect, Circle, Ring, Text, Star } from 'react-konva';
 import Konva from 'konva';
-
+///////////////////////////////////////////////////////////////////////
+//CONTEXTS (allows data sharing across component tree w/o passing props)
+///////////////////////////////////////////////////////////////////////
+const HistoryContext = createContext();
 ///////////////////////////////////////////////////////////////////////
 //HOOKS
 ///////////////////////////////////////////////////////////////////////
@@ -11,6 +14,7 @@ const useShape = (shapeType, initialPosition, initialColor) => {
   const [color, setColor] = useState(initialColor);
   const [position, setPosition] = useState(initialPosition);
   const [visibility, setVisibility] = useState(true);
+  //const history = useContext(HistoryContext);
 
   const handleClick = (e) => {
     //console.log(shapeRef.current);
@@ -33,6 +37,8 @@ const useShape = (shapeType, initialPosition, initialColor) => {
     };
     setPosition(currentPos);
     console.log(`${shapeType} to (x:${currentPos.x}, y:${currentPos.y})`);
+
+    //history.addToHistory({ shapeType, shapeRef, position: currentPos })
   };
 
   const handleDblClick = () => {
@@ -47,6 +53,10 @@ const useShape = (shapeType, initialPosition, initialColor) => {
     console.log(`${shapeType} Removed`);
   };
 
+  const setPositionExternal = (newPosition) => {
+    setPosition(newPosition);
+  };
+
   return {
     shapeRef,
     color,
@@ -57,12 +67,48 @@ const useShape = (shapeType, initialPosition, initialColor) => {
     handleDragEnd,
     handleDblClick,
     handleRightClick,
+    setPositionExternal,
   };
 };
+// FIXME: Custom Hook for undo/redo actions
+// PERHAPS: implement these funcitons inside the useShape hook?
+// PERHAPS: you want a general history for every action, you need shapeRef for sure and update it
+// const useHistory = (shapeRef) => {
+//   const [history, setHistory] = useState([]);
+//   const [historyIndex, setHistoryIndex] = useState(0);
+
+//   const addToHistory = (newState) => {
+//     //Slice returns new array of old array's [0, historyIndex + 1)
+//     const newHistory = history.slice(0, historyIndex + 1);
+//     newHistory.push(newState);
+//     setHistory(newHistory);
+//     setHistoryIndex(historyIndex + 1);
+//     console.log(newHistory);
+//   };
+
+//   const undo = () => {
+//     console.log('undo');
+//     console.log(history.slice(-1));
+//     if (historyIndex <= 0) return;
+//     setHistoryIndex(historyIndex - 1);
+//   };
+
+//   const redo = () => {
+//     console.log('redo');
+//     if (historyIndex >= history.length - 1) return;
+//     setHistoryIndex(historyIndex + 1);
+//   };
 
 
+//   return {
+//     history,
+//     addToHistory,
+//     undo,
+//     redo,
+//   };
+// };
 ///////////////////////////////////////////////////////////////////////
-//SHAPES
+//SHAPES (Each shape functionality is from hook: useShape)
 /* 
   There are also:
     Wedge
@@ -80,8 +126,9 @@ const MyCircle = () => {
     = useShape(
       shapeType,
       { x: window.innerWidth / 2, y: window.innerHeight / 2 },
-      'orange'
+      'orange',
     );
+
 
   return (
     <Circle
@@ -200,19 +247,28 @@ const MyStar = () => {
   );
 }
 
-
+///////////////////////////////////////////////////////////////////////
+//APP
+///////////////////////////////////////////////////////////////////////
 function App() {
+  //const history = useHistory();
+
   return (
     <>
+      {/* <HistoryContext.Provider value={history}> */}
       <Stage width={window.innerWidth} height={window.innerHeight}>
         <Layer>
           <Text text="Try interacting with the shapes" draggable />
+          {/* <Text text="undo" y={20} onClick={() => { history.undo(); }} /> */}
+          {/* <Text text="redo" x={40} y={20} onClick={() => { history.redo(); }} /> */}
+          {/* <Text text="add" x={80} y={20} onClick={() => { history.addToHistory({}); }} /> */}
           <MyRectangle />
           <MyCircle />
           <MyRing />
           <MyStar />
         </Layer>
       </Stage>
+      {/* </HistoryContext.Provider> */}
     </>
   );
 }
