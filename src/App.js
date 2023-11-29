@@ -1,276 +1,205 @@
-import React, { useState, useRef, useContext, createContext } from 'react';
-import { Stage, Layer, Rect, Circle, Ring, Text, Star } from 'react-konva';
+import React, { useState, useRef, useContext, useEffect, createContext } from 'react';
+import { Stage, Layer, Rect, Circle, Ring, Text, Star, Transformer } from 'react-konva';
 import Konva from 'konva';
-///////////////////////////////////////////////////////////////////////
-//CONTEXTS (allows data sharing across component tree w/o passing props)
-///////////////////////////////////////////////////////////////////////
-const HistoryContext = createContext();
-///////////////////////////////////////////////////////////////////////
-//HOOKS
-///////////////////////////////////////////////////////////////////////
-// Custom Hook for common shape functionalities
-const useShape = (shapeType, initialPosition, initialColor) => {
-  const shapeRef = useRef(null);
-  const [color, setColor] = useState(initialColor);
+import { v4 as uuidv4 } from 'uuid';
+
+// Shape.js
+function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSelect, onChange }) {
+  const shapeRef = useRef();
+  const trRef = useRef();
   const [position, setPosition] = useState(initialPosition);
-  const [visibility, setVisibility] = useState(true);
-  //const history = useContext(HistoryContext);
 
-  const handleClick = () => {
-    //console.log(shapeRef.current);
-    setColor(Konva.Util.getRandomColor());
+  //console.log(`Shape ${id} is selected: ${isSelected}`);
+
+  const handleDragEnd = (e) => {
+    //console.log(e.target.position());
+    setPosition(e.target.position());
+    onChange(id, { x: e.target.x(), y: e.target.y() });
   };
 
-  const handleDragStart = () => {
-    const currentPos = {
-      x: shapeRef.current.x(),
-      y: shapeRef.current.y(),
-    };
-    setPosition(currentPos);
-    console.log(`${shapeType} from (x:${currentPos.x}, y:${currentPos.y})`);
+  const handleTransformEnd = () => {
+    const node = shapeRef.current;
+    const scaleX = node.scaleX();
+    const scaleY = node.scaleY();
+
+    // update the state with the new width and height
+    // node.scaleX(1);
+    // node.scaleY(1);
+    onChange(id, {
+      x: node.x(),
+      y: node.y(),
+      width: Math.max(5, node.width() * scaleX),
+      height: Math.max(node.height() * scaleY),
+      rotation: node.rotation(),
+      fill: node.fill(),
+      scaleX: scaleX,
+      scaleY: scaleY,
+      shapeType: shapeType
+    });
+    console.log(node);
   };
 
-  const handleDragEnd = () => {
-    const currentPos = {
-      x: shapeRef.current.x(),
-      y: shapeRef.current.y(),
-    };
-    setPosition(currentPos);
-    console.log(`${shapeType} to (x:${currentPos.x}, y:${currentPos.y})`);
+  //Attach transformer to shape manually
+  useEffect(() => {
+    if (isSelected) {
+      trRef.current.nodes([shapeRef.current]);
+      trRef.current.getLayer().batchDraw();
+    }
+  }, [isSelected]);
 
-    //history.addToHistory({ shapeType, shapeRef, position: currentPos })
-  };
-
-  const handleDblClick = () => {
-    console.log(`${shapeType} double clicked!`)
+  switch (shapeType) {
+    case 'Rectangle':
+      return (
+        <>
+          <Rect
+            ref={shapeRef}
+            x={position.x}
+            y={position.y}
+            width={100}
+            height={100}
+            fill={initialColor}
+            draggable
+            onDragEnd={handleDragEnd}
+            onClick={() => { onSelect(id); console.log(shapeType, 'clicked'); }}
+          />
+          {isSelected && (
+            <Transformer
+              ref={trRef}
+              onTransformEnd={handleTransformEnd}
+            />
+          )}
+        </>
+      );
+    case 'Circle':
+      return (
+        <>
+          <Circle
+            ref={shapeRef}
+            x={position.x}
+            y={position.y}
+            radius={50}
+            fill={initialColor}
+            draggable
+            onDragEnd={handleDragEnd}
+            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+          />
+          {isSelected && (
+            <Transformer
+              ref={trRef}
+              onTransformEnd={handleTransformEnd}
+            />
+          )}
+        </>
+      );
+    case 'Ring':
+      return (
+        <>
+          <Ring
+            ref={shapeRef}
+            x={position.x}
+            y={position.y}
+            innerRadius={40}
+            outerRadius={70}
+            fill={initialColor}
+            draggable
+            onDragEnd={handleDragEnd}
+            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+          />
+          {isSelected && (
+            <Transformer
+              ref={trRef}
+              onTransformEnd={handleTransformEnd}
+            />
+          )}
+        </>
+      )
+    default:
+      return null;
   }
+}
 
-  //Hides shape
-  const handleRightClick = (e) => {
-    e.evt.preventDefault(true);
-    setVisibility(false);
-    //console.log(e.target.getStage());
-    console.log(`${shapeType} Removed`);
+
+// Canvas.js
+function Canvas({ shapes, selectedId, onSelect, onChange }) {
+  const handleStageClick = (e) => {
+    // if clicked on empty area - remove all selections
+    if (e.target === e.target.getStage()) {
+      onSelect(null);
+    }
   };
 
-  const setPositionExternal = (newPosition) => {
-    setPosition(newPosition);
-  };
-
-  return {
-    shapeRef,
-    color,
-    position,
-    visibility,
-    handleClick,
-    handleDragStart,
-    handleDragEnd,
-    handleDblClick,
-    handleRightClick,
-    setPositionExternal,
-  };
-};
-// FIXME: Custom Hook for undo/redo actions
-// PERHAPS: implement these funcitons inside the useShape hook?
-// PERHAPS: you want a general history for every action, you need shapeRef for sure and update it
-// const useHistory = (shapeRef) => {
-//   const [history, setHistory] = useState([]);
-//   const [historyIndex, setHistoryIndex] = useState(0);
-
-//   const addToHistory = (newState) => {
-//     //Slice returns new array of old array's [0, historyIndex + 1)
-//     const newHistory = history.slice(0, historyIndex + 1);
-//     newHistory.push(newState);
-//     setHistory(newHistory);
-//     setHistoryIndex(historyIndex + 1);
-//     console.log(newHistory);
-//   };
-
-//   const undo = () => {
-//     console.log('undo');
-//     console.log(history.slice(-1));
-//     if (historyIndex <= 0) return;
-//     setHistoryIndex(historyIndex - 1);
-//   };
-
-//   const redo = () => {
-//     console.log('redo');
-//     if (historyIndex >= history.length - 1) return;
-//     setHistoryIndex(historyIndex + 1);
-//   };
-
-
-//   return {
-//     history,
-//     addToHistory,
-//     undo,
-//     redo,
-//   };
-// };
-///////////////////////////////////////////////////////////////////////
-//SHAPES (Each shape functionality is from hook: useShape)
-/* 
-  There are also:
-    Wedge
-    Arc
-    Ellipse
-    Image
-    Line
-*/
-///////////////////////////////////////////////////////////////////////
-const MyCircle = () => {
-  const shapeType = 'Circle';
-  const { shapeRef, color, position, visibility,
-    handleClick, handleDragStart, handleDragEnd,
-    handleDblClick, handleRightClick }
-    = useShape(
-      shapeType,
-      { x: window.innerWidth / 2, y: window.innerHeight / 2 },
-      'orange',
-    );
-
-
   return (
-    <Circle
-      x={position.x}
-      y={position.y}
-      radius={50}
-      shadowBlur={5}
-      fill={color}
-      draggable
-      ref={shapeRef}
-      onClick={handleClick}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDblClick={handleDblClick}
-      onContextMenu={handleRightClick}
-      visible={visibility}
-    />
-  );
-};
-
-const MyRectangle = () => {
-  const shapeType = 'Rectangle';
-  const { shapeRef, color, position, visibility,
-    handleClick, handleDragStart, handleDragEnd,
-    handleDblClick, handleRightClick }
-    = useShape(
-      shapeType,
-      { x: 50, y: 50 },
-      'green'
-    );
-
-  return (
-    <Rect
-      x={position.x}
-      y={position.y}
-      width={50}
-      height={50}
-      fill={color}
-      stroke="orange"
-      strokeWidth={12}
-      strokeRadius={12}
-      cornerRadius={12}
-      shadowBlur={5}
-      onClick={handleClick}
-      ref={shapeRef}
-      draggable={true}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDblClick={handleDblClick}
-      onContextMenu={handleRightClick}
-      visible={visibility}
-    />
-  );
-};
-
-const MyRing = () => {
-  const shapeType = 'Ring';
-  const { shapeRef, color, position, visibility,
-    handleClick, handleDragStart, handleDragEnd,
-    handleDblClick, handleRightClick }
-    = useShape(
-      shapeType,
-      { x: 350, y: 80 },
-      'red'
-    );
-
-  return (
-    <Ring
-      x={position.x}
-      y={position.y}
-      fill={color}
-      ref={shapeRef}
-      shadowBlur={5}
-      outerRadius={60}
-      innerRadius={40}
-      draggable={true}
-      onClick={handleClick}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDblClick={handleDblClick}
-      onContextMenu={handleRightClick}
-      visible={visibility}
-    />
-  );
-};
-
-const MyStar = () => {
-  const shapeType = 'Star';
-  const { shapeRef, color, position, visibility,
-    handleClick, handleDragStart, handleDragEnd,
-    handleDblClick, handleRightClick }
-    = useShape(
-      shapeType,
-      { x: 200, y: 200 },
-      'purple'
-    );
-
-  return (
-    <Star
-      x={position.x}
-      y={position.y}
-      outerRadius={60}
-      innerRadius={35}
-      fill={color}
-      ref={shapeRef}
-      draggable={true}
-      onClick={handleClick}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDblClick={handleDblClick}
-      shadowBlur={5}
-      stroke={"red"}
-      onContextMenu={handleRightClick}
-      visible={visibility}
-    />
+    <Stage
+      width={window.innerWidth}
+      height={window.innerHeight}
+      onClick={handleStageClick}
+    >
+      <Layer>
+        {shapes.map((shape, i) => (
+          <Shape
+            key={i}
+            id={shape.id}
+            shapeType={shape.shapeType}
+            initialPosition={shape.initialPosition}
+            initialColor={shape.initialColor}
+            isSelected={shape.id === selectedId}
+            onSelect={onSelect}
+            onChange={onChange}
+          />
+        ))}
+      </Layer>
+    </Stage>
   );
 }
 
-///////////////////////////////////////////////////////////////////////
-//APP
-///////////////////////////////////////////////////////////////////////
+// Stencil.js
+function Stencil({ onAddShape }) {
+  const handleAddRectangle = () => {
+    onAddShape('Rectangle', { x: 20, y: 20 }, 'red');
+  };
+
+  const handleAddCircle = () => {
+    onAddShape('Circle', { x: 150, y: 150 }, 'blue');
+  };
+
+  const handleAddRing = () => {
+    onAddShape('Ring', { x: 150, y: 150 }, 'green');
+  }
+
+  return (
+    <div>
+      <button onClick={handleAddRectangle}>Add Rectangle</button>
+      <button onClick={handleAddCircle}>Add Circle</button>
+      <button onClick={handleAddRing}>Add Ring</button>
+    </div>
+  );
+}
+// App.js
 function App() {
-  //const history = useHistory();
+  const [shapes, setShapes] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
+
+  const handleAddShape = (shapeType, initialPosition, initialColor) => {
+    const newShape = { id: uuidv4(), shapeType, initialPosition, initialColor };
+    setShapes([...shapes, newShape]);
+  };
+
+  const updateShape = (id, newAttributes) => {
+    setShapes(shapes.map(shape => shape.id === id ? { ...shape, ...newAttributes } : shape));
+  };
 
   return (
     <>
-      {/* <HistoryContext.Provider value={history}> */}
-      <Stage width={window.innerWidth} height={window.innerHeight}>
-        <Layer>
-          <Text text="Try interacting with the shapes" draggable />
-          {/* <Text text="undo" y={20} onClick={() => { history.undo(); }} /> */}
-          {/* <Text text="redo" x={40} y={20} onClick={() => { history.redo(); }} /> */}
-          {/* <Text text="add" x={80} y={20} onClick={() => { history.addToHistory({}); }} /> */}
-          <MyRectangle />
-          <MyCircle />
-          <MyRing />
-          <MyStar />
-        </Layer>
-      </Stage>
-      {/* </HistoryContext.Provider> */}
+      <Stencil onAddShape={handleAddShape} />
+      <Canvas
+        shapes={shapes}
+        selectedId={selectedId}
+        onSelect={setSelectedId}
+        onChange={updateShape}
+      />
     </>
   );
 }
+
 
 export default App;
