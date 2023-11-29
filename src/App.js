@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext, createContext } from 'react';
+import React, { useState, useRef, useContext, createContext } from 'react';
 import { Stage, Layer, Rect, Circle, Ring, Text, Star } from 'react-konva';
 import Konva from 'konva';
 ///////////////////////////////////////////////////////////////////////
@@ -16,7 +16,7 @@ const useShape = (shapeType, initialPosition, initialColor) => {
   const [visibility, setVisibility] = useState(true);
   //const history = useContext(HistoryContext);
 
-  const handleClick = (e) => {
+  const handleClick = () => {
     //console.log(shapeRef.current);
     setColor(Konva.Util.getRandomColor());
   };
