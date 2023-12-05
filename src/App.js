@@ -1,30 +1,85 @@
 import React, { useState, useRef, useContext, useEffect, createContext } from 'react';
-import { Stage, Layer, Rect, Circle, Ring, Text, Star, Transformer } from 'react-konva';
+import { Stage, Layer, Group, Rect, Circle, Ring, Text, Star, Transformer } from 'react-konva';
 import Konva from 'konva';
 import { v4 as uuidv4 } from 'uuid';
 
+// ContextMenu.js
+function ContextMenu({ position, onDelete }) {
+  return (
+    <Group
+      x={position.x}
+      y={position.y}
+    >
+      <Rect
+        width={100}
+        height={30}
+        fill="white"
+        stroke="black"
+      />
+      <Text
+        text="Delete"
+        width={100}
+        padding={5}
+        align="center"
+        verticalAlign="middle"
+        onClick={onDelete}
+      />
+    </Group>
+  );
+}
+
 // Shape.js
-function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSelect, onChange }) {
+function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSelect, onChange, onDelete }) {
   const shapeRef = useRef();
   const trRef = useRef();
   const [position, setPosition] = useState(initialPosition);
+  const [showContextMenu, setShowContextMenu] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
 
-  //console.log(`Shape ${id} is selected: ${isSelected}`);
+  console.log(`Shape ${id} is selected: ${isSelected}`);
+//   useEffect(() => {
+//   const handleClickOutside = (event) => {
+//     if (showContextMenu && event.target.tagName.toLowerCase() !== 'text') {
+//       setShowContextMenu(false);
+//     }
+//   };
+
+//   window.addEventListener('mousedown', handleClickOutside);
+
+//   return () => {
+//     window.removeEventListener('mousedown', handleClickOutside);
+//   };
+// }, [showContextMenu]);
+  
+
+  const handleRightClick = (e) => {
+    e.evt.preventDefault();
+    const stage = e.target.getStage();
+    const mousePos = stage.getPointerPosition();
+    setContextMenuPosition({ x: mousePos.x - 10, y: mousePos.y -10 });
+    setShowContextMenu(true);
+  };
+
+  const handleDeleteClick = () => {
+    setShowContextMenu(false);
+    onDelete(id);
+  };
 
   const handleDragEnd = (e) => {
+    setShowContextMenu(false);
+    
     //console.log(e.target.position());
     setPosition(e.target.position());
     onChange(id, { x: e.target.x(), y: e.target.y() });
   };
 
   const handleTransformEnd = () => {
+    setShowContextMenu(false);
     const node = shapeRef.current;
     const scaleX = node.scaleX();
     const scaleY = node.scaleY();
-
     // update the state with the new width and height
     // node.scaleX(1);
-    // node.scaleY(1);
     onChange(id, {
       x: node.x(),
       y: node.y(),
@@ -61,6 +116,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             draggable
             onDragEnd={handleDragEnd}
             onClick={() => { onSelect(id); console.log(shapeType, 'clicked'); }}
+            onContextMenu={handleRightClick}
           />
           {isSelected && (
             <Transformer
@@ -68,6 +124,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
               onTransformEnd={handleTransformEnd}
             />
           )}
+          {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick}/>}
         </>
       );
     case 'Circle':
@@ -87,8 +144,9 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             <Transformer
               ref={trRef}
               onTransformEnd={handleTransformEnd}
-            />
-          )}
+            />)
+          }
+          {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick}/>}
         </>
       );
     case 'Ring':
@@ -109,8 +167,9 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             <Transformer
               ref={trRef}
               onTransformEnd={handleTransformEnd}
-            />
-          )}
+            />)
+          }
+          {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick}/>}
         </>
       )
     default:
@@ -120,11 +179,12 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
 
 
 // Canvas.js
-function Canvas({ shapes, selectedId, onSelect, onChange }) {
+function Canvas({ shapes, selectedId, onSelect, onChange, onDelete,  onHideContextMenu }) {
   const handleStageClick = (e) => {
     // if clicked on empty area - remove all selections
     if (e.target === e.target.getStage()) {
       onSelect(null);
+      onHideContextMenu();
     }
   };
 
@@ -135,9 +195,9 @@ function Canvas({ shapes, selectedId, onSelect, onChange }) {
       onClick={handleStageClick}
     >
       <Layer>
-        {shapes.map((shape, i) => (
+        {shapes.map((shape) => (
           <Shape
-            key={i}
+            key={shape.id}
             id={shape.id}
             shapeType={shape.shapeType}
             initialPosition={shape.initialPosition}
@@ -145,6 +205,8 @@ function Canvas({ shapes, selectedId, onSelect, onChange }) {
             isSelected={shape.id === selectedId}
             onSelect={onSelect}
             onChange={onChange}
+            onDelete={onDelete}
+            onHideContextMenu={onHideContextMenu}
           />
         ))}
       </Layer>
@@ -184,9 +246,20 @@ function App() {
     setShapes([...shapes, newShape]);
   };
 
-  const updateShape = (id, newAttributes) => {
+  const handleUpdateShape = (id, newAttributes) => {
     setShapes(shapes.map(shape => shape.id === id ? { ...shape, ...newAttributes } : shape));
   };
+
+  const handleDeleteShape = (id) => {
+    setShapes(shapes.filter(shape => shape.id !== id));
+  }
+
+  const onHideContextMenu = () => {
+    setShapes(shapes.map(shape => ({ ...shape, showContextMenu: false })));
+  };
+
+
+
 
   return (
     <>
@@ -195,7 +268,9 @@ function App() {
         shapes={shapes}
         selectedId={selectedId}
         onSelect={setSelectedId}
-        onChange={updateShape}
+        onChange={handleUpdateShape}
+        onDelete={handleDeleteShape}
+        onHideContextMenu={onHideContextMenu}
       />
     </>
   );
