@@ -4,6 +4,7 @@ import Konva from 'konva';
 import { v4 as uuidv4 } from 'uuid';
 
 // ContextMenu.js
+//TODO: handle "onMouseLeave" event
 function ContextMenu({ position, onDelete }) {
   return (
     <Group
@@ -37,21 +38,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
 
   console.log(`Shape ${id} is selected: ${isSelected}`);
-//   useEffect(() => {
-//   const handleClickOutside = (event) => {
-//     if (showContextMenu && event.target.tagName.toLowerCase() !== 'text') {
-//       setShowContextMenu(false);
-//     }
-//   };
-
-//   window.addEventListener('mousedown', handleClickOutside);
-
-//   return () => {
-//     window.removeEventListener('mousedown', handleClickOutside);
-//   };
-// }, [showContextMenu]);
   
-
   const handleRightClick = (e) => {
     e.evt.preventDefault();
     const stage = e.target.getStage();
@@ -65,16 +52,20 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
     onDelete(id);
   };
 
-  const handleDragEnd = (e) => {
+  const handleDragStart = () => {
     setShowContextMenu(false);
-    
+  };
+
+  const handleDragEnd = (e) => {
     //console.log(e.target.position());
     setPosition(e.target.position());
     onChange(id, { x: e.target.x(), y: e.target.y() });
   };
-
-  const handleTransformEnd = () => {
+ 
+  const handleTransformStart = () => {
     setShowContextMenu(false);
+  };
+  const handleTransformEnd = () => {
     const node = shapeRef.current;
     const scaleX = node.scaleX();
     const scaleY = node.scaleY();
@@ -113,7 +104,8 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             width={100}
             height={100}
             fill={initialColor}
-            draggable
+            onDragStart = {handleDragStart}
+            draggable = {true}
             onDragEnd={handleDragEnd}
             onClick={() => { onSelect(id); console.log(shapeType, 'clicked'); }}
             onContextMenu={handleRightClick}
@@ -121,10 +113,11 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
           {isSelected && (
             <Transformer
               ref={trRef}
+              onTransformStart = {handleTransformStart}
               onTransformEnd={handleTransformEnd}
             />
           )}
-          {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick}/>}
+          {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick}/>/*This is where we need to add "onMouseLeave" event*/ }
         </>
       );
     case 'Circle':
@@ -139,10 +132,12 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             draggable
             onDragEnd={handleDragEnd}
             onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onContextMenu={handleRightClick}
           />
           {isSelected && (
             <Transformer
               ref={trRef}
+              onTransformStart = {handleTransformStart}
               onTransformEnd={handleTransformEnd}
             />)
           }
@@ -162,10 +157,12 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             draggable
             onDragEnd={handleDragEnd}
             onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onContextMenu={handleRightClick}
           />
           {isSelected && (
             <Transformer
               ref={trRef}
+              onTransformStart = {handleTransformStart}
               onTransformEnd={handleTransformEnd}
             />)
           }
@@ -180,21 +177,26 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
 
 // Canvas.js
 function Canvas({ shapes, selectedId, onSelect, onChange, onDelete,  onHideContextMenu }) {
+  //e is event handler (mouse click,drag)
   const handleStageClick = (e) => {
+    console.log(shapes);
     // if clicked on empty area - remove all selections
+    onHideContextMenu();
+    console.log(e);
     if (e.target === e.target.getStage()) {
       onSelect(null);
-      onHideContextMenu();
     }
   };
 
   return (
+    //  where shapes are created //calls and defines the function "shape"
     <Stage
       width={window.innerWidth}
       height={window.innerHeight}
       onClick={handleStageClick}
     >
       <Layer>
+      
         {shapes.map((shape) => (
           <Shape
             key={shape.id}
@@ -216,6 +218,10 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete,  onHideConte
 
 // Stencil.js
 function Stencil({ onAddShape }) {
+  //TODO: create a button and handler that adds a star
+  const handleAddStar = () => {
+    onAddShape('Star', { x: 50, y: 50 }, 'yellow');
+  };
   const handleAddRectangle = () => {
     onAddShape('Rectangle', { x: 20, y: 20 }, 'red');
   };
@@ -230,6 +236,7 @@ function Stencil({ onAddShape }) {
 
   return (
     <div>
+      <button onClick={handleAddStar}>Add Star</button>
       <button onClick={handleAddRectangle}>Add Rectangle</button>
       <button onClick={handleAddCircle}>Add Circle</button>
       <button onClick={handleAddRing}>Add Ring</button>
@@ -238,9 +245,11 @@ function Stencil({ onAddShape }) {
 }
 // App.js
 function App() {
-  const [shapes, setShapes] = useState([]);
+  //tools
+  //variable containing the current state //setShapes updates the current state
+  const [shapes, setShapes] = useState([]); //default parameter (moment in time)
   const [selectedId, setSelectedId] = useState(null);
-
+//This adds the new shape to the "shapes" array state
   const handleAddShape = (shapeType, initialPosition, initialColor) => {
     const newShape = { id: uuidv4(), shapeType, initialPosition, initialColor };
     setShapes([...shapes, newShape]);
@@ -254,7 +263,7 @@ function App() {
     setShapes(shapes.filter(shape => shape.id !== id));
   }
 
-  const onHideContextMenu = () => {
+  const handleHideContextMenu = () => {
     setShapes(shapes.map(shape => ({ ...shape, showContextMenu: false })));
   };
 
@@ -263,14 +272,15 @@ function App() {
 
   return (
     <>
-      <Stencil onAddShape={handleAddShape} />
+      <Stencil onAddShape = {handleAddShape} />
       <Canvas
+      //handle is where it's defined, "on" is where it's called
         shapes={shapes}
         selectedId={selectedId}
         onSelect={setSelectedId}
         onChange={handleUpdateShape}
         onDelete={handleDeleteShape}
-        onHideContextMenu={onHideContextMenu}
+        onHideContextMenu={handleHideContextMenu}
       />
     </>
   );
