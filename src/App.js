@@ -84,6 +84,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
     });
     console.log(node);
   };
+  
 
   //Attach transformer to shape manually
   useEffect(() => {
@@ -94,6 +95,32 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
   }, [isSelected]);
 
   switch (shapeType) {
+    case 'Star':
+      return (
+        <>
+        <Star
+            ref={shapeRef}
+            x={position.x}
+            y={position.y}
+            innerRadius={30}
+            outerRadius={70}
+            fill={initialColor}
+            onDragStart = {handleDragStart}
+            draggable
+            onDragEnd={handleDragEnd}
+            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onContextMenu={handleRightClick}
+        />
+        {isSelected && (
+            <Transformer
+              ref={trRef}
+              onTransformStart = {handleTransformStart}
+              onTransformEnd={handleTransformEnd}
+            />
+          )}
+          {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick}/>/*This is where we need to add "onMouseLeave" event*/ }
+        </>
+      );
     case 'Rectangle':
       return (
         <>
@@ -129,6 +156,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             y={position.y}
             radius={50}
             fill={initialColor}
+            onDragStart = {handleDragStart}
             draggable
             onDragEnd={handleDragEnd}
             onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
@@ -154,6 +182,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             innerRadius={40}
             outerRadius={70}
             fill={initialColor}
+            onDragStart = {handleDragStart}
             draggable
             onDragEnd={handleDragEnd}
             onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
