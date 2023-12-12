@@ -3,32 +3,6 @@ import { Stage, Layer, Group, Rect, Circle, Ring, Text, Star, Transformer, Ellip
 import Konva from 'konva';
 import { v4 as uuidv4 } from 'uuid';
 
-// ShapeGroup.js
-function ShapeGroup({ position, onDelete, onMouseLeave }) {
-  return (
-    <Group
-      x={position.x}
-      y={position.y}
-      onMouseLeave={onMouseLeave}
-    >
-      <Circle
-        x={50}
-        y={50}
-        radius={50}
-        fill={"red"}
-        stroke="black"
-      />
-      <Text
-        text="Delete"
-        width={100}
-        padding={5}
-        align="center"
-        verticalAlign="middle"
-        onClick={onDelete}
-      />
-    </Group>
-  );
-}
 
 // ContextMenu.js
 function ContextMenu({ position, onDelete, onMouseLeave }) {
@@ -564,6 +538,7 @@ function Stencil({ onAddShape }) {
     </div>
   );
 }
+
 // App.js
 function App() {
   const [shapes, setShapes] = useState([]); //default parameter (moment in time)
@@ -610,14 +585,15 @@ function App() {
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
-        margin: '16px',
+        margin: '1vw',
         height: '90vh',
-        width: '97vw'
+        width: '98vw',
+        // overflowX: 'auto'
       }}>
-        <div style={{ flex: 1, padding: '16px', minWidth: '200px', border: '1px solid black', height: '100%', overflow: 'auto' }}>
+        <div style={{ flex: 0.2, padding: '1vw', minWidth: '15%', border: '1px solid black', height: '100%', overflow: 'auto' }}>
           <Stencil onAddShape={handleAddShape} />
         </div>
-        <div style={{ flex: 6, padding: '16px', borderTop: '1px solid black', borderRight: '1px solid black', borderBottom: '1px solid black', height: '100%', }}>
+        <div style={{ flex: 1.8, padding: '1vw', maxWidth: 'calc(80% - 4vw)', marginRight: '2vw', borderTop: '1px solid black', borderRight: '1px solid black', borderBottom: '1px solid black', height: '100%', }}>
           <Canvas
             //handle is where it's defined, "on" is where it's called
             shapes={shapes}
