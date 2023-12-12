@@ -1,7 +1,8 @@
 import React, { useState, useRef, useContext, useEffect, createContext } from 'react';
-import { Stage, Layer, Group, Rect, Circle, Ring, Text, Star, Transformer, Ellipse } from 'react-konva';
+import { Stage, Layer, Group, Rect, Circle, Ring, Text, Star, Transformer, Ellipse, Image } from 'react-konva';
 import Konva from 'konva';
 import { v4 as uuidv4 } from 'uuid';
+import useImage from 'use-image';
 
 
 // ContextMenu.js
@@ -446,6 +447,8 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
 function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContextMenu }) {
   const stageRef = useRef(null);
   const containerRef = useRef(null);
+  const [image] = useImage('https://konvajs.org/assets/lion.png');
+  const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
   useEffect(() => {
     function fitStageIntoParentContainer() {
@@ -459,13 +462,18 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
       }
     }
 
+    function handleResize() {
+      fitStageIntoParentContainer();
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    }
+
     fitStageIntoParentContainer();
-    window.addEventListener('resize', fitStageIntoParentContainer);
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', fitStageIntoParentContainer);
+      window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [windowSize]);
 
   const handleStageClick = (e) => {
     console.log(shapes);
@@ -487,6 +495,11 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
         onClick={handleStageClick}
       >
         <Layer>
+          <Image
+            image={image}
+            width={containerRef.current ? containerRef.current.offsetWidth : 0}
+            height={containerRef.current ? containerRef.current.offsetHeight : 0}
+          />
           {shapes.map((shape) => (
             <Shape
               key={shape.id}
