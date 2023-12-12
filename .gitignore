@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # assets
-/src/static/assets/*
+/public/static/assets/*

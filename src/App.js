@@ -446,12 +446,13 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
   }
 }
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Canvas.js
-function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContextMenu }) {
+function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContextMenu, backgroundImage }) {
   const stageRef = useRef(null);
   const containerRef = useRef(null);
-  const [image] = useImage('https://konvajs.org/assets/lion.png');
+  //useImage can take urls also
+  const [image] = useImage(backgroundImage);
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
   useEffect(() => {
@@ -523,48 +524,105 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
     </div>
   );
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Stencil.js
-function Stencil({ onAddShape }) {
+function Stencil({ onAddShape, setFieldType, setZone, toggleRedLine }) {
+  // Basic shape handlers
+  const [selectedFieldType, setSelectedFieldType] = useState('');
   const handleAddStar = () => {
     onAddShape('Star', { x: 50, y: 50 }, 'yellow');
   };
   const handleAddRectangle = () => {
     onAddShape('Rectangle', { x: 20, y: 20 }, 'red');
   };
-
   const handleAddCircle = () => {
     onAddShape('Circle', { x: 150, y: 150 }, 'blue');
   };
-
   const handleAddRing = () => {
     onAddShape('Ring', { x: 150, y: 150 }, 'green');
   }
+  // Production
 
+  // Field handlers
+  const handleSetFieldType = (e) => {
+    setFieldType(e.target.value);
+    setSelectedFieldType(e.target.value);
+  };
+  const handleToggleZone = () => {
+    setZone(zone => zone === 'middle' ? 'redzone' : 'middle');
+  };
+
+  // Formation handlers
   const handleAddOffense2x2 = () => {
     onAddShape('offense2x2', { x: 150, y: 150 }, 'orange');
   }
 
+  // React Components
+  const Button = ({ onClick, children }) => (
+    <button onClick={onClick}>{children}</button>
+  );
+  const RadioOption = ({ name, value, onChange, children }) => (
+    <label style={{ display: 'inline-block', padding: '10px', backgroundColor: selectedFieldType === value ? 'lightgray' : 'white' }}>
+      <input type="radio" name={name} value={value} onChange={onChange} style={{ display: 'none' }} />
+      {children}
+    </label>
+  );
+  const CheckboxOption = ({ onChange, children, checked }) => (
+    <label className="switch">
+      <input type="checkbox" onChange={onChange} checked={checked} />
+      <span className="slider round"></span>
+      {children}
+    </label>
+  );
+
+
   return (
     <div>
-      <button onClick={handleAddStar}>Add Star</button>
-      <button onClick={handleAddRectangle}>Add Rectangle</button>
-      <button onClick={handleAddCircle}>Add Circle</button>
-      <button onClick={handleAddRing}>Add Ring</button>
-      <button onClick={handleAddOffense2x2}>2x2</button>
-    </div>
+      <Button onClick={handleAddStar}>Add Star</Button>
+      <Button onClick={handleAddRectangle}>Add Rectangle</Button>
+      <Button onClick={handleAddCircle}>Add Circle</Button>
+      <Button onClick={handleAddRing}>Add Ring</Button>
+      <Button onClick={handleAddOffense2x2}>2x2</Button>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+        <h3 style={{ marginBottom: '0' }}>Field</h3>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div>
+              <RadioOption name="fieldType" value="hs" onChange={handleSetFieldType}>High School</RadioOption>
+              <RadioOption name="fieldType" value="nfl" onChange={handleSetFieldType}>NFL</RadioOption>
+              <RadioOption name="fieldType" value="college" onChange={handleSetFieldType}>College</RadioOption>
+              <RadioOption name="fieldType" value="blank" onChange={handleSetFieldType}>Blank</RadioOption>
+            </div>
+            <div>
+              <CheckboxOption onChange={handleToggleZone}>Redzone</CheckboxOption>
+              <CheckboxOption onChange={toggleRedLine}>NFL Red Line</CheckboxOption>
+            </div>
+          </div>
+        </div>
+        <h3>Offense Formation</h3>
+        <h3>Defense Formation</h3>
+        <h3>Lines</h3>
+        <h3>QB Progression</h3>
+        <h3>Text Tags</h3>
+      </div>
+    </div >
   );
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 // App.js
 function App() {
-  const [shapes, setShapes] = useState([]); //default parameter (moment in time)
+  const [shapes, setShapes] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
+  const [backgroundImage, setBackgroundImage] = useState(process.env.PUBLIC_URL + '/static/assets/field_college_middle.png');
+  const [fieldType, setFieldType] = useState('college');
+  const [zone, setZone] = useState('middle');
+  const [redLine, setRedLine] = useState(false);
+
   //TODO: This is where the shapeType will equal offense/defense formation names
   const handleAddShape = (shapeType, initialPosition, initialColor) => {
     if (shapeType === 'offense2x2') {
-      //TODO: add the correct 2x2 shapes here with the correct initial positions
-      // the initial positions will be implemented after the backgrounds are added
+      //TODO: add the correct 2x2 initial positions
       const newShapes = [
         { id: uuidv4(), shapeType: 'QBoval', initialPosition: { x: initialPosition.x, y: initialPosition.y }, initialColor },
         { id: uuidv4(), shapeType: 'RBoval', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
@@ -597,6 +655,24 @@ function App() {
     setShapes(shapes.map(shape => ({ ...shape, showContextMenu: false })));
   };
 
+  //Background handlers
+  const handleChangeBackground = () => {
+    let newImage = `field_${fieldType}_${zone}`;
+    if (redLine && fieldType === 'nfl') {
+      newImage += '_redline';
+    }
+    newImage += '.png';
+    setBackgroundImage(process.env.PUBLIC_URL + '/static/assets/' + newImage);
+  };
+
+  const handleToggleRedLine = () => {
+    setRedLine(redLine => !redLine);
+  };
+
+  useEffect(() => {
+    handleChangeBackground();
+  }, [fieldType, zone, redLine]);
+
   return (
     <>
       <div style={{
@@ -608,7 +684,12 @@ function App() {
         // overflowX: 'auto'
       }}>
         <div style={{ flex: 0.2, padding: '1vw', minWidth: '15%', border: '1px solid black', height: '100%', overflow: 'auto' }}>
-          <Stencil onAddShape={handleAddShape} />
+          <Stencil
+            onAddShape={handleAddShape}
+            setFieldType={setFieldType}
+            setZone={setZone}
+            toggleRedLine={handleToggleRedLine}
+          />
         </div>
         <div style={{ flex: 1.8, padding: '1vw', maxWidth: 'calc(80% - 4vw)', marginRight: '2vw', borderTop: '1px solid black', borderRight: '1px solid black', borderBottom: '1px solid black', height: '100%', }}>
           <Canvas
@@ -619,6 +700,7 @@ function App() {
             onChange={handleUpdateShape}
             onDelete={handleDeleteShape}
             onHideContextMenu={handleHideContextMenu}
+            backgroundImage={backgroundImage}
           />
         </div>
       </div>
