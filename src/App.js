@@ -42,7 +42,12 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
 
-  console.log(`Shape ${id} is selected: ${isSelected}`);
+  //console.log(`Shape ${id} is selected: ${isSelected}`);
+  const handleOnClick = () => {
+    onSelect(id);
+    const node = shapeRef.current;
+    console.log(node);
+  }
 
   const handleRightClick = (e) => {
     e.evt.preventDefault();
@@ -94,7 +99,6 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
     console.log(node);
   };
 
-
   //Attach transformer to shape manually
   useEffect(() => {
     if (isSelected) {
@@ -124,7 +128,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onDragStart={handleDragStart}
             draggable
             onDragEnd={handleDragEnd}
-            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
           {isSelected && (
@@ -152,7 +156,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onDragStart={handleDragStart}
             draggable
             onDragEnd={handleDragEnd}
-            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
           {isSelected && (
@@ -180,7 +184,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onDragStart={handleDragStart}
             draggable
             onDragEnd={handleDragEnd}
-            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
           {isSelected && (
@@ -208,7 +212,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onDragStart={handleDragStart}
             draggable
             onDragEnd={handleDragEnd}
-            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
           {isSelected && (
@@ -236,7 +240,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onDragStart={handleDragStart}
             draggable
             onDragEnd={handleDragEnd}
-            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
           {isSelected && (
@@ -264,7 +268,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onDragStart={handleDragStart}
             draggable
             onDragEnd={handleDragEnd}
-            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
           {isSelected && (
@@ -292,7 +296,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onDragStart={handleDragStart}
             draggable
             onDragEnd={handleDragEnd}
-            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
           {isSelected && (
@@ -320,7 +324,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onDragStart={handleDragStart}
             draggable={true}
             onDragEnd={handleDragEnd}
-            onClick={() => { onSelect(id); console.log(shapeType, 'clicked'); }}
+            onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
           {isSelected && (
@@ -347,7 +351,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onDragStart={handleDragStart}
             draggable
             onDragEnd={handleDragEnd}
-            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
           {isSelected && (
@@ -373,7 +377,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onDragStart={handleDragStart}
             draggable={true}
             onDragEnd={handleDragEnd}
-            onClick={() => { onSelect(id); console.log(shapeType, 'clicked'); }}
+            onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
           {isSelected && (
@@ -398,7 +402,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onDragStart={handleDragStart}
             draggable
             onDragEnd={handleDragEnd}
-            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
           {isSelected && (
@@ -424,7 +428,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onDragStart={handleDragStart}
             draggable
             onDragEnd={handleDragEnd}
-            onClick={() => { onSelect(id); console.log(shapeType, 'clicked') }}
+            onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
           {isSelected && (
@@ -478,8 +482,7 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
   const handleStageClick = (e) => {
     console.log(shapes);
     // if clicked on empty area - remove all selections
-    onHideContextMenu();
-    console.log(e);
+    //console.log(e);
     if (e.target === e.target.getStage()) {
       onSelect(null);
     }
@@ -499,6 +502,7 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
             image={image}
             width={containerRef.current ? containerRef.current.offsetWidth : 0}
             height={containerRef.current ? containerRef.current.offsetHeight : 0}
+            onClick={() => { onSelect(null); console.log('Background Clicked') }}
           />
           {shapes.map((shape) => (
             <Shape
