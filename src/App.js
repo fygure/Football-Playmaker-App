@@ -211,7 +211,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
 
 // Canvas.js
 function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContextMenu }) {
-  //e is event handler (mouse click,drag)
+  //e is the event (mouse, click, drag, etc..)
   const handleStageClick = (e) => {
     console.log(shapes);
     // if clicked on empty area - remove all selections
@@ -252,7 +252,6 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
 
 // Stencil.js
 function Stencil({ onAddShape }) {
-  //TODO: create a button and handler that adds a star
   const handleAddStar = () => {
     onAddShape('Star', { x: 50, y: 50 }, 'yellow');
   };
@@ -279,8 +278,8 @@ function Stencil({ onAddShape }) {
 }
 // App.js
 function App() {
-  //tools
-  //variable containing the current state //setShapes updates the current state
+  //variable containing the current state 
+  //setShapes updates the current state
   const [shapes, setShapes] = useState([]); //default parameter (moment in time)
   const [selectedId, setSelectedId] = useState(null);
   //This adds the new shape to the "shapes" array state
