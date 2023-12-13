@@ -670,6 +670,7 @@ function App() {
   const [fieldType, setFieldType] = useState('college');
   const [zone, setZone] = useState('middle');
   const [redLine, setRedLine] = useState(false);
+  const parentContainer = shapeRef.current.getStage().container();
 
   //TODO: This is where the shapeType will equal offense/defense formation names
   const handleAddShape = (shapeType, initialPosition, initialColor) => {
