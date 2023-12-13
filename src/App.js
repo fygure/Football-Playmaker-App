@@ -643,6 +643,8 @@ function Stencil({ onAddShape, setFieldType, setZone, setRedLine }) {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // App.js
+//TODO: add undo/redo
+//TODO: add selection rectangle
 function App() {
   const [shapes, setShapes] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
@@ -659,6 +661,7 @@ function App() {
     //console.log(stageDimensions);
     //console.log(backgroundImage);
     
+    //TODO: Add more formations, fine tune the initialPositions
     if (shapeType === 'offense2x2') {
       const newShapes = [
         { id: uuidv4(), shapeType: 'QBoval', initialPosition: { x: middlePosition.x, y: middlePosition.y + stageDimensions.height * 0.1 } , initialColor },
