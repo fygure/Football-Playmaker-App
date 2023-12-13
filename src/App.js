@@ -3,7 +3,7 @@ import { Stage, Layer, Group, Rect, Circle, Ring, Text, Star, Transformer, Ellip
 import { v4 as uuidv4 } from 'uuid';
 import useImage from 'use-image';
 import './App.css';
-
+import { FormControlLabel, Switch, Typography } from '@mui/material';
 // ContextMenu.js
 function ContextMenu({ position, onDelete, onMouseLeave }) {
    const rectWidth = 100;
@@ -597,17 +597,16 @@ function Stencil({ onAddShape, setFieldType, setZone, setRedLine }) {
     </label>
   );
   const CheckboxOption = ({ onChange, children, checked }) => (
-    <div style={{
-      fontSize: '12px',
-      display: 'flex',
-      alignItems: 'center',
-    }}>
-      <p style={{ margin: 0 }}>{children}</p>
-      <label className="switch">
-        <input type="checkbox" onChange={onChange} checked={checked} />
-        <span className="slider round"></span>
-      </label>
-    </div>
+<FormControlLabel
+    control={<Switch size = 'small' onChange={onChange} checked={checked} style={{ color: 'white'}} />}
+    label={
+      <Typography style={{ fontSize: '12px', color: 'white' }}>
+        {children}
+      </Typography>
+    }
+    labelPlacement="start"
+    style={{ display: 'flex', alignItems: 'center'}}
+  />
   );
 
 
@@ -631,14 +630,8 @@ function Stencil({ onAddShape, setFieldType, setZone, setRedLine }) {
         <RadioOption name="fieldType" value="nfl" onChange={handleSetFieldType}>NFL</RadioOption>
         <RadioOption name="fieldType" value="blank" onChange={handleSetFieldType}>BLANK</RadioOption>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '35px', padding: '10px' }}>
-
-
-      
+      <div style={{ display: 'flex', gap: '35px', padding: '10px', marginLeft: '-20px' }}>
         <CheckboxOption onChange={handleToggleZone} checked={redZone === 'redzone'}>Red Zone</CheckboxOption>
-
-
-        
         <CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>
       </div>
     </div>
