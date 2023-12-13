@@ -1,8 +1,8 @@
-import React, { useState, useRef, useContext, useEffect, createContext } from 'react';
+import React, { useState, useRef, useEffect, } from 'react';
 import { Stage, Layer, Group, Rect, Circle, Ring, Text, Star, Transformer, Ellipse, Image } from 'react-konva';
-import Konva from 'konva';
 import { v4 as uuidv4 } from 'uuid';
 import useImage from 'use-image';
+import './App.css';
 
 
 // ContextMenu.js
@@ -526,9 +526,13 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Stencil.js
-function Stencil({ onAddShape, setFieldType, setZone, toggleRedLine }) {
+function Stencil({ onAddShape, setFieldType, setZone, setRedLine }) {
+  // College Field selected by default
+  const [selectedFieldType, setSelectedFieldType] = useState('college');
+  const [redZone, setLocalRedZone] = useState('middle');
+  const [redLine, setLocalRedLine] = useState(false);
+
   // Basic shape handlers
-  const [selectedFieldType, setSelectedFieldType] = useState('');
   const handleAddStar = () => {
     onAddShape('Star', { x: 50, y: 50 }, 'yellow');
   };
@@ -549,30 +553,48 @@ function Stencil({ onAddShape, setFieldType, setZone, toggleRedLine }) {
     setSelectedFieldType(e.target.value);
   };
   const handleToggleZone = () => {
-    setZone(zone => zone === 'middle' ? 'redzone' : 'middle');
+    const newZone = redZone === 'middle' ? 'redzone' : 'middle';
+    setLocalRedZone(newZone);
+    setZone(newZone);
   };
-
+  const handleToggleRedLine = () => {
+    const newRedLine = !redLine;
+    setLocalRedLine(newRedLine);
+    setRedLine(newRedLine);
+  };
   // Formation handlers
   const handleAddOffense2x2 = () => {
     onAddShape('offense2x2', { x: 150, y: 150 }, 'orange');
   }
-
   // React Components
   const Button = ({ onClick, children }) => (
     <button onClick={onClick}>{children}</button>
   );
   const RadioOption = ({ name, value, onChange, children }) => (
-    <label style={{ display: 'inline-block', padding: '10px', backgroundColor: selectedFieldType === value ? 'lightgray' : 'white' }}>
+    <label style={{
+      fontSize: '12px',
+      border: '1px solid black',
+      display: 'inline-block',
+      padding: '5px',
+      margin: '5px',
+      backgroundColor: selectedFieldType === value ? 'lightgray' : 'white'
+    }}>
       <input type="radio" name={name} value={value} onChange={onChange} style={{ display: 'none' }} />
-      {children}
+      <p style={{ margin: 0 }}>{children}</p>
     </label>
   );
   const CheckboxOption = ({ onChange, children, checked }) => (
-    <label className="switch">
-      <input type="checkbox" onChange={onChange} checked={checked} />
-      <span className="slider round"></span>
-      {children}
-    </label>
+    <div style={{
+      fontSize: '12px',
+      display: 'flex',
+      alignItems: 'center',
+    }}>
+      <p style={{ margin: 0 }}>{children}</p>
+      <label className="switch">
+        <input type="checkbox" onChange={onChange} checked={checked} />
+        <span className="slider round"></span>
+      </label>
+    </div>
   );
 
 
@@ -590,13 +612,13 @@ function Stencil({ onAddShape, setFieldType, setZone, toggleRedLine }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div>
               <RadioOption name="fieldType" value="hs" onChange={handleSetFieldType}>High School</RadioOption>
-              <RadioOption name="fieldType" value="nfl" onChange={handleSetFieldType}>NFL</RadioOption>
               <RadioOption name="fieldType" value="college" onChange={handleSetFieldType}>College</RadioOption>
+              <RadioOption name="fieldType" value="nfl" onChange={handleSetFieldType}>NFL</RadioOption>
               <RadioOption name="fieldType" value="blank" onChange={handleSetFieldType}>Blank</RadioOption>
             </div>
-            <div>
-              <CheckboxOption onChange={handleToggleZone}>Redzone</CheckboxOption>
-              <CheckboxOption onChange={toggleRedLine}>NFL Red Line</CheckboxOption>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', padding: '10px' }}>
+              <CheckboxOption onChange={handleToggleZone} checked={redZone === 'redzone'}>Red Zone</CheckboxOption>
+              <CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>
             </div>
           </div>
         </div>
@@ -665,10 +687,6 @@ function App() {
     setBackgroundImage(process.env.PUBLIC_URL + '/static/assets/' + newImage);
   };
 
-  const handleToggleRedLine = () => {
-    setRedLine(redLine => !redLine);
-  };
-
   useEffect(() => {
     handleChangeBackground();
   }, [fieldType, zone, redLine]);
@@ -688,7 +706,8 @@ function App() {
             onAddShape={handleAddShape}
             setFieldType={setFieldType}
             setZone={setZone}
-            toggleRedLine={handleToggleRedLine}
+            setRedLine={setRedLine}
+          //toggleRedLine={handleToggleRedLine}
           />
         </div>
         <div style={{ flex: 1.8, padding: '1vw', maxWidth: 'calc(80% - 4vw)', marginRight: '2vw', borderTop: '1px solid black', borderRight: '1px solid black', borderBottom: '1px solid black', height: '100%', }}>
