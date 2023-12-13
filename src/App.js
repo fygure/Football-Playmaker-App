@@ -592,9 +592,10 @@ function Stencil({ onAddShape, setFieldType, setZone, setRedLine }) {
       <p style={{ margin: 0 }}>{children}</p>
     </label>
   );
-  const CheckboxOption = ({ onChange, children, checked, disabled }) => (
+  const CheckboxOption = ({ onChange, children, checked}) => (
+    
     <FormControlLabel
-      control={<Switch size="small" onChange={onChange} checked={checked} disabled={disabled} style={{ color: 'white' }} />}
+      control={<Switch size="small" onChange={onChange} checked={checked}  style={{ color: 'white'}} />}
       label={
         <Typography style={{ fontSize: '12px', color: 'white' }}>
           {children}
@@ -632,7 +633,7 @@ function Stencil({ onAddShape, setFieldType, setZone, setRedLine }) {
                 Red Zone
               </CheckboxOption>
             )}
-        {selectedFieldType !== 'blank' && selectedFieldType === 'nfl' && (<CheckboxOption onChange={handleToggleRedLine} checked={redLine} disabled={selectedFieldType !== 'nfl'}>NFL Red Line</CheckboxOption>)}
+        {selectedFieldType !== 'blank'  && selectedFieldType === 'nfl' && (<CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>)}
       </div>
     </div>
   </div>
