@@ -1,9 +1,11 @@
-import React, { useState, useRef, useEffect, } from 'react';
+import React, { useState, useRef, useEffect, useCallback, createContext, useContext } from 'react';
 import { Stage, Layer, Group, Rect, Circle, Ring, Text, Star, Transformer, Ellipse, Image } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
 import useImage from 'use-image';
 import './App.css';
 import { FormControlLabel, Switch, Typography } from '@mui/material';
+
+const StageDimensionsContext = createContext();
 // ContextMenu.js
 function ContextMenu({ position, onDelete, onMouseLeave }) {
    const rectWidth = 100;
@@ -43,7 +45,7 @@ function ContextMenu({ position, onDelete, onMouseLeave }) {
 
 
 // Shape.js
-function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSelect, onChange, onDelete }) {
+function Shape({ id, shapeType, stageRef, initialPosition, initialColor, isSelected, onSelect, onChange, onDelete }) {
   const shapeRef = useRef();
   const trRef = useRef();
   const ellipseRadiuses = { x: 16, y: 12 };
@@ -65,10 +67,10 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
         x: position.x * scaleFactorX,
         y: position.y * scaleFactorY,
       });
+        
+
     };
-
     window.addEventListener('resize', handleResize);
-
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -111,33 +113,6 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
   const handleHideContextMenu = () => {
     setShowContextMenu(false);
   }
-  // const handleTransformEnd = () => {
-  //   const node = shapeRef.current;
-  //   const scaleX = node.scaleX();
-  //   const scaleY = node.scaleY();
-  //   // Update the state with the new width and height
-  //   // node.scaleX(1);
-  //   onChange(id, {
-  //     x: node.x(),
-  //     y: node.y(),
-  //     width: Math.max(5, node.width() * scaleX),
-  //     height: Math.max(node.height() * scaleY),
-  //     rotation: node.rotation(),
-  //     fill: node.fill(),
-  //     scaleX: scaleX,
-  //     scaleY: scaleY,
-  //     shapeType: shapeType
-  //   });
-  //   console.log(node);
-  // };
-
-  //Attach transformer to shape manually
-  // useEffect(() => {
-  //   if (isSelected) {
-  //     trRef.current.nodes([shapeRef.current]);
-  //     trRef.current.getLayer().batchDraw();
-  //   }
-  // }, [isSelected]);
 
   //TODO: Modify the switch statement to create the correct shapes based on shapeType
   // ex: shapeType = QBoval, then return a group with a Konva (ellipse and 'QB' text)
@@ -474,14 +449,15 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Canvas.js
-function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContextMenu, backgroundImage }) {
+function Canvas({ setStageDimensions, shapes, selectedId, onSelect, onChange, onDelete, onHideContextMenu, backgroundImage }) {
+  const { stageDimensions } = useContext(StageDimensionsContext);
   const stageRef = useRef(null);
   const containerRef = useRef(null);
-  //useImage can take urls also
   const [image] = useImage(backgroundImage);
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
   useEffect(() => {
+    
     function fitStageIntoParentContainer() {
       if (containerRef.current && stageRef.current) {
         const containerWidth = containerRef.current.offsetWidth;
@@ -490,6 +466,8 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
         stageRef.current.width(containerWidth);
         stageRef.current.height(containerHeight);
         stageRef.current.draw();
+
+        setStageDimensions({ width: containerRef.current.offsetWidth, height: containerRef.current.offsetHeight });
       }
     }
 
@@ -504,7 +482,7 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [windowSize]);
+  }, []);
 
   const handleStageClick = (e) => {
     console.log(shapes);
@@ -518,6 +496,7 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
 
   return (
     //  where shapes are created //calls and defines the function "shape"
+    <> 
     <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
       <Stage
         ref={stageRef}
@@ -530,7 +509,7 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
             image={image}
             width={containerRef.current ? containerRef.current.offsetWidth : 0}
             height={containerRef.current ? containerRef.current.offsetHeight : 0}
-            onClick={() => { onSelect(null); console.log('Background Clicked') }}
+            onClick={() => { onSelect(null); console.log('Background Clicked'); console.log(stageDimensions); }}
           />
           {shapes.map((shape) => (
             <Shape
@@ -549,6 +528,7 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
         </Layer>
       </Stage>
     </div>
+    </>
   );
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -670,30 +650,34 @@ function App() {
   const [fieldType, setFieldType] = useState('college');
   const [zone, setZone] = useState('middle');
   const [redLine, setRedLine] = useState(false);
-  const parentContainer = shapeRef.current.getStage().container();
+  const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
 
   //TODO: This is where the shapeType will equal offense/defense formation names
   const handleAddShape = (shapeType, initialPosition, initialColor) => {
-    console.log(backgroundImage);
+
+    const middlePosition = { x: stageDimensions.width / 2, y: stageDimensions.height / 2 };
+    //console.log(stageDimensions);
+    //console.log(backgroundImage);
+    
     if (shapeType === 'offense2x2') {
-      //TODO: add the correct 2x2 initial positions
       const newShapes = [
-        { id: uuidv4(), shapeType: 'QBoval', initialPosition: { x: initialPosition.x, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'RBoval', initialPosition: { x: initialPosition.x + 120, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Xoval', initialPosition: { x: initialPosition.x + 140, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Hoval', initialPosition: { x: initialPosition.x + 160, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Yoval', initialPosition: { x: initialPosition.x + 180, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Zoval', initialPosition: { x: initialPosition.x + 200, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Center', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'QBoval', initialPosition: { x: middlePosition.x, y: middlePosition.y + stageDimensions.height * 0.1 } , initialColor },
+        { id: uuidv4(), shapeType: 'RBoval', initialPosition: { x: middlePosition.x, y: middlePosition.y + stageDimensions.height * 0.1 }, initialColor },
+        { id: uuidv4(), shapeType: 'Xoval', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.1, y: middlePosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'Hoval', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.1, y: middlePosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'Yoval', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.1, y: middlePosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'Zoval', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.1, y: middlePosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.04, y: middlePosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.02, y: middlePosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'Center', initialPosition: { x: middlePosition.x, y: middlePosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.02, y: middlePosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.04, y: middlePosition.y }, initialColor },
+       
       ];
       setShapes([...shapes, ...newShapes]);
     } 
   else {
-      const newShape = { id: uuidv4(), shapeType, initialPosition, initialColor };
+      const newShape = { id: uuidv4(), shapeType, initialPosition: middlePosition, initialColor };
       setShapes([...shapes, newShape]);
     }
   };
@@ -755,6 +739,7 @@ function App() {
 
   return (
     <>
+    <StageDimensionsContext.Provider value={{ stageDimensions }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -782,9 +767,11 @@ function App() {
             onDelete={handleDeleteShape}
             onHideContextMenu={handleHideContextMenu}
             backgroundImage={backgroundImage}
+            setStageDimensions={setStageDimensions} 
           />
         </div>
       </div>
+      </StageDimensionsContext.Provider>
     </>
   );
 }
