@@ -56,7 +56,7 @@ input:focus+.slider {
 input:checked+.slider:before {
     -webkit-transform: translateX(16px);
     -ms-transform: translateX(16px);
-    transform: translateX(16px);
+    transform: translateX(25px);
     border-radius: 8px;
 }
 

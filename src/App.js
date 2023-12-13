@@ -3,10 +3,7 @@ import { Stage, Layer, Group, Rect, Circle, Ring, Text, Star, Transformer, Ellip
 import { v4 as uuidv4 } from 'uuid';
 import useImage from 'use-image';
 import './App.css';
-
-const contextMenuStyle = {
-  fontFamily: "'Bitter', sans-serif", // or "'Inter', sans-serif"
-};
+import { FormControlLabel, Switch, Typography } from '@mui/material';
 // ContextMenu.js
 function ContextMenu({ position, onDelete, onMouseLeave }) {
    const rectWidth = 100;
@@ -603,28 +600,29 @@ function Stencil({ onAddShape, setFieldType, setZone, setRedLine }) {
   const RadioOption = ({ name, value, onChange, children }) => (
     <label style={{
       fontSize: '12px',
-      border: '1px solid black',
+      border: '1px solid white',
       display: 'inline-block',
+      fontFamily: 'Inter, sans-serif',
       padding: '5px',
       margin: '5px',
-      backgroundColor: selectedFieldType === value ? 'lightgray' : 'white'
+      backgroundColor: selectedFieldType === value ? 'white' : '#333',
+      color: selectedFieldType === value ? '#333': 'white'
     }}>
       <input type="radio" name={name} value={value} onChange={onChange} style={{ display: 'none' }} />
       <p style={{ margin: 0 }}>{children}</p>
     </label>
   );
   const CheckboxOption = ({ onChange, children, checked }) => (
-    <div style={{
-      fontSize: '12px',
-      display: 'flex',
-      alignItems: 'center',
-    }}>
-      <p style={{ margin: 0 }}>{children}</p>
-      <label className="switch">
-        <input type="checkbox" onChange={onChange} checked={checked} />
-        <span className="slider round"></span>
-      </label>
-    </div>
+<FormControlLabel
+    control={<Switch size = 'small' onChange={onChange} checked={checked} style={{ color: 'white'}} />}
+    label={
+      <Typography style={{ fontSize: '12px', color: 'white' }}>
+        {children}
+      </Typography>
+    }
+    labelPlacement="start"
+    style={{ display: 'flex', alignItems: 'center'}}
+  />
   );
 
 
@@ -636,28 +634,30 @@ function Stencil({ onAddShape, setFieldType, setZone, setRedLine }) {
       <Button onClick={handleAddRing}>Add Ring</Button>
       <Button onClick={handleAddOffense2x2}>2x2</Button>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-        <h3 style={{ marginBottom: '0' }}>Field</h3>
-        <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div>
-              <RadioOption name="fieldType" value="hs" onChange={handleSetFieldType}>High School</RadioOption>
-              <RadioOption name="fieldType" value="college" onChange={handleSetFieldType}>College</RadioOption>
-              <RadioOption name="fieldType" value="nfl" onChange={handleSetFieldType}>NFL</RadioOption>
-              <RadioOption name="fieldType" value="blank" onChange={handleSetFieldType}>Blank</RadioOption>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', padding: '10px' }}>
-              <CheckboxOption onChange={handleToggleZone} checked={redZone === 'redzone'}>Red Zone</CheckboxOption>
-              <CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>
-            </div>
-          </div>
-        </div>
-        <h3>Offense Formation</h3>
-        <h3>Defense Formation</h3>
-        <h3>Lines</h3>
-        <h3>QB Progression</h3>
-        <h3>Text Tags</h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white'}}>
+      <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Field</h3>
+
+      
+  <div style={{ display: 'flex',justifyContent: "flex-start" , flexDirection: 'row' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '-6px'}}>
+      <div>
+        <RadioOption name="fieldType" value="hs" onChange={handleSetFieldType} >HIGH SCHOOL</RadioOption>
+        <RadioOption name="fieldType" value="college" onChange={handleSetFieldType}>COLLEGE</RadioOption>
+        <RadioOption name="fieldType" value="nfl" onChange={handleSetFieldType}>NFL</RadioOption>
+        <RadioOption name="fieldType" value="blank" onChange={handleSetFieldType}>BLANK</RadioOption>
       </div>
+      <div style={{ display: 'flex', gap: '35px', padding: '10px', marginLeft: '-20px' }}>
+        <CheckboxOption onChange={handleToggleZone} checked={redZone === 'redzone'}>Red Zone</CheckboxOption>
+        <CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>
+      </div>
+    </div>
+  </div>
+  <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation</h3>
+  <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Defense Formation</h3>
+  <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Lines</h3>
+  <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>QB Progression</h3>
+  <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Text Tags</h3>
+</div>
     </div >
   );
 }
@@ -762,7 +762,7 @@ function App() {
         width: '98vw',
         // overflowX: 'auto'
       }}>
-        <div style={{ flex: 0.2, padding: '1vw', minWidth: '15%', border: '1px solid black', height: '100%', overflow: 'auto' }}>
+        <div style={{ flex: 0.2, padding: '1vw', minWidth: '15%', border: '1px solid black', height: '100%', overflow: 'auto', backgroundColor: '#333' }}>
           <Stencil
             onAddShape={handleAddShape}
             setFieldType={setFieldType}
