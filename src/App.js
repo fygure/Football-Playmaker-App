@@ -8,7 +8,7 @@ import { FormControlLabel, Switch, Typography } from '@mui/material';
 const StageDimensionsContext = createContext();
 // ContextMenu.js
 function ContextMenu({ position, onDelete, onMouseLeave }) {
-   const rectWidth = 100;
+  const rectWidth = 100;
   const rectHeight = 30;
   const padding = 8;
 
@@ -592,17 +592,17 @@ function Stencil({ onAddShape, setFieldType, setZone, setRedLine }) {
       <p style={{ margin: 0 }}>{children}</p>
     </label>
   );
-  const CheckboxOption = ({ onChange, children, checked }) => (
-<FormControlLabel
-    control={<Switch size = 'small' onChange={onChange} checked={checked} style={{ color: 'white'}} />}
-    label={
-      <Typography style={{ fontSize: '12px', color: 'white' }}>
-        {children}
-      </Typography>
-    }
-    labelPlacement="start"
-    style={{ display: 'flex', alignItems: 'center'}}
-  />
+  const CheckboxOption = ({ onChange, children, checked, disabled }) => (
+    <FormControlLabel
+      control={<Switch size="small" onChange={onChange} checked={checked} disabled={disabled} style={{ color: 'white' }} />}
+      label={
+        <Typography style={{ fontSize: '12px', color: 'white' }}>
+          {children}
+        </Typography>
+      }
+      labelPlacement="start"
+      style={{ display: 'flex', alignItems: 'center' }}
+    />
   );
 
 
@@ -627,17 +627,21 @@ function Stencil({ onAddShape, setFieldType, setZone, setRedLine }) {
         <RadioOption name="fieldType" value="blank" onChange={handleSetFieldType}>BLANK</RadioOption>
       </div>
       <div style={{ display: 'flex', gap: '35px', padding: '10px', marginLeft: '-20px' }}>
-        <CheckboxOption onChange={handleToggleZone} checked={redZone === 'redzone'}>Red Zone</CheckboxOption>
-        <CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>
+      {selectedFieldType !== 'blank' && (
+              <CheckboxOption onChange={handleToggleZone} checked={redZone === 'redzone'}>
+                Red Zone
+              </CheckboxOption>
+            )}
+        {selectedFieldType !== 'blank' && selectedFieldType === 'nfl' && (<CheckboxOption onChange={handleToggleRedLine} checked={redLine} disabled={selectedFieldType !== 'nfl'}>NFL Red Line</CheckboxOption>)}
       </div>
     </div>
   </div>
-  <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation</h3>
-  <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Defense Formation</h3>
-  <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Lines</h3>
-  <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>QB Progression</h3>
-  <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Text Tags</h3>
-</div>
+    <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation</h3>
+    <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Defense Formation</h3>
+    <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Lines</h3>
+    <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>QB Progression</h3>
+    <h3 style={{ marginBottom: '0',   fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Text Tags</h3>
+  </div>
     </div >
   );
 }
