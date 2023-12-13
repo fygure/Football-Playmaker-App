@@ -49,12 +49,33 @@ function ContextMenu({ position, onDelete, onMouseLeave }) {
 function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSelect, onChange, onDelete }) {
   const shapeRef = useRef();
   const trRef = useRef();
-  const ellipseRadiuses = { x: 20, y: 15 };
-  const squareSize = { width: 30, height: 30 };
+  const ellipseRadiuses = { x: 16, y: 12 };
+  const squareSize = { width: 25, height: 25 };
   const strokeOptions = { color: 'black', strokeWidth: 2 };
   const [position, setPosition] = useState(initialPosition);
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const parentContainer = shapeRef.current.getStage().container();
+    const initialWindowSize = { width: parentContainer.offsetWidth, height: parentContainer.offsetHeight };
+
+    const handleResize = () => {
+      const scaleFactorX = parentContainer.offsetWidth / initialWindowSize.width;
+      const scaleFactorY = parentContainer.offsetHeight / initialWindowSize.height;
+
+      setPosition({
+        x: position.x * scaleFactorX,
+        y: position.y * scaleFactorY,
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [position]);
 
   //console.log(`Shape ${id} is selected: ${isSelected}`);
   const handleOnClick = () => {
@@ -86,40 +107,40 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
     onChange(id, { x: e.target.x(), y: e.target.y() });
   };
 
-  const handleTransformStart = () => {
-    setShowContextMenu(false);
-  };
+  // const handleTransformStart = () => {
+  //   setShowContextMenu(false);
+  // };
 
   const handleHideContextMenu = () => {
     setShowContextMenu(false);
   }
-  const handleTransformEnd = () => {
-    const node = shapeRef.current;
-    const scaleX = node.scaleX();
-    const scaleY = node.scaleY();
-    // Update the state with the new width and height
-    // node.scaleX(1);
-    onChange(id, {
-      x: node.x(),
-      y: node.y(),
-      width: Math.max(5, node.width() * scaleX),
-      height: Math.max(node.height() * scaleY),
-      rotation: node.rotation(),
-      fill: node.fill(),
-      scaleX: scaleX,
-      scaleY: scaleY,
-      shapeType: shapeType
-    });
-    console.log(node);
-  };
+  // const handleTransformEnd = () => {
+  //   const node = shapeRef.current;
+  //   const scaleX = node.scaleX();
+  //   const scaleY = node.scaleY();
+  //   // Update the state with the new width and height
+  //   // node.scaleX(1);
+  //   onChange(id, {
+  //     x: node.x(),
+  //     y: node.y(),
+  //     width: Math.max(5, node.width() * scaleX),
+  //     height: Math.max(node.height() * scaleY),
+  //     rotation: node.rotation(),
+  //     fill: node.fill(),
+  //     scaleX: scaleX,
+  //     scaleY: scaleY,
+  //     shapeType: shapeType
+  //   });
+  //   console.log(node);
+  // };
 
   //Attach transformer to shape manually
-  useEffect(() => {
-    if (isSelected) {
-      trRef.current.nodes([shapeRef.current]);
-      trRef.current.getLayer().batchDraw();
-    }
-  }, [isSelected]);
+  // useEffect(() => {
+  //   if (isSelected) {
+  //     trRef.current.nodes([shapeRef.current]);
+  //     trRef.current.getLayer().batchDraw();
+  //   }
+  // }, [isSelected]);
 
   //TODO: Modify the switch statement to create the correct shapes based on shapeType
   // ex: shapeType = QBoval, then return a group with a Konva (ellipse and 'QB' text)
@@ -130,168 +151,204 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
     case 'QBoval':
       return (
         <>
-          <Ellipse
-            ref={shapeRef}
-            x={position.x}
-            y={position.y}
-            radiusX={ellipseRadiuses.x}
-            radiusY={ellipseRadiuses.y}
-            stroke={strokeOptions.color}
-            strokeWidth={strokeOptions.strokeWidth}
-            fill={initialColor}
-            onDragStart={handleDragStart}
-            draggable
-            onDragEnd={handleDragEnd}
-            onClick={handleOnClick}
-            onContextMenu={handleRightClick}
-          />
-          {isSelected && (
-            <Transformer
-              ref={trRef}
-              onTransformStart={handleTransformStart}
-              onTransformEnd={handleTransformEnd}
-            />)
-          }
+          <Group
+          draggable
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onClick={handleOnClick}
+          onContextMenu={handleRightClick}
+          ref={shapeRef}
+          x={position.x}
+          y={position.y}
+          >
+            <Ellipse
+              x={0}
+              y={0}
+              radiusX={ellipseRadiuses.x}
+              radiusY={ellipseRadiuses.y}
+              stroke={strokeOptions.color}
+              strokeWidth={strokeOptions.strokeWidth}
+              fill={initialColor}
+            />
+            <Text
+            text="QB"
+            x={-ellipseRadiuses.x / 2 - 1}
+            y={-ellipseRadiuses.y / 2 + 1}
+            align="center"
+            fill="black"
+            listening={false}
+            />
+          </Group>
           {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
       );
     case 'RBoval':
       return (
         <>
+        <Group
+          draggable
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onClick={handleOnClick}
+          onContextMenu={handleRightClick}
+          ref={shapeRef}
+          x={position.x}
+          y={position.y}
+        >
           <Ellipse
-            ref={shapeRef}
-            x={position.x}
-            y={position.y}
+            x={0}
+            y={0}
             radiusX={ellipseRadiuses.x}
             radiusY={ellipseRadiuses.y}
             stroke={strokeOptions.color}
             strokeWidth={strokeOptions.strokeWidth}
             fill={initialColor}
-            onDragStart={handleDragStart}
-            draggable
-            onDragEnd={handleDragEnd}
-            onClick={handleOnClick}
-            onContextMenu={handleRightClick}
           />
-          {isSelected && (
-            <Transformer
-              ref={trRef}
-              onTransformStart={handleTransformStart}
-              onTransformEnd={handleTransformEnd}
-            />)
-          }
+          <Text
+            text="RB"
+            x={-ellipseRadiuses.x / 2}
+            y={-ellipseRadiuses.y / 2 + 1}
+            align="center"
+            fill="black"
+            listening={false}
+          />
+          </Group>
           {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
       );
     case 'Xoval':
       return (
         <>
-          <Ellipse
-            ref={shapeRef}
-            x={position.x}
-            y={position.y}
-            radiusX={ellipseRadiuses.x}
-            radiusY={ellipseRadiuses.y}
-            stroke={strokeOptions.color}
-            strokeWidth={strokeOptions.strokeWidth}
-            fill={initialColor}
-            onDragStart={handleDragStart}
+          <Group
             draggable
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             onClick={handleOnClick}
             onContextMenu={handleRightClick}
-          />
-          {isSelected && (
-            <Transformer
-              ref={trRef}
-              onTransformStart={handleTransformStart}
-              onTransformEnd={handleTransformEnd}
-            />)
-          }
+            ref={shapeRef}
+            x={position.x}
+            y={position.y}
+          > 
+            <Ellipse
+              x={0}
+              y={0}
+              radiusX={ellipseRadiuses.x}
+              radiusY={ellipseRadiuses.y}
+              stroke={strokeOptions.color}
+              strokeWidth={strokeOptions.strokeWidth}
+              fill={initialColor}
+            />
+            <Text
+              text="X"
+              x={-ellipseRadiuses.x / 2 + 4}
+              y={-ellipseRadiuses.y / 2 + 1}
+              align="center"
+              fill="black"
+              listening={false}
+            />
+          </Group>
           {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
       );
     case 'Hoval':
       return (
         <>
-          <Ellipse
-            ref={shapeRef}
-            x={position.x}
-            y={position.y}
-            radiusX={ellipseRadiuses.x}
-            radiusY={ellipseRadiuses.y}
-            stroke={strokeOptions.color}
-            strokeWidth={strokeOptions.strokeWidth}
-            fill={initialColor}
-            onDragStart={handleDragStart}
+          <Group
             draggable
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             onClick={handleOnClick}
             onContextMenu={handleRightClick}
-          />
-          {isSelected && (
-            <Transformer
-              ref={trRef}
-              onTransformStart={handleTransformStart}
-              onTransformEnd={handleTransformEnd}
-            />)
-          }
+            ref={shapeRef}
+            x={position.x}
+            y={position.y}
+          > 
+            <Ellipse
+              x={0}
+              y={0}
+              radiusX={ellipseRadiuses.x}
+              radiusY={ellipseRadiuses.y}
+              stroke={strokeOptions.color}
+              strokeWidth={strokeOptions.strokeWidth}
+              fill={initialColor}
+            />
+            <Text
+              text="H"
+              x={-ellipseRadiuses.x / 2 + 4}
+              y={-ellipseRadiuses.y / 2 + 1}
+              align="center"
+              fill="black"
+              listening={false}
+            />
+          </Group>
           {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
       );
     case 'Yoval':
       return (
         <>
-          <Ellipse
-            ref={shapeRef}
-            x={position.x}
-            y={position.y}
-            radiusX={ellipseRadiuses.x}
-            radiusY={ellipseRadiuses.y}
-            stroke={strokeOptions.color}
-            strokeWidth={strokeOptions.strokeWidth}
-            fill={initialColor}
-            onDragStart={handleDragStart}
+          <Group
             draggable
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             onClick={handleOnClick}
             onContextMenu={handleRightClick}
-          />
-          {isSelected && (
-            <Transformer
-              ref={trRef}
-              onTransformStart={handleTransformStart}
-              onTransformEnd={handleTransformEnd}
-            />)
-          }
+            ref={shapeRef}
+            x={position.x}
+            y={position.y}
+          > 
+            <Ellipse
+              x={0}
+              y={0}
+              radiusX={ellipseRadiuses.x}
+              radiusY={ellipseRadiuses.y}
+              stroke={strokeOptions.color}
+              strokeWidth={strokeOptions.strokeWidth}
+              fill={initialColor}
+            />
+            <Text
+              text="Y"
+              x={-ellipseRadiuses.x / 2 + 4}
+              y={-ellipseRadiuses.y / 2 + 1}
+              align="center"
+              fill="black"
+              listening={false}
+            />
+          </Group>
           {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
       );
     case 'Zoval':
       return (
         <>
-          <Ellipse
-            ref={shapeRef}
-            x={position.x}
-            y={position.y}
-            radiusX={ellipseRadiuses.x}
-            radiusY={ellipseRadiuses.y}
-            stroke={strokeOptions.color}
-            strokeWidth={strokeOptions.strokeWidth}
-            fill={initialColor}
-            onDragStart={handleDragStart}
+          <Group
             draggable
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             onClick={handleOnClick}
             onContextMenu={handleRightClick}
-          />
-          {isSelected && (
-            <Transformer
-              ref={trRef}
-              onTransformStart={handleTransformStart}
-              onTransformEnd={handleTransformEnd}
-            />)
-          }
+            ref={shapeRef}
+            x={position.x}
+            y={position.y}
+          > 
+            <Ellipse
+              x={0}
+              y={0}
+              radiusX={ellipseRadiuses.x}
+              radiusY={ellipseRadiuses.y}
+              stroke={strokeOptions.color}
+              strokeWidth={strokeOptions.strokeWidth}
+              fill={initialColor}
+            />
+            <Text
+              text="Z"
+              x={-ellipseRadiuses.x / 2 + 4}
+              y={-ellipseRadiuses.y / 2 + 1}
+              align="center"
+              fill="black"
+              listening={false}
+            />
+          </Group>
           {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
       );
@@ -313,13 +370,6 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
-          {isSelected && (
-            <Transformer
-              ref={trRef}
-              onTransformStart={handleTransformStart}
-              onTransformEnd={handleTransformEnd}
-            />)
-          }
           {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
       );
@@ -341,13 +391,6 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
-          {isSelected && (
-            <Transformer
-              ref={trRef}
-              onTransformStart={handleTransformStart}
-              onTransformEnd={handleTransformEnd}
-            />
-          )}
           {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />/*This is where we need to add "onMouseLeave" event*/}
         </>
       );
@@ -368,13 +411,6 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
-          {isSelected && (
-            <Transformer
-              ref={trRef}
-              onTransformStart={handleTransformStart}
-              onTransformEnd={handleTransformEnd}
-            />
-          )}
           {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
       );
@@ -394,13 +430,6 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
-          {isSelected && (
-            <Transformer
-              ref={trRef}
-              onTransformStart={handleTransformStart}
-              onTransformEnd={handleTransformEnd}
-            />
-          )}
           {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />/*This is where we need to add "onMouseLeave" event*/}
         </>
       );
@@ -419,13 +448,6 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
-          {isSelected && (
-            <Transformer
-              ref={trRef}
-              onTransformStart={handleTransformStart}
-              onTransformEnd={handleTransformEnd}
-            />)
-          }
           {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
       );
@@ -445,13 +467,6 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
             onClick={handleOnClick}
             onContextMenu={handleRightClick}
           />
-          {isSelected && (
-            <Transformer
-              ref={trRef}
-              onTransformStart={handleTransformStart}
-              onTransformEnd={handleTransformEnd}
-            />)
-          }
           {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
       )
@@ -496,6 +511,7 @@ function Canvas({ shapes, selectedId, onSelect, onChange, onDelete, onHideContex
 
   const handleStageClick = (e) => {
     console.log(shapes);
+    console.log(backgroundImage)
     // if clicked on empty area - remove all selections
     //console.log(e);
     if (e.target === e.target.getStage()) {
@@ -657,15 +673,16 @@ function App() {
 
   //TODO: This is where the shapeType will equal offense/defense formation names
   const handleAddShape = (shapeType, initialPosition, initialColor) => {
+    console.log(backgroundImage);
     if (shapeType === 'offense2x2') {
       //TODO: add the correct 2x2 initial positions
       const newShapes = [
         { id: uuidv4(), shapeType: 'QBoval', initialPosition: { x: initialPosition.x, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'RBoval', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Xoval', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Hoval', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Yoval', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
-        { id: uuidv4(), shapeType: 'Zoval', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'RBoval', initialPosition: { x: initialPosition.x + 120, y: initialPosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'Xoval', initialPosition: { x: initialPosition.x + 140, y: initialPosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'Hoval', initialPosition: { x: initialPosition.x + 160, y: initialPosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'Yoval', initialPosition: { x: initialPosition.x + 180, y: initialPosition.y }, initialColor },
+        { id: uuidv4(), shapeType: 'Zoval', initialPosition: { x: initialPosition.x + 200, y: initialPosition.y }, initialColor },
         { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
         { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
         { id: uuidv4(), shapeType: 'Center', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
@@ -705,6 +722,35 @@ function App() {
   useEffect(() => {
     handleChangeBackground();
   }, [fieldType, zone, redLine]);
+
+  //TODO
+  //Save and Load
+  // const saveState = () => {
+  //   const parentContainer = shapeRef.current.getStage().container();
+  //   const relativeShapes = shapes.map(shape => ({
+  //     ...shape,
+  //     position: {
+  //       x: shape.position.x / parentContainer.offsetWidth,
+  //       y: shape.position.y / parentContainer.offsetHeight,
+  //     },
+  //   }));
+
+  //   localStorage.setItem('shapes', JSON.stringify(relativeShapes));
+  // };
+
+  // const loadState = () => {
+  //   const parentContainer = shapeRef.current.getStage().container();
+  //   const relativeShapes = JSON.parse(localStorage.getItem('shapes'));
+  //   const absoluteShapes = relativeShapes.map(shape => ({
+  //     ...shape,
+  //     position: {
+  //       x: shape.position.x * parentContainer.offsetWidth,
+  //       y: shape.position.y * parentContainer.offsetHeight,
+  //     },
+  //   }));
+
+  //   setShapes(absoluteShapes);
+  // };
 
   return (
     <>
