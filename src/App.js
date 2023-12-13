@@ -4,9 +4,15 @@ import { v4 as uuidv4 } from 'uuid';
 import useImage from 'use-image';
 import './App.css';
 
-
+const contextMenuStyle = {
+  fontFamily: "'Bitter', sans-serif", // or "'Inter', sans-serif"
+};
 // ContextMenu.js
 function ContextMenu({ position, onDelete, onMouseLeave }) {
+   const rectWidth = 100;
+  const rectHeight = 30;
+  const padding = 8;
+
   return (
     <Group
       x={position.x}
@@ -14,22 +20,30 @@ function ContextMenu({ position, onDelete, onMouseLeave }) {
       onMouseLeave={onMouseLeave}
     >
       <Rect
-        width={100}
-        height={30}
-        fill="white"
-        stroke="black"
+        width={rectWidth}
+        height={rectHeight}
+        fill="#f0f0f0" // Light gray background color
+        stroke="#888" // Gray border color
+        cornerRadius={5} // Rounded corners
+        shadowBlur={5}
+        shadowColor="#aaa" // Shadow color
       />
       <Text
         text="Delete"
-        width={100}
-        padding={5}
+        width={rectWidth}
+        height={rectHeight}
+        padding={padding}
         align="center"
         verticalAlign="middle"
         onClick={onDelete}
+        fill="#333" // Text color
+        fontFamily="Arial" // Specify a font family
+        fontSize={14} // Specify a font size
       />
     </Group>
   );
 }
+
 
 // Shape.js
 function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSelect, onChange, onDelete }) {
@@ -83,7 +97,7 @@ function Shape({ id, shapeType, initialPosition, initialColor, isSelected, onSel
     const node = shapeRef.current;
     const scaleX = node.scaleX();
     const scaleY = node.scaleY();
-    // update the state with the new width and height
+    // Update the state with the new width and height
     // node.scaleX(1);
     onChange(id, {
       x: node.x(),
@@ -659,7 +673,8 @@ function App() {
         { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: initialPosition.x + 100, y: initialPosition.y }, initialColor },
       ];
       setShapes([...shapes, ...newShapes]);
-    } else {
+    } 
+  else {
       const newShape = { id: uuidv4(), shapeType, initialPosition, initialColor };
       setShapes([...shapes, newShape]);
     }
