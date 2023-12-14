@@ -42,10 +42,15 @@ function useShapes(stageDimensions) {
         setShapes(shapes.filter(shape => shape.id !== id));
     }
 
+     const deleteAllShapes = () => {
+        setShapes([]);
+      };
+  
+
     const hideShapeContextMenu = () => {
         setShapes(shapes.map(shape => ({ ...shape, showContextMenu: false })));
     };
 
-    return { shapes, addShape, updateShape, deleteShape, hideShapeContextMenu };
+    return { shapes, addShape, updateShape, deleteShape, deleteAllShapes, hideShapeContextMenu };
 }
 export default useShapes;
