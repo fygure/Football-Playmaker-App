@@ -6,14 +6,12 @@ import Stencil from './components/Stencil';
 import useShapes from './hooks/useShapes';
 import useBackground from './hooks/useBackground';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from './components/config/theme';
+import theme from './config/theme';
 ////////////////////////////////////////////////////////////////////////////////////////
 /* 
 TODO: add undo/redo 
 TODO: add selection rectangle
 TODO: add boundary on stage/canvas s.t. you cannot drag a shape off the canvas
-TODO: add a "clear all" button
-TODO: restructure the code (put each component in separate files)
 TODO: save and load feature (requires database)
 */
 ////////////////////////////////////////////////////////////////////////////////////////
