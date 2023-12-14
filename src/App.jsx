@@ -5,6 +5,9 @@ import Canvas from './components/Canvas';
 import Stencil from './components/Stencil';
 import useShapes from './hooks/useShapes';
 import useBackground from './hooks/useBackground';
+import { createTheme, ThemeProvider} from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
+
 ////////////////////////////////////////////////////////////////////////////////////////
 /* 
 TODO: add undo/redo 
@@ -18,11 +21,12 @@ TODO: save and load feature (requires database)
 function App() {
   const [selectedId, setSelectedId] = useState(null);
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
-  const { shapes, addShape, updateShape, deleteShape, hideShapeContextMenu } = useShapes(stageDimensions);
+  const { shapes, addShape, updateShape, deleteShape,deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions);
   const { backgroundImage, setFieldType, setZone, setRedLine } = useBackground();
-
+  
   return (
     <>
+      
       <StageDimensionsContext.Provider value={{ stageDimensions }}>
         <div style={{
           display: 'flex',
@@ -37,6 +41,7 @@ function App() {
               setFieldType={setFieldType}
               setZone={setZone}
               setRedLine={setRedLine}
+              onDeleteAllShapes = {deleteAllShapes}
             />
           </div>
           <div style={{ flex: 1.8, padding: '1vw', maxWidth: 'calc(80% - 4vw)', marginRight: '2vw', borderTop: '1px solid black', borderRight: '1px solid black', borderBottom: '1px solid black', height: '100%', }}>
