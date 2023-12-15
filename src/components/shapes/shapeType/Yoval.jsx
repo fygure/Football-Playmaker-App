@@ -45,7 +45,7 @@ function Yoval(props) {
                 />
                 <Text
                     text="Y"
-                    x={-ellipseRadiuses.x / 2}
+                    x={-ellipseRadiuses.x / 2 + 4}
                     y={-ellipseRadiuses.y / 2 + 1}
                     align="center"
                     fill="black"
