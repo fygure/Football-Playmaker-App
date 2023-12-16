@@ -158,7 +158,7 @@ function Stencil(props) {
                                 </div>    
 
 
-                                <div style={{ display: 'flex', gap: '35px', padding: '10px', marginLeft: '-20px' }}>
+                                <div style={{ display: 'flex', gap: '35px', padding: '10px', marginLeft: '-20px', marginTop: "20px"}}>
                                     {selectedFieldType !== 'blank' && (
                                         <CheckboxOption onChange={handleToggleRedZone} checked={redZone === 'redzone'}>Red Zone</CheckboxOption>
                                     )}
@@ -172,16 +172,19 @@ function Stencil(props) {
 
 
 
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
-                        Offense Formation
-                    </h3>
-                    <div style={{ gap: '35px', marginLeft: '-10px', marginTop: '20px' }}>
-                        <CheckboxOption onChange={handleToggleRedZone} checked={redZone === 'redzone'}>
-                        L
-                        </CheckboxOption>
-                    </div>
-                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+        Offense Formation
+    </h3>
+    <div style={{ gap: '35px', marginLeft: '-10px', marginTop: '22px', display: 'flex', alignItems: 'center' }}>
+        <CheckboxOption onChange={handleToggleOffenseR} checked={redZone === 'redzone'}>
+            L
+        </CheckboxOption>
+        <span style={{ margin: '-25px', fontFamily: 'Inter, sans-serif',  fontSize: '13px' }}>
+            R
+        </span>
+    </div>
+</div>
                     {/* <div style={{ display: 'flex', gap: '35px', marginLeft: '-20px', marginTop: '-10px' }}>
                     <CheckboxOption onChange={handleToggleOffenseR} checked={selectedOffenseFormation === "right"}>
                         L
