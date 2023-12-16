@@ -16,8 +16,8 @@ function Stencil(props) {
     const [redLine, setLocalRedLine] = useState(false);
 
 
-    const [selectedOffenseFormation, setOffenseFormation] = useState(null);
-
+    const [selectedOffenseFormation, setSelectedOffenseFormationType] = useState(null);
+    const [RFormation, setRFormation] = useState(false);
 
 
     // Basic shape handlers
@@ -51,13 +51,14 @@ function Stencil(props) {
 
     const handleSetOffenseFormation = (e) => {
         console.log(e.target.value);
-        setOffenseFormation(selectedOffenseFormation);
+        setSelectedOffenseFormationType(e.target.value);
     };
 
 
     const handleToggleOffenseR = (e) => {
         console.log(e.target.value);
-       
+        const newRFormation = !RFormation;
+        setRFormation(newRFormation );
     };
 
 
@@ -137,7 +138,7 @@ function Stencil(props) {
                                     <RadioOption name="fieldType" value="college" onChange={handleSetFieldType}>COLLEGE</RadioOption>
                                     <RadioOption name="fieldType" value="nfl" onChange={handleSetFieldType}>NFL</RadioOption>
                                     <RadioOption name="fieldType" value="blank" onChange={handleSetFieldType}>BLANK</RadioOption> */}
-                                    <ToggleButtonGroup onChange={handleSetFieldType} exclusive aria-label="field type" sx = {{gap: '10px'}}>
+                                    <ToggleButtonGroup onChange={handleSetFieldType} exclusive aria-label="field type" sx = {{gap: '10px',flexWrap: 'wrap'}}>
                                     <ToggleButton value="hs" aria-label="high school" style={{background: selectedFieldType === "hs" ? 'white' : '#333',
                 color: selectedFieldType === "hs" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius:'0px',fontSize: '0.7rem' }}>
                                         HIGH SCHOOL
@@ -172,19 +173,20 @@ function Stencil(props) {
 
 
 
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center'}}>
     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
         Offense Formation
     </h3>
-    <div style={{ gap: '35px', marginLeft: '-10px', marginTop: '22px', display: 'flex', alignItems: 'center' }}>
-        <CheckboxOption onChange={handleToggleOffenseR} checked={redZone === 'redzone'}>
+    <div style={{ display: 'flex', alignItems: 'center', marginTop: '22px' }}>
+        <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}>
             L
         </CheckboxOption>
-        <span style={{ margin: '-25px', fontFamily: 'Inter, sans-serif',  fontSize: '13px' }}>
+        <span style={{ marginLeft: '10px', fontFamily: 'Inter, sans-serif', fontSize: '13px',flexWrap: 'wrap' }}>
             R
         </span>
     </div>
 </div>
+
                     {/* <div style={{ display: 'flex', gap: '35px', marginLeft: '-20px', marginTop: '-10px' }}>
                     <CheckboxOption onChange={handleToggleOffenseR} checked={selectedOffenseFormation === "right"}>
                         L
@@ -196,9 +198,9 @@ function Stencil(props) {
 
 
                         <div style={{ display: 'flex', justifyContent: "flex-start", flexDirection: 'row' }}>
-                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column'}}>
                                 <div>
-                                    <ToggleButtonGroup onChange={handleSetOffenseFormation} exclusive aria-label="offense formation" style = {{gap: '10px'}}>
+                                    <ToggleButtonGroup onChange={handleSetOffenseFormation} exclusive aria-label="offense formation" style = {{gap: '10px',flexWrap: 'wrap'}}>
                                     <ToggleButton value="bunch" aria-label="BUNCH" style={{background: selectedOffenseFormation === "bunch"? 'white' : '#333',
                 color: selectedOffenseFormation === "bunch" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius:'0px',fontSize: '0.7rem' }}>
                                         BUNCH
