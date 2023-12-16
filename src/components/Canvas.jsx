@@ -19,6 +19,7 @@ function Canvas(props) {
 
     const { stageDimensions } = useContext(StageDimensionsContext);
     const stageRef = useRef(null);
+    const imageRef = useRef(null);
     const containerRef = useRef(null);
     const [image] = useImage(backgroundImage);
 
@@ -48,8 +49,12 @@ function Canvas(props) {
     }, []);
 
     const handleStageClick = (e) => {
-        console.log(shapes);
-        console.log(backgroundImage)
+        console.log('Background Image:', backgroundImage);
+        console.log('Stage Dimensions:', stageDimensions);
+        console.log('Shapes List:', shapes);
+        console.log('Image Dimensions:', image.width, image.height);
+        console.log('Image Position:', imageRef.current.x(), imageRef.current.y());
+        console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
         // if clicked on empty area - remove all selections
         //console.log(e);
         if (e.target === e.target.getStage()) {
@@ -68,10 +73,11 @@ function Canvas(props) {
                 >
                     <Layer>
                         <Image
+                            ref={imageRef}
                             image={image}
                             width={containerRef.current ? containerRef.current.offsetWidth : 0}
                             height={containerRef.current ? containerRef.current.offsetHeight : 0}
-                            onClick={() => { onSelect(null); console.log('Background Clicked'); console.log(stageDimensions); }}
+                            onClick={() => { onSelect(null); console.log('Background Clicked'); }}
                         />
                         {shapes.map((shape) => (
                             <Shape
