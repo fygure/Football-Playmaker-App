@@ -51,11 +51,13 @@ function Stencil(props) {
 
     const handleSetOffenseFormation = (e) => {
         console.log(e.target.value);
+        setOffenseFormation(selectedOffenseFormation);
     };
 
 
     const handleToggleOffenseR = (e) => {
         console.log(e.target.value);
+       
     };
 
 
@@ -103,7 +105,7 @@ function Stencil(props) {
         <FormControlLabel
             control={<Switch size="small" onChange={onChange} checked={checked} style={{ color: 'white' }} />}
             label={
-                <Typography style={{ fontSize: '12px', color: 'white' }}>{children}</Typography>
+                <Typography style={{ fontSize: '12px', color: 'white', fontFamily: 'Inter, sans-serif' }}>{children}</Typography>
             }
             labelPlacement="start"
             style={{ display: 'flex', alignItems: 'center' }}
@@ -170,12 +172,23 @@ function Stencil(props) {
 
 
 
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation</h3>
-                    <div style={{ display: 'flex', gap: '35px', marginLeft: '-20px',  marginTop: '-10px' }}>
-                    <CheckboxOption onChange={handleToggleOffenseR}  checked = {selectedOffenseFormation === "right"}>L</CheckboxOption>
-                    <div><p style= {{marginLeft: '-27px',marginTop: '10px',fontFamily: 'Inter, sans-serif',fontSize: '13px' }}>R</p></div>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                        Offense Formation
+                    </h3>
+                    <div style={{ gap: '35px', marginLeft: '-10px', marginTop: '20px' }}>
+                        <CheckboxOption onChange={handleToggleRedZone} checked={redZone === 'redzone'}>
+                        L
+                        </CheckboxOption>
                     </div>
-                    
+                    </div>
+                    {/* <div style={{ display: 'flex', gap: '35px', marginLeft: '-20px', marginTop: '-10px' }}>
+                    <CheckboxOption onChange={handleToggleOffenseR} checked={selectedOffenseFormation === "right"}>
+                        L
+                    </CheckboxOption>
+                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', marginTop: '10px' }}>R</p>
+                    </div> */}
+                        
 
 
 
