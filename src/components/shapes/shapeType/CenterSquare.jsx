@@ -10,16 +10,19 @@ function Center(props) {
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        isSelected,
+        //isSelected,
         handleOnClick,
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
         handleDragEnd,
         handleHideContextMenu,
+        //fontSize,
+        rectSize
     } = props;
 
-    const squareSize = { width: 25, height: 25 };
+    //hardcoded value
+    // const squareSize = { width: 25, height: 25 };
     const strokeOptions = { color: 'black', strokeWidth: 2 };
 
     return (
@@ -28,8 +31,8 @@ function Center(props) {
                 ref={shapeRef}
                 x={position.x}
                 y={position.y}
-                width={squareSize.width}
-                height={squareSize.height}
+                width={rectSize.width}
+                height={rectSize.height}
                 fill={initialColor}
                 stroke={strokeOptions.color}
                 strokeWidth={strokeOptions.strokeWidth}

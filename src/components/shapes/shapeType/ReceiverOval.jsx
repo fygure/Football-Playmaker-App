@@ -1,26 +1,33 @@
-// RBoval.jsx
+// ReceiverOval.jsx
 import React from 'react';
 import { Group, Ellipse, Text } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 
-function RBoval(props) {
+function ReceiverOval(props) {
     const {
         shapeRef,
         position,
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        isSelected,
+        //isSelected,
         handleOnClick,
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
         handleDragEnd,
         handleHideContextMenu,
+        ellipseRadiuses,
+        fontSize,
+        text,
     } = props;
 
-    const ellipseRadiuses = { x: 16, y: 12 };
     const strokeOptions = { color: 'black', strokeWidth: 2 };
+
+    var textAlignment = 4;
+    if (text.length > 1) {
+        textAlignment = -1;
+    }
 
     return (
         <>
@@ -44,16 +51,18 @@ function RBoval(props) {
                     fill={initialColor}
                 />
                 <Text
-                    text="RB"
-                    x={-ellipseRadiuses.x / 2}
-                    y={-ellipseRadiuses.y / 2 + 1}
+                    text={text}
                     align="center"
+                    x={-ellipseRadiuses.x / 2 + textAlignment}
+                    y={-ellipseRadiuses.y / 2 + 1}
                     fill="black"
                     listening={false}
+                    fontSize={fontSize}
                 />
             </Group>
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
     );
 }
-export default RBoval;
+
+export default ReceiverOval;

@@ -10,16 +10,19 @@ function Lineman(props) {
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        isSelected,
+        //isSelected,
         handleOnClick,
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
         handleDragEnd,
         handleHideContextMenu,
+        ellipseRadiuses,
+        //fontSize,
     } = props;
 
-    const ellipseRadiuses = { x: 16, y: 12 };
+    //hardcoded value
+    //const ellipseRadiuses = { x: 16, y: 12 };
     const strokeOptions = { color: 'black', strokeWidth: 2 };
 
     return (
