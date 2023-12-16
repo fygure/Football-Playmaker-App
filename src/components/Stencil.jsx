@@ -58,6 +58,8 @@ function Stencil(props) {
         console.log(e.target.value);
     };
 
+
+
     const handleToggleRedZone = () => {
         const newZone = redZone === 'middle' ? 'redzone' : 'middle';
         setLocalRedZone(newZone);
@@ -158,6 +160,7 @@ function Stencil(props) {
                                     {selectedFieldType !== 'blank' && (
                                         <CheckboxOption onChange={handleToggleRedZone} checked={redZone === 'redzone'}>Red Zone</CheckboxOption>
                                     )}
+
                                     {selectedFieldType !== 'blank' && selectedFieldType === 'nfl' && (<CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>)}
                                 </div>
 
@@ -168,8 +171,11 @@ function Stencil(props) {
 
 
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation</h3>
+                    <div style={{ display: 'flex', gap: '35px', marginLeft: '-20px',  marginTop: '-10px' }}>
+                    <CheckboxOption onChange={handleToggleOffenseR}  checked = {selectedOffenseFormation === "right"}>L</CheckboxOption>
+                    <div><p style= {{marginLeft: '-27px',marginTop: '10px',fontFamily: 'Inter, sans-serif',fontSize: '13px' }}>R</p></div>
+                    </div>
                     
-        
 
 
 
