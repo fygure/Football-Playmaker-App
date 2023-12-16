@@ -6,7 +6,6 @@ function useBackground() {
     const [fieldType, setFieldType] = useState('college');
     const [zone, setZone] = useState('middle');
     const [redLine, setRedLine] = useState(false);
-
     //Background Handlers
     const changeBackground = () => {
         let newImage = `field_${fieldType}_${zone}`;

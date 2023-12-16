@@ -21,6 +21,10 @@ function App() {
   const { shapes, addShape, updateShape, deleteShape, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions);
   const { backgroundImage, setFieldType, setZone, setRedLine } = useBackground();
 
+
+  const [selectedShapeIds, setSelectedShapeIds] = useState([]);
+
+  
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -45,6 +49,12 @@ function App() {
               <Canvas
                 shapes={shapes}
                 selectedId={selectedId}
+
+                
+                selectedShapeIds={selectedShapeIds}
+                setSelectedShapeIds={setSelectedShapeIds}
+
+
                 onSelect={setSelectedId}
                 onChange={updateShape}
                 onDelete={deleteShape}

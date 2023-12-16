@@ -27,6 +27,27 @@ function useShapes(stageDimensions) {
 
             ];
             setShapes([...shapes, ...newShapes]);
+            //Adds new shapes to shapes list
+        }
+        else if (shapeType === 'offenseBunch') {
+        }
+        else if (shapeType === 'offenseBunch') {
+        }
+        else if(shapeType === 'offense3x1') {
+        }
+        else if(shapeType === 'offense3x1') {
+        }
+        else if(shapeType === 'offenseEmpty') {
+
+        }
+        //DEFENSE FORMATION:
+        else if(shapeType === 'defense4-3') {
+        }
+        else if(shapeType === 'defense3-4') {
+        }
+        else if(shapeType === 'defense4-2-5') {
+        }
+        else if(shapeType === 'defense3-3Stack') {
         }
         else {
             const newShape = { id: uuidv4(), shapeType, initialPosition: middlePosition, initialColor };
@@ -46,7 +67,6 @@ function useShapes(stageDimensions) {
         setShapes([]);
       };
   
-
     const hideShapeContextMenu = () => {
         setShapes(shapes.map(shape => ({ ...shape, showContextMenu: false })));
     };
