@@ -125,6 +125,12 @@ function Stencil(props) {
                     <Button variant="outlined" color="white" size="small" onClick={handleAddRing} sx= {{ padding: '1px 5px',borderRadius:'0px',fontSize: '0.7rem'}} >Add Ring</Button>
                     <Button variant="outlined" color="white" size="small" onClick={handleAddOffense2x2} sx= {{ padding: '1px 5px',borderRadius:'0px',fontSize: '0.7rem'}}  >2x2</Button>
                     <Button variant="outlined" color="sharpRed" size="small" onClick={handleDeleteAllShapes} sx= {{ padding: '1px 5px',borderRadius:'0px',fontSize: '0.7rem'}} > Clear All</Button>
+//                     <Button variant="contained" color="punky" size="small" onClick={handleAddStar} sx={{ borderColor: 'white', color: 'white', borderRadius: '0px' }} >Add Star</Button>
+//                     <Button variant="contained" color="mustard" size="small" onClick={handleAddRectangle} sx={{ borderColor: 'white', color: 'white' }}>Add Rectangle</Button>
+//                     <Button variant="text" color="kellyGreen" size="small" onClick={handleAddCircle} sx={{ borderColor: 'white', color: 'white' }}>Add Circle</Button>
+//                     <Button variant="outlined" color="ramsBlue" size="small" onClick={handleAddRing} sx={{ borderRadius: '0px' }}>Add Ring</Button>
+//                     <Button variant="contained" color="purple" size="small" onClick={handleAddOffense2x2}  >2x2</Button>
+//                     <Button variant="contained" color="sharpRed" size="small" onClick={handleDeleteAllShapes}> Clear All</Button>
                 </div>
 
 

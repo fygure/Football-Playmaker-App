@@ -2,14 +2,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Star, Rect, Circle, Ring } from 'react-konva';
 import ContextMenu from '../menus/ContextMenu';
-import QBoval from './shapeType/QBoval';
-import RBoval from './shapeType/RBoval';
-import Xoval from './shapeType/Xoval';
-import Hoval from './shapeType/Hoval';
-import Yoval from './shapeType/Yoval';
-import Zoval from './shapeType/Zoval';
-import Center from './shapeType/Center';
-import Lineman from './shapeType/Lineman';
+import CenterSquare from './shapeType/CenterSquare';
+import LinemanOval from './shapeType/LinemanOval';
+import ReceiverOval from './shapeType/ReceiverOval';
 
 function Shape(props) {
     const {
@@ -20,26 +15,54 @@ function Shape(props) {
         isSelected,
         onSelect,
         onChange,
-        onDelete
+        onDelete,
+        imageRef
     } = props;
 
     const shapeRef = useRef();
     const [position, setPosition] = useState(initialPosition);
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+    const [circleRadius, setCircleRadius] = useState(30); // initial circle radius
+    const [ellipseRadiuses, setEllipseRadiuses] = useState({ x: 16, y: 12 }); // initial ellipse radii
+    const [fontSize, setFontSize] = useState(12);
+    const [rectSize, setRectSize] = useState({ width: 25, height: 25 }); // initial rectangle size
 
     useEffect(() => {
-        const parentContainer = shapeRef.current.getStage().container();
-        const initialWindowSize = { width: parentContainer.offsetWidth, height: parentContainer.offsetHeight };
+        const image = imageRef.current;
+        const initialImagePosition = { x: image.x(), y: image.y() };
+        const initialImageSize = { width: image.width(), height: image.height() };
+        const initialRelativePosition = {
+            x: (position.x - initialImagePosition.x) / initialImageSize.width,
+            y: (position.y - initialImagePosition.y) / initialImageSize.height,
+        };
+        const initialRelativeCircleSize = circleRadius / initialImageSize.width;
+        const initialRelativeEllipseSizeX = ellipseRadiuses.x / initialImageSize.width;
+        const initialRelativeEllipseSizeY = ellipseRadiuses.y / initialImageSize.height;
+        const initialRelativeFontSize = fontSize / initialImageSize.width;
+        const initialRelativeRectSize = {
+            width: rectSize.width / initialImageSize.width,
+            height: rectSize.height / initialImageSize.height,
+        };
 
         const handleResize = () => {
-            const scaleFactorX = parentContainer.offsetWidth / initialWindowSize.width;
-            const scaleFactorY = parentContainer.offsetHeight / initialWindowSize.height;
-
+            const newImagePosition = { x: image.x(), y: image.y() };
+            const newImageSize = { width: image.width(), height: image.height() };
             setPosition({
-                x: position.x * scaleFactorX,
-                y: position.y * scaleFactorY,
+                x: initialRelativePosition.x * newImageSize.width + newImagePosition.x,
+                y: initialRelativePosition.y * newImageSize.height + newImagePosition.y,
             });
+            const newCircleRadius = initialRelativeCircleSize * newImageSize.width;
+            setCircleRadius(newCircleRadius);
+            const newEllipseRadiusX = initialRelativeEllipseSizeX * newImageSize.width;
+            const newEllipseRadiusY = initialRelativeEllipseSizeY * newImageSize.height;
+            setEllipseRadiuses({ x: newEllipseRadiusX, y: newEllipseRadiusY });
+            const newFontSize = initialRelativeFontSize * newImageSize.width;
+            setFontSize(newFontSize);
+            const newRectWidth = initialRelativeRectSize.width * newImageSize.width;
+            const newRectHeight = initialRelativeRectSize.height * newImageSize.height;
+            setRectSize({ width: newRectWidth, height: newRectHeight });
+
         };
 
         window.addEventListener('resize', handleResize);
@@ -47,7 +70,7 @@ function Shape(props) {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, [position]);
+    }, [position, imageRef]);
 
     //console.log(`Shape ${id} is selected: ${isSelected}`);
     const handleOnClick = () => {
@@ -96,25 +119,29 @@ function Shape(props) {
         handleDragStart,
         handleDragEnd,
         handleHideContextMenu,
+        ellipseRadiuses,
+        circleRadius,
+        fontSize,
+        rectSize
     };
 
     switch (shapeType) {
         case 'QBoval':
-            return <QBoval {...commonProps} />;
+            return <ReceiverOval {...commonProps} text="QB" />;
         case 'RBoval':
-            return <RBoval {...commonProps} />;
+            return <ReceiverOval {...commonProps} text="RB" />;
         case 'Xoval':
-            return <Xoval {...commonProps} />;
+            return <ReceiverOval {...commonProps} text="X" />;
         case 'Hoval':
-            return <Hoval {...commonProps} />;
+            return <ReceiverOval {...commonProps} text="H" />;
         case 'Yoval':
-            return <Yoval {...commonProps} />;
+            return <ReceiverOval {...commonProps} text="Y" />;
         case 'Zoval':
-            return <Zoval {...commonProps} />;
+            return <ReceiverOval {...commonProps} text="Z" />;
         case 'Lineman':
-            return <Lineman {...commonProps} />;
+            return <LinemanOval {...commonProps} />;
         case 'Center':
-            return <Center {...commonProps} />;
+            return <CenterSquare {...commonProps} />;
         //Regular shapes
         case 'Star':
             return (
@@ -161,7 +188,7 @@ function Shape(props) {
                         ref={shapeRef}
                         x={position.x}
                         y={position.y}
-                        radius={50}
+                        radius={circleRadius}
                         fill={initialColor}
                         onDragStart={handleDragStart}
                         draggable

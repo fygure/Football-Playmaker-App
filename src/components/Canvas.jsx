@@ -8,6 +8,7 @@ import Konva from 'konva';
 
 function Canvas(props) {
     const {
+        imageRef,
         setStageDimensions,
         shapes,
         selectedId,
@@ -103,8 +104,13 @@ function Canvas(props) {
 
 
     const handleStageClick = (e) => {
-        console.log(shapes);
-        console.log(backgroundImage)
+        console.log('Stage Dimensions:', stageDimensions);
+        console.log('Shapes List:', shapes);
+        console.log('Background Image:', backgroundImage);
+        console.log('Image Dimensions:', image.width, image.height);
+        console.log('Image Position:', imageRef.current.x(), imageRef.current.y());
+        console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
+        console.log(imageRef.current);
         // if clicked on empty area - remove all selections
         //console.log(e);
         if (e.target === e.target.getStage()) {
@@ -127,10 +133,13 @@ function Canvas(props) {
                 >
                     <Layer>
                         <Image
+                            ref={imageRef}
+                            x={stageRef.current ? (stageRef.current.width() - (image ? image.width * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0)) / 2 : 0}
+                            y={stageRef.current ? (stageRef.current.height() - (image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0)) / 2 : 0}
                             image={image}
-                            width={containerRef.current ? containerRef.current.offsetWidth : 0}
-                            height={containerRef.current ? containerRef.current.offsetHeight : 0}
-                            onClick={() => { onSelect(null); console.log('Background Clicked'); console.log(stageDimensions); }}
+                            width={image ? image.width * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
+                            height={image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
+                            onClick={() => { onSelect(null); console.log('Background Clicked'); }}
                         />
                         {shapes.map((shape) => (
                             <Shape
@@ -144,6 +153,7 @@ function Canvas(props) {
                                 onChange={onChange}
                                 onDelete={onDelete}
                                 onHideContextMenu={onHideContextMenu}
+                                imageRef={imageRef}
                             />
                         ))}
                         {isSelecting && selectionRectangle && (
