@@ -23,7 +23,7 @@ function App() {
   const { shapes, addShape, updateShape, deleteShape, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
 
 
-  const [selectedShapeIds, setSelectedShapeIds] = useState([]);
+  // const [selectedShapeIds, setSelectedShapeIds] = useState([]);
 
   
   return (
@@ -66,8 +66,8 @@ function App() {
                 selectedId={selectedId}
 
                 
-                selectedShapeIds={selectedShapeIds}
-                setSelectedShapeIds={setSelectedShapeIds}
+                // selectedShapeIds={selectedShapeIds}
+                // setSelectedShapeIds={setSelectedShapeIds}
 
 
                 onSelect={setSelectedId}

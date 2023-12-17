@@ -104,7 +104,7 @@ function Stencil(props) {
 
     const CheckboxOption = ({ onChange, children, checked }) => (
         <FormControlLabel
-            control={<Switch size="small" onChange={onChange} checked={checked} style={{ color: 'white',display: 'flex',flexWrap:'wrap' }} />}
+            control={<Switch size="small" onChange={onChange} checked={checked} style={{ color: 'white',display: 'flex'}} />}
             label={
                 <Typography style={{ fontSize: '12px', color: 'white', fontFamily: 'Inter, sans-serif' }}>{children}</Typography>
             }
@@ -191,11 +191,12 @@ function Stencil(props) {
 
 
                     <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
-                        <h3 style={{ marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation</h3>
-                        <div style={{ display: 'inline-flex', alignItems: 'center', marginTop: '18px', fontWeight: 500 }}>
+                        <h3 style={{ marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation
+                        <div style={{ display: 'flex', justifyContent: "flex-start",marginLeft: '-8px', alignItems: 'center', fontWeight: 500 }}>
                             <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}> L</CheckboxOption>
-                            <span style={{ display: 'flex', marginLeft: '10px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
+                            <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
                         </div>
+                        </h3>
                     </div>
 
 
