@@ -141,7 +141,7 @@ function Stencil(props) {
 
 
                     <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Field</h3>
-                    <div style={{ display: 'flex', justifyContent: "flex-start", flexDirection: 'row' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
                                 {/* <RadioOption name="fieldType" value="hs" onChange={handleSetFieldType} >HIGH SCHOOL</RadioOption>
@@ -190,12 +190,12 @@ function Stencil(props) {
 
 
 
-                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap',marginTop: '10px' }}>
-                    <h3 style={{ marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation</h3>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', marginTop: '18px', fontWeight: 500 }}>
-                        <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}> L</CheckboxOption>
-                        <span style={{ display: 'flex', marginLeft: '10px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
-                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
+                        <h3 style={{ marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation</h3>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', marginTop: '18px', fontWeight: 500 }}>
+                            <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}> L</CheckboxOption>
+                            <span style={{ display: 'flex', marginLeft: '10px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
+                        </div>
                     </div>
 
 
