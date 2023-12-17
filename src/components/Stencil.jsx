@@ -109,7 +109,7 @@ function Stencil(props) {
                 <Typography style={{ fontSize: '12px', color: 'white', fontFamily: 'Inter, sans-serif' }}>{children}</Typography>
             }
             labelPlacement="start"
-            style={{ display: 'flex', alignItems: 'center' }}
+            style = {{display: 'flex', alignItems: 'center', gap: '5px'}}
         />
     );
 
@@ -136,6 +136,10 @@ function Stencil(props) {
 
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
+
+
+
+
                     <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Field</h3>
                     <div style={{ display: 'flex', justifyContent: "flex-start", flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -173,11 +177,10 @@ function Stencil(props) {
                             </div>
 
 
-                            <div style={{ display: 'flex', gap: '35px', padding: '10px', marginLeft: '-20px', marginTop: "20px" }}>
+                            <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-20px', flexWrap: 'wrap'}}>
                                 {selectedFieldType !== 'blank' && (
                                     <CheckboxOption onChange={handleToggleRedZone} checked={redZone === 'redzone'}>Red Zone</CheckboxOption>
                                 )}
-
                                 {selectedFieldType !== 'blank' && selectedFieldType === 'nfl' && (<CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>)}
                             </div>
 
@@ -187,19 +190,14 @@ function Stencil(props) {
 
 
 
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
-                            Offense Formation
-                        </h3>
-                        <div style={{ display: 'flex', alignItems: 'center', marginTop: '22px' }}>
-                            <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}>
-                                L
-                            </CheckboxOption>
-                            <span style={{ marginLeft: '10px', fontFamily: 'Inter, sans-serif', fontSize: '13px', flexWrap: 'wrap' }}>
-                                R
-                            </span>
-                        </div>
+                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <h3 style={{ marginBottom: '15px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation</h3>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', marginTop: '5px', fontWeight: 500 }}>
+                        <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}> L</CheckboxOption>
+                        <span style={{ display: 'flex', marginLeft: '10px', fontFamily: 'Inter, sans-serif', fontSize: '13px' }}> R </span>
                     </div>
+                    </div>
+
 
                     {/* <div style={{ display: 'flex', gap: '35px', marginLeft: '-20px', marginTop: '-10px' }}>
                     <CheckboxOption onChange={handleToggleOffenseR} checked={selectedOffenseFormation === "right"}>
