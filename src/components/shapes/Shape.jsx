@@ -6,6 +6,20 @@ import CenterSquare from './shapeType/CenterSquare';
 import LinemanOval from './shapeType/LinemanOval';
 import ReceiverOval from './shapeType/ReceiverOval';
 
+// Define maximum sizes
+// const MAX_CIRCLE_RADIUS = 30;
+// const MAX_ELLIPSE_RADIUS_X = 20;
+// const MAX_ELLIPSE_RADIUS_Y = 14;
+// const MAX_FONT_SIZE = 13;
+// const MAX_RECT_SIZE = { width: 30, height: 30 };
+// Shape Sizes Configuration
+const SHAPE_SIZES = {
+    CIRCLE: { MIN: 10, MAX: 30 },
+    ELLIPSE: { X: { MIN: 8, MAX: 20 }, Y: { MIN: 5, MAX: 14 } },
+    FONT: { MIN: 6, MAX: 13 },
+    RECT: { WIDTH: { MIN: 10, MAX: 30 }, HEIGHT: { MIN: 10, MAX: 30 } },
+};
+
 function Shape(props) {
     const {
         id,
@@ -24,9 +38,9 @@ function Shape(props) {
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
     const [circleRadius, setCircleRadius] = useState(30); // initial circle radius
-    const [ellipseRadiuses, setEllipseRadiuses] = useState({ x: 16, y: 12 }); // initial ellipse radii
-    const [fontSize, setFontSize] = useState(12);
-    const [rectSize, setRectSize] = useState({ width: 25, height: 25 }); // initial rectangle size
+    const [ellipseRadiuses, setEllipseRadiuses] = useState({ x: 20, y: 14 }); // initial ellipse radii
+    const [fontSize, setFontSize] = useState(13);
+    const [rectSize, setRectSize] = useState({ width: 30, height: 30 }); // initial rectangle size
 
     useEffect(() => {
         const image = imageRef.current;
@@ -52,15 +66,15 @@ function Shape(props) {
                 x: initialRelativePosition.x * newImageSize.width + newImagePosition.x,
                 y: initialRelativePosition.y * newImageSize.height + newImagePosition.y,
             });
-            const newCircleRadius = initialRelativeCircleSize * newImageSize.width;
+            const newCircleRadius = Math.max(Math.min(initialRelativeCircleSize * newImageSize.width, SHAPE_SIZES.CIRCLE.MAX), SHAPE_SIZES.CIRCLE.MIN);
             setCircleRadius(newCircleRadius);
-            const newEllipseRadiusX = initialRelativeEllipseSizeX * newImageSize.width;
-            const newEllipseRadiusY = initialRelativeEllipseSizeY * newImageSize.height;
+            const newEllipseRadiusX = Math.max(Math.min(initialRelativeEllipseSizeX * newImageSize.width, SHAPE_SIZES.ELLIPSE.X.MAX), SHAPE_SIZES.ELLIPSE.X.MIN);
+            const newEllipseRadiusY = Math.max(Math.min(initialRelativeEllipseSizeY * newImageSize.height, SHAPE_SIZES.ELLIPSE.Y.MAX), SHAPE_SIZES.ELLIPSE.Y.MIN);
             setEllipseRadiuses({ x: newEllipseRadiusX, y: newEllipseRadiusY });
-            const newFontSize = initialRelativeFontSize * newImageSize.width;
+            const newFontSize = Math.max(Math.min(initialRelativeFontSize * newImageSize.width, SHAPE_SIZES.FONT.MAX), SHAPE_SIZES.FONT.MIN);
             setFontSize(newFontSize);
-            const newRectWidth = initialRelativeRectSize.width * newImageSize.width;
-            const newRectHeight = initialRelativeRectSize.height * newImageSize.height;
+            const newRectWidth = Math.max(Math.min(initialRelativeRectSize.width * newImageSize.width, SHAPE_SIZES.RECT.WIDTH.MAX), SHAPE_SIZES.RECT.WIDTH.MIN);
+            const newRectHeight = Math.max(Math.min(initialRelativeRectSize.height * newImageSize.height, SHAPE_SIZES.RECT.HEIGHT.MAX), SHAPE_SIZES.RECT.HEIGHT.MIN);
             setRectSize({ width: newRectWidth, height: newRectHeight });
 
         };
