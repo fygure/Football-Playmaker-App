@@ -39,6 +39,9 @@ function Stencil(props) {
 
     // Field handlers
     const handleSetFieldType = (e) => {
+        // if(e.target.value === 'blank'){
+            
+        // }
         setFieldType(e.target.value);
         setSelectedFieldType(e.target.value);
     };
