@@ -1,9 +1,10 @@
-// Center.jsx
+// CenterSquare.jsx
+// TODO: Here is where we change the on click handler for click through
 import React from 'react';
 import { Rect } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 
-function Center(props) {
+function CenterSquare(props) {
     const {
         shapeRef,
         position,
@@ -46,4 +47,4 @@ function Center(props) {
         </>
     );
 }
-export default Center;
+export default CenterSquare;

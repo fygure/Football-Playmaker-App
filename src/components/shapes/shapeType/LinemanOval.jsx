@@ -1,9 +1,10 @@
-// Lineman.jsx
+// LinemanOval.jsx
+// TODO: Here is where we change the on click handler for click through
 import React from 'react';
 import { Ellipse } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 
-function Lineman(props) {
+function LinemanOval(props) {
     const {
         shapeRef,
         position,
@@ -46,4 +47,4 @@ function Lineman(props) {
         </>
     );
 }
-export default Lineman;
+export default LinemanOval;

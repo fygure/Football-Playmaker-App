@@ -14,11 +14,8 @@ function Stencil(props) {
     const [selectedFieldType, setSelectedFieldType] = useState('college');
     const [redZone, setLocalRedZone] = useState('middle');
     const [redLine, setLocalRedLine] = useState(false);
-
-
     const [selectedOffenseFormation, setSelectedOffenseFormationType] = useState(null);
     const [RFormation, setRFormation] = useState(false);
-
 
     // Basic shape handlers
     const handleAddStar = () => {
@@ -42,26 +39,17 @@ function Stencil(props) {
         setFieldType(e.target.value);
         setSelectedFieldType(e.target.value);
     };
-    // const handleSetFieldType = (event, newFieldType) => {
-    //     if (newFieldType !== null) {
-    //         setFieldType(newFieldType);
-    //         setSelectedFieldType(newFieldType);
-    //     }
-    // };
 
     const handleSetOffenseFormation = (e) => {
         console.log(e.target.value);
         setSelectedOffenseFormationType(e.target.value);
     };
 
-
     const handleToggleOffenseR = (e) => {
         console.log(e.target.value);
         const newRFormation = !RFormation;
         setRFormation(newRFormation);
     };
-
-
 
     const handleToggleRedZone = () => {
         const newZone = redZone === 'middle' ? 'redzone' : 'middle';
@@ -80,28 +68,7 @@ function Stencil(props) {
         onAddShape('offense2x2', 'orange');
     }
 
-
     // Components for the stencil
-    //OLD RADIO BUTTONS
-    // const RadioOption = ({ name, value, onChange, children }) => (
-    //     <label style={{
-    //         fontSize: '12px',
-    //         border: '1px solid white',
-    //         display: 'inline-block',
-    //         fontFamily: 'Inter, sans-serif',
-    //         padding: '5px',
-    //         margin: '5px',
-    //         backgroundColor: selectedFieldType === value ? 'white' : '#333',
-    //         color: selectedFieldType === value ? '#333' : 'white'
-    //     }}>
-    //         <input type="radio" name={name} value={value} onChange={onChange} style={{ display: 'none' }} />
-    //         <p style={{ margin: 0 }}>{children}</p>
-    //     </label>
-    // );
-
-
-
-
     const CheckboxOption = ({ onChange, children, checked }) => (
         <FormControlLabel
             control={<Switch size="small" onChange={onChange} checked={checked} style={{ color: 'white' }} />}
@@ -113,37 +80,23 @@ function Stencil(props) {
         />
     );
 
-
-
     return (
         <>
             <div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                    <Button variant="outlined" color="punky" size="small" onClick={handleAddStar} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }} >Add Star</Button>
-                    <Button variant="outlined" color="mustard" size="small" onClick={handleAddRectangle} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }} >Add Rectangle</Button>
-                    <Button variant="outlined" color="kellyGreen" size="small" onClick={handleAddCircle} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }} >Add Circle</Button>
-                    <Button variant="outlined" color="ramsBlue" size="small" onClick={handleAddRing} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }} >Add Ring</Button>
-                    <Button variant="outlined" color="purple" size="small" onClick={handleAddOffense2x2} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}  >2x2</Button>
-                    <Button variant="outlined" color="sharpRed" size="small" onClick={handleDeleteAllShapes} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }} > Clear All</Button>
-                    {/* <Button variant="contained" color="punky" size="small" onClick={handleAddStar} sx={{ borderColor: 'white', color: 'white', borderRadius: '0px' }} >Add Star</Button>
-                    <Button variant="contained" color="mustard" size="small" onClick={handleAddRectangle} sx={{ borderColor: 'white', color: 'white' }}>Add Rectangle</Button>
-                    <Button variant="text" color="kellyGreen" size="small" onClick={handleAddCircle} sx={{ borderColor: 'white', color: 'white' }}>Add Circle</Button>
-                    <Button variant="outlined" color="ramsBlue" size="small" onClick={handleAddRing} sx={{ borderRadius: '0px' }}>Add Ring</Button>
-                    <Button variant="contained" color="purple" size="small" onClick={handleAddOffense2x2}  >2x2</Button>
-                    <Button variant="contained" color="sharpRed" size="small" onClick={handleDeleteAllShapes}> Clear All</Button> */}
+                    <Button variant="outlined" color="punky" size="small" onClick={handleAddStar} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Add Star</Button>
+                    <Button variant="outlined" color="mustard" size="small" onClick={handleAddRectangle} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Add Rectangle</Button>
+                    <Button variant="outlined" color="kellyGreen" size="small" onClick={handleAddCircle} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Add Circle</Button>
+                    <Button variant="outlined" color="ramsBlue" size="small" onClick={handleAddRing} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Add Ring</Button>
+                    <Button variant="outlined" color="purple" size="small" onClick={handleAddOffense2x2} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>2x2</Button>
+                    <Button variant="outlined" color="sharpRed" size="small" onClick={handleDeleteAllShapes} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Clear All</Button>
                 </div>
-
-
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
                     <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Field</h3>
                     <div style={{ display: 'flex', justifyContent: "flex-start", flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
-                                {/* <RadioOption name="fieldType" value="hs" onChange={handleSetFieldType} >HIGH SCHOOL</RadioOption>
-                                    <RadioOption name="fieldType" value="college" onChange={handleSetFieldType}>COLLEGE</RadioOption>
-                                    <RadioOption name="fieldType" value="nfl" onChange={handleSetFieldType}>NFL</RadioOption>
-                                    <RadioOption name="fieldType" value="blank" onChange={handleSetFieldType}>BLANK</RadioOption> */}
                                 <ToggleButtonGroup onChange={handleSetFieldType} exclusive aria-label="field type" sx={{ gap: '10px', flexWrap: 'wrap' }}>
                                     <ToggleButton value="hs" aria-label="high school" style={{
                                         background: selectedFieldType === "hs" ? 'white' : '#333',
@@ -172,7 +125,6 @@ function Stencil(props) {
                                 </ToggleButtonGroup>
                             </div>
 
-
                             <div style={{ display: 'flex', gap: '35px', padding: '10px', marginLeft: '-20px', marginTop: "20px" }}>
                                 {selectedFieldType !== 'blank' && (
                                     <CheckboxOption onChange={handleToggleRedZone} checked={redZone === 'redzone'}>Red Zone</CheckboxOption>
@@ -200,16 +152,6 @@ function Stencil(props) {
                             </span>
                         </div>
                     </div>
-
-                    {/* <div style={{ display: 'flex', gap: '35px', marginLeft: '-20px', marginTop: '-10px' }}>
-                    <CheckboxOption onChange={handleToggleOffenseR} checked={selectedOffenseFormation === "right"}>
-                        L
-                    </CheckboxOption>
-                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', marginTop: '10px' }}>R</p>
-                    </div> */}
-
-
-
 
                     <div style={{ display: 'flex', justifyContent: "flex-start", flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>

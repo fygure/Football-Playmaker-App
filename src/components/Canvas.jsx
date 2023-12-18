@@ -26,11 +26,6 @@ function Canvas(props) {
     const containerRef = useRef(null);
     const [image] = useImage(backgroundImage);
 
-
-    // const [selectionRectangle, setSelectionRectangle] = useState(null);
-    // const [isSelecting, setIsSelecting] = useState(false);
-
-
     useEffect(() => {
         function fitStageIntoParentContainer() {
             if (containerRef.current && stageRef.current) {
@@ -56,49 +51,6 @@ function Canvas(props) {
         };
     }, []);
 
-    // const handleStageMouseDown = (e) => {
-    //     // Start selection
-    //     if (e.target === e.target.getStage()) {
-    //         const pos = e.target.getPointerPosition();
-    //         setSelectionRectangle({ x: pos.x, y: pos.y, width: 0, height: 0 });
-    //         setIsSelecting(true);
-    //     }
-    // };
-
-    // const handleStageMouseMove = (e) => {
-    //     // Update selection rectangle size
-    //     if (!isSelecting || !selectionRectangle) return;
-    //     const pos = e.target.getPointerPosition();
-    //     setSelectionRectangle(rect => ({
-    //         ...rect,
-    //         width: pos.x - rect.x,
-    //         height: pos.y - rect.y
-    //     }));
-    // };
-
-    // const handleStageMouseUp = () => {
-    //     // Finish selection
-    //     setIsSelecting(false);
-
-    //     // Check which shapes are within the selection rectangle
-    //     if (selectionRectangle) {
-    //         const selectedIds = shapes.filter(shape => {
-    //             onSelect(shape);
-    //             const shapePos = shape.initialPosition;
-    //             return (
-    //                 shapePos.x >= selectionRectangle.x &&
-    //                 shapePos.x <= selectionRectangle.x + selectionRectangle.width &&
-    //                 shapePos.y >= selectionRectangle.y &&
-    //                 shapePos.y <= selectionRectangle.y + selectionRectangle.height
-    //             );
-    //         }).map(shape => shape.id);
-
-    //         setSelectedShapeIds(...selectedShapeIds,...selectedIds);
-    //     }
-    // };
-
-
-
     const handleStageClick = (e) => {
         console.log('Stage Dimensions:', stageDimensions);
         console.log('Shapes List:', shapes);
@@ -121,13 +73,10 @@ function Canvas(props) {
                     ref={stageRef}
                     width={containerRef.current ? containerRef.current.offsetWidth : 0}
                     height={containerRef.current ? containerRef.current.offsetHeight : 0}
-                    // onMouseDown={handleStageMouseDown}
-                    // onMouseMove={handleStageMouseMove}
-                    // onMouseUp={handleStageMouseUp}
                     onClick={handleStageClick}
-
                 >
                     <Layer>
+                        {/* Image tag = background image (field type) */}
                         <Image
                             ref={imageRef}
                             x={stageRef.current ? (stageRef.current.width() - (image ? image.width * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0)) / 2 : 0}
@@ -152,17 +101,6 @@ function Canvas(props) {
                                 imageRef={imageRef}
                             />
                         ))}
-                        {/* {isSelecting && selectionRectangle && (
-                            <Rect
-                                x={selectionRectangle.x}
-                                y={selectionRectangle.y}
-                                width={selectionRectangle.width}
-                                height={selectionRectangle.height}
-                                stroke="black"
-                                dash={[2, 2]}
-                            />
-                        )} */}
-
                     </Layer>
                 </Stage>
             </div>
