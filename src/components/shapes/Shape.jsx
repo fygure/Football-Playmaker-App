@@ -6,12 +6,6 @@ import CenterSquare from './shapeType/CenterSquare';
 import LinemanOval from './shapeType/LinemanOval';
 import ReceiverOval from './shapeType/ReceiverOval';
 
-// Define maximum sizes
-// const MAX_CIRCLE_RADIUS = 30;
-// const MAX_ELLIPSE_RADIUS_X = 20;
-// const MAX_ELLIPSE_RADIUS_Y = 14;
-// const MAX_FONT_SIZE = 13;
-// const MAX_RECT_SIZE = { width: 30, height: 30 };
 // Shape Sizes Configuration
 const SHAPE_SIZES = {
     CIRCLE: { MIN: 10, MAX: 30 },
