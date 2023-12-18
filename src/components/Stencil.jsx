@@ -5,33 +5,33 @@ import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButto
 function Stencil(props) {
     const {
         onAddShape,
+        fieldType,
         setFieldType,
         setZone,
+        zone,
         setRedLine,
+        redLine,
         onDeleteAllShapes,
     } = props;
-
-    const [selectedFieldType, setSelectedFieldType] = useState('college');
-    const [redZone, setLocalRedZone] = useState('middle');
-    const [redLine, setLocalRedLine] = useState(false);
-    const [selectedOffenseFormation, setSelectedOffenseFormationType] = useState(null);
-    const [selectedDefenseFormation, setSelectedDefenseFormationType] = useState(null);
+ 
+    const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
     const [RFormation, setRFormation] = useState(false);
 
-    const handleSetOffenseFormation = (e) => {
-        console.log(e.target.value);
-        setSelectedOffenseFormationType(e.target.value);
+    const handleOffenseFormationToggleGroup = (e) => {
+        var newFormation = e.target.value;
+        (RFormation) ? newFormation+='R' : newFormation+='L';
+        console.log(newFormation);
+        
     };
 
-    const handleToggleOffenseR = (e) => {
-        console.log(e.target.value);
+    const handleToggleOffenseR = () => {
         const newRFormation = !RFormation;
         setRFormation(newRFormation);
     };
 
-    const handleSetDefenseFormation = (e) => {
+    const handleSetDefenseFormationToggleGroup = (e) => {
         console.log(e.target.value);
-        setSelectedDefenseFormationType(e.target.value);
+        setSelectedDefenseFormation(e.target.value);
     };
 
     // Basic shape handlers
@@ -53,22 +53,16 @@ function Stencil(props) {
 
     // Field handlers
     const handleSetFieldType = (e) => {
-        // if(e.target.value === 'blank'){
-
-        // }
-        setFieldType(e.target.value);
-        setSelectedFieldType(e.target.value);
+        const newFieldType = e.target.value;
+        setFieldType(newFieldType);
     };
-
     const handleToggleRedZone = () => {
-        const newZone = redZone === 'middle' ? 'redzone' : 'middle';
-        setLocalRedZone(newZone);
+        const newZone = zone === 'middle' ? 'redzone' : 'middle';
+        // console.log(newZone);
         setZone(newZone);
     };
-
     const handleToggleRedLine = () => {
         const newRedLine = !redLine;
-        setLocalRedLine(newRedLine);
         setRedLine(newRedLine);
     };
 
@@ -119,8 +113,8 @@ function Stencil(props) {
                             <div>
                                 <ToggleButtonGroup onChange={handleSetFieldType} exclusive aria-label="field type" sx={{ gap: '10px', flexWrap: 'wrap' }}>
                                     <ToggleButton value="hs" aria-label="high school" style={{
-                                        background: selectedFieldType === "hs" ? 'white' : '#333',
-                                        color: selectedFieldType === "hs" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background: fieldType === "hs" ? 'white' : '#333',
+                                        color: fieldType === "hs" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -132,8 +126,8 @@ function Stencil(props) {
                                         HIGH SCHOOL
                                     </ToggleButton>
                                     <ToggleButton value="college" aria-label="college" style={{
-                                        background: selectedFieldType === "college" ? 'white' : '#333',
-                                        color: selectedFieldType === "college" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background: fieldType === "college" ? 'white' : '#333',
+                                        color: fieldType === "college" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -145,8 +139,8 @@ function Stencil(props) {
                                         COLLEGE
                                     </ToggleButton>
                                     <ToggleButton value="nfl" aria-label="nfl" style={{
-                                        background: selectedFieldType === "nfl" ? 'white' : '#333',
-                                        color: selectedFieldType === "nfl" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background: fieldType === "nfl" ? 'white' : '#333',
+                                        color: fieldType === "nfl" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -158,8 +152,8 @@ function Stencil(props) {
                                         NFL
                                     </ToggleButton>
                                     <ToggleButton value="blank" aria-label="blank" style={{
-                                        background: selectedFieldType === "blank" ? 'white' : '#333',
-                                        color: selectedFieldType === "blank" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background: fieldType === "blank" ? 'white' : '#333',
+                                        color: fieldType === "blank" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -172,12 +166,14 @@ function Stencil(props) {
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </div>
+                           
+
 
                             <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-25px', flexWrap: 'wrap' }}>
-                                {selectedFieldType !== 'blank' && (
-                                    <CheckboxOption onChange={handleToggleRedZone} checked={redZone === 'redzone'}>Red Zone</CheckboxOption>
+                                {fieldType !== 'blank' && (
+                                    <CheckboxOption onChange={handleToggleRedZone} checked={ zone ==='redzone'}>Red Zone</CheckboxOption>
                                 )}
-                                {selectedFieldType !== 'blank' && selectedFieldType === 'nfl' && (<CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>)}
+                                {fieldType !== 'blank' && fieldType=== 'nfl' && (<CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>)}
                             </div>
 
                         </div>
@@ -198,10 +194,10 @@ function Stencil(props) {
                     <div style={{ display: 'flex', justifyContent: "flex-start", flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
-                                <ToggleButtonGroup onChange={handleSetOffenseFormation} exclusive aria-label="offense formation" style={{ gap: '10px', flexWrap: 'wrap' }}>
+                                <ToggleButtonGroup onChange={handleOffenseFormationToggleGroup} exclusive aria-label="offense formation" style={{ gap: '10px', flexWrap: 'wrap' }}>
                                     <ToggleButton value="bunch" aria-label="BUNCH" style={{
-                                        background: selectedOffenseFormation === "bunch" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "bunch" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background:  '#333',
+                                        color:  'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -214,8 +210,8 @@ function Stencil(props) {
                                         BUNCH
                                     </ToggleButton>
                                     <ToggleButton value="3x1" aria-label="3X1" style={{
-                                        background: selectedOffenseFormation === "3x1" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "3x1" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background:  '#333',
+                                        color: 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -227,8 +223,8 @@ function Stencil(props) {
                                         3X1
                                     </ToggleButton>
                                     <ToggleButton value="empty" aria-label="EMPTY" style={{
-                                        background: selectedOffenseFormation === "empty" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "empty" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background:  '#333',
+                                        color:  'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -242,8 +238,8 @@ function Stencil(props) {
 
 
                                     <ToggleButton value="2x2" aria-label="2X2" onClick={handleAddOffense2x2} style={{
-                                        background: selectedOffenseFormation === "2x2" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "2x2" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background: '#333',
+                                        color:  'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -256,8 +252,8 @@ function Stencil(props) {
                                     </ToggleButton>
 
                                     <ToggleButton value="custom" aria-label="blank" style={{
-                                        background: selectedOffenseFormation === "custom" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "custom" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background:  '#333',
+                                        color: 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -279,7 +275,7 @@ function Stencil(props) {
                     <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
-                                <ToggleButtonGroup onChange={handleSetDefenseFormation} exclusive aria-label="defense formation" sx={{ gap: '10px', flexWrap: 'wrap' }}>
+                                <ToggleButtonGroup onChange={handleSetDefenseFormationToggleGroup} exclusive aria-label="defense formation" sx={{ gap: '10px', flexWrap: 'wrap' }}>
                                     <ToggleButton value="4-3" aria-label="4-3" style={{
                                         background: selectedDefenseFormation === "4-3" ? 'white' : '#333',
                                         color: selectedDefenseFormation === "4-3" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
