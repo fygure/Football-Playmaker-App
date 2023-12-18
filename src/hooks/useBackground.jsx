@@ -20,7 +20,7 @@ function useBackground() {
         changeBackground();
     }, [fieldType, zone, redLine]);
 
-    return { backgroundImage, setFieldType, setZone, setRedLine };
+    return { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine };
 }
 
 export default useBackground;

@@ -19,7 +19,7 @@ function App() {
   const imageRef = useRef(null);
   const [selectedId, setSelectedId] = useState(null);
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
-  const { backgroundImage, setFieldType, setZone, setRedLine } = useBackground();
+  const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addShape, updateShape, deleteShape, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
 
 
@@ -40,9 +40,12 @@ function App() {
             <div style={{ flex: 0.2, padding: '1vw', minWidth: '15%', border: '1px solid black', height: '100%', overflow: 'auto', backgroundColor: '#333' }}>
               <Stencil
                 onAddShape={addShape}
+                fieldType={fieldType}
                 setFieldType={setFieldType}
                 setZone={setZone}
+                zone={zone}
                 setRedLine={setRedLine}
+                redLine={redLine}
                 onDeleteAllShapes={deleteAllShapes}
               />
             </div>
