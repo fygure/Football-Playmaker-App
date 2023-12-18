@@ -1,46 +1,50 @@
-// Center.jsx
+// LinemanOval.jsx
+// TODO: Here is where we change the on click handler for click through
 import React from 'react';
-import { Rect } from 'react-konva';
+import { Ellipse } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 
-function Center(props) {
+function LinemanOval(props) {
     const {
         shapeRef,
         position,
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        isSelected,
+        //isSelected,
         handleOnClick,
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
         handleDragEnd,
         handleHideContextMenu,
+        ellipseRadiuses,
+        //fontSize,
     } = props;
 
-    const squareSize = { width: 25, height: 25 };
+    //hardcoded value
+    //const ellipseRadiuses = { x: 16, y: 12 };
     const strokeOptions = { color: 'black', strokeWidth: 2 };
 
     return (
         <>
-            <Rect
+            <Ellipse
                 ref={shapeRef}
                 x={position.x}
                 y={position.y}
-                width={squareSize.width}
-                height={squareSize.height}
-                fill={initialColor}
+                radiusX={ellipseRadiuses.x}
+                radiusY={ellipseRadiuses.y}
                 stroke={strokeOptions.color}
                 strokeWidth={strokeOptions.strokeWidth}
+                fill={initialColor}
                 onDragStart={handleDragStart}
-                draggable={true}
+                draggable
                 onDragEnd={handleDragEnd}
                 onClick={handleOnClick}
                 onContextMenu={handleRightClick}
             />
-            {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />/*This is where we need to add "onMouseLeave" event*/}
+            {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
     );
 }
-export default Center;
+export default LinemanOval;

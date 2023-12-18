@@ -2,14 +2,17 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-function useShapes(stageDimensions) {
+function useShapes(stageDimensions, imageRef) {
     const [shapes, setShapes] = useState([]);
 
     //Shape Handlers
     //TODO: Add more formations as 'shapeType', fine tune the initialPositions
     const addShape = (shapeType, initialColor) => {
-        const middlePosition = { x: stageDimensions.width / 2, y: stageDimensions.height / 2 };
-        //console.log(stageDimensions);
+        const middlePosition = {
+            x: imageRef.current.x() + (imageRef.current.width() / 2),
+            y: imageRef.current.height() / 2
+        };
+        console.log("Image Middle:", middlePosition);
         //console.log(backgroundImage);
         if (shapeType === 'offense2x2') {
             const newShapes = [
@@ -27,6 +30,27 @@ function useShapes(stageDimensions) {
 
             ];
             setShapes([...shapes, ...newShapes]);
+            //Adds new shapes to shapes list
+        }
+        else if (shapeType === 'offenseBunch') {
+        }
+        else if (shapeType === 'offenseBunch') {
+        }
+        else if(shapeType === 'offense3x1') {
+        }
+        else if(shapeType === 'offense3x1') {
+        }
+        else if(shapeType === 'offenseEmpty') {
+
+        }
+        //DEFENSE FORMATION:
+        else if(shapeType === 'defense4-3') {
+        }
+        else if(shapeType === 'defense3-4') {
+        }
+        else if(shapeType === 'defense4-2-5') {
+        }
+        else if(shapeType === 'defense3-3Stack') {
         }
         else {
             const newShape = { id: uuidv4(), shapeType, initialPosition: middlePosition, initialColor };
@@ -40,12 +64,11 @@ function useShapes(stageDimensions) {
 
     const deleteShape = (id) => {
         setShapes(shapes.filter(shape => shape.id !== id));
-    }
+    };
 
-     const deleteAllShapes = () => {
+    const deleteAllShapes = () => {
         setShapes([]);
-      };
-  
+    };
 
     const hideShapeContextMenu = () => {
         setShapes(shapes.map(shape => ({ ...shape, showContextMenu: false })));

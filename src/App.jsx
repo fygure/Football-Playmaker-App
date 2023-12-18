@@ -1,5 +1,5 @@
 // App.jsx
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import StageDimensionsContext from './contexts/StageDimensionsContext';
 import Canvas from './components/Canvas';
 import Stencil from './components/Stencil';
@@ -16,10 +16,15 @@ TODO: save and load feature (requires database)
 */
 ////////////////////////////////////////////////////////////////////////////////////////
 function App() {
+  const imageRef = useRef(null);
   const [selectedId, setSelectedId] = useState(null);
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
-  const { shapes, addShape, updateShape, deleteShape, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions);
   const { backgroundImage, setFieldType, setZone, setRedLine } = useBackground();
+  const { shapes, addShape, updateShape, deleteShape, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
+
+
+  const [selectedShapeIds, setSelectedShapeIds] = useState([]);
+
 
   return (
     <>
@@ -41,10 +46,30 @@ function App() {
                 onDeleteAllShapes={deleteAllShapes}
               />
             </div>
-            <div style={{ flex: 1.8, padding: '1vw', maxWidth: 'calc(80% - 4vw)', marginRight: '2vw', borderTop: '1px solid black', borderRight: '1px solid black', borderBottom: '1px solid black', height: '100%', }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flex: 1.8,
+              padding: '1vw',
+              maxWidth: 'calc(80% - 4vw)',
+              marginRight: '2vw',
+              borderTop: '1px solid black',
+              borderRight: '1px solid black',
+              borderBottom: '1px solid black',
+              height: '100%',
+              backgroundColor: '#f5f5f5', // See parent div
+            }}>
               <Canvas
+                imageRef={imageRef}
                 shapes={shapes}
                 selectedId={selectedId}
+
+
+                selectedShapeIds={selectedShapeIds}
+                setSelectedShapeIds={setSelectedShapeIds}
+
+
                 onSelect={setSelectedId}
                 onChange={updateShape}
                 onDelete={deleteShape}
