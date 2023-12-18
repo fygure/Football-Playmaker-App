@@ -77,6 +77,17 @@ function Stencil(props) {
         onAddShape('offense2x2', 'orange');
     }
 
+    //TODOS:
+    //handleAddOffenseEmptyLeft
+    //handleAddOffenseEmptyRight
+    //handleAddOffenseBunchLeft
+    //handleAddOffenseBunchRight
+    //handleAddOffenseCustom (just put all players on the 30 yd line)
+
+    const handleAddOffense3x1 = () => {
+        (RFormation) ? onAddShape('offense3x1R', 'orange') : onAddShape('offense3x1L', 'orange');
+    }
+
     // Components for the stencil
     const CheckboxOption = ({ onChange, children, checked }) => (
         <FormControlLabel
