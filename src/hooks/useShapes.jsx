@@ -33,12 +33,16 @@ function useShapes(stageDimensions, imageRef) {
             //Adds new shapes to shapes list
         }
         else if (shapeType === 'offenseBunch') {
+
         }
         else if (shapeType === 'offenseBunch') {
+
         }
         else if(shapeType === 'offense3x1') {
+
         }
         else if(shapeType === 'offense3x1') {
+            
         }
         else if(shapeType === 'offenseEmpty') {
 

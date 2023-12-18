@@ -12,10 +12,6 @@ function Canvas(props) {
         setStageDimensions,
         shapes,
         selectedId,
-
-
-   
-
         onSelect,
         onChange,
         onDelete,
