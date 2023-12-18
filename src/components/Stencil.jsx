@@ -20,6 +20,29 @@ function Stencil(props) {
     const [RFormation, setRFormation] = useState(false);
 
 
+    const handleSetOffenseFormation = (e) => {
+        console.log(e.target.value);
+        setSelectedOffenseFormationType(e.target.value);
+    };
+
+
+    const handleToggleOffenseR = (e) => {
+        console.log(e.target.value);
+        const newRFormation = !RFormation;
+        setRFormation(newRFormation);
+    };
+    //DEFENSE HANDLER
+    const [selectedDefenseFormation, setSelectedDefenseFormationType] = useState(null);
+   
+
+    const handleSetDefenseFormation = (e) => {  
+        console.log(e.target.value);
+        setSelectedDefenseFormationType(e.target.value);        
+    };
+
+
+
+
     // Basic shape handlers
     const handleAddStar = () => {
         onAddShape('Star', 'yellow');
@@ -52,17 +75,7 @@ function Stencil(props) {
     //     }
     // };
 
-    const handleSetOffenseFormation = (e) => {
-        console.log(e.target.value);
-        setSelectedOffenseFormationType(e.target.value);
-    };
-
-
-    const handleToggleOffenseR = (e) => {
-        console.log(e.target.value);
-        const newRFormation = !RFormation;
-        setRFormation(newRFormation);
-    };
+   
 
 
 
@@ -201,18 +214,6 @@ function Stencil(props) {
                         </div>
                         </h3>
                     </div>
-
-
-                    {/* <div style={{ display: 'flex', gap: '35px', marginLeft: '-20px', marginTop: '-10px' }}>
-                    <CheckboxOption onChange={handleToggleOffenseR} checked={selectedOffenseFormation === "right"}>
-                        L
-                    </CheckboxOption>
-                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', marginTop: '10px' }}>R</p>
-                    </div> */}
-
-
-
-
                     <div style={{ display: 'flex', justifyContent: "flex-start", flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
@@ -260,7 +261,55 @@ function Stencil(props) {
 
 
 
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Defense Formation</h3>
+                    <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Defense Formation</h3>
+                    <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div>
+                                {/* <RadioOption name="fieldType" value="hs" onChange={handleSetFieldType} >HIGH SCHOOL</RadioOption>
+                                    <RadioOption name="fieldType" value="college" onChange={handleSetFieldType}>COLLEGE</RadioOption>
+                                    <RadioOption name="fieldType" value="nfl" onChange={handleSetFieldType}>NFL</RadioOption>
+                                    <RadioOption name="fieldType" value="blank" onChange={handleSetFieldType}>BLANK</RadioOption> */}
+                                <ToggleButtonGroup onChange={handleSetDefenseFormation} exclusive aria-label="defense formation" sx={{ gap: '10px', flexWrap: 'wrap' }}>
+                                    <ToggleButton value="4-3" aria-label="4-3" style={{
+                                        background: selectedDefenseFormation === "4-3" ? 'white' : '#333',
+                                        color: selectedDefenseFormation === "4-3"  ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem'
+                                    }}>
+                                        4-3
+                                    </ToggleButton>
+                                    <ToggleButton value="3-4" aria-label="3-4" style={{
+                                        background: selectedDefenseFormation === "3-4" ? 'white' : '#333',
+                                        color: selectedDefenseFormation === "3-4" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem'
+                                    }}>
+                                        3-4
+                                    </ToggleButton>
+                                    <ToggleButton value="4-2-5" aria-label="4-2-5" style={{
+                                        background: selectedDefenseFormation === "4-2-5" ? 'white' : '#333',
+                                        color: selectedDefenseFormation === "4-2-5" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem'
+                                    }}>
+                                        4-2-5
+                                    </ToggleButton>
+                                    <ToggleButton value="3-3Stack" aria-label="3-3Stack" style={{
+                                        background: selectedDefenseFormation === "3-3Stack" ? 'white' : '#333',
+                                        color: selectedDefenseFormation === "3-3Stack" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem'
+                                    }}>
+                                        3-3 STACK
+                                    </ToggleButton>
+
+
+                                    <ToggleButton value="custom" aria-label="blank" style={{
+                                        background: selectedDefenseFormation === "custom" ? 'white' : '#333',
+                                        color: selectedDefenseFormation === "custom" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem'
+                                    }}>
+                                        CUSTOM
+                                    </ToggleButton>
+                                </ToggleButtonGroup>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
 
 
 
