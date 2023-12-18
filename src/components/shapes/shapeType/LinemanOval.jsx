@@ -4,7 +4,7 @@ import React from 'react';
 import { Ellipse } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 
-class Lineman extends React.Component {
+class LinemanOval extends React.Component {
     constructor(props) {
         super(props);
         
