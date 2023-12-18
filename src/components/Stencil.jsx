@@ -237,7 +237,9 @@ function Stencil(props) {
                                     </ToggleButton>
 
 
-                                    <ToggleButton value="2x2" aria-label="2X2" onClick={handleAddOffense2x2} style={{ background: '#333', color: 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem' }}>
+                                    <ToggleButton value="2x2" aria-label="2X2" onClick={handleAddOffense2x2} style={{
+                                        background: selectedOffenseFormation === "2x2" ? 'white' : '#333',
+                                        color: selectedOffenseFormation === "2x2" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem' }}>
                                         2X2
                                     </ToggleButton>
 
