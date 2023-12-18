@@ -177,7 +177,7 @@ function Stencil(props) {
                             </div>
 
 
-                            <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-20px', flexWrap: 'wrap'}}>
+                            <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-25px', flexWrap: 'wrap'}}>
                                 {selectedFieldType !== 'blank' && (
                                     <CheckboxOption onChange={handleToggleRedZone} checked={redZone === 'redzone'}>Red Zone</CheckboxOption>
                                 )}
@@ -192,7 +192,7 @@ function Stencil(props) {
 
                     <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
                         <h3 style={{ marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation
-                        <div style={{ display: 'flex', justifyContent: "flex-start",marginLeft: '-8px', alignItems: 'center', fontWeight: 500 }}>
+                        <div style={{ display: 'flex', justifyContent: "flex-start",marginLeft: '-22px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
                             <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}> L</CheckboxOption>
                             <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
                         </div>
