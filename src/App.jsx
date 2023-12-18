@@ -25,7 +25,7 @@ function App() {
 
   // const [selectedShapeIds, setSelectedShapeIds] = useState([]);
 
-  
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -64,12 +64,8 @@ function App() {
                 imageRef={imageRef}
                 shapes={shapes}
                 selectedId={selectedId}
-
-                
-                // selectedShapeIds={selectedShapeIds}
-                // setSelectedShapeIds={setSelectedShapeIds}
-
-
+                selectedShapeIds={selectedShapeIds}
+                setSelectedShapeIds={setSelectedShapeIds}
                 onSelect={setSelectedId}
                 onChange={updateShape}
                 onDelete={deleteShape}
