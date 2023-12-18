@@ -32,29 +32,54 @@ function useShapes(stageDimensions, imageRef) {
             setShapes([...shapes, ...newShapes]);
             //Adds new shapes to shapes list
         }
-        else if (shapeType === 'offenseBunch') {
+        //TODO: Form the bunchL formation
+        else if (shapeType === 'bunchL') {
+            const newShapes = [
+                { id: uuidv4(), shapeType: 'QBoval', initialPosition: { x: middlePosition.x, y: middlePosition.y + stageDimensions.height * 0.1 }, initialColor },
+                { id: uuidv4(), shapeType: 'RBoval', initialPosition: { x: middlePosition.x, y: middlePosition.y + stageDimensions.height * 0.1 }, initialColor },
+                { id: uuidv4(), shapeType: 'Xoval', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.1, y: middlePosition.y }, initialColor },
+                { id: uuidv4(), shapeType: 'Hoval', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.1, y: middlePosition.y }, initialColor },
+                { id: uuidv4(), shapeType: 'Yoval', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.1, y: middlePosition.y }, initialColor },
+                { id: uuidv4(), shapeType: 'Zoval', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.1, y: middlePosition.y }, initialColor },
+                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.04, y: middlePosition.y }, initialColor },
+                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.02, y: middlePosition.y }, initialColor },
+                { id: uuidv4(), shapeType: 'Center', initialPosition: { x: middlePosition.x, y: middlePosition.y }, initialColor },
+                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.02, y: middlePosition.y }, initialColor },
+                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.04, y: middlePosition.y }, initialColor },
+
+            ];
+            setShapes([...shapes, ...newShapes]);
+        }
+        else if (shapeType === 'bunchR') {
 
         }
-        else if (shapeType === 'offenseBunch') {
+        else if(shapeType === '3x1L') {
 
         }
-        else if(shapeType === 'offense3x1') {
-
-        }
-        else if(shapeType === 'offense3x1') {
+        else if(shapeType === '3x1R') {
             
         }
-        else if(shapeType === 'offenseEmpty') {
+        else if(shapeType === 'emptyL') {
+
+        }
+        else if(shapeType === 'emptyR') {
+
+        }
+        else if(shapeType === 'custom') {
 
         }
         //DEFENSE FORMATION:
-        else if(shapeType === 'defense4-3') {
+        else if(shapeType === '4-3') {
+
         }
-        else if(shapeType === 'defense3-4') {
+        else if(shapeType === '3-4') {
+
         }
-        else if(shapeType === 'defense4-2-5') {
+        else if(shapeType === '4-2-5') {
+
         }
-        else if(shapeType === 'defense3-3Stack') {
+        else if(shapeType === '3-3Stack') {
+
         }
         else {
             const newShape = { id: uuidv4(), shapeType, initialPosition: middlePosition, initialColor };

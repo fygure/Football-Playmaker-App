@@ -21,7 +21,29 @@ function Stencil(props) {
         var newFormation = e.target.value;
         (RFormation) ? newFormation+='R' : newFormation+='L';
         console.log(newFormation);
-        
+        if (newFormation === 'bunchL') {
+            onAddShape('bunchL', 'orange');
+        }
+        else if (newFormation === 'bunchR') {
+
+        }
+        else if (newFormation === '3x1L')
+        {
+
+        }
+        else if (newFormation === '3x1R') {
+        }
+        else if (newFormation === 'emptyL') {
+
+        }
+        else if(newFormation === 'emptyR') {
+
+        }
+        else if (newFormation === 'custom') {
+
+        }
+
+
     };
 
     const handleToggleOffenseR = () => {
@@ -30,8 +52,23 @@ function Stencil(props) {
     };
 
     const handleSetDefenseFormationToggleGroup = (e) => {
-        console.log(e.target.value);
-        setSelectedDefenseFormation(e.target.value);
+        var newFormation = e.target.value;
+        if(newFormation === '4-3')
+        {
+
+        }
+        else if (newFormation === '3-4') {
+
+        }
+        else if (newFormation === '4-2-5') {
+
+        }
+        else if (newFormation === '3-3Stack') {
+
+        }
+        else if (newFormation === 'custom') {
+
+        }
     };
 
     // Basic shape handlers
@@ -166,9 +203,6 @@ function Stencil(props) {
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </div>
-                           
-
-
                             <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-25px', flexWrap: 'wrap' }}>
                                 {fieldType !== 'blank' && (
                                     <CheckboxOption onChange={handleToggleRedZone} checked={ zone ==='redzone'}>Red Zone</CheckboxOption>
