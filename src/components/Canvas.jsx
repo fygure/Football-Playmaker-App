@@ -12,8 +12,10 @@ function Canvas(props) {
         setStageDimensions,
         shapes,
         selectedId,
-        selectedShapeIds,
-        setSelectedShapeIds,
+
+
+   
+
         onSelect,
         onChange,
         onDelete,
@@ -50,6 +52,7 @@ function Canvas(props) {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+
 
     const handleStageClick = (e) => {
         console.log('Stage Dimensions:', stageDimensions);

@@ -36,6 +36,9 @@ function Stencil(props) {
 
     // Field handlers
     const handleSetFieldType = (e) => {
+        // if(e.target.value === 'blank'){
+            
+        // }
         setFieldType(e.target.value);
         setSelectedFieldType(e.target.value);
     };
@@ -71,12 +74,12 @@ function Stencil(props) {
     // Components for the stencil
     const CheckboxOption = ({ onChange, children, checked }) => (
         <FormControlLabel
-            control={<Switch size="small" onChange={onChange} checked={checked} style={{ color: 'white' }} />}
+            control={<Switch size="small" onChange={onChange} checked={checked} style={{ color: 'white',display: 'flex'}} />}
             label={
                 <Typography style={{ fontSize: '12px', color: 'white', fontFamily: 'Inter, sans-serif' }}>{children}</Typography>
             }
             labelPlacement="start"
-            style={{ display: 'flex', alignItems: 'center' }}
+            style = {{display: 'flex', alignItems: 'center', gap: '5px'}}
         />
     );
 
@@ -93,8 +96,12 @@ function Stencil(props) {
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
+
+
+
+
                     <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Field</h3>
-                    <div style={{ display: 'flex', justifyContent: "flex-start", flexDirection: 'row' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
                                 <ToggleButtonGroup onChange={handleSetFieldType} exclusive aria-label="field type" sx={{ gap: '10px', flexWrap: 'wrap' }}>
@@ -125,11 +132,10 @@ function Stencil(props) {
                                 </ToggleButtonGroup>
                             </div>
 
-                            <div style={{ display: 'flex', gap: '35px', padding: '10px', marginLeft: '-20px', marginTop: "20px" }}>
+                            <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-25px', flexWrap: 'wrap'}}>
                                 {selectedFieldType !== 'blank' && (
                                     <CheckboxOption onChange={handleToggleRedZone} checked={redZone === 'redzone'}>Red Zone</CheckboxOption>
                                 )}
-
                                 {selectedFieldType !== 'blank' && selectedFieldType === 'nfl' && (<CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>)}
                             </div>
 
@@ -139,18 +145,13 @@ function Stencil(props) {
 
 
 
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
-                            Offense Formation
-                        </h3>
-                        <div style={{ display: 'flex', alignItems: 'center', marginTop: '22px' }}>
-                            <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}>
-                                L
-                            </CheckboxOption>
-                            <span style={{ marginLeft: '10px', fontFamily: 'Inter, sans-serif', fontSize: '13px', flexWrap: 'wrap' }}>
-                                R
-                            </span>
+                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
+                        <h3 style={{ marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation
+                        <div style={{ display: 'flex', justifyContent: "flex-start",marginLeft: '-22px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
+                            <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}> L</CheckboxOption>
+                            <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
                         </div>
+                        </h3>
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: "flex-start", flexDirection: 'row' }}>
@@ -177,7 +178,9 @@ function Stencil(props) {
                                     </ToggleButton>
 
 
-                                    <ToggleButton value="2x2" aria-label="2X2" onClick={handleAddOffense2x2} style={{ background: '#333', color: 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem' }}>
+                                    <ToggleButton value="2x2" aria-label="2X2" onClick={handleAddOffense2x2} style={{
+                                        background: selectedOffenseFormation === "2x2" ? 'white' : '#333',
+                                        color: selectedOffenseFormation === "2x2" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem' }}>
                                         2X2
                                     </ToggleButton>
 
