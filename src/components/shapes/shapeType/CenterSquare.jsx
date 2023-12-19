@@ -16,7 +16,8 @@ const CenterSquare = (props) => {
         handleDragStart,
         handleDragEnd,
         handleHideContextMenu,
-        rectSize
+        rectSize,
+        dragBoundFunc
     } = props;
 
     const strokeOptions = { color: 'black', strokeWidth: 2 };
@@ -50,6 +51,7 @@ const CenterSquare = (props) => {
                 cornerRadius={2}
                 onDragStart={handleDragStart}
                 draggable={true}
+                dragBoundFunc={dragBoundFunc}
                 onDragEnd={handleDragEnd}
                 onClick={handleClick}
                 onContextMenu={handleRightClick}

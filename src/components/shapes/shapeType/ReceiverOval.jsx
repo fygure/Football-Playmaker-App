@@ -20,6 +20,7 @@ function ReceiverOval(props) {
         ellipseRadiuses,
         fontSize,
         text,
+        dragBoundFunc
     } = props;
 
     const strokeOptions = { color: 'black', strokeWidth: 2 };
@@ -33,6 +34,7 @@ function ReceiverOval(props) {
         <>
             <Group
                 draggable
+                dragBoundFunc={dragBoundFunc}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
                 onClick={handleOnClick}
