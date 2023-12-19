@@ -84,7 +84,7 @@ function Shape(props) {
     const handleOnClick = () => {
         onSelect(id);
         const node = shapeRef.current;
-        console.log(node);
+        console.log('Shape Clicked', node);
     }
 
     const handleRightClick = (e) => {
@@ -114,6 +114,33 @@ function Shape(props) {
         setShowContextMenu(false);
     }
 
+    const dragBoundFunc = (pos) => {
+        const stage = shapeRef.current.getStage();
+        const { width: stageWidth, height: stageHeight } = stage.size();
+        const shape = shapeRef.current;
+        const box = shape.getClientRect(); // get bounding box of the shape
+
+        let x = pos.x;
+        let y = pos.y;
+
+        if (x < 0) {
+            x = 0;
+        } else if (x > stageWidth - box.width) {
+            x = stageWidth - box.width;
+        }
+
+        if (y < 0) {
+            y = 0;
+        } else if (y > stageHeight - box.height) {
+            y = stageHeight - box.height;
+        }
+
+        return {
+            x,
+            y
+        };
+    };
+
     const commonProps = {
         shapeRef,
         position,
@@ -130,7 +157,8 @@ function Shape(props) {
         ellipseRadiuses,
         circleRadius,
         fontSize,
-        rectSize
+        rectSize,
+        dragBoundFunc
     };
 
     switch (shapeType) {
