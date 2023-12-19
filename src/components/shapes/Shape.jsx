@@ -9,9 +9,9 @@ import ReceiverOval from './shapeType/ReceiverOval';
 // Shape Sizes Configuration
 const SHAPE_SIZES = {
     CIRCLE: { MIN: 10, MAX: 30 },
-    ELLIPSE: { X: { MIN: 8, MAX: 20 }, Y: { MIN: 5, MAX: 14 } },
+    ELLIPSE: { X: { MIN: 8, MAX: 18 }, Y: { MIN: 5, MAX: 12 } },
     FONT: { MIN: 6, MAX: 13 },
-    RECT: { WIDTH: { MIN: 10, MAX: 30 }, HEIGHT: { MIN: 10, MAX: 30 } },
+    RECT: { WIDTH: { MIN: 10, MAX: 28 }, HEIGHT: { MIN: 10, MAX: 28 } },
 };
 
 function Shape(props) {
@@ -32,9 +32,9 @@ function Shape(props) {
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
     const [circleRadius, setCircleRadius] = useState(30); // initial circle radius
-    const [ellipseRadiuses, setEllipseRadiuses] = useState({ x: 20, y: 14 }); // initial ellipse radii
+    const [ellipseRadiuses, setEllipseRadiuses] = useState({ x: 18, y: 12 }); // initial ellipse radii
     const [fontSize, setFontSize] = useState(13);
-    const [rectSize, setRectSize] = useState({ width: 30, height: 30 }); // initial rectangle size
+    const [rectSize, setRectSize] = useState({ width: 28, height: 28 }); // initial rectangle size
 
     useEffect(() => {
         const image = imageRef.current;

@@ -23,7 +23,7 @@ const LinemanOval = (props) => {
     const strokeOptions = { color: 'black', strokeWidth: 2 };
 
     const states = [
-        { leftState: 0, rightState: 200 }, // fully orange
+        { leftState: 0, rightState: 200 }, // fully initialColor
         { leftState: 0, rightState: -1 }, // right fill
         { leftState: 0, rightState: 1 }, // left fill
         { leftState: -200, rightState: 1 } // all fill
