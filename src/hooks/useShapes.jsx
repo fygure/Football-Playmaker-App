@@ -16,18 +16,17 @@ function useShapes(stageDimensions, imageRef) {
         //console.log(backgroundImage);
         if (shapeType === 'offense2x2') {
             const newShapes = [
-                { id: uuidv4(), shapeType: 'QBoval', initialPosition: { x: middlePosition.x, y: middlePosition.y + stageDimensions.height * 0.3 }, initialColor },
-                { id: uuidv4(), shapeType: 'RBoval', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.042, y: middlePosition.y + stageDimensions.height * 0.33 }, initialColor },
-                { id: uuidv4(), shapeType: 'Xoval', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.21, y: middlePosition.y + stageDimensions.height * 0.2 }, initialColor },
-                { id: uuidv4(), shapeType: 'Hoval', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.14, y: middlePosition.y + stageDimensions.height * 0.24 }, initialColor },
-                { id: uuidv4(), shapeType: 'Yoval', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.15, y: middlePosition.y + stageDimensions.height * 0.2 }, initialColor },
-                { id: uuidv4(), shapeType: 'Zoval', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.21, y: middlePosition.y + stageDimensions.height * 0.24 }, initialColor },
-                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.08, y: middlePosition.y + stageDimensions.height * 0.2 }, initialColor },
-                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.04, y: middlePosition.y + stageDimensions.height * 0.2 }, initialColor },
-                { id: uuidv4(), shapeType: 'Center', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.01, y: middlePosition.y + stageDimensions.height * 0.185 }, initialColor },
-                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.04, y: middlePosition.y + stageDimensions.height * 0.2 }, initialColor },
-                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.08, y: middlePosition.y + stageDimensions.height * 0.2 }, initialColor },
-
+                { id: uuidv4(), shapeType: 'QBoval', initialPosition: { x: middlePosition.x, y: middlePosition.y + imageRef.current.height() * 0.3 }, initialColor },
+                { id: uuidv4(), shapeType: 'RBoval', initialPosition: { x: middlePosition.x - imageRef.current.width() * 0.042, y: middlePosition.y + imageRef.current.height() * 0.33 }, initialColor },
+                { id: uuidv4(), shapeType: 'Xoval', initialPosition: { x: middlePosition.x - imageRef.current.width() * 0.21, y: middlePosition.y + imageRef.current.height() * 0.2 }, initialColor },
+                { id: uuidv4(), shapeType: 'Hoval', initialPosition: { x: middlePosition.x - imageRef.current.width() * 0.14, y: middlePosition.y + imageRef.current.height() * 0.24 }, initialColor },
+                { id: uuidv4(), shapeType: 'Yoval', initialPosition: { x: middlePosition.x + imageRef.current.width() * 0.15, y: middlePosition.y + imageRef.current.height() * 0.2 }, initialColor },
+                { id: uuidv4(), shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageRef.current.width() * 0.21, y: middlePosition.y + imageRef.current.height() * 0.24 }, initialColor },
+                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageRef.current.width() * 0.08, y: middlePosition.y + imageRef.current.height() * 0.2 }, initialColor },
+                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageRef.current.width() * 0.04, y: middlePosition.y + imageRef.current.height() * 0.2 }, initialColor },
+                { id: uuidv4(), shapeType: 'Center', initialPosition: { x: middlePosition.x - imageRef.current.width() * 0.01, y: middlePosition.y + imageRef.current.height() * 0.185 }, initialColor },
+                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageRef.current.width() * 0.04, y: middlePosition.y + imageRef.current.height() * 0.2 }, initialColor },
+                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageRef.current.width() * 0.08, y: middlePosition.y + imageRef.current.height() * 0.2 }, initialColor },
             ];
             //Adds new shapes to shapes list
             setShapes([...shapes, ...newShapes]);
