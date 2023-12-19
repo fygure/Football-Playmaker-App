@@ -20,9 +20,9 @@ function App() {
   const [selectedId, setSelectedId] = useState(null);
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
-  const { shapes, addShape, updateShape, deleteShape, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
+  const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
 
-
+  //TODO: implement selection rectangle starting by adding all clicked shapes to selectedShapeIds
   const [selectedShapeIds, setSelectedShapeIds] = useState([]);
 
 
@@ -39,6 +39,7 @@ function App() {
           }}>
             <div style={{ flex: 0.2, padding: '1vw', minWidth: '15%', border: '1px solid black', height: '100%', overflow: 'auto', backgroundColor: '#333' }}>
               <Stencil
+                onAddFormation={addFormation}
                 onAddShape={addShape}
                 fieldType={fieldType}
                 setFieldType={setFieldType}
@@ -47,6 +48,7 @@ function App() {
                 setRedLine={setRedLine}
                 redLine={redLine}
                 onDeleteAllShapes={deleteAllShapes}
+                onChangeFormation={deleteFormation} //deletes all other formation shapes except one chosen
               />
             </div>
             <div style={{

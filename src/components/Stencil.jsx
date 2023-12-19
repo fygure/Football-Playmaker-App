@@ -4,6 +4,7 @@ import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButto
 
 function Stencil(props) {
     const {
+        onAddFormation,
         onAddShape,
         fieldType,
         setFieldType,
@@ -12,38 +13,42 @@ function Stencil(props) {
         setRedLine,
         redLine,
         onDeleteAllShapes,
+        onChangeFormation,
     } = props;
-    const [selectedOffenseFormation, setSelectedOffenseFormation] = useState(""); 
+    const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
     const [RFormation, setRFormation] = useState(false);
+
+    const shapeColor = 'orange';
 
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
         setSelectedOffenseFormation(newFormation);
 
-        (RFormation) ? newFormation+='R' : newFormation+='L';
-        console.log(newFormation);
-        if (newFormation === 'bunchL') {
-            onAddShape('bunchL', 'orange');
+        if (newFormation === '2x2') {
+            onAddFormation('offense2x2', shapeColor);
+        } else if (newFormation === 'bunch') {
+            (RFormation) ? onAddFormation('offenseBunchR', shapeColor) : onAddFormation('offenseBunchL', shapeColor);
+        } else if (newFormation === '3x1') {
+            (RFormation) ? onAddFormation('offense3x1R', shapeColor) : onAddFormation('offense3x1L', shapeColor);
         }
-        else if (newFormation === 'bunchR') {
-            onAddShape('bunchR', 'orange');
-        }
-        else if (newFormation === '3x1L')
-        {
 
-        }
-        else if (newFormation === '3x1R') {
-        }
-        else if (newFormation === 'emptyL') {
 
-        }
-        else if(newFormation === 'emptyR') {
+        // else if (newFormation === '3x1L') {
+        //     //FIXME: reduce the amount of code here by half by using the code below:
+        //     //(RFormation) ? onAddShape('offense3x1R', 'orange') : onAddShape('offense3x1L', 'orange');
+        // }
+        // else if (newFormation === '3x1R') {
+        // }
+        // else if (newFormation === 'emptyL') {
 
-        }
-        else if (newFormation === 'custom') {
+        // }
+        // else if (newFormation === 'emptyR') {
 
-        }
+        // }
+        // else if (newFormation === 'custom') {
+
+        // }
 
 
     };
@@ -57,8 +62,7 @@ function Stencil(props) {
         var newFormation = e.target.value;
         setSelectedDefenseFormation(newFormation);
 
-        if(newFormation === '4-3')
-        {
+        if (newFormation === '4-3') {
 
         }
         else if (newFormation === '3-4') {
@@ -75,19 +79,6 @@ function Stencil(props) {
         }
     };
 
-    // Basic shape handlers
-    const handleAddStar = () => {
-        onAddShape('Star', 'yellow');
-    };
-    const handleAddRectangle = () => {
-        onAddShape('Rectangle', 'red');
-    };
-    const handleAddCircle = () => {
-        onAddShape('Circle', 'blue');
-    };
-    const handleAddRing = () => {
-        onAddShape('Ring', 'green');
-    }
     const handleDeleteAllShapes = () => {
         onDeleteAllShapes();
     };
@@ -108,9 +99,10 @@ function Stencil(props) {
     };
 
     // Formation handlers
-    const handleAddOffense2x2 = () => {
-        onAddShape('offense2x2', 'orange');
-    }
+    // const handleAddOffense2x2 = () => {
+    //     onChangeFormation('offense2x2');
+    //     onAddShape('offense2x2', 'orange');
+    // }
 
     //TODOS:
     //handleAddOffenseEmptyLeft
@@ -139,11 +131,6 @@ function Stencil(props) {
         <>
             <div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                    <Button variant="outlined" color="punky" size="small" onClick={handleAddStar} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Add Star</Button>
-                    <Button variant="outlined" color="mustard" size="small" onClick={handleAddRectangle} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Add Rectangle</Button>
-                    <Button variant="outlined" color="kellyGreen" size="small" onClick={handleAddCircle} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Add Circle</Button>
-                    <Button variant="outlined" color="ramsBlue" size="small" onClick={handleAddRing} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Add Ring</Button>
-                    <Button variant="outlined" color="purple" size="small" onClick={handleAddOffense2x2} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>2x2</Button>
                     <Button variant="outlined" color="sharpRed" size="small" onClick={handleDeleteAllShapes} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Clear All</Button>
                 </div>
 
@@ -209,9 +196,9 @@ function Stencil(props) {
                             </div>
                             <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-25px', flexWrap: 'wrap' }}>
                                 {fieldType !== 'blank' && (
-                                    <CheckboxOption onChange={handleToggleRedZone} checked={ zone ==='redzone'}>Red Zone</CheckboxOption>
+                                    <CheckboxOption onChange={handleToggleRedZone} checked={zone === 'redzone'}>Red Zone</CheckboxOption>
                                 )}
-                                {fieldType !== 'blank' && fieldType=== 'nfl' && (<CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>)}
+                                {fieldType !== 'blank' && fieldType === 'nfl' && (<CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>)}
                             </div>
 
                         </div>
@@ -233,9 +220,9 @@ function Stencil(props) {
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
                                 <ToggleButtonGroup onChange={handleOffenseFormationToggleGroup} exclusive aria-label="offense formation" style={{ gap: '10px', flexWrap: 'wrap' }}>
-                                    <ToggleButton value="bunch" aria-label="BUNCH" style={{ 
+                                    <ToggleButton value="bunch" aria-label="BUNCH" style={{
                                         background: selectedOffenseFormation === "bunch" ? 'white' : '#333',
-                                        color:  selectedOffenseFormation === "bunch" ?  '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        color: selectedOffenseFormation === "bunch" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -262,7 +249,7 @@ function Stencil(props) {
                                     </ToggleButton>
                                     <ToggleButton value="empty" aria-label="EMPTY" style={{
                                         background: selectedOffenseFormation === "empty" ? 'white' : '#333',
-                                        color:  selectedOffenseFormation === "empty" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        color: selectedOffenseFormation === "empty" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -275,9 +262,9 @@ function Stencil(props) {
                                     </ToggleButton>
 
 
-                                    <ToggleButton value="2x2" aria-label="2X2" onClick={handleAddOffense2x2} style={{
+                                    <ToggleButton value="2x2" aria-label="2X2" style={{
                                         background: selectedOffenseFormation === "2x2" ? 'white' : '#333',
-                                        color:  selectedOffenseFormation === "2x2" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        color: selectedOffenseFormation === "2x2" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
