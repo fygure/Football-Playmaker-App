@@ -32,6 +32,13 @@ function Stencil(props) {
         } else if (newFormation === '3x1') {
             (RFormation) ? onAddFormation('offense3x1R', shapeColor) : onAddFormation('offense3x1L', shapeColor);
         }
+        else if(newFormation === 'empty'){
+            (RFormation) ? onAddFormation('offenseEmptyR', shapeColor) : onAddFormation('offenseEmptyL', shapeColor);
+        }
+        else if(newFormation === 'custom'){
+            onAddFormation('offenseCustom', shapeColor);    
+        }
+
 
 
         // else if (newFormation === '3x1L') {
