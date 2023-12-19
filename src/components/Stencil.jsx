@@ -19,7 +19,7 @@ function Stencil(props) {
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
     const [RFormation, setRFormation] = useState(false);
 
-    const shapeColor = 'orange';
+    const shapeColor = 'white';
 
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
@@ -32,11 +32,11 @@ function Stencil(props) {
         } else if (newFormation === '3x1') {
             (RFormation) ? onAddFormation('offense3x1R', shapeColor) : onAddFormation('offense3x1L', shapeColor);
         }
-        else if(newFormation === 'empty'){
+        else if (newFormation === 'empty') {
             (RFormation) ? onAddFormation('offenseEmptyR', shapeColor) : onAddFormation('offenseEmptyL', shapeColor);
         }
-        else if(newFormation === 'custom'){
-            onAddFormation('offenseCustom', shapeColor);    
+        else if (newFormation === 'custom') {
+            onAddFormation('offenseCustom', shapeColor);
         }
 
 
