@@ -35,17 +35,17 @@ function useShapes(stageDimensions, imageRef) {
         //TODO: Form the bunchL formation
         else if (shapeType === 'bunchL') {
             const newShapes = [
-                { id: uuidv4(), shapeType: 'QBoval', initialPosition: { x: middlePosition.x, y: middlePosition.y + stageDimensions.height * 0.1 }, initialColor },
-                { id: uuidv4(), shapeType: 'RBoval', initialPosition: { x: middlePosition.x, y: middlePosition.y + stageDimensions.height * 0.1 }, initialColor },
-                { id: uuidv4(), shapeType: 'Xoval', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.1, y: middlePosition.y }, initialColor },
-                { id: uuidv4(), shapeType: 'Hoval', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.1, y: middlePosition.y }, initialColor },
-                { id: uuidv4(), shapeType: 'Yoval', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.1, y: middlePosition.y }, initialColor },
-                { id: uuidv4(), shapeType: 'Zoval', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.1, y: middlePosition.y }, initialColor },
-                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.04, y: middlePosition.y }, initialColor },
-                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.02, y: middlePosition.y }, initialColor },
-                { id: uuidv4(), shapeType: 'Center', initialPosition: { x: middlePosition.x, y: middlePosition.y }, initialColor },
-                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.02, y: middlePosition.y }, initialColor },
-                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.04, y: middlePosition.y }, initialColor },
+                { id: uuidv4(), shapeType: 'QBoval', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.002 , y: middlePosition.y + stageDimensions.height * 0.307 }, initialColor },
+                { id: uuidv4(), shapeType: 'RBoval', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.08, y: middlePosition.y + stageDimensions.height * 0.315}, initialColor },
+                { id: uuidv4(), shapeType: 'Xoval', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.16, y: middlePosition.y +  stageDimensions.height * 0.245 }, initialColor },
+                { id: uuidv4(), shapeType: 'Hoval', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.104, y: middlePosition.y + stageDimensions.height * 0.245 }, initialColor },
+                { id: uuidv4(), shapeType: 'Yoval', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.13, y: middlePosition.y + stageDimensions.height * 0.206  }, initialColor },
+                { id: uuidv4(), shapeType: 'Zoval', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.2, y: middlePosition.y + stageDimensions.height * 0.203 }, initialColor },
+                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.09, y: middlePosition.y+ stageDimensions.height * 0.203}, initialColor },
+                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x + stageDimensions.width * 0.05, y: middlePosition.y + stageDimensions.height * 0.203 }, initialColor },
+                { id: uuidv4(), shapeType: 'Center', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.01 , y: middlePosition.y + stageDimensions.height * 0.189 }, initialColor },
+                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.05, y: middlePosition.y + stageDimensions.height * 0.203}, initialColor },
+                { id: uuidv4(), shapeType: 'Lineman', initialPosition: { x: middlePosition.x - stageDimensions.width * 0.09, y: middlePosition.y + stageDimensions.height * 0.203}, initialColor },
 
             ];
             setShapes([...shapes, ...newShapes]);
