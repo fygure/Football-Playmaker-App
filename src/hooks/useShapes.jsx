@@ -17,6 +17,9 @@ function useShapes(stageDimensions, imageRef) {
             height: imageRef.current.height()
         };
 
+        const isOffenseFormation = formationType.startsWith('offense');
+        //console.log(isOffenseFormation);
+
         //OFFENSE FORMATIONS:
         if (formationType === 'offense2x2') {
             const newShapes = [
@@ -33,17 +36,14 @@ function useShapes(stageDimensions, imageRef) {
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.08, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
 
-            if (!shapes.some(shape => shape.formationType === formationType)) {
-                // First, filter out shapes not in the new formation
-                const filteredShapes = shapes.filter(shape => shape.formationType === formationType);
+            const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
 
+            if (!filteredShapes.some(shape => shape.formationType === formationType)) {
                 // Then, add the new shapes
                 setShapes([...filteredShapes, ...newShapes]);
             }
 
-        }
-
-        else if (formationType === 'offenseBunchL') {
+        } else if (formationType === 'offenseBunchL') {
             const newShapes = [
                 { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.002, y: middlePosition.y + imageSize.height * 0.307 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.08, y: middlePosition.y + imageSize.height * 0.315 }, initialColor },
@@ -60,16 +60,14 @@ function useShapes(stageDimensions, imageRef) {
             ];
 
 
-            if (!shapes.some(shape => shape.formationType === formationType)) {
-                // First, filter out shapes not in the new formation
-                const filteredShapes = shapes.filter(shape => shape.formationType === formationType);
+            const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
 
+            if (!filteredShapes.some(shape => shape.formationType === formationType)) {
                 // Then, add the new shapes
                 setShapes([...filteredShapes, ...newShapes]);
             }
 
-        }
-        else if (formationType === 'offenseBunchR') {
+        } else if (formationType === 'offenseBunchR') {
             const newShapes = [
                 { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.002, y: middlePosition.y + imageSize.height * 0.307 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.06, y: middlePosition.y + imageSize.height * 0.317 }, initialColor },
@@ -85,43 +83,46 @@ function useShapes(stageDimensions, imageRef) {
 
             ];
 
-            if (!shapes.some(shape => shape.formationType === formationType)) {
-                // First, filter out shapes not in the new formation
-                const filteredShapes = shapes.filter(shape => shape.formationType === formationType);
+            const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
 
+            if (!filteredShapes.some(shape => shape.formationType === formationType)) {
                 // Then, add the new shapes
                 setShapes([...filteredShapes, ...newShapes]);
             }
 
 
-        }
-        else if (formationType === 'offense3x1L') {
+        } else if (formationType === 'offense3x1L') {
 
-        }
-        else if (formationType === 'offense3x1R') {
+        } else if (formationType === 'offense3x1R') {
 
-        }
-        else if (formationType === 'offenseEmptyL') {
+        } else if (formationType === 'offenseEmptyL') {
 
-        }
-        else if (formationType === 'offenseEmptyR') {
+        } else if (formationType === 'offenseEmptyR') {
 
-        }
-        else if (formationType === 'offenseCustom') {
+        } else if (formationType === 'offenseCustom') {
 
         }
         ////////////////////////////////////////////////////////////////////////////////////////
         //DEFENSE FORMATIONS:
+        //FIXME: 
         else if (formationType === 'defense4-3') {
+            const newShapes = [
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x, y: middlePosition.y }, initialColor },
+            ];
 
-        }
-        else if (formationType === 'defense3-4') {
+            const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
 
-        }
-        else if (formationType === 'defense4-2-5') {
+            if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                // Then, add the new shapes
+                setShapes([...filteredShapes, ...newShapes]);
+            }
+        } else if (formationType === 'defense3-4') {
 
-        }
-        else if (formationType === 'defense3-3Stack') {
+        } else if (formationType === 'defense4-2-5') {
+
+        } else if (formationType === 'defense3-3Stack') {
+
+        } else if (formationType === 'defenseCustom') {
 
         }
         else {
@@ -143,9 +144,10 @@ function useShapes(stageDimensions, imageRef) {
         setShapes(shapes.filter(shape => shape.id !== id));
     };
 
+    //Unused for now
     //Deletes all shapes not of the formationType
     const deleteFormation = (formationType) => {
-        console.log(formationType);
+        //console.log(formationType);
         setShapes(shapes.filter(shape => shape.formationType === formationType));
     }
 

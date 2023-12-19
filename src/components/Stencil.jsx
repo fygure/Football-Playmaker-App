@@ -63,19 +63,19 @@ function Stencil(props) {
         setSelectedDefenseFormation(newFormation);
 
         if (newFormation === '4-3') {
-
+            onAddFormation('defense4-3', shapeColor);
         }
         else if (newFormation === '3-4') {
-
+            onAddFormation('defense3-4', shapeColor);
         }
         else if (newFormation === '4-2-5') {
-
+            onAddFormation('defense4-2-5', shapeColor);
         }
         else if (newFormation === '3-3Stack') {
-
+            onAddFormation('defense3-3Stack', shapeColor);
         }
         else if (newFormation === 'custom') {
-
+            onAddFormation('defenseCustom', shapeColor);
         }
     };
 
