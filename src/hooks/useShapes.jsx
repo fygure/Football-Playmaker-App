@@ -23,17 +23,17 @@ function useShapes(stageDimensions, imageRef) {
         //OFFENSE FORMATIONS:
         if (formationType === 'offense2x2') {
             const newShapes = [
-                { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x, y: middlePosition.y + imageSize.height * 0.3 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.042, y: middlePosition.y + imageSize.height * 0.33 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Xoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.21, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Hoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.14, y: middlePosition.y + imageSize.height * 0.24 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Yoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.15, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.21, y: middlePosition.y + imageSize.height * 0.24 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.08, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.04, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.01, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.04, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.08, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.003, y: middlePosition.y + imageSize.height * 0.307 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.052, y: middlePosition.y + imageSize.height * 0.33 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Xoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.281, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Hoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.19, y: middlePosition.y + imageSize.height * 0.24 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Yoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.20, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.281, y: middlePosition.y + imageSize.height * 0.24 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.015, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
 
             const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
@@ -46,18 +46,17 @@ function useShapes(stageDimensions, imageRef) {
 
         } else if (formationType === 'offenseBunchL') {
             const newShapes = [
-                { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.002, y: middlePosition.y + imageSize.height * 0.307 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.08, y: middlePosition.y + imageSize.height * 0.315 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Xoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.22, y: middlePosition.y + imageSize.height * 0.245 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.003, y: middlePosition.y + imageSize.height * 0.307 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.315 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Xoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.24, y: middlePosition.y + imageSize.height * 0.245 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Hoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.14, y: middlePosition.y + imageSize.height * 0.245 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Yoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.18, y: middlePosition.y + imageSize.height * 0.206 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.25, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.117, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.06, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.01, y: middlePosition.y + imageSize.height * 0.189 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.11, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-
+                { id: uuidv4(), formationType: formationType, shapeType: 'Yoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.19, y: middlePosition.y + imageSize.height * 0.206 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.27, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.015, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
 
 
@@ -70,18 +69,17 @@ function useShapes(stageDimensions, imageRef) {
 
         } else if (formationType === 'offenseBunchR') {
             const newShapes = [
-                { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.002, y: middlePosition.y + imageSize.height * 0.307 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.06, y: middlePosition.y + imageSize.height * 0.32 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Xoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.27, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.003, y: middlePosition.y + imageSize.height * 0.307 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.07, y: middlePosition.y + imageSize.height * 0.32 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Xoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.28, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Hoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.16, y: middlePosition.y + imageSize.height * 0.265 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Yoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.19, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.23, y: middlePosition.y + imageSize.height * 0.265 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.01, y: middlePosition.y + imageSize.height * 0.189 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.11, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-
+                { id: uuidv4(), formationType: formationType, shapeType: 'Yoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.2, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.24, y: middlePosition.y + imageSize.height * 0.265 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.015, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
 
             const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
@@ -93,12 +91,93 @@ function useShapes(stageDimensions, imageRef) {
 
 
         } else if (formationType === 'offense3x1L') {
+            const newShapes = [
+                { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.003, y: middlePosition.y + imageSize.height * 0.307 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.335 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Xoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.34, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Hoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.27, y: middlePosition.y + imageSize.height * 0.233 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Yoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.19, y: middlePosition.y + imageSize.height * 0.25 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.27, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.015, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+            ];
+
+            const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+            if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                // Then, add the new shapes
+                setShapes([...filteredShapes, ...newShapes]);
+            }
+
 
         } else if (formationType === 'offense3x1R') {
+            const newShapes = [
+                { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.003, y: middlePosition.y + imageSize.height * 0.307 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.07, y: middlePosition.y + imageSize.height * 0.335 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Xoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.29, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Hoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.27, y: middlePosition.y + imageSize.height * 0.233 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Yoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.19, y: middlePosition.y + imageSize.height * 0.25 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.34, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.015, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+            ];
+
+            const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+            if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                // Then, add the new shapes
+                setShapes([...filteredShapes, ...newShapes]);
+            }
 
         } else if (formationType === 'offenseEmptyL') {
+            const newShapes = [
+                { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.003, y: middlePosition.y + imageSize.height * 0.307 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.3, y: middlePosition.y + imageSize.height * 0.233 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Xoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.32, y: middlePosition.y + imageSize.height * 0.233 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Hoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.24, y: middlePosition.y + imageSize.height * 0.233 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Yoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.175, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.21, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.015, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+            ];
+
+            const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+            if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                // Then, add the new shapes
+                setShapes([...filteredShapes, ...newShapes]);
+            }
 
         } else if (formationType === 'offenseEmptyR') {
+            const newShapes = [
+                { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.003, y: middlePosition.y + imageSize.height * 0.307 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.33, y: middlePosition.y + imageSize.height * 0.233 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Xoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.24, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Hoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.27, y: middlePosition.y + imageSize.height * 0.233 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Yoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.175, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.4, y: middlePosition.y + imageSize.height * 0.233 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.015, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+            ];
+
+            const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+            if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                // Then, add the new shapes
+                setShapes([...filteredShapes, ...newShapes]);
+            }
 
         }
         else if (formationType === 'offenseCustom') {
@@ -106,20 +185,19 @@ function useShapes(stageDimensions, imageRef) {
                 { id: uuidv4(), formationType: formationType, shapeType: 'QBoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.17, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'RBoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.22, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Xoval', initialPosition: { x: middlePosition.x - imageSize.width * 0.27, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Hoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.14, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Yoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.185, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.23, y: middlePosition.y + imageSize.height * 0.203  }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.01, y: middlePosition.y + imageSize.height * 0.189 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.11, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Hoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.17, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Yoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.22, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.27, y: middlePosition.y + imageSize.height * 0.203 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.015, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
 
-            if (!shapes.some(shape => shape.formationType === formationType)) {
-                // First, filter out shapes not in the new formation
-                const filteredShapes = shapes.filter(shape => shape.formationType === formationType);
+            const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
 
+            if (!filteredShapes.some(shape => shape.formationType === formationType)) {
                 // Then, add the new shapes
                 setShapes([...filteredShapes, ...newShapes]);
             }

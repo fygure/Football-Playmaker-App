@@ -22,9 +22,9 @@ const CenterSquare = (props) => {
     const strokeOptions = { color: 'black', strokeWidth: 2 };
 
     const states = [
-        { leftState: 0, rightState: 100, colorOne: initialColor, colorTwo: "black" }, // fully orange
-        { leftState: 0, rightState: 15, colorOne: "black", colorTwo: initialColor }, // right fill
-        { leftState: 0, rightState: 15, colorOne: initialColor, colorTwo: "black" }, // left fill
+        { leftState: 0, rightState: 100, colorOne: initialColor, colorTwo: "black" }, // fully initialColor
+        { leftState: 0, rightState: rectSize.width / 2, colorOne: "black", colorTwo: initialColor }, // right fill
+        { leftState: 0, rightState: rectSize.width / 2, colorOne: initialColor, colorTwo: "black" }, // left fill
         { leftState: -1, rightState: 0, colorOne: initialColor, colorTwo: "black" } // all fill
     ];
 
@@ -47,6 +47,7 @@ const CenterSquare = (props) => {
                 height={rectSize.height}
                 stroke={strokeOptions.color}
                 strokeWidth={strokeOptions.strokeWidth}
+                cornerRadius={2}
                 onDragStart={handleDragStart}
                 draggable={true}
                 onDragEnd={handleDragEnd}
