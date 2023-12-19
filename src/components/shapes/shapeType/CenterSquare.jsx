@@ -7,25 +7,26 @@ import ContextMenu from '../../menus/ContextMenu';
 class CenterSquare extends React.Component {
     constructor(props) {
         super(props);
-        
+
         this.handleClick = this.handleClick.bind(this);
-        this.states = [{leftState: 0, rightState: 100, colorOne: props.initialColor, colorTwo: "black"}, // fully orange
-                        {leftState: 0, rightState: 13, colorOne: "black", colorTwo: props.initialColor}, // right fill
-                        {leftState: 0, rightState: 13, colorOne: props.initialColor, colorTwo: "black"}, // left fill
-                        {leftState: -1, rightState: 0, colorOne: props.initialColor, colorTwo: "black"} // all fill
-                        ]
+        this.states = [
+            { leftState: 0, rightState: 100, colorOne: props.initialColor, colorTwo: "black" }, // fully orange
+            { leftState: 0, rightState: 15, colorOne: "black", colorTwo: props.initialColor }, // right fill
+            { leftState: 0, rightState: 15, colorOne: props.initialColor, colorTwo: "black" }, // left fill
+            { leftState: -1, rightState: 0, colorOne: props.initialColor, colorTwo: "black" } // all fill
+        ]
         this.state = this.states[0];
         this.index = 0;
     }
 
     handleClick() {
         this.index++;
-        if(this.index >= (this.states.length)){
+        if (this.index >= (this.states.length)) {
             this.index = 0;
         }
         this.setState(this.states[this.index]);
     }
-    
+
     render() {
         const {
             shapeRef,
@@ -60,9 +61,9 @@ class CenterSquare extends React.Component {
                     onDragEnd={handleDragEnd}
                     onClick={this.handleClick}
                     onContextMenu={handleRightClick}
-                    fillLinearGradientStartPoint= { {x: this.state.leftState, y: 0} }
-                    fillLinearGradientEndPoint= { {x: this.state.rightState, y: 0 }}
-                    fillLinearGradientColorStops= {[1, this.state.colorOne, 1, this.state.colorTwo]}
+                    fillLinearGradientStartPoint={{ x: this.state.leftState, y: 0 }}
+                    fillLinearGradientEndPoint={{ x: this.state.rightState, y: 0 }}
+                    fillLinearGradientColorStops={[1, this.state.colorOne, 1, this.state.colorTwo]}
                 />
                 {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
             </>
