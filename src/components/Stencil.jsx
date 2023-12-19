@@ -27,7 +27,7 @@ function Stencil(props) {
             onAddShape('bunchL', 'orange');
         }
         else if (newFormation === 'bunchR') {
-
+            onAddShape('bunchR', 'orange');
         }
         else if (newFormation === '3x1L')
         {
@@ -56,7 +56,7 @@ function Stencil(props) {
     const handleSetDefenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
         setSelectedDefenseFormation(newFormation);
-        
+
         if(newFormation === '4-3')
         {
 
