@@ -24,9 +24,9 @@ function ReceiverOval(props) {
 
     const strokeOptions = { color: 'black', strokeWidth: 2 };
 
-    var textAlignment = 4;
+    var textAlignment = 5;
     if (text.length > 1) {
-        textAlignment = -1;
+        textAlignment = 1;
     }
 
     return (

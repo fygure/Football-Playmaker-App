@@ -1,30 +1,42 @@
 // LinemanOval.jsx
-// TODO: Here is where we change the on click handler for click through
-import React from 'react';
+import React, { useState } from 'react';
 import { Ellipse } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 
-function LinemanOval(props) {
+const LinemanOval = (props) => {
     const {
         shapeRef,
         position,
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        //isSelected,
+        isSelected,
         handleOnClick,
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
         handleDragEnd,
         handleHideContextMenu,
-        ellipseRadiuses,
-        //fontSize,
+        ellipseRadiuses
     } = props;
 
-    //hardcoded value
-    //const ellipseRadiuses = { x: 16, y: 12 };
     const strokeOptions = { color: 'black', strokeWidth: 2 };
+
+    const states = [
+        { leftState: 0, rightState: 200 }, // fully orange
+        { leftState: 0, rightState: -1 }, // right fill
+        { leftState: 0, rightState: 1 }, // left fill
+        { leftState: -200, rightState: 1 } // all fill
+    ];
+
+    const [stateIndex, setStateIndex] = useState(0);
+    const [state, setState] = useState(states[stateIndex]);
+
+    const handleClick = () => {
+        const newIndex = (stateIndex + 1) % states.length;
+        setStateIndex(newIndex);
+        setState(states[newIndex]);
+    };
 
     return (
         <>
@@ -36,15 +48,18 @@ function LinemanOval(props) {
                 radiusY={ellipseRadiuses.y}
                 stroke={strokeOptions.color}
                 strokeWidth={strokeOptions.strokeWidth}
-                fill={initialColor}
                 onDragStart={handleDragStart}
                 draggable
                 onDragEnd={handleDragEnd}
-                onClick={handleOnClick}
+                onClick={handleClick}
                 onContextMenu={handleRightClick}
+                fillLinearGradientStartPoint={{ x: state.leftState, y: 0 }}
+                fillLinearGradientEndPoint={{ x: state.rightState, y: 0 }}
+                fillLinearGradientColorStops={[0, initialColor, 1, 'black']}
             />
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
     );
 }
+
 export default LinemanOval;
