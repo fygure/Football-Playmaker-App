@@ -13,12 +13,14 @@ function Stencil(props) {
         redLine,
         onDeleteAllShapes,
     } = props;
- 
+    const [selectedOffenseFormation, setSelectedOffenseFormation] = useState(""); 
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
     const [RFormation, setRFormation] = useState(false);
 
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
+        setSelectedOffenseFormation(newFormation);
+
         (RFormation) ? newFormation+='R' : newFormation+='L';
         console.log(newFormation);
         if (newFormation === 'bunchL') {
@@ -53,6 +55,8 @@ function Stencil(props) {
 
     const handleSetDefenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
+        setSelectedDefenseFormation(newFormation);
+        
         if(newFormation === '4-3')
         {
 
@@ -229,9 +233,9 @@ function Stencil(props) {
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
                                 <ToggleButtonGroup onChange={handleOffenseFormationToggleGroup} exclusive aria-label="offense formation" style={{ gap: '10px', flexWrap: 'wrap' }}>
-                                    <ToggleButton value="bunch" aria-label="BUNCH" style={{
-                                        background:  '#333',
-                                        color:  'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                    <ToggleButton value="bunch" aria-label="BUNCH" style={{ 
+                                        background: selectedOffenseFormation === "bunch" ? 'white' : '#333',
+                                        color:  selectedOffenseFormation === "bunch" ?  '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -244,8 +248,8 @@ function Stencil(props) {
                                         BUNCH
                                     </ToggleButton>
                                     <ToggleButton value="3x1" aria-label="3X1" style={{
-                                        background:  '#333',
-                                        color: 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background: selectedOffenseFormation === "3x1" ? 'white' : '#333',
+                                        color: selectedOffenseFormation === "3x1" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -257,8 +261,8 @@ function Stencil(props) {
                                         3X1
                                     </ToggleButton>
                                     <ToggleButton value="empty" aria-label="EMPTY" style={{
-                                        background:  '#333',
-                                        color:  'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background: selectedOffenseFormation === "empty" ? 'white' : '#333',
+                                        color:  selectedOffenseFormation === "empty" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -272,8 +276,8 @@ function Stencil(props) {
 
 
                                     <ToggleButton value="2x2" aria-label="2X2" onClick={handleAddOffense2x2} style={{
-                                        background: '#333',
-                                        color:  'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background: selectedOffenseFormation === "2x2" ? 'white' : '#333',
+                                        color:  selectedOffenseFormation === "2x2" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -286,8 +290,8 @@ function Stencil(props) {
                                     </ToggleButton>
 
                                     <ToggleButton value="custom" aria-label="blank" style={{
-                                        background:  '#333',
-                                        color: 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                        background: selectedOffenseFormation === "custom" ? 'white' : '#333',
+                                        color: selectedOffenseFormation === "custom" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -296,7 +300,6 @@ function Stencil(props) {
                                                 boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
                                             },
                                         }}>
-
                                         CUSTOM
                                     </ToggleButton>
                                 </ToggleButtonGroup>
