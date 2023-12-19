@@ -7,25 +7,26 @@ import ContextMenu from '../../menus/ContextMenu';
 class LinemanOval extends React.Component {
     constructor(props) {
         super(props);
-        
+
         this.handleClick = this.handleClick.bind(this);
-        this.states = [{leftState: 0, rightState: 100}, // fully orange
-                        {leftState: 0, rightState: -1}, // right fill
-                        {leftState: 0, rightState: 1}, // left fill
-                        {leftState: -100, rightState: 1} // all fill
-                        ]
+        this.states = [
+            { leftState: 0, rightState: 200 }, // fully orange
+            { leftState: 0, rightState: -1 }, // right fill
+            { leftState: 0, rightState: 1 }, // left fill
+            { leftState: -200, rightState: 1 } // all fill
+        ]
         this.state = this.states[0];
         this.index = 0;
     }
 
     handleClick() {
         this.index++;
-        if(this.index >= (this.states.length)){
+        if (this.index >= (this.states.length)) {
             this.index = 0;
         }
         this.setState(this.states[this.index]);
     }
-    
+
     render() {
         const {
             shapeRef,
@@ -40,9 +41,10 @@ class LinemanOval extends React.Component {
             handleDragStart,
             handleDragEnd,
             handleHideContextMenu,
+            ellipseRadiuses
         } = this.props;
 
-        const ellipseRadiuses = { x: 16, y: 12 };
+        //const ellipseRadiuses = { x: 16, y: 12 };
         const strokeOptions = { color: 'black', strokeWidth: 2 };
         return (
             <>
@@ -60,9 +62,9 @@ class LinemanOval extends React.Component {
                     onDragEnd={handleDragEnd}
                     onClick={this.handleClick}
                     onContextMenu={handleRightClick}
-                    fillLinearGradientStartPoint= { {x: this.state.leftState, y: 0} }
-                    fillLinearGradientEndPoint= { {x: this.state.rightState, y: 0 }}
-                    fillLinearGradientColorStops= {[0, initialColor, 1, 'black']}
+                    fillLinearGradientStartPoint={{ x: this.state.leftState, y: 0 }}
+                    fillLinearGradientEndPoint={{ x: this.state.rightState, y: 0 }}
+                    fillLinearGradientColorStops={[0, initialColor, 1, 'black']}
                 />
                 {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
             </>
