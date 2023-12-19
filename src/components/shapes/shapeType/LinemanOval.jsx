@@ -30,12 +30,12 @@ const LinemanOval = (props) => {
     ];
 
     const lineStates = [
-        180,
-        270,
-        315,
-        360,
-        405,
-        450,
+        180, // straight up
+        270, // left
+        315, // left down
+        360, // straight down
+        405, // right down
+        450, // right
     ];
 
     const [stateIndex, setStateIndex] = useState(0);
@@ -53,6 +53,17 @@ const LinemanOval = (props) => {
         setLineIndex(newLine);
         setState({colorState: states[stateIndex], lineState: lineStates[newLine]})
     };
+
+    const dotDisplacement = ellipseRadiuses.x*1.2;
+    const LineRadius = ellipseRadiuses.x*0.55;
+    const subLineLength = 25;
+    const polarX = (degrees) => {
+        return Math.sin(Math.PI/180 *degrees)*LineRadius;
+    }
+
+    const polarY = (degrees) => {
+        return Math.cos(Math.PI/180 *degrees)*LineRadius;
+    }
 
     return (
         <>
@@ -74,18 +85,20 @@ const LinemanOval = (props) => {
                 fillLinearGradientColorStops={[0, initialColor, 1, 'black']}
             />
             <Line 
-                points={[position.x, position.y+ellipseRadiuses.y, position.x, position.y+ellipseRadiuses.x*1.2]}
+                points={[position.x, position.y+ellipseRadiuses.y, position.x, position.y+dotDisplacement]}
                 strokeWidth={strokeOptions.strokeWidth}
                 stroke={'black'}
             />
             <Line 
-                points={[position.x, position.y+ellipseRadiuses.x*1.2, position.x+Math.sin(Math.PI/180 *state.lineState)*ellipseRadiuses.x*.55, position.y+ellipseRadiuses.x*1.2+Math.cos(Math.PI/180 *state.lineState)*ellipseRadiuses.x*.55]}
+                points={[position.x, position.y+dotDisplacement, 
+                    position.x+polarX(state.lineState), position.y+dotDisplacement+polarY(state.lineState)]}
                 strokeWidth={strokeOptions.strokeWidth}
                 stroke={'black'}
             />
 
             <Line 
-                points={[position.x+Math.sin(Math.PI/180 *(state.lineState+25))*ellipseRadiuses.x*.55, position.y+ellipseRadiuses.x*1.2+Math.cos(Math.PI/180 *(state.lineState+25))*ellipseRadiuses.x*.55, position.x+Math.sin(Math.PI/180 *(state.lineState-25))*ellipseRadiuses.x*.55, position.y+ellipseRadiuses.x*1.2+Math.cos(Math.PI/180 *(state.lineState-25))*ellipseRadiuses.x*.55 ]}
+                points={[position.x+polarX(state.lineState+subLineLength), position.y+dotDisplacement+polarY(state.lineState+subLineLength), 
+                    position.x+polarX(state.lineState-subLineLength), position.y+dotDisplacement+polarY(state.lineState-subLineLength) ]}
                 strokeWidth={strokeOptions.strokeWidth}
                 stroke={'black'}
             />
