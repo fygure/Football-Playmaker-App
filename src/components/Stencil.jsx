@@ -1,5 +1,5 @@
 // Stencil.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid } from '@mui/material';
 
 function Stencil(props) {
@@ -17,37 +17,29 @@ function Stencil(props) {
     } = props;
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
-    const [RFormation, setRFormation] = useState(false); // false = L 
+    const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left 
+    const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
 
     const shapeColor = 'white';
 
+    // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
-        setSelectedOffenseFormation(newFormation);
+        setSelectedOffenseFormation(newFormation); 
 
+        
         if (newFormation === '2x2') {
             onAddFormation('offense2x2', shapeColor);
         } else if (newFormation === 'Bunch') {
-            (RFormation) ? onAddFormation('offenseBunchR', shapeColor) : onAddFormation('offenseBunchL', shapeColor);
+            (toggleOffenseLeftRight) ? onAddFormation('offenseBunchR', shapeColor) : onAddFormation('offenseBunchL', shapeColor);
         } else if (newFormation === '3x1') {
-            (RFormation) ? onAddFormation('offense3x1R', shapeColor) : onAddFormation('offense3x1L', shapeColor);
+            (toggleOffenseLeftRight) ? onAddFormation('offense3x1R', shapeColor) : onAddFormation('offense3x1L', shapeColor);
         }
         else if (newFormation === 'Empty') {
-            (RFormation) ? onAddFormation('offenseEmptyR', shapeColor) : onAddFormation('offenseEmptyL', shapeColor);
+            (toggleOffenseLeftRight) ? onAddFormation('offenseEmptyR', shapeColor) : onAddFormation('offenseEmptyL', shapeColor);
         }
         else if (newFormation === 'Custom') {
             onAddFormation('offenseCustom', shapeColor);
-        }
-    };
-
-    const handleToggleOffenseR = () => {
-        const newRFormation = !RFormation;
-        setRFormation(newRFormation);
-        const suffix = newRFormation ? 'R' : 'L';
-
-        //console.log(selectedOffenseFormation, suffix);
-        if (['3x1', 'Bunch', 'Empty'].includes(selectedOffenseFormation)) {
-            onAddFormation(`offense${selectedOffenseFormation}${suffix}`, shapeColor);
         }
     };
 
@@ -56,22 +48,47 @@ function Stencil(props) {
         setSelectedDefenseFormation(newFormation);
 
         if (newFormation === '4-3') {
-            onAddFormation('defense4-3', shapeColor);
+            (toggleDefenseLeftRight) ? onAddFormation('defense4-3R', shapeColor) : onAddFormation('defense4-3L', shapeColor);
         }
         else if (newFormation === '3-4') {
-            onAddFormation('defense3-4', shapeColor);
+            (toggleDefenseLeftRight) ? onAddFormation('defense3-4R', shapeColor) : onAddFormation('defense3-4L', shapeColor);
         }
         else if (newFormation === '4-2-5') {
-            onAddFormation('defense4-2-5', shapeColor);
+            (toggleDefenseLeftRight) ? onAddFormation('defense4-2-5R', shapeColor) : onAddFormation('defense4-2-5L', shapeColor);
         }
         else if (newFormation === '3-3Stack') {
-            onAddFormation('defense3-3Stack', shapeColor);
+            (toggleDefenseLeftRight) ? onAddFormation('defense3-3StackR', shapeColor) : onAddFormation('defense3-3StackL', shapeColor);
         }
         else if (newFormation === 'Custom') {
             onAddFormation('defenseCustom', shapeColor);
         }
     };
 
+    // Toggle handlers
+    const handleToggleOffenseLeftRight = () => {
+        const newtoggleOffenseLeftRight = !toggleOffenseLeftRight;
+        setToggleOffenseLeftRight(newtoggleOffenseLeftRight);
+        const suffix = newtoggleOffenseLeftRight ? 'R' : 'L';
+
+        //console.log(selectedOffenseFormation, suffix);
+        if (['3x1', 'Bunch', 'Empty'].includes(selectedOffenseFormation)) {
+            onAddFormation(`offense${selectedOffenseFormation}${suffix}`, shapeColor);
+        }
+    };
+
+    const handleToggleDefenseLeftRight = () => {
+        const newtoggleDefenseLeftRight = !toggleDefenseLeftRight;
+        setToggleDefenseLeftRight(newtoggleDefenseLeftRight);
+        const suffix = newtoggleDefenseLeftRight ? 'R' : 'L';
+
+
+        if (['3-3Stack', '4-2-5', '4-3', '3-4'].includes(selectedDefenseFormation)) {
+            console.log(selectedDefenseFormation, suffix);
+            onAddFormation(`defense${selectedDefenseFormation}${suffix}`, shapeColor);
+        }
+    };
+
+    // Delete handlers
     const handleDeleteAllShapes = () => {
         onDeleteAllShapes();
     };
@@ -186,7 +203,7 @@ function Stencil(props) {
                     <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                         <h3 style={{ marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation
                             <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-22px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
-                                <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}> L</CheckboxOption>
+                                <CheckboxOption onChange={handleToggleOffenseLeftRight} checked={toggleOffenseLeftRight}> L</CheckboxOption>
                                 <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
                             </div>
                         </h3>
@@ -271,7 +288,12 @@ function Stencil(props) {
                     </div>
 
 
-                    <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Defense Formation</h3>
+                    <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Defense Formation
+                        <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-22px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
+                            <CheckboxOption onChange={handleToggleDefenseLeftRight} checked={toggleDefenseLeftRight}> L</CheckboxOption>
+                            <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
+                        </div>
+                    </h3>
                     <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
