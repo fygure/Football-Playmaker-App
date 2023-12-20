@@ -56,19 +56,20 @@ function Canvas(props) {
     }, []);
 
 
-    useEffect(() => {
-        console.log('initial mouse pos', initialMousePosition);
-    }, [initialMousePosition]);
-    
+    const handleImageClick = (e) => {
+        console.log('BG Image Clicked', backgroundImage);
+        console.log('Image Dimensions:', image.width, image.height);
+        console.log('Image Position:', imageRef.current.x(), imageRef.current.y());
+        console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
+        //console.log(imageRef.current);
+        if (e.target === e.target.getStage()) {
+            onSelect(null);
+        }
+    }
 
     const handleStageClick = (e) => {
-        // console.log('Stage Dimensions:', stageDimensions);
+        console.log('Stage Clicked', stageDimensions);
         console.log('Shapes List:', shapes);
-        // console.log('Background Image:', backgroundImage);
-        // console.log('Image Dimensions:', image.width, image.height);
-        // console.log('Image Position:', imageRef.current.x(), imageRef.current.y());
-        // console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
-        // console.log(imageRef.current);
         // if clicked on empty area - remove all selections
         //console.log(e);
         if (e.target === e.target.getStage()) {
@@ -150,7 +151,7 @@ function Canvas(props) {
                             image={image}
                             width={image ? image.width * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
                             height={image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
-                            onClick={() => { onSelect(null); console.log('Background Clicked'); }}
+                            onClick={handleImageClick}
                         />
                         {shapes.map((shape) => (
                             <Shape

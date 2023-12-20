@@ -1,6 +1,5 @@
-# KonvaJS library sandbox
+# Football Playmaking CAD Software
 [Documentation](https://konvajs.org/)
-
 
 ## Available Scripts
 

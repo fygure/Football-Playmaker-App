@@ -17,10 +17,12 @@ function Stencil(props) {
     } = props;
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
-    const [RFormation, setRFormation] = useState(false);
+    const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left 
+    const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
 
-    const shapeColor = 'orange';
+    const shapeColor = 'white';
 
+    // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
         setSelectedOffenseFormation(newFormation); 
@@ -28,42 +30,17 @@ function Stencil(props) {
         
         if (newFormation === '2x2') {
             onAddFormation('offense2x2', shapeColor);
-        } else if (newFormation === 'bunch') {
-            (RFormation) ? onAddFormation('offenseBunchR', shapeColor) : onAddFormation('offenseBunchL', shapeColor);
+        } else if (newFormation === 'Bunch') {
+            (toggleOffenseLeftRight) ? onAddFormation('offenseBunchR', shapeColor) : onAddFormation('offenseBunchL', shapeColor);
         } else if (newFormation === '3x1') {
-            (RFormation) ? onAddFormation('offense3x1R', shapeColor) : onAddFormation('offense3x1L', shapeColor);
-        } else if(newFormation === 'empty'){
-            (RFormation) ? onAddFormation('offenseEmptyR', shapeColor) : onAddFormation('offenseEmptyL', shapeColor);
-        } else if(newFormation === 'custom'){
-            onAddFormation('offenseCustom', shapeColor);    
+            (toggleOffenseLeftRight) ? onAddFormation('offense3x1R', shapeColor) : onAddFormation('offense3x1L', shapeColor);
         }
-
-
-
-        // else if (newFormation === '3x1L') {
-        //     //FIXME: reduce the amount of code here by half by using the code below:
-        //     //(RFormation) ? onAddShape('offense3x1R', 'orange') : onAddShape('offense3x1L', 'orange');
-        // }
-        // else if (newFormation === '3x1R') {
-        // }
-        // else if (newFormation === 'emptyL') {
-
-        // }
-        // else if (newFormation === 'emptyR') {
-
-        // }
-        // else if (newFormation === 'custom') {
-
-        // }
-
-
-    };
-
-    const handleToggleOffenseR = () => {
-        const newRFormation = !RFormation;
-        setRFormation(newRFormation);
-        handleOffenseFormationToggleGroup({ target: { value: selectedOffenseFormation }});
-        return newRFormation;
+        else if (newFormation === 'Empty') {
+            (toggleOffenseLeftRight) ? onAddFormation('offenseEmptyR', shapeColor) : onAddFormation('offenseEmptyL', shapeColor);
+        }
+        else if (newFormation === 'Custom') {
+            onAddFormation('offenseCustom', shapeColor);
+        }
     };
 
     const handleSetDefenseFormationToggleGroup = (e) => {
@@ -71,22 +48,47 @@ function Stencil(props) {
         setSelectedDefenseFormation(newFormation);
 
         if (newFormation === '4-3') {
-
+            (toggleDefenseLeftRight) ? onAddFormation('defense4-3R', shapeColor) : onAddFormation('defense4-3L', shapeColor);
         }
         else if (newFormation === '3-4') {
-
+            (toggleDefenseLeftRight) ? onAddFormation('defense3-4R', shapeColor) : onAddFormation('defense3-4L', shapeColor);
         }
         else if (newFormation === '4-2-5') {
-
+            (toggleDefenseLeftRight) ? onAddFormation('defense4-2-5R', shapeColor) : onAddFormation('defense4-2-5L', shapeColor);
         }
         else if (newFormation === '3-3Stack') {
-
+            (toggleDefenseLeftRight) ? onAddFormation('defense3-3StackR', shapeColor) : onAddFormation('defense3-3StackL', shapeColor);
         }
-        else if (newFormation === 'custom') {
-
+        else if (newFormation === 'Custom') {
+            onAddFormation('defenseCustom', shapeColor);
         }
     };
 
+    // Toggle handlers
+    const handleToggleOffenseLeftRight = () => {
+        const newtoggleOffenseLeftRight = !toggleOffenseLeftRight;
+        setToggleOffenseLeftRight(newtoggleOffenseLeftRight);
+        const suffix = newtoggleOffenseLeftRight ? 'R' : 'L';
+
+        //console.log(selectedOffenseFormation, suffix);
+        if (['3x1', 'Bunch', 'Empty'].includes(selectedOffenseFormation)) {
+            onAddFormation(`offense${selectedOffenseFormation}${suffix}`, shapeColor);
+        }
+    };
+
+    const handleToggleDefenseLeftRight = () => {
+        const newtoggleDefenseLeftRight = !toggleDefenseLeftRight;
+        setToggleDefenseLeftRight(newtoggleDefenseLeftRight);
+        const suffix = newtoggleDefenseLeftRight ? 'R' : 'L';
+
+
+        if (['3-3Stack', '4-2-5', '4-3', '3-4'].includes(selectedDefenseFormation)) {
+            console.log(selectedDefenseFormation, suffix);
+            onAddFormation(`defense${selectedDefenseFormation}${suffix}`, shapeColor);
+        }
+    };
+
+    // Delete handlers
     const handleDeleteAllShapes = () => {
         onDeleteAllShapes();
     };
@@ -105,23 +107,6 @@ function Stencil(props) {
         const newRedLine = !redLine;
         setRedLine(newRedLine);
     };
-
-    // Formation handlers
-    // const handleAddOffense2x2 = () => {
-    //     onChangeFormation('offense2x2');
-    //     onAddShape('offense2x2', 'orange');
-    // }
-
-    //TODOS:
-    //handleAddOffenseEmptyLeft
-    //handleAddOffenseEmptyRight
-    //handleAddOffenseBunchLeft
-    //handleAddOffenseBunchRight
-    //handleAddOffenseCustom (just put all players on the 30 yd line)
-
-    // const handleAddOffense3x1 = () => {
-    //     (RFormation) ? onAddShape('offense3x1R', 'orange') : onAddShape('offense3x1L', 'orange');
-    // }
 
     // Components for the stencil
     const CheckboxOption = ({ onChange, children, checked }) => (
@@ -218,7 +203,7 @@ function Stencil(props) {
                     <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                         <h3 style={{ marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation
                             <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-22px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
-                                <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}>L</CheckboxOption>
+                                <CheckboxOption onChange={handleToggleOffenseLeftRight} checked={toggleOffenseLeftRight}> L</CheckboxOption>
                                 <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
                             </div>
                         </h3>
@@ -228,9 +213,9 @@ function Stencil(props) {
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
                                 <ToggleButtonGroup onChange={handleOffenseFormationToggleGroup} exclusive aria-label="offense formation" style={{ gap: '10px', flexWrap: 'wrap' }}>
-                                    <ToggleButton value="bunch" aria-label="BUNCH" style={{
-                                        background: selectedOffenseFormation === "bunch" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "bunch" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                    <ToggleButton value="Bunch" aria-label="BUNCH" style={{
+                                        background: selectedOffenseFormation === "Bunch" ? 'white' : '#333',
+                                        color: selectedOffenseFormation === "Bunch" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -255,9 +240,9 @@ function Stencil(props) {
                                         }}>
                                         3X1
                                     </ToggleButton>
-                                    <ToggleButton value="empty" aria-label="EMPTY" style={{
-                                        background: selectedOffenseFormation === "empty" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "empty" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                    <ToggleButton value="Empty" aria-label="EMPTY" style={{
+                                        background: selectedOffenseFormation === "Empty" ? 'white' : '#333',
+                                        color: selectedOffenseFormation === "Empty" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -284,9 +269,9 @@ function Stencil(props) {
                                         2X2
                                     </ToggleButton>
 
-                                    <ToggleButton value="custom" aria-label="blank" style={{
-                                        background: selectedOffenseFormation === "custom" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "custom" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                    <ToggleButton value="Custom" aria-label="blank" style={{
+                                        background: selectedOffenseFormation === "Custom" ? 'white' : '#333',
+                                        color: selectedOffenseFormation === "Custom" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
@@ -303,7 +288,12 @@ function Stencil(props) {
                     </div>
 
 
-                    <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Defense Formation</h3>
+                    <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Defense Formation
+                        <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-22px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
+                            <CheckboxOption onChange={handleToggleDefenseLeftRight} checked={toggleDefenseLeftRight}> L</CheckboxOption>
+                            <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
+                        </div>
+                    </h3>
                     <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
@@ -360,9 +350,9 @@ function Stencil(props) {
                                         }}>
                                         3-3 STACK
                                     </ToggleButton>
-                                    <ToggleButton value="custom" aria-label="blank" style={{
-                                        background: selectedDefenseFormation === "custom" ? 'white' : '#333',
-                                        color: selectedDefenseFormation === "custom" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                    <ToggleButton value="Custom" aria-label="blank" style={{
+                                        background: selectedDefenseFormation === "Custom" ? 'white' : '#333',
+                                        color: selectedDefenseFormation === "Custom" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
                                     }}
                                         sx={{
                                             ':hover': {
