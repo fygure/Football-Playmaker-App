@@ -1,5 +1,5 @@
 // Stencil.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid } from '@mui/material';
 
 function Stencil(props) {
@@ -25,8 +25,9 @@ function Stencil(props) {
     // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
-        setSelectedOffenseFormation(newFormation);
+        setSelectedOffenseFormation(newFormation); 
 
+        
         if (newFormation === '2x2') {
             onAddFormation('offense2x2', shapeColor);
         } else if (newFormation === 'Bunch') {

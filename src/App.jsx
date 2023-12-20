@@ -23,7 +23,7 @@ function App() {
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
 
   //TODO: implement selection rectangle starting by adding all clicked shapes to selectedShapeIds
-  const [selectedShapeIds, setSelectedShapeIds] = useState([]);
+  const [selectedShapes, setSelectedShapes] = useState([]);
 
 
   return (
@@ -69,8 +69,8 @@ function App() {
                 imageRef={imageRef}
                 shapes={shapes}
                 selectedId={selectedId}
-                selectedShapeIds={selectedShapeIds}
-                setSelectedShapeIds={setSelectedShapeIds}
+                selectedShapes={selectedShapes}
+                setSelectedShapes={setSelectedShapes}
                 onSelect={setSelectedId}
                 onChange={updateShape}
                 onDelete={deleteShape}
