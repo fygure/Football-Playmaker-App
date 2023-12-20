@@ -1,6 +1,6 @@
 // Canvas.jsx
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { Stage, Layer, Image, Rect, Transformer } from 'react-konva';
+import { Stage, Layer, Image, Rect, Transformer, getAbsolutePosition } from 'react-konva';
 import useImage from 'use-image';
 import StageDimensionsContext from '../contexts/StageDimensionsContext';
 import Shape from './shapes/Shape';
@@ -9,20 +9,24 @@ import Konva from 'konva';
 function Canvas(props) {
     const {
         imageRef,
-        setStageDimensions,
         shapes,
         selectedId,
+        selectedShapeIds,
+        setSelectedShapeIds,
         onSelect,
         onChange,
         onDelete,
         onHideContextMenu,
-        backgroundImage
+        backgroundImage,
+        setStageDimensions
     } = props;
 
     const { stageDimensions } = useContext(StageDimensionsContext);
     const stageRef = useRef(null);
     const containerRef = useRef(null);
     const [image] = useImage(backgroundImage);
+
+    const [selectionRect, setSelectionRect] = useState({ x: 0, y: 0, width: 0, height: 0, visible: false });
 
     useEffect(() => {
         function fitStageIntoParentContainer() {
@@ -50,6 +54,11 @@ function Canvas(props) {
     }, []);
 
 
+    useEffect(() => {
+        console.log('Selected Shape IDs:', selectedShapeIds);
+    }, [selectedShapeIds]);
+
+
     const handleStageClick = (e) => {
         console.log('Stage Dimensions:', stageDimensions);
         console.log('Shapes List:', shapes);
@@ -73,6 +82,72 @@ function Canvas(props) {
                     width={containerRef.current ? containerRef.current.offsetWidth : 0}
                     height={containerRef.current ? containerRef.current.offsetHeight : 0}
                     onClick={handleStageClick}
+                    onMouseDown={(e) => {
+                        const pos = e.target.getStage().getPointerPosition();
+                        console.log('pos',pos);
+                        setSelectionRect({ x: pos.x, y: pos.y, width: 0, height: 0, visible: true });
+                    }}
+
+                    onMouseMove={(e) => {
+                        if (!selectionRect.visible) return;
+                        const pos = e.target.getStage().getPointerPosition();
+                        // console.log('selection Rect pos',pos);
+                        // console.log('selection Rect x: ', pos.x - selectionRect.x);
+                        // console.log('selection Rect y: ', selectionRect.y - pos.y );
+                        setSelectionRect({
+                            ...selectionRect,
+                            width: (pos.x - selectionRect.x),
+                            height:(pos.y - selectionRect.y)
+                        });
+                    }}
+                    //NEED TO FIX THIS!!!!
+                    //Top left: -,-, Top right: +,-, Bottom left: -,+, Bottom right: +,+
+                    //if the shapes have not been moved since initialized,
+                    // then the x and y of each shape is referred to as shape.initialPosition.x and shape.initialPosition.y
+                    // if the shapes have been moved, then the current position is that shape.x and shape.y
+                    onMouseUp={() => {
+                        setSelectionRect({ ...selectionRect, visible: false });
+                        // Check each shape to see if it is within the selection rectangle
+                        const newSelectedShapeIds = shapes.filter(shape => {
+                                // Adjust the selection rectangle to always have positive width and height
+                                const adjustedSelectionRect = {
+                                    x: selectionRect.width < 0 ? selectionRect.x + selectionRect.width : selectionRect.x,
+                                    y: selectionRect.height < 0 ? selectionRect.y + selectionRect.height : selectionRect.y,
+                                    width: Math.abs(selectionRect.width),
+                                    height: Math.abs(selectionRect.height),
+                                };
+                                console.log(selectionRect.x + selectionRect.width);
+                                 //X pos is fine, Y pos is not it's inverted!!!
+                                console.log('adj rect x:', adjustedSelectionRect.x);
+                                console.log('adj rect y:', adjustedSelectionRect.y);
+                                // console.log('adj rect width:', adjustedSelectionRect.width);
+                                // console.log(' adj rect height:', adjustedSelectionRect.height);
+                                
+                            // Check if the shape has been moved
+                            const shapeX = shape.x !== undefined ? shape.x : shape.initialPosition.x;
+                            const shapeY = shape.y !== undefined ? shape.y : shape.initialPosition.y;
+                                // console.log('shape x:', shapeX);
+                                // console.log('shape y:', shapeY);
+                            // Check if the shape's position is within the adjusted selection rectangle
+                            return (
+                                shapeX < adjustedSelectionRect.x + adjustedSelectionRect.width &&
+                                shapeX + shape.width > adjustedSelectionRect.x &&
+                                shapeY < adjustedSelectionRect.y + adjustedSelectionRect.height &&
+                                shapeY + shape.height > adjustedSelectionRect.y
+                            );
+                        }).map(shape => shape.id);
+
+                        console.log('New Selected Shape IDs:', newSelectedShapeIds);
+                        // Create a new set from the existing selectedShapeIds (unique IDs)
+                        const selectedShapeIdsSet = new Set(selectedShapeIds);
+                        // Add the new selected shape IDs
+                        newSelectedShapeIds.forEach((id) => {
+                            selectedShapeIdsSet.add(id);
+                        });
+                        console.log(selectedShapeIdsSet);
+                        setSelectedShapeIds(Array.from(selectedShapeIdsSet));
+                        
+                    }}
                 >
                     <Layer>
                         {/* Image tag = background image (field type) */}
@@ -100,6 +175,15 @@ function Canvas(props) {
                                 imageRef={imageRef}
                             />
                         ))}
+                         {selectionRect.visible && (
+                            <Rect
+                                x={selectionRect.x}
+                                y={selectionRect.y}
+                                width={selectionRect.width}
+                                height={selectionRect.height}
+                                fill="rgba(169, 169, 169, 0.5)"
+                            />
+                        )}
                     </Layer>
                 </Stage>
             </div>

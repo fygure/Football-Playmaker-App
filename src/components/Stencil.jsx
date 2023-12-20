@@ -1,5 +1,5 @@
 // Stencil.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid } from '@mui/material';
 
 function Stencil(props) {
@@ -23,19 +23,18 @@ function Stencil(props) {
 
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
-        setSelectedOffenseFormation(newFormation);
+        setSelectedOffenseFormation(newFormation); 
 
+        
         if (newFormation === '2x2') {
             onAddFormation('offense2x2', shapeColor);
         } else if (newFormation === 'bunch') {
             (RFormation) ? onAddFormation('offenseBunchR', shapeColor) : onAddFormation('offenseBunchL', shapeColor);
         } else if (newFormation === '3x1') {
             (RFormation) ? onAddFormation('offense3x1R', shapeColor) : onAddFormation('offense3x1L', shapeColor);
-        }
-        else if(newFormation === 'empty'){
+        } else if(newFormation === 'empty'){
             (RFormation) ? onAddFormation('offenseEmptyR', shapeColor) : onAddFormation('offenseEmptyL', shapeColor);
-        }
-        else if(newFormation === 'custom'){
+        } else if(newFormation === 'custom'){
             onAddFormation('offenseCustom', shapeColor);    
         }
 
@@ -63,6 +62,8 @@ function Stencil(props) {
     const handleToggleOffenseR = () => {
         const newRFormation = !RFormation;
         setRFormation(newRFormation);
+        handleOffenseFormationToggleGroup({ target: { value: selectedOffenseFormation }});
+        return newRFormation;
     };
 
     const handleSetDefenseFormationToggleGroup = (e) => {
@@ -118,9 +119,9 @@ function Stencil(props) {
     //handleAddOffenseBunchRight
     //handleAddOffenseCustom (just put all players on the 30 yd line)
 
-    const handleAddOffense3x1 = () => {
-        (RFormation) ? onAddShape('offense3x1R', 'orange') : onAddShape('offense3x1L', 'orange');
-    }
+    // const handleAddOffense3x1 = () => {
+    //     (RFormation) ? onAddShape('offense3x1R', 'orange') : onAddShape('offense3x1L', 'orange');
+    // }
 
     // Components for the stencil
     const CheckboxOption = ({ onChange, children, checked }) => (
@@ -217,7 +218,7 @@ function Stencil(props) {
                     <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                         <h3 style={{ marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation
                             <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-22px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
-                                <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}> L</CheckboxOption>
+                                <CheckboxOption onChange={handleToggleOffenseR} checked={RFormation}>L</CheckboxOption>
                                 <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
                             </div>
                         </h3>
