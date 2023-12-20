@@ -11,8 +11,8 @@ function Canvas(props) {
         imageRef,
         shapes,
         selectedId,
-        selectedShapeIds,
-        setSelectedShapeIds,
+        selectedShapes,
+        setSelectedShapes,
         onSelect,
         onChange,
         onDelete,
@@ -27,6 +27,8 @@ function Canvas(props) {
     const [image] = useImage(backgroundImage);
 
     const [selectionRect, setSelectionRect] = useState({ x: 0, y: 0, width: 0, height: 0, visible: false });
+    const [initialMousePosition, setInitialMousePosition] = useState({ x: 0, y: 0 });
+    
 
     useEffect(() => {
         function fitStageIntoParentContainer() {
@@ -55,18 +57,18 @@ function Canvas(props) {
 
 
     useEffect(() => {
-        console.log('Selected Shape IDs:', selectedShapeIds);
-    }, [selectedShapeIds]);
-
+        console.log('initial mouse pos', initialMousePosition);
+    }, [initialMousePosition]);
+    
 
     const handleStageClick = (e) => {
-        console.log('Stage Dimensions:', stageDimensions);
+        // console.log('Stage Dimensions:', stageDimensions);
         console.log('Shapes List:', shapes);
-        console.log('Background Image:', backgroundImage);
-        console.log('Image Dimensions:', image.width, image.height);
-        console.log('Image Position:', imageRef.current.x(), imageRef.current.y());
-        console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
-        console.log(imageRef.current);
+        // console.log('Background Image:', backgroundImage);
+        // console.log('Image Dimensions:', image.width, image.height);
+        // console.log('Image Position:', imageRef.current.x(), imageRef.current.y());
+        // console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
+        // console.log(imageRef.current);
         // if clicked on empty area - remove all selections
         //console.log(e);
         if (e.target === e.target.getStage()) {
@@ -82,10 +84,12 @@ function Canvas(props) {
                     width={containerRef.current ? containerRef.current.offsetWidth : 0}
                     height={containerRef.current ? containerRef.current.offsetHeight : 0}
                     onClick={handleStageClick}
+
                     onMouseDown={(e) => {
                         const pos = e.target.getStage().getPointerPosition();
-                        console.log('pos',pos);
+                        console.log('Mouse Down pos',pos);
                         setSelectionRect({ x: pos.x, y: pos.y, width: 0, height: 0, visible: true });
+                        setInitialMousePosition({ x: pos.x, y: pos.y });
                     }}
 
                     onMouseMove={(e) => {
@@ -100,53 +104,41 @@ function Canvas(props) {
                             height:(pos.y - selectionRect.y)
                         });
                     }}
-                    //NEED TO FIX THIS!!!!
-                    //Top left: -,-, Top right: +,-, Bottom left: -,+, Bottom right: +,+
-                    //if the shapes have not been moved since initialized,
-                    // then the x and y of each shape is referred to as shape.initialPosition.x and shape.initialPosition.y
-                    // if the shapes have been moved, then the current position is that shape.x and shape.y
-                    onMouseUp={() => {
+                    onMouseUp={(e) => {
                         setSelectionRect({ ...selectionRect, visible: false });
+                        const pos = e.target.getStage().getPointerPosition();
                         // Check each shape to see if it is within the selection rectangle
-                        const newSelectedShapeIds = shapes.filter(shape => {
-                                // Adjust the selection rectangle to always have positive width and height
-                                const adjustedSelectionRect = {
-                                    x: selectionRect.width < 0 ? selectionRect.x + selectionRect.width : selectionRect.x,
-                                    y: selectionRect.height < 0 ? selectionRect.y + selectionRect.height : selectionRect.y,
-                                    width: Math.abs(selectionRect.width),
-                                    height: Math.abs(selectionRect.height),
-                                };
-                                console.log(selectionRect.x + selectionRect.width);
-                                 //X pos is fine, Y pos is not it's inverted!!!
-                                console.log('adj rect x:', adjustedSelectionRect.x);
-                                console.log('adj rect y:', adjustedSelectionRect.y);
-                                // console.log('adj rect width:', adjustedSelectionRect.width);
-                                // console.log(' adj rect height:', adjustedSelectionRect.height);
-                                
-                            // Check if the shape has been moved
-                            const shapeX = shape.x !== undefined ? shape.x : shape.initialPosition.x;
-                            const shapeY = shape.y !== undefined ? shape.y : shape.initialPosition.y;
-                                // console.log('shape x:', shapeX);
-                                // console.log('shape y:', shapeY);
-                            // Check if the shape's position is within the adjusted selection rectangle
-                            return (
-                                shapeX < adjustedSelectionRect.x + adjustedSelectionRect.width &&
-                                shapeX + shape.width > adjustedSelectionRect.x &&
-                                shapeY < adjustedSelectionRect.y + adjustedSelectionRect.height &&
-                                shapeY + shape.height > adjustedSelectionRect.y
-                            );
-                        }).map(shape => shape.id);
-
-                        console.log('New Selected Shape IDs:', newSelectedShapeIds);
-                        // Create a new set from the existing selectedShapeIds (unique IDs)
-                        const selectedShapeIdsSet = new Set(selectedShapeIds);
-                        // Add the new selected shape IDs
-                        newSelectedShapeIds.forEach((id) => {
-                            selectedShapeIdsSet.add(id);
-                        });
-                        console.log(selectedShapeIdsSet);
-                        setSelectedShapeIds(Array.from(selectedShapeIdsSet));
-                        
+                        const rect = {
+                            x: Math.min(initialMousePosition.x, pos.x),
+                            y: Math.min(initialMousePosition.y, pos.y),
+                            width: Math.abs(initialMousePosition.x - pos.x),
+                            height: Math.abs(initialMousePosition.y - pos.y),
+                        };
+                        // console.log('Mouse Up pos',pos);
+                        // console.log('rect x', rect.x,'rect y', rect.y );
+                        const isShapeWithinSelection = (shape, rect) => {
+                        const shapeX = shape.x !== undefined ? shape.x : shape.initialPosition.x;
+                        const shapeY = shape.y !== undefined ? shape.y : shape.initialPosition.y;
+                    
+                        const shapeRight = shapeX + shape.width;
+                        const shapeBottom = shapeY + shape.height;
+                    
+                        const rectRight = rect.x + rect.width;
+                        const rectBottom = rect.y + rect.height;
+                    
+                        const topLeftIsInside = shapeX >= rect.x && shapeX <= rectRight && shapeY >= rect.y && shapeY <= rectBottom;
+                        const topRightIsInside = shapeRight >= rect.x && shapeRight <= rectRight && shapeY >= rect.y && shapeY <= rectBottom;
+                        const bottomLeftIsInside = shapeX >= rect.x && shapeX <= rectRight && shapeBottom >= rect.y && shapeBottom <= rectBottom;
+                        const bottomRightIsInside = shapeRight >= rect.x && shapeRight <= rectRight && shapeBottom >= rect.y && shapeBottom <= rectBottom;
+                    
+                        return topLeftIsInside || topRightIsInside || bottomLeftIsInside || bottomRightIsInside;
+            
+                    };
+                        // Filter shapes that are within the selection rectangle
+                        const selectedNewShapes = shapes.filter(shape => isShapeWithinSelection(shape, rect));
+                        console.log('selected Newshapes', selectedNewShapes );
+                        setSelectedShapes(selectedNewShapes);
+                        // console.log('selected shapes', selectedShapes );
                     }}
                 >
                     <Layer>
