@@ -28,7 +28,7 @@ function Canvas(props) {
 
     const [selectionRect, setSelectionRect] = useState({ x: 0, y: 0, width: 0, height: 0, visible: false });
     const [initialMousePosition, setInitialMousePosition] = useState({ x: 0, y: 0 });
-    
+
 
     useEffect(() => {
         function fitStageIntoParentContainer() {
@@ -88,7 +88,7 @@ function Canvas(props) {
 
                     onMouseDown={(e) => {
                         const pos = e.target.getStage().getPointerPosition();
-                        console.log('Mouse Down pos',pos);
+                        console.log('Mouse Down pos', pos);
                         setSelectionRect({ x: pos.x, y: pos.y, width: 0, height: 0, visible: true });
                         setInitialMousePosition({ x: pos.x, y: pos.y });
                     }}
@@ -102,7 +102,7 @@ function Canvas(props) {
                         setSelectionRect({
                             ...selectionRect,
                             width: (pos.x - selectionRect.x),
-                            height:(pos.y - selectionRect.y)
+                            height: (pos.y - selectionRect.y)
                         });
                     }}
                     onMouseUp={(e) => {
@@ -118,26 +118,26 @@ function Canvas(props) {
                         // console.log('Mouse Up pos',pos);
                         // console.log('rect x', rect.x,'rect y', rect.y );
                         const isShapeWithinSelection = (shape, rect) => {
-                        const shapeX = shape.x !== undefined ? shape.x : shape.initialPosition.x;
-                        const shapeY = shape.y !== undefined ? shape.y : shape.initialPosition.y;
-                    
-                        const shapeRight = shapeX + shape.width;
-                        const shapeBottom = shapeY + shape.height;
-                    
-                        const rectRight = rect.x + rect.width;
-                        const rectBottom = rect.y + rect.height;
-                    
-                        const topLeftIsInside = shapeX >= rect.x && shapeX <= rectRight && shapeY >= rect.y && shapeY <= rectBottom;
-                        const topRightIsInside = shapeRight >= rect.x && shapeRight <= rectRight && shapeY >= rect.y && shapeY <= rectBottom;
-                        const bottomLeftIsInside = shapeX >= rect.x && shapeX <= rectRight && shapeBottom >= rect.y && shapeBottom <= rectBottom;
-                        const bottomRightIsInside = shapeRight >= rect.x && shapeRight <= rectRight && shapeBottom >= rect.y && shapeBottom <= rectBottom;
-                    
-                        return topLeftIsInside || topRightIsInside || bottomLeftIsInside || bottomRightIsInside;
-            
-                    };
+                            const shapeX = shape.x !== undefined ? shape.x : shape.initialPosition.x;
+                            const shapeY = shape.y !== undefined ? shape.y : shape.initialPosition.y;
+
+                            const shapeRight = shapeX + shape.width;
+                            const shapeBottom = shapeY + shape.height;
+
+                            const rectRight = rect.x + rect.width;
+                            const rectBottom = rect.y + rect.height;
+
+                            const topLeftIsInside = shapeX >= rect.x && shapeX <= rectRight && shapeY >= rect.y && shapeY <= rectBottom;
+                            const topRightIsInside = shapeRight >= rect.x && shapeRight <= rectRight && shapeY >= rect.y && shapeY <= rectBottom;
+                            const bottomLeftIsInside = shapeX >= rect.x && shapeX <= rectRight && shapeBottom >= rect.y && shapeBottom <= rectBottom;
+                            const bottomRightIsInside = shapeRight >= rect.x && shapeRight <= rectRight && shapeBottom >= rect.y && shapeBottom <= rectBottom;
+
+                            return topLeftIsInside || topRightIsInside || bottomLeftIsInside || bottomRightIsInside;
+
+                        };
                         // Filter shapes that are within the selection rectangle
                         const selectedNewShapes = shapes.filter(shape => isShapeWithinSelection(shape, rect));
-                        console.log('selected Newshapes', selectedNewShapes );
+                        console.log('selected Newshapes', selectedNewShapes);
                         setSelectedShapes(selectedNewShapes);
                         // console.log('selected shapes', selectedShapes );
                     }}
@@ -168,7 +168,7 @@ function Canvas(props) {
                                 imageRef={imageRef}
                             />
                         ))}
-                         {selectionRect.visible && (
+                        {selectionRect.visible && (
                             <Rect
                                 x={selectionRect.x}
                                 y={selectionRect.y}
