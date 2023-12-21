@@ -77,6 +77,60 @@ function Canvas(props) {
         }
     };
 
+    const handleMouseDown = (e) => {
+        const pos = e.target.getStage().getPointerPosition();
+        console.log('Mouse Down pos', pos);
+        setSelectionRect({ x: pos.x, y: pos.y, width: 0, height: 0, visible: true });
+        setInitialMousePosition({ x: pos.x, y: pos.y });
+    };
+
+    const handleMouseMove = (e) => {
+        if (!selectionRect.visible) return;
+        const pos = e.target.getStage().getPointerPosition();
+        setSelectionRect({
+            ...selectionRect,
+            width: (pos.x - selectionRect.x),
+            height: (pos.y - selectionRect.y)
+        });
+    };
+
+    const handleMouseUp = (e) => {
+        setSelectionRect({ ...selectionRect, visible: false });
+        const pos = e.target.getStage().getPointerPosition();
+        // Check each shape to see if it is within the selection rectangle
+        const rect = {
+            x: Math.min(initialMousePosition.x, pos.x),
+            y: Math.min(initialMousePosition.y, pos.y),
+            width: Math.abs(initialMousePosition.x - pos.x),
+            height: Math.abs(initialMousePosition.y - pos.y),
+        };
+        // console.log('Mouse Up pos',pos);
+        // console.log('rect x', rect.x,'rect y', rect.y );
+        const isShapeWithinSelection = (shape, rect) => {
+            const shapeX = shape.x !== undefined ? shape.x : shape.initialPosition.x;
+            const shapeY = shape.y !== undefined ? shape.y : shape.initialPosition.y;
+
+            const shapeRight = shapeX + shape.width;
+            const shapeBottom = shapeY + shape.height;
+
+            const rectRight = rect.x + rect.width;
+            const rectBottom = rect.y + rect.height;
+
+            const topLeftIsInside = shapeX >= rect.x && shapeX <= rectRight && shapeY >= rect.y && shapeY <= rectBottom;
+            const topRightIsInside = shapeRight >= rect.x && shapeRight <= rectRight && shapeY >= rect.y && shapeY <= rectBottom;
+            const bottomLeftIsInside = shapeX >= rect.x && shapeX <= rectRight && shapeBottom >= rect.y && shapeBottom <= rectBottom;
+            const bottomRightIsInside = shapeRight >= rect.x && shapeRight <= rectRight && shapeBottom >= rect.y && shapeBottom <= rectBottom;
+
+            return topLeftIsInside || topRightIsInside || bottomLeftIsInside || bottomRightIsInside;
+
+        };
+        // Filter shapes that are within the selection rectangle
+        const selectedNewShapes = shapes.filter(shape => isShapeWithinSelection(shape, rect));
+        console.log('Selected Shapes', selectedNewShapes);
+        setSelectedShapes(selectedNewShapes);
+        // console.log('selected shapes', selectedShapes );
+    };
+
     return (
         <>
             <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -85,62 +139,9 @@ function Canvas(props) {
                     width={containerRef.current ? containerRef.current.offsetWidth : 0}
                     height={containerRef.current ? containerRef.current.offsetHeight : 0}
                     onClick={handleStageClick}
-
-                    onMouseDown={(e) => {
-                        const pos = e.target.getStage().getPointerPosition();
-                        console.log('Mouse Down pos', pos);
-                        setSelectionRect({ x: pos.x, y: pos.y, width: 0, height: 0, visible: true });
-                        setInitialMousePosition({ x: pos.x, y: pos.y });
-                    }}
-
-                    onMouseMove={(e) => {
-                        if (!selectionRect.visible) return;
-                        const pos = e.target.getStage().getPointerPosition();
-                        // console.log('selection Rect pos',pos);
-                        // console.log('selection Rect x: ', pos.x - selectionRect.x);
-                        // console.log('selection Rect y: ', selectionRect.y - pos.y );
-                        setSelectionRect({
-                            ...selectionRect,
-                            width: (pos.x - selectionRect.x),
-                            height: (pos.y - selectionRect.y)
-                        });
-                    }}
-                    onMouseUp={(e) => {
-                        setSelectionRect({ ...selectionRect, visible: false });
-                        const pos = e.target.getStage().getPointerPosition();
-                        // Check each shape to see if it is within the selection rectangle
-                        const rect = {
-                            x: Math.min(initialMousePosition.x, pos.x),
-                            y: Math.min(initialMousePosition.y, pos.y),
-                            width: Math.abs(initialMousePosition.x - pos.x),
-                            height: Math.abs(initialMousePosition.y - pos.y),
-                        };
-                        // console.log('Mouse Up pos',pos);
-                        // console.log('rect x', rect.x,'rect y', rect.y );
-                        const isShapeWithinSelection = (shape, rect) => {
-                            const shapeX = shape.x !== undefined ? shape.x : shape.initialPosition.x;
-                            const shapeY = shape.y !== undefined ? shape.y : shape.initialPosition.y;
-
-                            const shapeRight = shapeX + shape.width;
-                            const shapeBottom = shapeY + shape.height;
-
-                            const rectRight = rect.x + rect.width;
-                            const rectBottom = rect.y + rect.height;
-
-                            const topLeftIsInside = shapeX >= rect.x && shapeX <= rectRight && shapeY >= rect.y && shapeY <= rectBottom;
-                            const topRightIsInside = shapeRight >= rect.x && shapeRight <= rectRight && shapeY >= rect.y && shapeY <= rectBottom;
-                            const bottomLeftIsInside = shapeX >= rect.x && shapeX <= rectRight && shapeBottom >= rect.y && shapeBottom <= rectBottom;
-                            const bottomRightIsInside = shapeRight >= rect.x && shapeRight <= rectRight && shapeBottom >= rect.y && shapeBottom <= rectBottom;
-
-                            return topLeftIsInside || topRightIsInside || bottomLeftIsInside || bottomRightIsInside;
-
-                        };
-                        // Filter shapes that are within the selection rectangle
-                        const selectedNewShapes = shapes.filter(shape => isShapeWithinSelection(shape, rect));
-                        console.log('selected Newshapes', selectedNewShapes);
-                        setSelectedShapes(selectedNewShapes);
-                        // console.log('selected shapes', selectedShapes );
-                    }}
+                    onMouseDown={handleMouseDown}
+                    onMouseMove={handleMouseMove}
+                    onMouseUp={handleMouseUp}
                 >
                     <Layer>
                         {/* Image tag = background image (field type) */}
