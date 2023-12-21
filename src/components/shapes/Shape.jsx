@@ -16,15 +16,16 @@ const SHAPE_SIZES = {
 
 function Shape(props) {
     const {
+        shapes,
         id,
         shapeType,
         initialPosition,
         initialColor,
-        isSelected,
-        onSelect,
         onChange,
         onDelete,
-        imageRef
+        onHideContextMenu,
+        imageRef,
+        setSelectedShapes,
     } = props;
 
     const shapeRef = useRef();
@@ -80,11 +81,15 @@ function Shape(props) {
         };
     }, [position, imageRef]);
 
-    //console.log(`Shape ${id} is selected: ${isSelected}`);
     const handleOnClick = () => {
-        onSelect(id);
-        const node = shapeRef.current;
-        console.log('Shape Clicked', node);
+        // const node = shapeRef.current;
+        //First empty the selectedShapes array
+        setSelectedShapes([]);
+        //Filter the shapes array to grab the shape by the id
+        const selectedShape = shapes.find(shape => shape.id === id);
+        console.log('Shape Clicked', selectedShape);
+        //Then add that shape to the selectedShapes array
+        setSelectedShapes([selectedShape]);
     }
 
     const handleRightClick = (e) => {
@@ -147,7 +152,6 @@ function Shape(props) {
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        isSelected,
         handleOnClick,
         handleRightClick,
         handleDeleteClick,
@@ -178,82 +182,6 @@ function Shape(props) {
             return <LinemanOval {...commonProps} />;
         case 'Center':
             return <CenterSquare {...commonProps} />;
-        //Regular shapes
-        case 'Star':
-            return (
-                <>
-                    <Star
-                        ref={shapeRef}
-                        x={position.x}
-                        y={position.y}
-                        innerRadius={30}
-                        outerRadius={70}
-                        fill={initialColor}
-                        onDragStart={handleDragStart}
-                        draggable
-                        onDragEnd={handleDragEnd}
-                        onClick={handleOnClick}
-                        onContextMenu={handleRightClick}
-                    />
-                    {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
-                </>
-            );
-        case 'Rectangle':
-            return (
-                <>
-                    <Rect
-                        ref={shapeRef}
-                        x={position.x}
-                        y={position.y}
-                        width={100}
-                        height={100}
-                        fill={initialColor}
-                        onDragStart={handleDragStart}
-                        draggable={true}
-                        onDragEnd={handleDragEnd}
-                        onClick={handleOnClick}
-                        onContextMenu={handleRightClick}
-                    />
-                    {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />/*This is where we need to add "onMouseLeave" event*/}
-                </>
-            );
-        case 'Circle':
-            return (
-                <>
-                    <Circle
-                        ref={shapeRef}
-                        x={position.x}
-                        y={position.y}
-                        radius={circleRadius}
-                        fill={initialColor}
-                        onDragStart={handleDragStart}
-                        draggable
-                        onDragEnd={handleDragEnd}
-                        onClick={handleOnClick}
-                        onContextMenu={handleRightClick}
-                    />
-                    {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
-                </>
-            );
-        case 'Ring':
-            return (
-                <>
-                    <Ring
-                        ref={shapeRef}
-                        x={position.x}
-                        y={position.y}
-                        innerRadius={40}
-                        outerRadius={70}
-                        fill={initialColor}
-                        onDragStart={handleDragStart}
-                        draggable
-                        onDragEnd={handleDragEnd}
-                        onClick={handleOnClick}
-                        onContextMenu={handleRightClick}
-                    />
-                    {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
-                </>
-            );
         default:
             return null;
     }
