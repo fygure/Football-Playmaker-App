@@ -66,6 +66,7 @@ const CenterSquare = (props) => {
                     <Rect
                         x={rectSize.width / 2 - 1}
                         y={0}
+                        onClick={handleClick}
                         width={centerLineWidth}
                         height={rectSize.height}
                         fill="black"
