@@ -77,14 +77,14 @@ function Canvas(props) {
         }
     };
 
-    const handleMouseDown = (e) => {
+    const handleStageMouseDown = (e) => {
         const pos = e.target.getStage().getPointerPosition();
         console.log('Mouse Down pos', pos);
         setSelectionRect({ x: pos.x, y: pos.y, width: 0, height: 0, visible: true });
         setInitialMousePosition({ x: pos.x, y: pos.y });
     };
 
-    const handleMouseMove = (e) => {
+    const handleStageMouseMove = (e) => {
         if (!selectionRect.visible) return;
         const pos = e.target.getStage().getPointerPosition();
         setSelectionRect({
@@ -94,7 +94,7 @@ function Canvas(props) {
         });
     };
 
-    const handleMouseUp = (e) => {
+    const handleStageMouseUp = (e) => {
         setSelectionRect({ ...selectionRect, visible: false });
         const pos = e.target.getStage().getPointerPosition();
         // Check each shape to see if it is within the selection rectangle
@@ -139,9 +139,9 @@ function Canvas(props) {
                     width={containerRef.current ? containerRef.current.offsetWidth : 0}
                     height={containerRef.current ? containerRef.current.offsetHeight : 0}
                     onClick={handleStageClick}
-                    onMouseDown={handleMouseDown}
-                    onMouseMove={handleMouseMove}
-                    onMouseUp={handleMouseUp}
+                    onMouseDown={handleStageMouseDown}
+                    onMouseMove={handleStageMouseMove}
+                    onMouseUp={handleStageMouseUp}
                 >
                     <Layer>
                         {/* Image tag = background image (field type) */}

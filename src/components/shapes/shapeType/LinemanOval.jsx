@@ -1,4 +1,5 @@
 // LinemanOval.jsx
+//TODO: add custom anchor points for offense line blocking
 import React, { useState } from 'react';
 import { Ellipse, Group, Line } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
@@ -55,9 +56,9 @@ const LinemanOval = (props) => {
         setState({ colorState: states[stateIndex], lineState: lineStates[newLine] })
     };
 
-    const dotDisplacement = ellipseRadiuses.x * 1.2;
-    const LineRadius = ellipseRadiuses.x * 0.55;
-    const subLineLength = 25;
+    const dotDisplacement = ellipseRadiuses.x * 1.5;
+    const LineRadius = ellipseRadiuses.x * 0.85;
+    const subLineLength = 17;
     const polarX = (degrees) => {
         return Math.sin(Math.PI / 180 * degrees) * LineRadius;
     }
@@ -113,9 +114,9 @@ const LinemanOval = (props) => {
                 {/* Pivot Dot */}
                 <Ellipse
                     x={0}
-                    y={ellipseRadiuses.x * 1.2}
-                    radiusX={ellipseRadiuses.x / 5}
-                    radiusY={ellipseRadiuses.x / 5}
+                    y={ellipseRadiuses.x * 1.5}
+                    radiusX={ellipseRadiuses.x / 10}
+                    radiusY={ellipseRadiuses.x / 10}
                     stroke={'black'}
                     fill={'black'}
                     onClick={handleLineClick}
