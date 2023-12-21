@@ -130,7 +130,6 @@ function Stencil(props) {
             style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
         />
     );
-
     return (
         <>
             <div>
@@ -138,9 +137,11 @@ function Stencil(props) {
                     <Button variant="outlined" color="sharpRed" size="small" onClick={handleDeleteAllShapes} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Clear All</Button>
                 </div>
 
+
                 <div style={{ padding:'5px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                     <Button variant="outlined" color="kellyGreen" size="small" onClick={handleDownload} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Download Stage</Button>
                 </div>
+
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
                     <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Field</h3>
@@ -202,7 +203,7 @@ function Stencil(props) {
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </div>
-                            <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-25px', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-26px', marginTop: '-6px',flexWrap: 'wrap' }}>
                                 {fieldType !== 'blank' && (
                                     <CheckboxOption onChange={handleToggleRedZone} checked={zone === 'redzone'}>Red Zone</CheckboxOption>
                                 )}
@@ -211,16 +212,9 @@ function Stencil(props) {
 
                         </div>
                     </div>
-
-
-
-
-                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-                        <h3 style={{ marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation
-                            <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-22px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
-                                <CheckboxOption onChange={handleToggleOffenseLeftRight} checked={toggleOffenseLeftRight}> L</CheckboxOption>
-                                <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
-                            </div>
+                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', marginTop: '-20px' }}>
+                        <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Offense Formation
+                        
                         </h3>
                     </div>
 
@@ -299,15 +293,17 @@ function Stencil(props) {
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </div>
+                                <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-26px',marginTop: '-6px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
+                            {selectedOffenseFormation !== '2x2' && selectedOffenseFormation !== 'Custom' && (
+                                <>
+                                    <CheckboxOption onChange={handleToggleOffenseLeftRight} checked={toggleOffenseLeftRight}> L</CheckboxOption>
+                                    <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
+                                </>
+                            )}     
+                            </div>
                         </div>
                     </div>
-
-
-                    <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Defense Formation
-                        <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-22px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
-                            <CheckboxOption onChange={handleToggleDefenseLeftRight} checked={toggleDefenseLeftRight}> L</CheckboxOption>
-                            <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
-                        </div>
+                    <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '-5px' }}>Defense Formation
                     </h3>
                     <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -380,6 +376,14 @@ function Stencil(props) {
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </div>
+                            <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-26px',marginTop: '-6px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
+                            {selectedDefenseFormation !== 'Custom' && (
+                            <>
+                                <CheckboxOption onChange={handleToggleDefenseLeftRight} checked={toggleDefenseLeftRight}> L</CheckboxOption>
+                                <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
+                            </>
+                        )}
+                        </div>
                         </div>
                     </div>
 
