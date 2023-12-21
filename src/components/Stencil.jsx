@@ -185,7 +185,7 @@ function Stencil(props) {
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </div>
-                            <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-25px', marginTop: '-6px',flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-26px', marginTop: '-6px',flexWrap: 'wrap' }}>
                                 {fieldType !== 'blank' && (
                                     <CheckboxOption onChange={handleToggleRedZone} checked={zone === 'redzone'}>Red Zone</CheckboxOption>
                                 )}
@@ -275,7 +275,7 @@ function Stencil(props) {
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </div>
-                                <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-22px',marginTop: '-6px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
+                                <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-26px',marginTop: '-6px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
                             {selectedOffenseFormation !== '2x2' && selectedOffenseFormation !== 'Custom' && (
                                 <>
                                     <CheckboxOption onChange={handleToggleOffenseLeftRight} checked={toggleOffenseLeftRight}> L</CheckboxOption>
@@ -358,7 +358,7 @@ function Stencil(props) {
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-22px',marginTop: '-6px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
+                            <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-26px',marginTop: '-6px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
                             {selectedDefenseFormation !== 'Custom' && (
                             <>
                                 <CheckboxOption onChange={handleToggleDefenseLeftRight} checked={toggleDefenseLeftRight}> L</CheckboxOption>
