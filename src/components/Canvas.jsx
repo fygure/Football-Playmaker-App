@@ -9,6 +9,7 @@ import Konva from 'konva';
 function Canvas(props) {
     const {
         imageRef,
+        stageRef,
         shapes,
         selectedId,
         selectedShapes,
@@ -22,7 +23,6 @@ function Canvas(props) {
     } = props;
 
     const { stageDimensions } = useContext(StageDimensionsContext);
-    const stageRef = useRef(null);
     const containerRef = useRef(null);
     const [image] = useImage(backgroundImage);
 

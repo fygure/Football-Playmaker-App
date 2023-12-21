@@ -14,6 +14,7 @@ function Stencil(props) {
         redLine,
         onDeleteAllShapes,
         onChangeFormation,
+        stageRef,
     } = props;
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
@@ -22,6 +23,16 @@ function Stencil(props) {
 
     const shapeColor = 'white';
 
+    function handleDownload() {
+        var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
+        var link = document.createElement('a');
+        link.download = 'stage.png';
+        link.href = dataURL;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    
     // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
@@ -125,6 +136,10 @@ function Stencil(props) {
             <div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                     <Button variant="outlined" color="sharpRed" size="small" onClick={handleDeleteAllShapes} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Clear All</Button>
+                </div>
+
+                <div style={{ padding:'5px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                    <Button variant="outlined" color="kellyGreen" size="small" onClick={handleDownload} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Download Stage</Button>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>

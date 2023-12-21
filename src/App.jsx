@@ -17,6 +17,7 @@ TODO: save and load feature (requires database)
 ////////////////////////////////////////////////////////////////////////////////////////
 function App() {
   const imageRef = useRef(null);
+  const stageRef = useRef(null);
   const [selectedId, setSelectedId] = useState(null);
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
@@ -49,6 +50,7 @@ function App() {
                 redLine={redLine}
                 onDeleteAllShapes={deleteAllShapes}
                 onChangeFormation={deleteFormation} //deletes all other formation shapes except one chosen
+                stageRef={stageRef}
               />
             </div>
             <div style={{
@@ -77,6 +79,7 @@ function App() {
                 onHideContextMenu={hideShapeContextMenu}
                 backgroundImage={backgroundImage}
                 setStageDimensions={setStageDimensions}
+                stageRef={stageRef}
               />
             </div>
           </div>
