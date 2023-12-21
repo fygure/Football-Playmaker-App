@@ -10,7 +10,6 @@ function ReceiverOval(props) {
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        //isSelected,
         handleOnClick,
         handleRightClick,
         handleDeleteClick,

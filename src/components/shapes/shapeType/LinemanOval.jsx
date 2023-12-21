@@ -11,7 +11,6 @@ const LinemanOval = (props) => {
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        isSelected,
         handleOnClick,
         handleRightClick,
         handleDeleteClick,

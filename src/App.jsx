@@ -11,21 +11,16 @@ import theme from './config/theme';
 /* 
 TODO: add undo/redo 
 TODO: add selection rectangle
-TODO: add boundary on stage/canvas s.t. you cannot drag a shape off the canvas
 TODO: save and load feature (requires database)
 */
 ////////////////////////////////////////////////////////////////////////////////////////
 function App() {
   const imageRef = useRef(null);
   const stageRef = useRef(null);
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedShapes, setSelectedShapes] = useState([]);
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
-
-  //TODO: implement selection rectangle starting by adding all clicked shapes to selectedShapeIds
-  const [selectedShapes, setSelectedShapes] = useState([]);
-
 
   return (
     <>
@@ -70,10 +65,8 @@ function App() {
               <Canvas
                 imageRef={imageRef}
                 shapes={shapes}
-                selectedId={selectedId}
                 selectedShapes={selectedShapes}
                 setSelectedShapes={setSelectedShapes}
-                onSelect={setSelectedId}
                 onChange={updateShape}
                 onDelete={deleteShape}
                 onHideContextMenu={hideShapeContextMenu}

@@ -11,7 +11,6 @@ function Canvas(props) {
         imageRef,
         stageRef,
         shapes,
-        selectedId,
         selectedShapes,
         setSelectedShapes,
         onSelect,
@@ -58,28 +57,22 @@ function Canvas(props) {
 
     const handleImageClick = (e) => {
         console.log('BG Image Clicked', backgroundImage);
-        console.log('Image Dimensions:', image.width, image.height);
-        console.log('Image Position:', imageRef.current.x(), imageRef.current.y());
-        console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
-        //console.log(imageRef.current);
-        if (e.target === e.target.getStage()) {
-            onSelect(null);
-        }
+        // console.log('Image Dimensions:', image.width, image.height);
+        // console.log('Image Position:', imageRef.current.x(), imageRef.current.y());
+        // console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
+        console.log('Selected Shapes', selectedShapes);
     }
 
     const handleStageClick = (e) => {
-        console.log('Stage Clicked', stageDimensions);
+        //console.log('Stage Clicked', stageDimensions);
         console.log('Shapes List:', shapes);
         // if clicked on empty area - remove all selections
-        //console.log(e);
-        if (e.target === e.target.getStage()) {
-            onSelect(null);
-        }
+
     };
 
     const handleStageMouseDown = (e) => {
         const pos = e.target.getStage().getPointerPosition();
-        console.log('Mouse Down pos', pos);
+        //console.log('Mouse Down pos', pos);
         setSelectionRect({ x: pos.x, y: pos.y, width: 0, height: 0, visible: true });
         setInitialMousePosition({ x: pos.x, y: pos.y });
     };
@@ -126,7 +119,7 @@ function Canvas(props) {
         };
         // Filter shapes that are within the selection rectangle
         const selectedNewShapes = shapes.filter(shape => isShapeWithinSelection(shape, rect));
-        console.log('Selected Shapes', selectedNewShapes);
+        //console.log('Selected Shapes', selectedNewShapes);
         setSelectedShapes(selectedNewShapes);
         // console.log('selected shapes', selectedShapes );
     };
@@ -159,14 +152,14 @@ function Canvas(props) {
                                 key={shape.id}
                                 id={shape.id}
                                 shapeType={shape.shapeType}
+                                shapes={shapes}
                                 initialPosition={shape.initialPosition}
                                 initialColor={shape.initialColor}
-                                isSelected={shape.id === selectedId}
-                                onSelect={onSelect}
                                 onChange={onChange}
                                 onDelete={onDelete}
                                 onHideContextMenu={onHideContextMenu}
                                 imageRef={imageRef}
+                                setSelectedShapes={setSelectedShapes}
                             />
                         ))}
                         {selectionRect.visible && (
