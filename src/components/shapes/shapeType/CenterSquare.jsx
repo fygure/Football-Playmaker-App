@@ -2,9 +2,20 @@
 import React, { useState } from 'react';
 import { Rect, Group } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
+import { Anchor } from '../Anchor';
+
+const getAnchorPoints = (width, height) => {
+    return [
+        { x: -5, y: height / 2 },
+        { x: width / 2, y: -5 },
+        { x: width + 5, y: height / 2 },
+        { x: width / 2, y: height + 5 },
+    ];
+}
 
 const CenterSquare = (props) => {
     const {
+        id,
         shapeRef,
         position,
         initialColor,
@@ -17,8 +28,22 @@ const CenterSquare = (props) => {
         handleDragEnd,
         handleHideContextMenu,
         rectSize,
-        dragBoundFunc
+        dragBoundFunc,
+        selectedShapeID,
+        setSelectedShapeID,
     } = props;
+
+    const anchorPoints = getAnchorPoints(rectSize.width, rectSize.height);
+    const anchors = anchorPoints.map((point, index) => (
+        <Anchor
+            key={`anchor-${index}`}
+            x={point.x}
+            y={point.y}
+            onDragStart={() => { console.log('onDragStart'); }}
+            onDragMove={() => { console.log('onDragMove'); }}
+            onDragEnd={() => { console.log('onDragEnd'); }}
+        />
+    ));
 
     const strokeOptions = { color: 'black', strokeWidth: 2 };
     const centerLineWidth = 3.5;
@@ -33,10 +58,12 @@ const CenterSquare = (props) => {
     const [stateIndex, setStateIndex] = useState(0);
     const [state, setState] = useState(states[stateIndex]);
 
-    const handleClick = () => {
+    const handleCenterClick = () => {
         const newIndex = (stateIndex + 1) % states.length;
         setStateIndex(newIndex);
         setState(states[newIndex]);
+        setSelectedShapeID(id);
+        console.log('Selected Shape ID:', id);
     };
 
     return (
@@ -56,7 +83,7 @@ const CenterSquare = (props) => {
                     stroke={strokeOptions.color}
                     strokeWidth={strokeOptions.strokeWidth}
                     cornerRadius={2}
-                    onClick={handleClick}
+                    onClick={handleCenterClick}
                     onContextMenu={handleRightClick}
                     fillLinearGradientStartPoint={{ x: state.leftState, y: 0 }}
                     fillLinearGradientEndPoint={{ x: state.rightState, y: 0 }}
@@ -66,12 +93,13 @@ const CenterSquare = (props) => {
                     <Rect
                         x={rectSize.width / 2 - 1}
                         y={0}
-                        onClick={handleClick}
+                        onClick={handleCenterClick}
                         width={centerLineWidth}
                         height={rectSize.height}
                         fill="black"
                     />
                 )}
+                {selectedShapeID === id && anchors}
             </Group>
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>

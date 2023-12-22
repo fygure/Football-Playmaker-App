@@ -26,6 +26,8 @@ function Shape(props) {
         onHideContextMenu,
         imageRef,
         setSelectedShapes,
+        selectedShapeID,
+        setSelectedShapeID,
     } = props;
 
     const shapeRef = useRef();
@@ -90,6 +92,8 @@ function Shape(props) {
         console.log('Shape Clicked', selectedShape);
         //Then add that shape to the selectedShapes array
         setSelectedShapes([selectedShape]);
+        setSelectedShapeID(id);
+        console.log('Selected Shape ID:', id);
     }
 
     const handleRightClick = (e) => {
@@ -147,6 +151,7 @@ function Shape(props) {
     };
 
     const commonProps = {
+        id,
         shapeRef,
         position,
         initialColor,
@@ -162,7 +167,9 @@ function Shape(props) {
         circleRadius,
         fontSize,
         rectSize,
-        dragBoundFunc
+        dragBoundFunc,
+        selectedShapeID,
+        setSelectedShapeID
     };
 
     switch (shapeType) {
