@@ -2,9 +2,20 @@
 import React from 'react';
 import { Group, Ellipse, Text } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
+import { Anchor } from '../Anchor';
+
+const getAnchorPoints = (ellipseRadiusX, ellipseRadiusY) => {
+    return [
+        { x: 0, y: -ellipseRadiusY - 5 },
+        { x: ellipseRadiusX + 5, y: 0 },
+        { x: 0, y: ellipseRadiusY + 5 },
+        { x: -ellipseRadiusX - 5, y: 0 },
+    ];
+}
 
 function ReceiverOval(props) {
     const {
+        id,
         shapeRef,
         position,
         initialColor,
@@ -19,8 +30,22 @@ function ReceiverOval(props) {
         ellipseRadiuses,
         fontSize,
         text,
-        dragBoundFunc
+        dragBoundFunc,
+        selectedShapeID,
+        setSelectedShapeID
     } = props;
+
+    const anchorPoints = getAnchorPoints(ellipseRadiuses.x, ellipseRadiuses.y);
+    const anchors = anchorPoints.map((point, index) => (
+        <Anchor
+            key={`anchor-${index}`}
+            x={point.x}
+            y={point.y}
+            onDragStart={() => { console.log('onDragStart'); }}
+            onDragMove={() => { console.log('onDragMove'); }}
+            onDragEnd={() => { console.log('onDragEnd'); }}
+        />
+    ));
 
     const strokeOptions = { color: 'black', strokeWidth: 2 };
 
@@ -60,6 +85,7 @@ function ReceiverOval(props) {
                     listening={false}
                     fontSize={fontSize}
                 />
+                {selectedShapeID === id && anchors}
             </Group>
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>

@@ -24,10 +24,11 @@ function Canvas(props) {
     const { stageDimensions } = useContext(StageDimensionsContext);
     const containerRef = useRef(null);
     const [image] = useImage(backgroundImage);
-
+    const [selectedShapeID, setSelectedShapeID] = useState('$');
     const [selectionRect, setSelectionRect] = useState({ x: 0, y: 0, width: 0, height: 0, visible: false });
     const [initialMousePosition, setInitialMousePosition] = useState({ x: 0, y: 0 });
 
+    const deselectShape = () => setSelectedShapeID('$');
 
     useEffect(() => {
         function fitStageIntoParentContainer() {
@@ -61,13 +62,17 @@ function Canvas(props) {
         // console.log('Image Position:', imageRef.current.x(), imageRef.current.y());
         // console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
         console.log('Selected Shapes', selectedShapes);
+        deselectShape();
     }
 
     const handleStageClick = (e) => {
         //console.log('Stage Clicked', stageDimensions);
         console.log('Shapes List:', shapes);
         // if clicked on empty area - remove all selections
-
+        if (e.target === e.target.getStage()) {
+            //setSelectedShapes([]);
+            deselectShape();
+        }
     };
 
     const handleStageMouseDown = (e) => {
@@ -160,6 +165,7 @@ function Canvas(props) {
                                 onHideContextMenu={onHideContextMenu}
                                 imageRef={imageRef}
                                 setSelectedShapes={setSelectedShapes}
+                                selectedShapeID={selectedShapeID} setSelectedShapeID={setSelectedShapeID}
                             />
                         ))}
                         {selectionRect.visible && (
