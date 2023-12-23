@@ -60,13 +60,15 @@ const EditableText = ({ initialText, x, y, fontSize, handleTextChange }) => {
             textNode.show();
         };
 
+
         textarea.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 const newValue = textarea.value.trim();
-                textNode.text(newValue);
-                setText(newValue || 'Double click to edit...');
+                const finalValue = newValue || 'Double click to edit...';
+                textNode.text(finalValue);
+                setText(finalValue);
                 removeTextarea();
-                handleTextChange(newValue || 'Double click to edit...');
+                handleTextChange(finalValue);
             }
             if (e.key === 'Escape') {
                 removeTextarea();
@@ -76,42 +78,32 @@ const EditableText = ({ initialText, x, y, fontSize, handleTextChange }) => {
         const handleOutsideClick = (e) => {
             if (e.target !== textarea) {
                 const newValue = textarea.value.trim();
-                textNode.text(newValue);
-                setText(newValue || 'Double click to edit...');
+                const finalValue = newValue || 'Double click to edit...';
+                textNode.text(finalValue);
+                setText(finalValue);
                 removeTextarea();
-                handleTextChange(newValue || 'Double click to edit...');
+                handleTextChange(finalValue);
             }
         };
+
+
+        const handleBlur = () => {
+            const textNode = textRef.current;
+            const newValue = textarea.value.trim();
+            const finalValue = newValue || 'Double click to edit...';
+            textNode.text(finalValue);
+            setText(finalValue);
+            handleTextChange(finalValue);
+        };
+
+        textarea.addEventListener('blur', handleBlur);
 
         setTimeout(() => {
             window.addEventListener('click', handleOutsideClick);
         });
     };
 
-    const handleBlur = () => {
-        const textNode = textRef.current;
-        if (textareaRef.current.value.trim() === '') {
-            // If it is, set a placeholder text
-            textNode.text('Double click to edit...');
-            setText(prevText => {
-                if (prevText.trim() === '') {
-                    textNode.text('Double click to edit...');
-                    return 'Double click to edit...';
-                } else {
-                    textNode.text(prevText);
-                    return prevText;
-                }
-            });
-        } else {
-            setText(textareaRef.current.value);
-        }
-        textareaRef.current.style.display = 'none';
 
-
-
-        textNode.show(); // show the text node
-        textNode.getLayer().draw(); // redraw the layer to reflect the changes
-    };
 
 
 
