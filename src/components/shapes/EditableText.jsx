@@ -7,6 +7,7 @@ const EditableText = ({ initialText, x, y, fontSize, handleTextChange }) => {
     const textareaRef = useRef();
     const handleOutsideClickRef = useRef();
     const handleBlurRef = useRef();
+    const fontWeight = 700;
 
     const handleDblClick = () => {
         const textNode = textRef.current;
@@ -34,12 +35,14 @@ const EditableText = ({ initialText, x, y, fontSize, handleTextChange }) => {
         }
 
         textarea.value = textNode.text();
+        textarea.style.fontFamily = 'Bitter';
         textarea.style.position = 'absolute';
         textarea.style.top = `${areaPosition.y - 3.5}px`;
         textarea.style.left = `${areaPosition.x - 3}px`;
         textarea.style.width = `${textNode.width() + 30}px`;
         textarea.style.height = `${textNode.height() - textNode.padding() * 2 + 5}px`;
         textarea.style.fontSize = `${textNode.fontSize()}px`;
+        textarea.style.fontWeight = fontWeight;
         textarea.style.border = '2px dashed red';
         textarea.style.padding = '0px';
         textarea.style.margin = '0px';
@@ -120,6 +123,8 @@ const EditableText = ({ initialText, x, y, fontSize, handleTextChange }) => {
             x={x}
             y={y}
             fontSize={fontSize}
+            fontFamily="Bitter"
+            fontWeight={fontWeight}
             ref={textRef}
             onDblClick={handleDblClick}
             onClick={() => console.log(text)}
