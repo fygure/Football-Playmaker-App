@@ -3,6 +3,7 @@ import React from 'react';
 import { Group, Ellipse, Text } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 import { Anchor } from '../Anchor';
+import EditableText from '../EditableText';
 
 const getAnchorPoints = (ellipseRadiusX, ellipseRadiusY) => {
     return [
@@ -17,6 +18,8 @@ function ReceiverOval(props) {
     const {
         id,
         shapeRef,
+        imageRef,
+        stageRef,
         position,
         initialColor,
         showContextMenu,
@@ -26,6 +29,7 @@ function ReceiverOval(props) {
         handleDeleteClick,
         handleDragStart,
         handleDragEnd,
+        handleTextChange,
         handleHideContextMenu,
         ellipseRadiuses,
         fontSize,
@@ -49,9 +53,9 @@ function ReceiverOval(props) {
 
     const strokeOptions = { color: 'black', strokeWidth: 2 };
 
-    var textAlignment = 5;
+    var textAlignment = -5;
     if (text.length > 1) {
-        textAlignment = 1;
+        textAlignment -= 5;
     }
 
     return (
@@ -76,7 +80,14 @@ function ReceiverOval(props) {
                     strokeWidth={strokeOptions.strokeWidth}
                     fill={initialColor}
                 />
-                <Text
+                <EditableText
+                    initialText={text}
+                    x={textAlignment}
+                    y={-6}
+                    fontSize={fontSize}
+                    handleTextChange={handleTextChange}
+                />
+                {/* <Text
                     text={text}
                     align="center"
                     x={-ellipseRadiuses.x / 2 + textAlignment}
@@ -84,7 +95,7 @@ function ReceiverOval(props) {
                     fill="black"
                     listening={false}
                     fontSize={fontSize}
-                />
+                /> */}
                 {selectedShapeID === id && anchors}
             </Group>
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}

@@ -163,6 +163,7 @@ function Canvas(props) {
                                 onChange={onChange}
                                 onDelete={onDelete}
                                 onHideContextMenu={onHideContextMenu}
+                                stageRef={stageRef}
                                 imageRef={imageRef}
                                 setSelectedShapes={setSelectedShapes}
                                 selectedShapeID={selectedShapeID} setSelectedShapeID={setSelectedShapeID}
