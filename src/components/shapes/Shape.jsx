@@ -25,6 +25,7 @@ function Shape(props) {
         onDelete,
         onHideContextMenu,
         imageRef,
+        stageRef,
         setSelectedShapes,
         selectedShapeID,
         setSelectedShapeID,
@@ -123,6 +124,10 @@ function Shape(props) {
         setShowContextMenu(false);
     }
 
+    const handleTextChange = (newText) => {
+        onChange(id, { text: newText });
+    };
+
     const dragBoundFunc = (pos) => {
         const stage = shapeRef.current.getStage();
         const { width: stageWidth, height: stageHeight } = stage.size();
@@ -153,6 +158,8 @@ function Shape(props) {
     const commonProps = {
         id,
         shapeRef,
+        imageRef,
+        stageRef,
         position,
         initialColor,
         showContextMenu,
@@ -169,7 +176,8 @@ function Shape(props) {
         rectSize,
         dragBoundFunc,
         selectedShapeID,
-        setSelectedShapeID
+        setSelectedShapeID,
+        handleTextChange,
     };
 
     switch (shapeType) {
