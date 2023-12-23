@@ -60,7 +60,7 @@ function App() {
               borderRight: '1px solid black',
               borderBottom: '1px solid black',
               height: '100%',
-              backgroundColor: '#f5f5f5', // See parent div
+              backgroundColor: '#dcdcdc', // See parent div
             }}>
               <Canvas
                 imageRef={imageRef}

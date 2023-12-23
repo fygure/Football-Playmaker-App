@@ -23,10 +23,10 @@ function Stencil(props) {
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
 
 
-
+    //TODO: complete text tag functionality
     const [selectedText, setSelectedText] = useState("");
     const textColor = 'black';
-    const handleAddText = (e) => {
+    const handleAddTextTag = (e) => {
         const newText = e.target.value;
         console.log(newText);
         // setSelectedText(newText);
@@ -39,19 +39,20 @@ function Stencil(props) {
     function handleDownload() {
         var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
         var link = document.createElement('a');
+        //TODO: add play name to file name
         link.download = 'stage.png';
         link.href = dataURL;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-      }
-    
+    }
+
     // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
-        setSelectedOffenseFormation(newFormation); 
+        setSelectedOffenseFormation(newFormation);
 
-        
+
         if (newFormation === '2x2') {
             onAddFormation('offense2x2', shapeColor);
         } else if (newFormation === 'Bunch') {
@@ -151,7 +152,7 @@ function Stencil(props) {
                 </div>
 
 
-                <div style={{ padding:'5px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                <div style={{ padding: '5px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                     <Button variant="outlined" color="kellyGreen" size="small" onClick={handleDownload} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Download Stage</Button>
                 </div>
 
@@ -217,7 +218,7 @@ function Stencil(props) {
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </div>
-                            <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-26px', marginTop: '-6px',flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-26px', marginTop: '-6px', flexWrap: 'wrap' }}>
                                 {fieldType !== 'blank' && (
                                     <CheckboxOption onChange={handleToggleRedZone} checked={zone === 'redzone'}>Red Zone</CheckboxOption>
                                 )}
@@ -227,9 +228,9 @@ function Stencil(props) {
                         </div>
                     </div>
 
-                    
-                        <h3 style={{marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '-5px' }}>Offense Formation</h3>
-                
+
+                    <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '-5px' }}>Offense Formation</h3>
+
                     <div style={{ display: 'flex', justifyContent: "flex-start", flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
@@ -305,17 +306,17 @@ function Stencil(props) {
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </div>
-                                <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-26px',marginTop: '-6px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
-                            {selectedOffenseFormation !== '2x2' && selectedOffenseFormation !== 'Custom' && (
-                                <>
-                                    <CheckboxOption onChange={handleToggleOffenseLeftRight} checked={toggleOffenseLeftRight}> L</CheckboxOption>
-                                    <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
-                                </>
-                            )}     
+                            <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-26px', marginTop: '-6px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
+                                {selectedOffenseFormation !== '2x2' && selectedOffenseFormation !== 'Custom' && (
+                                    <>
+                                        <CheckboxOption onChange={handleToggleOffenseLeftRight} checked={toggleOffenseLeftRight}> L</CheckboxOption>
+                                        <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
-                    
+
                     <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '-5px' }}>Defense Formation</h3>
                     <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -388,14 +389,14 @@ function Stencil(props) {
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-26px',marginTop: '-6px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
-                            {selectedDefenseFormation !== 'Custom' && (
-                            <>
-                                <CheckboxOption onChange={handleToggleDefenseLeftRight} checked={toggleDefenseLeftRight}> L</CheckboxOption>
-                                <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
-                            </>
-                        )}
-                        </div>
+                            <div style={{ display: 'flex', justifyContent: "flex-start", marginLeft: '-26px', marginTop: '-6px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
+                                {selectedDefenseFormation !== 'Custom' && (
+                                    <>
+                                        <CheckboxOption onChange={handleToggleDefenseLeftRight} checked={toggleDefenseLeftRight}> L</CheckboxOption>
+                                        <span style={{ display: 'flex', marginLeft: '11px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
 
@@ -410,8 +411,9 @@ function Stencil(props) {
                     <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
-                            <ToggleButtonGroup onChange={handleAddText} exclusive aria-label="text tag" sx={{gap:'2px', flexWrap: 'wrap', marginLeft: '-4px' }}>
-                                    <ToggleButton value= "TEMPO" aria-label="tempo" style={{background: '#333',color: 'white', borderColor:'#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
+                                <ToggleButtonGroup onChange={handleAddTextTag} exclusive aria-label="text tag" sx={{ gap: '2px', flexWrap: 'wrap', marginLeft: '-4px' }}>
+                                    <ToggleButton value="TEMPO" aria-label="tempo" style={{
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
                                     }}
                                         sx={{
                                             ':hover': {
@@ -420,7 +422,8 @@ function Stencil(props) {
                                         }}>
                                         TEMPO
                                     </ToggleButton>
-                                    <ToggleButton value= "SPRAY" aria-label="spray" style={{background: '#333',color: 'white', borderColor:'#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
+                                    <ToggleButton value="SPRAY" aria-label="spray" style={{
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
                                     }}
                                         sx={{
                                             ':hover': {
@@ -429,53 +432,58 @@ function Stencil(props) {
                                         }}>
                                         SPRAY
                                     </ToggleButton>
-                                    <ToggleButton value= "STEM" aria-label="stem" style={{background: '#333',color: 'white', borderColor:'#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
+                                    <ToggleButton value="STEM" aria-label="stem" style={{
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
                                     }}
                                         sx={{
                                             ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)', 
+                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
                                             },
                                         }}>
                                         STEM
                                     </ToggleButton>
-                                    <ToggleButton value= "FREE" aria-label="free" style={{background: '#333',color: 'white', borderColor:'#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
+                                    <ToggleButton value="FREE" aria-label="free" style={{
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
                                     }}
                                         sx={{
                                             ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)', 
+                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
                                             },
                                         }}>
                                         FREE
                                     </ToggleButton>
-                                    <ToggleButton value= "NOW" aria-label="now" style={{background: '#333',color: 'white', borderColor:'#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
+                                    <ToggleButton value="NOW" aria-label="now" style={{
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
                                     }}
                                         sx={{
                                             ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)', 
+                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
                                             },
                                         }}>
                                         NOW
                                     </ToggleButton>
-                                    <ToggleButton value= "MOR" aria-label="mor" style={{background: '#333',color: 'white', borderColor:'#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
+                                    <ToggleButton value="MOR" aria-label="mor" style={{
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
                                     }}
                                         sx={{
                                             ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)', 
+                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
                                             },
                                         }}>
                                         MOR
                                     </ToggleButton>
                                     {/* This is for editable text!!! */}
-                                    <ToggleButton value= "CUSTOM" aria-label="custom" style={{background: '#333',color: 'white', borderColor:'#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
+                                    <ToggleButton value="CUSTOM" aria-label="custom" style={{
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
                                     }}
                                         sx={{
                                             ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)', 
+                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
                                             },
                                         }}>
                                         CUSTOM
                                     </ToggleButton>
-                              
+
                                 </ToggleButtonGroup>
                             </div>
                         </div>

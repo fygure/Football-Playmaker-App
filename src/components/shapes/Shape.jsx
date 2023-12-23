@@ -5,6 +5,7 @@ import ContextMenu from '../menus/ContextMenu';
 import CenterSquare from './shapeType/CenterSquare';
 import LinemanOval from './shapeType/LinemanOval';
 import ReceiverOval from './shapeType/ReceiverOval';
+import DefenderDiamond from './shapeType/DefenderDiamond';
 
 // Shape Sizes Configuration
 const SHAPE_SIZES = {
@@ -197,8 +198,28 @@ function Shape(props) {
             return <LinemanOval {...commonProps} />;
         case 'Center':
             return <CenterSquare {...commonProps} />;
+        case 'DefenderC':
+            return <DefenderDiamond {...commonProps} text="C" />;
+        case 'Defender$':
+            return <DefenderDiamond {...commonProps} text="$" />;
+        case 'DefenderM':
+            return <DefenderDiamond {...commonProps} text="M" />;
+        case 'DefenderW':
+            return <DefenderDiamond {...commonProps} text="W" />;
+        case 'DefenderE':
+            return <DefenderDiamond {...commonProps} text="E" />;
+        case 'DefenderN':
+            return <DefenderDiamond {...commonProps} text="N" />;
+        case 'DefenderT':
+            return <DefenderDiamond {...commonProps} text="T" />;
+        case 'DefenderJ':
+            return <DefenderDiamond {...commonProps} text="J" />;
+        case 'DefenderSS':
+            return <DefenderDiamond {...commonProps} text="SS" />;
+        case 'DefenderWS':
+            return <DefenderDiamond {...commonProps} text="WS" />;
         default:
-            return null;
+            return () => { console.error('Shape.jsx: Shape Type not found'); }
     }
 }
 export default Shape;
