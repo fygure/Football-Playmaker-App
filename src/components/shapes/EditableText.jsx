@@ -5,6 +5,8 @@ const EditableText = ({ initialText, x, y, fontSize, handleTextChange }) => {
     const [text, setText] = useState(initialText);
     const textRef = useRef();
     const textareaRef = useRef();
+    const handleOutsideClickRef = useRef();
+    const handleBlurRef = useRef();
 
     const handleDblClick = () => {
         const textNode = textRef.current;
@@ -58,6 +60,8 @@ const EditableText = ({ initialText, x, y, fontSize, handleTextChange }) => {
                 textarea.parentNode.removeChild(textarea);
             }
             textNode.show();
+            window.removeEventListener('click', handleOutsideClickRef.current);
+            textarea.removeEventListener('blur', handleBlurRef.current);
         };
 
 
@@ -96,7 +100,10 @@ const EditableText = ({ initialText, x, y, fontSize, handleTextChange }) => {
             handleTextChange(finalValue);
         };
 
+        handleOutsideClickRef.current = handleOutsideClick;
+        handleBlurRef.current = handleBlur;
         textarea.addEventListener('blur', handleBlur);
+
 
         setTimeout(() => {
             window.addEventListener('click', handleOutsideClick);
