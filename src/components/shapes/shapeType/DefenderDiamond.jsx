@@ -1,25 +1,25 @@
-// ReceiverOval.jsx
-import React from 'react';
-import { Group, Ellipse, Text } from 'react-konva';
+//DefenderDiamond.jsx
+import React, { useState } from 'react';
+import { Rect, Group } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 import { Anchor } from '../Anchor';
 import EditableText from '../EditableText';
 
-const getAnchorPoints = (ellipseRadiusX, ellipseRadiusY) => {
+const getAnchorPoints = (width, height) => {
+    const halfWidth = width / 2;
+    const halfHeight = height / 2;
     return [
-        { x: 0, y: -ellipseRadiusY - 5 },
-        { x: ellipseRadiusX + 5, y: 0 },
-        { x: 0, y: ellipseRadiusY + 5 },
-        { x: -ellipseRadiusX - 5, y: 0 },
+        { x: halfWidth - 14, y: -25 }, // top point
+        { x: width - 3, y: halfHeight - 14.5 }, // right point
+        { x: halfWidth - 14, y: height - 3 }, // bottom point
+        { x: -25, y: halfHeight - 14.5 }, // left point
     ];
 }
 
-function ReceiverOval(props) {
+const DefenderDiamond = (props) => {
     const {
         id,
         shapeRef,
-        imageRef,
-        stageRef,
         position,
         initialColor,
         showContextMenu,
@@ -29,17 +29,17 @@ function ReceiverOval(props) {
         handleDeleteClick,
         handleDragStart,
         handleDragEnd,
-        handleTextChange,
         handleHideContextMenu,
-        ellipseRadiuses,
         fontSize,
+        handleTextChange,
+        rectSize,
         text,
         dragBoundFunc,
         selectedShapeID,
-        setSelectedShapeID
+        setSelectedShapeID,
     } = props;
 
-    const anchorPoints = getAnchorPoints(ellipseRadiuses.x, ellipseRadiuses.y);
+    const anchorPoints = getAnchorPoints(rectSize.width, rectSize.height);
     const anchors = anchorPoints.map((point, index) => (
         <Anchor
             key={`anchor-${index}`}
@@ -52,33 +52,34 @@ function ReceiverOval(props) {
     ));
 
     const strokeOptions = { color: 'black', strokeWidth: 2 };
-
     var textAlignment = -5;
     if (text.length > 1) {
         textAlignment -= 5;
     }
 
+
     return (
         <>
             <Group
-                draggable
-                dragBoundFunc={dragBoundFunc}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-                onClick={handleOnClick}
-                onContextMenu={handleRightClick}
                 ref={shapeRef}
                 x={position.x}
                 y={position.y}
+                draggable={true}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+                dragBoundFunc={dragBoundFunc}
+                onClick={handleOnClick}
             >
-                <Ellipse
-                    x={0}
-                    y={0}
-                    radiusX={ellipseRadiuses.x}
-                    radiusY={ellipseRadiuses.y}
+                <Rect
+                    width={rectSize.width}
+                    height={rectSize.height}
+                    rotation={45}
                     stroke={strokeOptions.color}
+                    offsetX={rectSize.width / 2}
+                    offsetY={rectSize.height / 2}
                     strokeWidth={strokeOptions.strokeWidth}
-                    fill={initialColor}
+                    cornerRadius={2}
+                    onContextMenu={handleRightClick}
                 />
                 <EditableText
                     initialText={text}
@@ -87,20 +88,11 @@ function ReceiverOval(props) {
                     fontSize={fontSize}
                     handleTextChange={handleTextChange}
                 />
-                {/* <Text
-                    text={text}
-                    align="center"
-                    x={-ellipseRadiuses.x / 2 + textAlignment}
-                    y={-ellipseRadiuses.y / 2 + 1}
-                    fill="black"
-                    listening={false}
-                    fontSize={fontSize}
-                /> */}
                 {selectedShapeID === id && anchors}
             </Group>
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
     );
-}
+};
 
-export default ReceiverOval;
+export default DefenderDiamond;

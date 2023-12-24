@@ -5,6 +5,7 @@ import ContextMenu from '../menus/ContextMenu';
 import CenterSquare from './shapeType/CenterSquare';
 import LinemanOval from './shapeType/LinemanOval';
 import ReceiverOval from './shapeType/ReceiverOval';
+import DefenderDiamond from './shapeType/DefenderDiamond';
 
 // Shape Sizes Configuration
 const SHAPE_SIZES = {
@@ -16,15 +17,19 @@ const SHAPE_SIZES = {
 
 function Shape(props) {
     const {
+        shapes,
         id,
         shapeType,
         initialPosition,
         initialColor,
-        isSelected,
-        onSelect,
         onChange,
         onDelete,
-        imageRef
+        onHideContextMenu,
+        imageRef,
+        stageRef,
+        setSelectedShapes,
+        selectedShapeID,
+        setSelectedShapeID,
     } = props;
 
     const shapeRef = useRef();
@@ -80,11 +85,17 @@ function Shape(props) {
         };
     }, [position, imageRef]);
 
-    //console.log(`Shape ${id} is selected: ${isSelected}`);
     const handleOnClick = () => {
-        onSelect(id);
-        const node = shapeRef.current;
-        console.log('Shape Clicked', node);
+        // const node = shapeRef.current;
+        //First empty the selectedShapes array
+        setSelectedShapes([]);
+        //Filter the shapes array to grab the shape by the id
+        const selectedShape = shapes.find(shape => shape.id === id);
+        console.log('Shape Clicked', selectedShape);
+        //Then add that shape to the selectedShapes array
+        setSelectedShapes([selectedShape]);
+        setSelectedShapeID(id);
+        console.log('Selected Shape ID:', id);
     }
 
     const handleRightClick = (e) => {
@@ -114,6 +125,10 @@ function Shape(props) {
         setShowContextMenu(false);
     }
 
+    const handleTextChange = (newText) => {
+        onChange(id, { text: newText });
+    };
+
     const dragBoundFunc = (pos) => {
         const stage = shapeRef.current.getStage();
         const { width: stageWidth, height: stageHeight } = stage.size();
@@ -142,12 +157,14 @@ function Shape(props) {
     };
 
     const commonProps = {
+        id,
         shapeRef,
+        imageRef,
+        stageRef,
         position,
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        isSelected,
         handleOnClick,
         handleRightClick,
         handleDeleteClick,
@@ -158,7 +175,10 @@ function Shape(props) {
         circleRadius,
         fontSize,
         rectSize,
-        dragBoundFunc
+        dragBoundFunc,
+        selectedShapeID,
+        setSelectedShapeID,
+        handleTextChange,
     };
 
     switch (shapeType) {
@@ -178,84 +198,28 @@ function Shape(props) {
             return <LinemanOval {...commonProps} />;
         case 'Center':
             return <CenterSquare {...commonProps} />;
-        //Regular shapes
-        case 'Star':
-            return (
-                <>
-                    <Star
-                        ref={shapeRef}
-                        x={position.x}
-                        y={position.y}
-                        innerRadius={30}
-                        outerRadius={70}
-                        fill={initialColor}
-                        onDragStart={handleDragStart}
-                        draggable
-                        onDragEnd={handleDragEnd}
-                        onClick={handleOnClick}
-                        onContextMenu={handleRightClick}
-                    />
-                    {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
-                </>
-            );
-        case 'Rectangle':
-            return (
-                <>
-                    <Rect
-                        ref={shapeRef}
-                        x={position.x}
-                        y={position.y}
-                        width={100}
-                        height={100}
-                        fill={initialColor}
-                        onDragStart={handleDragStart}
-                        draggable={true}
-                        onDragEnd={handleDragEnd}
-                        onClick={handleOnClick}
-                        onContextMenu={handleRightClick}
-                    />
-                    {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />/*This is where we need to add "onMouseLeave" event*/}
-                </>
-            );
-        case 'Circle':
-            return (
-                <>
-                    <Circle
-                        ref={shapeRef}
-                        x={position.x}
-                        y={position.y}
-                        radius={circleRadius}
-                        fill={initialColor}
-                        onDragStart={handleDragStart}
-                        draggable
-                        onDragEnd={handleDragEnd}
-                        onClick={handleOnClick}
-                        onContextMenu={handleRightClick}
-                    />
-                    {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
-                </>
-            );
-        case 'Ring':
-            return (
-                <>
-                    <Ring
-                        ref={shapeRef}
-                        x={position.x}
-                        y={position.y}
-                        innerRadius={40}
-                        outerRadius={70}
-                        fill={initialColor}
-                        onDragStart={handleDragStart}
-                        draggable
-                        onDragEnd={handleDragEnd}
-                        onClick={handleOnClick}
-                        onContextMenu={handleRightClick}
-                    />
-                    {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
-                </>
-            );
+        case 'DefenderC':
+            return <DefenderDiamond {...commonProps} text="C" />;
+        case 'Defender$':
+            return <DefenderDiamond {...commonProps} text="$" />;
+        case 'DefenderM':
+            return <DefenderDiamond {...commonProps} text="M" />;
+        case 'DefenderW':
+            return <DefenderDiamond {...commonProps} text="W" />;
+        case 'DefenderE':
+            return <DefenderDiamond {...commonProps} text="E" />;
+        case 'DefenderN':
+            return <DefenderDiamond {...commonProps} text="N" />;
+        case 'DefenderT':
+            return <DefenderDiamond {...commonProps} text="T" />;
+        case 'DefenderJ':
+            return <DefenderDiamond {...commonProps} text="J" />;
+        case 'DefenderSS':
+            return <DefenderDiamond {...commonProps} text="SS" />;
+        case 'DefenderWS':
+            return <DefenderDiamond {...commonProps} text="WS" />;
         default:
-            return null;
+            return () => { console.error('Shape.jsx: Shape Type not found'); }
     }
 }
 export default Shape;

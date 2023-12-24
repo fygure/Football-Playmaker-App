@@ -2,15 +2,26 @@
 import React, { useState } from 'react';
 import { Ellipse, Group, Line } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
+import { Anchor } from '../Anchor';
+
+const getAnchorPoints = (ellipseRadiusX, ellipseRadiusY) => {
+    return [
+        { x: 0, y: -ellipseRadiusY - 5 },
+        { x: ellipseRadiusX + 5, y: 0 },
+        { x: 0, y: ellipseRadiusY + 5 },
+        { x: -ellipseRadiusX - 5, y: 0 },
+    ];
+}
+
 
 const LinemanOval = (props) => {
     const {
+        id,
         shapeRef,
         position,
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        isSelected,
         handleOnClick,
         handleRightClick,
         handleDeleteClick,
@@ -18,8 +29,22 @@ const LinemanOval = (props) => {
         handleDragEnd,
         handleHideContextMenu,
         ellipseRadiuses,
-        dragBoundFunc
+        dragBoundFunc,
+        selectedShapeID,
+        setSelectedShapeID,
     } = props;
+
+    const anchorPoints = getAnchorPoints(ellipseRadiuses.x, ellipseRadiuses.y);
+    const anchors = anchorPoints.map((point, index) => (
+        <Anchor
+            key={`anchor-${index}`}
+            x={point.x}
+            y={point.y}
+            onDragStart={() => { console.log('onDragStart'); }}
+            onDragMove={() => { console.log('onDragMove'); }}
+            onDragEnd={() => { console.log('onDragEnd'); }}
+        />
+    ));
 
     const strokeOptions = { color: 'black', strokeWidth: 2 };
 
@@ -43,28 +68,13 @@ const LinemanOval = (props) => {
     const [lineIndex, setLineIndex] = useState(0);
     const [state, setState] = useState({ colorState: states[stateIndex], lineState: lineStates[lineIndex] });
 
-    const handleClick = () => {
+    const handleLinemanClick = () => {
         const newIndex = (stateIndex + 1) % states.length;
         setStateIndex(newIndex);
         setState({ colorState: states[newIndex], lineState: lineStates[lineIndex] });
+        setSelectedShapeID(id);
+        console.log('Selected Shape ID:', id);
     };
-
-    const handleLineClick = () => {
-        const newLine = (lineIndex + 1) % lineStates.length;
-        setLineIndex(newLine);
-        setState({ colorState: states[stateIndex], lineState: lineStates[newLine] })
-    };
-
-    const dotDisplacement = ellipseRadiuses.x * 1.2;
-    const LineRadius = ellipseRadiuses.x * 0.55;
-    const subLineLength = 25;
-    const polarX = (degrees) => {
-        return Math.sin(Math.PI / 180 * degrees) * LineRadius;
-    }
-
-    const polarY = (degrees) => {
-        return Math.cos(Math.PI / 180 * degrees) * LineRadius;
-    }
 
     return (
         <>
@@ -84,44 +94,13 @@ const LinemanOval = (props) => {
                     radiusY={ellipseRadiuses.y}
                     stroke={strokeOptions.color}
                     strokeWidth={strokeOptions.strokeWidth}
-                    onClick={handleClick}
+                    onClick={handleLinemanClick}
                     onContextMenu={handleRightClick}
                     fillLinearGradientStartPoint={{ x: state.colorState.leftState, y: 0 }}
                     fillLinearGradientEndPoint={{ x: state.colorState.rightState, y: 0 }}
                     fillLinearGradientColorStops={[0, initialColor, 1, 'black']}
                 />
-                {/* Connector to Ellipse Line */}
-                <Line
-                    points={[0, ellipseRadiuses.y, 0, dotDisplacement]}
-                    strokeWidth={strokeOptions.strokeWidth}
-                    stroke={'black'}
-                />
-                {/* Connector to Endpoint Line */}
-                <Line
-                    points={[0, dotDisplacement,
-                        polarX(state.lineState), dotDisplacement + polarY(state.lineState)]}
-                    strokeWidth={strokeOptions.strokeWidth}
-                    stroke={'black'}
-                />
-                {/* Endpoint Line */}
-                <Line
-                    points={[polarX(state.lineState + subLineLength), dotDisplacement + polarY(state.lineState + subLineLength),
-                    polarX(state.lineState - subLineLength), dotDisplacement + polarY(state.lineState - subLineLength)]}
-                    strokeWidth={strokeOptions.strokeWidth}
-                    stroke={'black'}
-                />
-                {/* Pivot Dot */}
-                <Ellipse
-                    x={0}
-                    y={ellipseRadiuses.x * 1.2}
-                    radiusX={ellipseRadiuses.x / 5}
-                    radiusY={ellipseRadiuses.x / 5}
-                    stroke={'black'}
-                    fill={'black'}
-                    onClick={handleLineClick}
-                    strokeWidth={strokeOptions.strokeWidth}
-                    onContextMenu={handleRightClick}
-                />
+                {selectedShapeID === id && anchors}
 
             </Group>
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
