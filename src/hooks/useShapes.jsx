@@ -4,19 +4,19 @@ import { v4 as uuidv4 } from 'uuid';
 
 function useShapes(stageDimensions, imageRef) {
     const [shapes, setShapes] = useState([]);
+    const middlePosition = {
+        x: imageRef.current.x() + (imageRef.current.width() / 2),
+        y: imageRef.current.height() / 2
+    };
+
+    const imageSize = {
+        width: imageRef.current.width(),
+        height: imageRef.current.height()
+    };
 
     //Shape Handlers
     const addFormation = (formationType, initialColor) => {
         console.log('Formation Type:', formationType);
-        const middlePosition = {
-            x: imageRef.current.x() + (imageRef.current.width() / 2),
-            y: imageRef.current.height() / 2
-        };
-
-        const imageSize = {
-            width: imageRef.current.width(),
-            height: imageRef.current.height()
-        };
 
         const isOffenseFormation = formationType.startsWith('offense');
         //console.log(isOffenseFormation);
@@ -402,8 +402,25 @@ function useShapes(stageDimensions, imageRef) {
         }
     };
 
-    //TODO: for individual shapes
+    // individual shape addition
     const addShape = (shapeType, initialColor) => {
+
+        //console.log(shapeType, initialColor);
+        console.log(shapeType);
+
+        const isOffensePlayer = shapeType.startsWith('Offense');
+        //console.log(isOffensePlayer);
+
+        const newShape = {
+            id: uuidv4(), formationType: isOffensePlayer ? 'offense' : 'defense', shapeType,
+            initialPosition: isOffensePlayer
+                ? { x: middlePosition.x - imageSize.width * 0.45, y: middlePosition.y + imageSize.height * 0.45 }
+                : { x: middlePosition.x - imageSize.width * 0.45, y: middlePosition.y - imageSize.height * 0.45 },
+            initialColor, text: 'XT'
+        };
+
+        setShapes([...shapes, newShape]);
+
 
     };
 
