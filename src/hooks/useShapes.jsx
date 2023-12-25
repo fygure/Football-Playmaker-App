@@ -4,19 +4,28 @@ import { v4 as uuidv4 } from 'uuid';
 
 function useShapes(stageDimensions, imageRef) {
     const [shapes, setShapes] = useState([]);
-    const middlePosition = {
-        x: imageRef.current.x() + (imageRef.current.width() / 2),
-        y: imageRef.current.height() / 2
-    };
+    // const middlePosition = {
+    //     x: imageRef.current.x() + (imageRef.current.width() / 2),
+    //     y: imageRef.current.height() / 2
+    // };
 
-    const imageSize = {
-        width: imageRef.current.width(),
-        height: imageRef.current.height()
-    };
+    // const imageSize = {
+    //     width: imageRef.current.width(),
+    //     height: imageRef.current.height()
+    // };
 
     //Shape Handlers
     const addFormation = (formationType, initialColor) => {
         console.log('Formation Type:', formationType);
+        const middlePosition = {
+            x: imageRef.current.x() + (imageRef.current.width() / 2),
+            y: imageRef.current.height() / 2
+        };
+    
+        const imageSize = {
+            width: imageRef.current.width(),
+            height: imageRef.current.height()
+        };
 
         const isOffenseFormation = formationType.startsWith('offense');
         //console.log(isOffenseFormation);
@@ -404,6 +413,15 @@ function useShapes(stageDimensions, imageRef) {
 
     // individual shape addition
     const addShape = (shapeType, initialColor) => {
+        const middlePosition = {
+            x: imageRef.current.x() + (imageRef.current.width() / 2),
+            y: imageRef.current.height() / 2
+        };
+    
+        const imageSize = {
+            width: imageRef.current.width(),
+            height: imageRef.current.height()
+        };
 
         //console.log(shapeType, initialColor);
         console.log(shapeType);
