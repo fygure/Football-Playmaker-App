@@ -89,6 +89,12 @@ function Stencil(props) {
         }
     };
 
+    const handleAddPlayer = (e) => {
+        //console.log(e.target.value);
+        const newPlayer = e.target.value;
+        onAddShape(newPlayer, shapeColor);
+    };
+
     // Toggle handlers
     const handleToggleOffenseLeftRight = () => {
         const newtoggleOffenseLeftRight = !toggleOffenseLeftRight;
@@ -241,6 +247,7 @@ function Stencil(props) {
                         }}>Offense Formation</h3>
                         <Button
                             color="white"
+                            value="OffenseExtra"
                             sx={{
                                 background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
                                 ':hover': {
@@ -254,7 +261,7 @@ function Stencil(props) {
                                     outline: 'none',
                                 },
                             }}
-                            onClick={() => { console.log("Adding offense player") }}
+                            onClick={handleAddPlayer}
                         >
                             +Add Player
                         </Button>
@@ -381,6 +388,7 @@ function Stencil(props) {
                         }}>Defense Formation</h3>
                         <Button
                             color="white"
+                            value="DefenseExtra"
                             sx={{
                                 background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
                                 ':hover': {
@@ -394,7 +402,7 @@ function Stencil(props) {
                                     outline: 'none',
                                 },
                             }}
-                            onClick={() => { console.log("Adding defensive player") }}
+                            onClick={handleAddPlayer}
                         >
                             +Add Player
                         </Button>

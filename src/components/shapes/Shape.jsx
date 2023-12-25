@@ -218,6 +218,10 @@ function Shape(props) {
             return <DefenderDiamond {...commonProps} text="SS" />;
         case 'DefenderWS':
             return <DefenderDiamond {...commonProps} text="WS" />;
+        case 'OffenseExtra':
+            return <ReceiverOval {...commonProps} text="XT" />;
+        case 'DefenseExtra':
+            return <DefenderDiamond {...commonProps} text="XT" />;
         default:
             return () => { console.error('Shape.jsx: Shape Type not found'); }
     }
