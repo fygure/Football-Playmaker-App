@@ -37,6 +37,7 @@ function App() {
               <Stencil
                 onAddFormation={addFormation}
                 onAddShape={addShape}
+                // onAddTextTag = {addTextTag}
                 fieldType={fieldType}
                 setFieldType={setFieldType}
                 setZone={setZone}

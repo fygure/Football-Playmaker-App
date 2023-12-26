@@ -6,7 +6,7 @@ function Stencil(props) {
     const {
         onAddFormation,
         onAddShape,
-        onAddText,
+        onAddTextTag,
         fieldType,
         setFieldType,
         setZone,
@@ -30,8 +30,7 @@ function Stencil(props) {
         const newText = e.target.value;
         console.log(newText);
         // setSelectedText(newText);
-
-        // onAddText(newText,textColor);
+        // onAddTextTag(newText, textColor);
     };
 
     const shapeColor = 'white';
