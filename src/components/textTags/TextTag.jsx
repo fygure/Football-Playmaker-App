@@ -1,22 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ContextMenu from '../menus/ContextMenu';
+import ContextMenu from '../menus/ContextMenu'; 
 function Text(props) {
     const {
-        texts,
+        textTags,
         id,
         initialPosition,
         initialColor,
-        onChange,
-        onDelete,
+        onTextTagChange,
+        onTextTagDelete,
         onHideContextMenu,
         imageRef,
         stageRef,
-        setSelectedTexts,
-        selectedTextID,
-        setSelectedTextID,
+        setSelectedTextTags,
+        selectedTextTagID,
+        setSelectedTextTagID,
     } = props;
 
-    const textRef = useRef();
+    const textTagRef = useRef();
     const [position, setPosition] = useState(initialPosition);
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
@@ -52,13 +52,13 @@ function Text(props) {
     const handleOnClick = () => {
         // const node = shapeRef.current;
         //First empty the selectedShapes array
-        setSelectedTexts([]);
+        setSelectedTextTags([]);
         //Filter the shapes array to grab the shape by the id
-        const selectedText = texts.find(text => text.id === id);
-        console.log('Text Clicked', selectedText);
+        const selectedTextTag = textTags.find(text => text.id === id);
+        console.log('Text Clicked', selectedTextTag);
         
-        setSelectedTexts([selectedText]);
-        setSelectedTextID(id);
+        setSelectedTextTags([selectedTextTag]);
+        setSelectedTextTagID(id);
         console.log('Selected Text ID:', id);
     }
 
@@ -72,7 +72,7 @@ function Text(props) {
 
     const handleDeleteClick = () => {
         setShowContextMenu(false);
-        onDelete(id);
+        onTextTagDelete(id);
     };
 
     const handleDragStart = () => {
@@ -82,7 +82,7 @@ function Text(props) {
     const handleDragEnd = (e) => {
         //console.log(e.target.position());
         setPosition(e.target.position());
-        onChange(id, { x: e.target.x(), y: e.target.y() });
+        onTextTagChange(id, { x: e.target.x(), y: e.target.y() });
     };
 
     const handleHideContextMenu = () => {
@@ -90,13 +90,13 @@ function Text(props) {
     }
 
     const handleTextChange = (newText) => {
-        onChange(id, { text: newText });
+        onTextTagChange(id, { text: newText });
     };
 
     const dragBoundFunc = (pos) => {
-        const stage = textRef.current.getStage();
+        const stage = textTagRef.current.getStage();
         const { width: stageWidth, height: stageHeight } = stage.size();
-        const text = textRef.current;
+        const text = textTagRef.current;
         const box = text.getClientRect(); // get bounding box of the shape
 
         let x = pos.x;

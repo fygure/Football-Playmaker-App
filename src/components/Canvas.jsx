@@ -14,8 +14,8 @@ function Canvas(props) {
         selectedShapes,
         setSelectedShapes,
         onSelect,
-        onChange,
-        onDelete,
+        onShapeChange,
+        onShapeDelete,
         onHideContextMenu,
         backgroundImage,
         setStageDimensions
@@ -160,8 +160,8 @@ function Canvas(props) {
                                 shapes={shapes}
                                 initialPosition={shape.initialPosition}
                                 initialColor={shape.initialColor}
-                                onChange={onChange}
-                                onDelete={onDelete}
+                                onShapeChange={onShapeChange}
+                                onShapeDelete={onShapeDelete}
                                 onHideContextMenu={onHideContextMenu}
                                 stageRef={stageRef}
                                 imageRef={imageRef}
