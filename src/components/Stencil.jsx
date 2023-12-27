@@ -15,6 +15,7 @@ function Stencil(props) {
         redLine,
         onDeleteAllShapes,
         onChangeFormation,
+        onDeleteAllTextTags,
         stageRef,
     } = props;
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
@@ -29,8 +30,8 @@ function Stencil(props) {
     const handleAddTextTag = (e) => {
         const newText = e.target.value;
         console.log(newText);
-        // setSelectedText(newText);
-        // onAddTextTag(newText, textColor);
+        setSelectedText(newText);
+        onAddTextTag(newText, textColor);
     };
 
     const shapeColor = 'white';
@@ -119,8 +120,9 @@ function Stencil(props) {
     };
 
     // Delete handlers
-    const handleDeleteAllShapes = () => {
+    const handleDeleteAll = () => {
         onDeleteAllShapes();
+        onDeleteAllTextTags();
     };
 
     // Field handlers
@@ -153,7 +155,7 @@ function Stencil(props) {
         <>
             <div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                    <Button variant="outlined" color="sharpRed" size="small" onClick={handleDeleteAllShapes} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Clear All</Button>
+                    <Button variant="outlined" color="sharpRed" size="small" onClick={handleDeleteAll} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Clear All</Button>
                 </div>
 
 
