@@ -69,6 +69,7 @@ const DefenderDiamond = (props) => {
                 onDragEnd={handleDragEnd}
                 dragBoundFunc={dragBoundFunc}
                 onClick={handleOnClick}
+                onContextMenu={handleRightClick}
             >
                 <Rect
                     width={rectSize.width}
@@ -79,7 +80,6 @@ const DefenderDiamond = (props) => {
                     offsetY={rectSize.height / 2}
                     strokeWidth={strokeOptions.strokeWidth}
                     cornerRadius={2}
-                    onContextMenu={handleRightClick}
                 />
                 <EditableText
                     initialText={text}

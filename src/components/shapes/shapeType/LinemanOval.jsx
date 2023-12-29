@@ -86,6 +86,7 @@ const LinemanOval = (props) => {
                 onDragEnd={handleDragEnd}
                 x={position.x}
                 y={position.y}
+                onContextMenu={handleRightClick}
             >
                 <Ellipse
                     x={0}
@@ -95,7 +96,6 @@ const LinemanOval = (props) => {
                     stroke={strokeOptions.color}
                     strokeWidth={strokeOptions.strokeWidth}
                     onClick={handleLinemanClick}
-                    onContextMenu={handleRightClick}
                     fillLinearGradientStartPoint={{ x: state.colorState.leftState, y: 0 }}
                     fillLinearGradientEndPoint={{ x: state.colorState.rightState, y: 0 }}
                     fillLinearGradientColorStops={[0, initialColor, 1, 'black']}

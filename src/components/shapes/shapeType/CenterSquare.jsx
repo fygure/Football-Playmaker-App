@@ -72,6 +72,7 @@ const CenterSquare = (props) => {
                 ref={shapeRef}
                 x={position.x}
                 y={position.y}
+                onContextMenu={handleRightClick}
                 draggable={true}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
@@ -84,7 +85,6 @@ const CenterSquare = (props) => {
                     strokeWidth={strokeOptions.strokeWidth}
                     cornerRadius={2}
                     onClick={handleCenterClick}
-                    onContextMenu={handleRightClick}
                     fillLinearGradientStartPoint={{ x: state.leftState, y: 0 }}
                     fillLinearGradientEndPoint={{ x: state.rightState, y: 0 }}
                     fillLinearGradientColorStops={[1, state.colorOne, 1, state.colorTwo]}
