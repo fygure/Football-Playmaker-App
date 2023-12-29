@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ContextMenu from '../menus/ContextMenu'; 
-import { Group, Text } from 'react-konva';
+import { Circle, Group, Text } from 'react-konva';
 import EditableText from '../shapes/EditableText';
+
+
 
 
 const TEXT_SIZES = {
@@ -151,15 +153,27 @@ function TextTag(props) {
         x={position.x}
         y={position.y}
         >
-            <Text
-                text = {text}
-                x = {0}
-                y = {0}
-                fontSize = {fontSize}
-                fill={isDragging ? 'green' : initialColor}
-                fontStyle='bold' 
-                fontFamily='Inter, sans-serif'
-            />   
+        {text.trim() === 'Check Mark' ? (
+        <Circle
+            x={0}
+            y={0}
+            radius={fontSize} 
+            stroke={isDragging ? 'green' : 'black'}
+            strokeWidth={1}
+        />
+        // <TaskAltIcon fontSize="small" />
+    ) : (
+        <Text
+            text={text}
+            x={0}
+            y={0}
+            fontSize={fontSize}
+            fill={isDragging ? 'green' : initialColor}
+            fontStyle='bold' 
+            fontFamily='Inter, sans-serif'
+            textDecoration={['1', '2', '3', '4'].includes(text.trim()) ? 'underline' : 'none'}
+        />
+    )} 
             {isCustomText && (
                 <EditableText
                     initialText={text}
@@ -173,9 +187,7 @@ function TextTag(props) {
         {selectedTextTagID === id}
         {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
-    )
-
-
+    );
 } 
 export default TextTag;
 

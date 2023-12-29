@@ -15,8 +15,8 @@ const buttons = [
     { text: '2', underline: true },
     { text: '3', underline: true },
     { text: '4', underline: true },
-    { text: 'Alert!' },
-    { text: 'Pre' },
+    { text: 'ALERT!' },
+    { text: 'PRE' },
 ];
 
 const buttonStyle = {
@@ -175,6 +175,7 @@ function Stencil(props) {
     // QB Progression handlers
     const handleAddQBProgression = (buttonText) => {
         console.log(buttonText);
+        handleAddTextTag({ target: { value: buttonText } }, selectedColor);
     };
 
     // Components for the stencil
