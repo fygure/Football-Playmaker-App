@@ -1,6 +1,36 @@
 // Stencil.jsx
-import React, { useState, useEffect } from 'react';
-import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid } from '@mui/material';
+import React, { useState } from 'react';
+import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+
+const buttons = [
+    { text: 'Check Mark', icon: 'check' },
+    { text: 'HOT!' },
+    { text: '1', underline: true },
+    { text: '2', underline: true },
+    { text: '3', underline: true },
+    { text: '4', underline: true },
+    { text: 'Alert!' },
+    { text: 'Pre' },
+];
+
+const buttonStyle = {
+    background: '#333',
+    color: 'white',
+    padding: '1px 5px',
+    fontFamily: 'Inter, sans-serif',
+    fontSize: '0.7rem',
+    transition: 'text-shadow 0.3s',
+    minWidth: '0',
+};
+
+const buttonSx = {
+    borderColor: '#222',
+    ':hover': {
+        textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+        borderColor: '#222',
+    },
+};
 
 function Stencil(props) {
     const {
@@ -137,6 +167,11 @@ function Stencil(props) {
     const handleToggleRedLine = () => {
         const newRedLine = !redLine;
         setRedLine(newRedLine);
+    };
+
+    // QB Progression handlers
+    const handleAddQBProgression = (buttonText) => {
+        console.log(buttonText);
     };
 
     // Components for the stencil
@@ -515,13 +550,55 @@ function Stencil(props) {
 
 
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>QB Progression</h3>
+                    <Box sx={{ flexGrow: 1, marginLeft: '-3px' }}>
+                        <Grid container spacing={0}>
+                            <Grid item xs={"auto"}>
+                                {buttons.slice(0, -2).map((button, index) => (
+                                    <Button
+                                        key={index}
+                                        value={button.text}
+                                        variant="text"
+                                        style={{
+                                            ...buttonStyle,
+                                            textDecoration: ['1', '2', '3', '4'].includes(button.text) ? 'underline' : 'none',
+                                            marginRight: '2px',
+                                        }}
+                                        sx={buttonSx}
+                                        size="small"
+                                        onClick={() => handleAddQBProgression(button.text)}
+                                    >
+                                        {button.text === 'Check Mark' ? <TaskAltIcon fontSize="small" /> : button.text}
+                                    </Button>
+                                ))}
+                            </Grid>
+                            <Grid item xs={"auto"}>
+                                {buttons.slice(-2).map((button, index) => (
+                                    <Button
+                                        key={index}
+                                        value={button.text}
+                                        variant="text"
+                                        style={{
+                                            ...buttonStyle,
+                                            textDecoration: ['1', '2', '3', '4'].includes(button.text) ? 'underline' : 'none',
+                                            marginRight: '2px',
+                                        }}
+                                        sx={buttonSx}
+                                        size="small"
+                                        onClick={() => handleAddQBProgression(button.text)}
+                                    >
+                                        {button.text}
+                                    </Button>
+                                ))}
+                            </Grid>
+                        </Grid>
+                    </Box>
 
 
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Text Tags</h3>
                     <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
-                                <ToggleButtonGroup onChange={handleAddTextTag} exclusive aria-label="text tag" sx={{ gap: '2px', flexWrap: 'wrap', marginLeft: '-4px' }}>
+                                <ToggleButtonGroup onChange={handleAddTextTag} exclusive aria-label="text tag" sx={{ gap: '5px', flexWrap: 'wrap', marginLeft: '-4px' }}>
                                     <ToggleButton value="TEMPO" aria-label="tempo" style={{
                                         background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', // Add this line for smooth transition
                                     }}
