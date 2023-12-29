@@ -4,6 +4,7 @@ import StageDimensionsContext from './contexts/StageDimensionsContext';
 import Canvas from './components/Canvas';
 import Stencil from './components/Stencil';
 import useShapes from './hooks/useShapes';
+import useTextTags from './hooks/useTextTags';
 import useBackground from './hooks/useBackground';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './config/theme';
@@ -18,9 +19,11 @@ function App() {
   const imageRef = useRef(null);
   const stageRef = useRef(null);
   const [selectedShapes, setSelectedShapes] = useState([]);
+  const [selectedTextTags, setSelectedTextTags] = useState([]);
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
+  const {textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
 
   return (
     <>
@@ -37,6 +40,8 @@ function App() {
               <Stencil
                 onAddFormation={addFormation}
                 onAddShape={addShape}
+                onAddTextTag = {addTextTag}
+
                 fieldType={fieldType}
                 setFieldType={setFieldType}
                 setZone={setZone}
@@ -45,6 +50,9 @@ function App() {
                 redLine={redLine}
                 onDeleteAllShapes={deleteAllShapes}
                 onChangeFormation={deleteFormation} //deletes all other formation shapes except one chosen
+
+                onDeleteAllTextTags = {deleteAllTextTags}
+                
                 stageRef={stageRef}
               />
             </div>
@@ -67,9 +75,17 @@ function App() {
                 shapes={shapes}
                 selectedShapes={selectedShapes}
                 setSelectedShapes={setSelectedShapes}
-                onChange={updateShape}
-                onDelete={deleteShape}
+                onShapeChange={updateShape}
+                onShapeDelete={deleteShape}
                 onHideContextMenu={hideShapeContextMenu}
+
+                textTags = {textTags}
+                selectedTextTags = {selectedTextTags}
+                setSelectedTextTags = {setSelectedTextTags}
+                onTextTagChange = {updateTextTag}
+                onTextTagDelete = {deleteTextTag}
+                onHideTextTagContextMenu = {hideTextTagContextMenu}
+                
                 backgroundImage={backgroundImage}
                 setStageDimensions={setStageDimensions}
                 stageRef={stageRef}

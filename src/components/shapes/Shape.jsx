@@ -22,8 +22,8 @@ function Shape(props) {
         shapeType,
         initialPosition,
         initialColor,
-        onChange,
-        onDelete,
+        onShapeChange,
+        onShapeDelete,
         onHideContextMenu,
         imageRef,
         stageRef,
@@ -114,7 +114,7 @@ function Shape(props) {
 
     const handleDeleteClick = () => {
         setShowContextMenu(false);
-        onDelete(id);
+        onShapeDelete(id);
     };
 
     const handleDragStart = () => {
@@ -124,7 +124,7 @@ function Shape(props) {
     const handleDragEnd = (e) => {
         //console.log(e.target.position());
         setPosition(e.target.position());
-        onChange(id, { x: e.target.x(), y: e.target.y() });
+        onShapeChange(id, { x: e.target.x(), y: e.target.y() });
     };
 
     const handleHideContextMenu = () => {
@@ -132,7 +132,7 @@ function Shape(props) {
     }
 
     const handleTextChange = (newText) => {
-        onChange(id, { text: newText });
+        onShapeChange(id, { text: newText });
     };
 
     const dragBoundFunc = (pos) => {

@@ -123,7 +123,8 @@ const EditableText = ({ initialText, x, y, fontSize, handleTextChange }) => {
             x={x}
             y={y}
             fontSize={fontSize}
-            fontFamily="Bitter"
+            fontFamily="Inter, sans-serif"
+            fontStyle='bold'
             fontWeight={fontWeight}
             ref={textRef}
             onDblClick={handleDblClick}
