@@ -22,8 +22,8 @@ function Shape(props) {
         shapeType,
         initialPosition,
         initialColor,
-        onChange,
-        onDelete,
+        onShapeChange,
+        onShapeDelete,
         onHideContextMenu,
         imageRef,
         stageRef,
@@ -36,10 +36,16 @@ function Shape(props) {
     const [position, setPosition] = useState(initialPosition);
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
-    const [circleRadius, setCircleRadius] = useState(30); // initial circle radius
-    const [ellipseRadiuses, setEllipseRadiuses] = useState({ x: 18, y: 12 }); // initial ellipse radii
-    const [fontSize, setFontSize] = useState(13);
-    const [rectSize, setRectSize] = useState({ width: 28, height: 28 }); // initial rectangle size
+    const [circleRadius, setCircleRadius] = useState(SHAPE_SIZES.CIRCLE.MAX); // initial circle radius
+    const [ellipseRadiuses, setEllipseRadiuses] = useState({ 
+        x: SHAPE_SIZES.ELLIPSE.X.MAX, 
+        y: SHAPE_SIZES.ELLIPSE.Y.MAX 
+    }); // initial ellipse radii
+    const [fontSize, setFontSize] = useState(SHAPE_SIZES.FONT.MAX);
+    const [rectSize, setRectSize] = useState({ 
+        width: SHAPE_SIZES.RECT.WIDTH.MAX, 
+        height: SHAPE_SIZES.RECT.HEIGHT.MAX 
+    }); // initial rectangle size
 
     useEffect(() => {
         const image = imageRef.current;
@@ -108,7 +114,7 @@ function Shape(props) {
 
     const handleDeleteClick = () => {
         setShowContextMenu(false);
-        onDelete(id);
+        onShapeDelete(id);
     };
 
     const handleDragStart = () => {
@@ -118,7 +124,7 @@ function Shape(props) {
     const handleDragEnd = (e) => {
         //console.log(e.target.position());
         setPosition(e.target.position());
-        onChange(id, { x: e.target.x(), y: e.target.y() });
+        onShapeChange(id, { x: e.target.x(), y: e.target.y() });
     };
 
     const handleHideContextMenu = () => {
@@ -126,7 +132,7 @@ function Shape(props) {
     }
 
     const handleTextChange = (newText) => {
-        onChange(id, { text: newText });
+        onShapeChange(id, { text: newText });
     };
 
     const dragBoundFunc = (pos) => {

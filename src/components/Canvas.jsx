@@ -4,6 +4,7 @@ import { Stage, Layer, Image, Rect, Transformer, getAbsolutePosition } from 'rea
 import useImage from 'use-image';
 import StageDimensionsContext from '../contexts/StageDimensionsContext';
 import Shape from './shapes/Shape';
+import TextTag from './textTags/TextTag';
 import Konva from 'konva';
 
 function Canvas(props) {
@@ -14,8 +15,16 @@ function Canvas(props) {
         selectedShapes,
         setSelectedShapes,
         onSelect,
-        onChange,
-        onDelete,
+        onShapeChange,
+        onShapeDelete,
+
+        textTags,
+        selectedTextTags,
+        setSelectedTextTags,
+        onTextTagChange,
+        onTextTagDelete,
+        onHideTextTagContextMenu,
+
         onHideContextMenu,
         backgroundImage,
         setStageDimensions
@@ -25,10 +34,12 @@ function Canvas(props) {
     const containerRef = useRef(null);
     const [image] = useImage(backgroundImage);
     const [selectedShapeID, setSelectedShapeID] = useState('$');
+    const [selectedTextTagID, setSelectedTextTagID] = useState('$');
     const [selectionRect, setSelectionRect] = useState({ x: 0, y: 0, width: 0, height: 0, visible: false });
     const [initialMousePosition, setInitialMousePosition] = useState({ x: 0, y: 0 });
 
     const deselectShape = () => setSelectedShapeID('$');
+    const deselectTextTag = () => setSelectedTextTagID('$');
 
     useEffect(() => {
         function fitStageIntoParentContainer() {
@@ -63,6 +74,7 @@ function Canvas(props) {
         // console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
         console.log('Selected Shapes', selectedShapes);
         deselectShape();
+        deselectTextTag();
     }
 
     const handleStageClick = (e) => {
@@ -160,13 +172,29 @@ function Canvas(props) {
                                 shapes={shapes}
                                 initialPosition={shape.initialPosition}
                                 initialColor={shape.initialColor}
-                                onChange={onChange}
-                                onDelete={onDelete}
+                                onShapeChange={onShapeChange}
+                                onShapeDelete={onShapeDelete}
                                 onHideContextMenu={onHideContextMenu}
                                 stageRef={stageRef}
                                 imageRef={imageRef}
                                 setSelectedShapes={setSelectedShapes}
                                 selectedShapeID={selectedShapeID} setSelectedShapeID={setSelectedShapeID}
+                            />
+                        ))}
+                        {textTags.map((textTag) => (
+                            <TextTag
+                                key={textTag.id}
+                                id={textTag.id}
+                                text = {textTag.text}
+                                textTags={textTags}
+                                initialPosition={textTag.initialPosition}
+                                initialColor={textTag.initialColor}
+                                onTextTagChange={onTextTagChange}
+                                onTextTagDelete={onTextTagDelete}
+                                onHideTextTagContextMenu={onHideTextTagContextMenu}
+                                imageRef={imageRef}
+                                setSelectedTextTags={setSelectedTextTags}
+                                selectedTextTagID={selectedTextTagID} setSelectedTextTagID={setSelectedTextTagID}
                             />
                         ))}
                         {selectionRect.visible && (
@@ -178,6 +206,7 @@ function Canvas(props) {
                                 fill="rgba(169, 169, 169, 0.5)"
                             />
                         )}
+
                     </Layer>
                 </Stage>
             </div>
