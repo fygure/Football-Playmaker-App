@@ -1,4 +1,9 @@
 // Stencil.jsx
+ //TODO: Toggle button for the themes, complete the handleAddQBProgression function
+ //NOTE: The checkmark icon is called TaskAltIcon, we need a konva circle with the icon image inside it.
+ //Numbers need underline
+
+
 import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
@@ -52,16 +57,13 @@ function Stencil(props) {
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
     const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left 
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
+    const [selectedColor, setSelectedColor] = useState("#333");
 
-
-    //TODO: complete text tag functionality
-    // const [selectedText, setSelectedText] = useState("");
-    const textColor = 'black';
     const handleAddTextTag = (e) => {
         const newText = e.target.value;
         console.log(newText);
         // setSelectedText(newText);
-        onAddTextTag(newText, textColor);
+        onAddTextTag(newText, selectedColor);
     };
 
     const shapeColor = 'white';
