@@ -1,9 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ContextMenu from '../menus/ContextMenu'; 
-function Text(props) {
+import { Group, Text } from 'react-konva';
+import EditableText from '../shapes/EditableText';
+
+
+const TEXT_SIZES = {
+    FONT: { MIN: 6, MAX: 13 },
+};
+function TextTag(props) {
     const {
         textTags,
         id,
+        text,
         initialPosition,
         initialColor,
         onTextTagChange,
@@ -20,6 +28,10 @@ function Text(props) {
     const [position, setPosition] = useState(initialPosition);
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+    const [fontSize, setFontSize] = useState(TEXT_SIZES.FONT.MAX);
+    const [isDragging, setIsDragging] = useState(false);
+
+    const [isCustomText, setIsCustomText] = useState(text === 'CUSTOM');
 
 
     useEffect(() => {
@@ -30,7 +42,8 @@ function Text(props) {
             x: (position.x - initialImagePosition.x) / initialImageSize.width,
             y: (position.y - initialImagePosition.y) / initialImageSize.height,
         };
-
+        
+        const initialRelativeFontSize = fontSize / initialImageSize.width;
 
         const handleResize = () => {
             const newImagePosition = { x: image.x(), y: image.y() };
@@ -39,6 +52,8 @@ function Text(props) {
                 x: initialRelativePosition.x * newImageSize.width + newImagePosition.x,
                 y: initialRelativePosition.y * newImageSize.height + newImagePosition.y,
             });
+            const newFontSize = Math.max(Math.min(initialRelativeFontSize * newImageSize.width, TEXT_SIZES.FONT.MAX), TEXT_SIZES.FONT.MIN);
+            setFontSize(newFontSize);
         };
         window.addEventListener('resize', handleResize);
 
@@ -77,12 +92,14 @@ function Text(props) {
 
     const handleDragStart = () => {
         setShowContextMenu(false);
+        setIsDragging(true);
     };
 
     const handleDragEnd = (e) => {
         //console.log(e.target.position());
         setPosition(e.target.position());
         onTextTagChange(id, { x: e.target.x(), y: e.target.y() });
+        setIsDragging(false); 
     };
 
     const handleHideContextMenu = () => {
@@ -121,8 +138,46 @@ function Text(props) {
     };
 
 
+    return (
+        <>
+        <Group
+        draggable
+        dragBoundFunc={dragBoundFunc}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onClick={handleOnClick}
+        onContextMenu={handleRightClick}
+        ref={textTagRef}
+        x={position.x}
+        y={position.y}
+        >
+            <Text
+                text = {text}
+                x = {0}
+                y = {0}
+                fontSize = {fontSize}
+                fill={isDragging ? 'green' : initialColor}
+                fontStyle='bold' 
+                fontFamily='Inter, sans-serif'
+            />   
+            {isCustomText && (
+                <EditableText
+                    initialText={text}
+                    x={0}
+                    y={0}
+                    fontSize={fontSize}
+                    handleTextChange={handleTextChange}
+                />
+            )}
+        </Group>
+        {selectedTextTagID === id}
+        {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
+        </>
+    )
+
+
 } 
-export default Text;
+export default TextTag;
 
 
 

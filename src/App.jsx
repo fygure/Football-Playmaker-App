@@ -19,6 +19,7 @@ function App() {
   const imageRef = useRef(null);
   const stageRef = useRef(null);
   const [selectedShapes, setSelectedShapes] = useState([]);
+  const [selectedTextTags, setSelectedTextTags] = useState([]);
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
@@ -39,7 +40,6 @@ function App() {
               <Stencil
                 onAddFormation={addFormation}
                 onAddShape={addShape}
-
                 onAddTextTag = {addTextTag}
 
                 fieldType={fieldType}
@@ -80,9 +80,12 @@ function App() {
                 onHideContextMenu={hideShapeContextMenu}
 
                 textTags = {textTags}
+                selectedTextTags = {selectedTextTags}
+                setSelectedTextTags = {setSelectedTextTags}
                 onTextTagChange = {updateTextTag}
                 onTextTagDelete = {deleteTextTag}
                 onHideTextTagContextMenu = {hideTextTagContextMenu}
+                
                 backgroundImage={backgroundImage}
                 setStageDimensions={setStageDimensions}
                 stageRef={stageRef}

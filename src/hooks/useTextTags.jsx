@@ -7,17 +7,17 @@ function useTextTags(imageRef){
 
     const addTextTag = (text, initialColor) => {
         const middlePosition = {
-            x: imageRef.current.x() + (imageRef.current.width() / 2),
-            y: imageRef.current.height() / 2
+            x: imageRef.current.x() + (imageRef.current.width() / 2) - 30,
+            y: imageRef.current.height() -50
         };
         
+
         const newTextTag = {
             id: uuidv4(),
             initialPosition: middlePosition,
-            initialColor,
+            initialColor: initialColor,
             text: text,
         };
-
 
         setTextTags([...textTags, newTextTag]);
     };
