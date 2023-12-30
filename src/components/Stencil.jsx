@@ -67,7 +67,7 @@ function Stencil(props) {
 
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
-    const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left 
+    const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
     const [selectedButton, setSelectedButton] = useState(null);
     const shapeColor = 'white';
@@ -187,6 +187,12 @@ function Stencil(props) {
         //console.log(newText);
         // setSelectedText(newText);
         onAddTextTag(newText, selectedColor);
+    };
+
+    //Orientation handlers
+    const handleOrientation = (e) => {
+        const newOrientation = e.target.value;
+        console.log(newOrientation);
     };
 
     // Components for the stencil
@@ -580,14 +586,14 @@ function Stencil(props) {
                                         margin: '5px',
                                         '&:hover': {
                                             backgroundColor: color,
-                                            boxShadow: '0 0 10px 2px white', 
+                                            boxShadow: '0 0 10px 2px white',
                                         },
-                                        border: selectedButton === index ? '2px solid white' : 'none', 
+                                        border: selectedButton === index ? '2px solid white' : 'none',
                                     }}
                                     onClick={() => {
                                         // console.log(color);
                                         setSelectedColor(color);
-                                        setSelectedButton(index); 
+                                        setSelectedButton(index);
                                       }}
                                 />
                             </Grid>
@@ -630,7 +636,7 @@ function Stencil(props) {
                                         variant="text"
                                         style={{
                                             ...buttonStyle,
-                                            textDecoration: ['1', '2', '3', '4'].includes(button.text) ? 'underline' : 'none',
+                                            // textDecoration: ['1', '2', '3', '4'].includes(button.text) ? 'underline' : 'none',
                                             marginRight: '2px',
                                         }}
                                         sx={buttonSx}
@@ -723,11 +729,19 @@ function Stencil(props) {
                                         }}>
                                         CUSTOM
                                     </ToggleButton>
-
                                 </ToggleButtonGroup>
                             </div>
                         </div>
                     </div>
+                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                        Orientation
+                    </h3>
+                <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px',marginBottom: '-20px' }}>
+                    <Grid container spacing={0}>
+
+
+                    </Grid>
+                </Box>
 
 
 

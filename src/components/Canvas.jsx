@@ -201,6 +201,7 @@ function Canvas(props) {
                                 text={textTag.text}
                                 textTags={textTags}
                                 initialPosition={textTag.initialPosition}
+                                selectedColor={selectedColor}
                                 color={textTag.color}
                                 onTextTagChange={onTextTagChange}
                                 onTextTagDelete={onTextTagDelete}
