@@ -177,12 +177,12 @@ function TextTag(props) {
             >
                 {selectedTextTagID === id && (
                     <Rect
-                        x={text.trim() === 'Check Mark' ? -13 :-2} 
-                        y={text.trim() === 'Check Mark' ? -13 :-2} 
+                        x={text.trim() === 'Check Mark' ? -13 : -2}
+                        y={text.trim() === 'Check Mark' ? -13 : -2}
                         width={text.trim() === 'Check Mark' ? fontSize * 2 : fontSize * text.length * 0.85}
-                        height={text.trim() === 'Check Mark' ? fontSize * 2 : fontSize * 1.2} 
-                        stroke='red' 
-                        strokeWidth={1} 
+                        height={text.trim() === 'Check Mark' ? fontSize * 2 : fontSize * 1.2}
+                        stroke='red'
+                        strokeWidth={1}
                     />
                 )}
                 {checkMarkImage && text.trim() === 'Check Mark' ? (
@@ -191,7 +191,7 @@ function TextTag(props) {
                             x={0}
                             y={0}
                             radius={checkMarkImage.width / 2}
-                            fill={isDragging ? 'green' : color}
+                            fill={color}
                         />
                         <Circle
                             x={0}
@@ -209,11 +209,11 @@ function TextTag(props) {
                         y={0}
                         fontSize={fontSize}
                         fontWeight={fontWeight}
-                        fill={isDragging ? 'green' : color}
+                        fill={color}
                         fontStyle='bold'
                         fontFamily='Inter, sans-serif'
                         textDecoration={['1', '2', '3', '4'].includes(text.trim()) ? 'underline' : 'none'}
-                        // opacity={selectedTextTagID === id ? 0.5 : 1}
+                    // opacity={selectedTextTagID === id ? 0.5 : 1}
                     />
                 )}
                 {isCustomText && (
@@ -223,7 +223,7 @@ function TextTag(props) {
                         y={0}
                         fontSize={fontSize}
                         handleTextChange={handleTextChange}
-                        color={isDragging ? 'green' : color}
+                        color={color}
                     />
                 )}
             </Group>
