@@ -84,6 +84,7 @@ function Canvas(props) {
         console.log('Selected Text Tags', selectedTextTags);
         deselectShape();
         deselectTextTag();
+        setSelectedTextTags([]);
     }
 
     const handleStageClick = (e) => {
@@ -94,6 +95,7 @@ function Canvas(props) {
             //setSelectedShapes([]);
             deselectShape();
             deselectTextTag();
+            setSelectedTextTags([]);
         }
     };
 
