@@ -90,6 +90,7 @@ function Canvas(props) {
     const handleStageClick = (e) => {
         //console.log('Stage Clicked', stageDimensions);
         console.log('Shapes List:', shapes);
+        console.log('Text Tags List:', textTags);
         // if clicked on empty area - remove all selections
         if (e.target === e.target.getStage()) {
             //setSelectedShapes([]);
