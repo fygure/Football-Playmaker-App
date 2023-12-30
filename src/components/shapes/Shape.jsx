@@ -37,14 +37,14 @@ function Shape(props) {
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
     const [circleRadius, setCircleRadius] = useState(SHAPE_SIZES.CIRCLE.MAX); // initial circle radius
-    const [ellipseRadiuses, setEllipseRadiuses] = useState({ 
-        x: SHAPE_SIZES.ELLIPSE.X.MAX, 
-        y: SHAPE_SIZES.ELLIPSE.Y.MAX 
+    const [ellipseRadiuses, setEllipseRadiuses] = useState({
+        x: SHAPE_SIZES.ELLIPSE.X.MAX,
+        y: SHAPE_SIZES.ELLIPSE.Y.MAX
     }); // initial ellipse radii
     const [fontSize, setFontSize] = useState(SHAPE_SIZES.FONT.MAX);
-    const [rectSize, setRectSize] = useState({ 
-        width: SHAPE_SIZES.RECT.WIDTH.MAX, 
-        height: SHAPE_SIZES.RECT.HEIGHT.MAX 
+    const [rectSize, setRectSize] = useState({
+        width: SHAPE_SIZES.RECT.WIDTH.MAX,
+        height: SHAPE_SIZES.RECT.HEIGHT.MAX
     }); // initial rectangle size
 
     useEffect(() => {
