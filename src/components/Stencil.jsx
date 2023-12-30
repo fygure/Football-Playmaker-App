@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-
+import theme from '../config/theme.js';
 const buttons = [
     { text: 'Check Mark', icon: 'check' },
     { text: 'HOT!' },
@@ -25,7 +25,6 @@ const buttonStyle = {
     transition: 'text-shadow 0.3s',
     minWidth: '0',
 };
-
 const buttonSx = {
     borderColor: '#222',
     ':hover': {
@@ -33,6 +32,19 @@ const buttonSx = {
         borderColor: '#222',
     },
 };
+
+
+const colorButtons = [
+    theme.palette.pitchBlack.main,
+    theme.palette.punky.main,
+    theme.palette.mustard.main,
+    theme.palette.kellyGreen.main,
+    theme.palette.ramsBlue.main,
+    theme.palette.purple.main,
+    theme.palette.sharpRed.main
+    // Add more colors as needed
+];
+
 
 function Stencil(props) {
     const {
@@ -56,6 +68,7 @@ function Stencil(props) {
     const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left 
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
     const [selectedColor, setSelectedColor] = useState("#333");
+    const [selectedButton, setSelectedButton] = useState(null);
     const shapeColor = 'white';
 
     function handleDownload() {
@@ -551,7 +564,34 @@ function Stencil(props) {
                             </div>
                         </div>
                     </div>
-
+                    <h3 style={{ marginBottom: '0px', marginTop: '-5px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Color</h3>
+                    <Box sx={{ flexGrow: 1, marginLeft: '-5px', marginTop: '-10px' }}>
+                    <Grid container spacing={0}>
+                        {colorButtons.map((color, index) => (
+                            <Grid item xs={"auto"} key={index}>
+                                <Button
+                                    variant="contained"
+                                    sx={{
+                                        backgroundColor: color,
+                                        borderRadius: '50%',
+                                        padding: '10px',
+                                        minWidth: '10px',
+                                        margin: '5px',
+                                        '&:hover': {
+                                            backgroundColor: color,
+                                            boxShadow: '0 0 10px 2px white', // Add this line
+                                        },
+                                        border: selectedButton === index ? '2px solid white' : 'none', // Change this line
+                                    }}
+                                    onClick={() => {
+                                        setSelectedColor(color);
+                                        setSelectedButton(index); // Add this line
+                                      }}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Lines</h3>
                     {/*TODO*/}
 
