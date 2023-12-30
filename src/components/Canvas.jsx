@@ -1,11 +1,10 @@
 // Canvas.jsx
-import React, { useContext, useRef, useEffect, useState } from 'react';
-import { Stage, Layer, Image, Rect, Transformer, getAbsolutePosition } from 'react-konva';
+import React, { useRef, useEffect, useState } from 'react';
+import { Stage, Layer, Image, Rect } from 'react-konva';
 import useImage from 'use-image';
-import StageDimensionsContext from '../contexts/StageDimensionsContext';
+//import StageDimensionsContext from '../contexts/StageDimensionsContext';
 import Shape from './shapes/Shape';
-import TextTag from './textTags/TextTag';
-import Konva from 'konva';
+import TextTag from './shapes/TextTag';
 
 function Canvas(props) {
     const {
@@ -17,20 +16,18 @@ function Canvas(props) {
         onSelect,
         onShapeChange,
         onShapeDelete,
-
         textTags,
         selectedTextTags,
         setSelectedTextTags,
         onTextTagChange,
         onTextTagDelete,
         onHideTextTagContextMenu,
-
         onHideContextMenu,
         backgroundImage,
         setStageDimensions
     } = props;
 
-    const { stageDimensions } = useContext(StageDimensionsContext);
+    //const { stageDimensions } = useContext(StageDimensionsContext);
     const containerRef = useRef(null);
     const [image] = useImage(backgroundImage);
     const [selectedShapeID, setSelectedShapeID] = useState('$');
@@ -185,7 +182,7 @@ function Canvas(props) {
                             <TextTag
                                 key={textTag.id}
                                 id={textTag.id}
-                                text = {textTag.text}
+                                text={textTag.text}
                                 textTags={textTags}
                                 initialPosition={textTag.initialPosition}
                                 initialColor={textTag.initialColor}
