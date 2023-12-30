@@ -23,6 +23,7 @@ function Canvas(props) {
         onTextTagDelete,
         onHideTextTagContextMenu,
         onHideContextMenu,
+        selectedColor,
         backgroundImage,
         setStageDimensions
     } = props;
@@ -37,6 +38,16 @@ function Canvas(props) {
 
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
+
+    const updateSelectedTextTagsColor = (newColor) => {
+        selectedTextTags.forEach(tag => {
+            onTextTagChange(tag.id, { color: newColor });
+        });
+    };
+    useEffect(() => {
+        updateSelectedTextTagsColor(selectedColor);
+    }, [selectedColor]);
+
 
     useEffect(() => {
         function fitStageIntoParentContainer() {
@@ -70,6 +81,7 @@ function Canvas(props) {
         // console.log('Image Position:', imageRef.current.x(), imageRef.current.y());
         // console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
         console.log('Selected Shapes', selectedShapes);
+        console.log('Selected Text Tags', selectedTextTags);
         deselectShape();
         deselectTextTag();
     }
@@ -81,6 +93,7 @@ function Canvas(props) {
         if (e.target === e.target.getStage()) {
             //setSelectedShapes([]);
             deselectShape();
+            deselectTextTag();
         }
     };
 
@@ -185,7 +198,7 @@ function Canvas(props) {
                                 text={textTag.text}
                                 textTags={textTags}
                                 initialPosition={textTag.initialPosition}
-                                initialColor={textTag.initialColor}
+                                color={textTag.color}
                                 onTextTagChange={onTextTagChange}
                                 onTextTagDelete={onTextTagDelete}
                                 onHideTextTagContextMenu={onHideTextTagContextMenu}

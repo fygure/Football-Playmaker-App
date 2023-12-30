@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ContextMenu from '../menus/ContextMenu';
-import { Circle, Group, Text } from 'react-konva';
+import { Circle, Group, Text, Rect } from 'react-konva';
 import EditableText from './EditableText';
 
 
@@ -15,7 +15,7 @@ function TextTag(props) {
         id,
         text,
         initialPosition,
-        initialColor,
+        color,
         onTextTagChange,
         onTextTagDelete,
         onHideContextMenu,
@@ -82,13 +82,14 @@ function TextTag(props) {
         // const node = shapeRef.current;
         //First empty the selectedShapes array
         setSelectedTextTags([]);
+        setSelectedTextTagID([]);
         //Filter the shapes array to grab the shape by the id
         const selectedTextTag = textTags.find(text => text.id === id);
         console.log('Text Clicked', selectedTextTag);
 
         setSelectedTextTags([selectedTextTag]);
         setSelectedTextTagID(id);
-        console.log('Selected Text ID:', id);
+        // console.log('Selected Text ID:', id);
     }
 
     const handleRightClick = (e) => {
@@ -105,6 +106,15 @@ function TextTag(props) {
     };
 
     const handleDragStart = () => {
+
+        setSelectedTextTags([]);
+        setSelectedTextTagID([]);
+        //Filter the shapes array to grab the shape by the id
+        const selectedTextTag = textTags.find(text => text.id === id);
+        console.log('Text Clicked', selectedTextTag);
+
+        setSelectedTextTags([selectedTextTag]);
+        setSelectedTextTagID(id);
         setShowContextMenu(false);
         setIsDragging(true);
     };
@@ -165,13 +175,23 @@ function TextTag(props) {
                 x={position.x}
                 y={position.y}
             >
+                {selectedTextTagID === id && (
+                    <Rect
+                        x={text.trim() === 'Check Mark' ? -13 :-2} 
+                        y={text.trim() === 'Check Mark' ? -13 :-2} 
+                        width={text.trim() === 'Check Mark' ? fontSize * 2 : fontSize * text.length * 0.85}
+                        height={text.trim() === 'Check Mark' ? fontSize * 2 : fontSize * 1.2} 
+                        stroke='red' 
+                        strokeWidth={1} 
+                    />
+                )}
                 {checkMarkImage && text.trim() === 'Check Mark' ? (
                     <>
                         <Circle
                             x={0}
                             y={0}
                             radius={checkMarkImage.width / 2}
-                            fill={isDragging ? 'green' : initialColor}
+                            fill={isDragging ? 'green' : color}
                         />
                         <Circle
                             x={0}
@@ -189,10 +209,11 @@ function TextTag(props) {
                         y={0}
                         fontSize={fontSize}
                         fontWeight={fontWeight}
-                        fill={isDragging ? 'green' : initialColor}
+                        fill={isDragging ? 'green' : color}
                         fontStyle='bold'
                         fontFamily='Inter, sans-serif'
                         textDecoration={['1', '2', '3', '4'].includes(text.trim()) ? 'underline' : 'none'}
+                        // opacity={selectedTextTagID === id ? 0.5 : 1}
                     />
                 )}
                 {isCustomText && (
@@ -202,7 +223,7 @@ function TextTag(props) {
                         y={0}
                         fontSize={fontSize}
                         handleTextChange={handleTextChange}
-                        initialColor={isDragging ? 'green' : initialColor}
+                        color={isDragging ? 'green' : color}
                     />
                 )}
             </Group>
