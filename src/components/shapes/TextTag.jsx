@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ContextMenu from '../menus/ContextMenu'; 
+import ContextMenu from '../menus/ContextMenu';
 import { Circle, Group, Text } from 'react-konva';
-import EditableText from '../shapes/EditableText';
-
+import EditableText from './EditableText';
 
 
 
 const TEXT_SIZES = {
     FONT: { MIN: 6, MAX: 13 },
+    CHECK: { MIN: 8, MAX: 13 },
 };
 function TextTag(props) {
     const {
@@ -26,15 +26,24 @@ function TextTag(props) {
         setSelectedTextTagID,
     } = props;
 
+    const fontWeight = 700;
     const textTagRef = useRef();
     const [position, setPosition] = useState(initialPosition);
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
     const [fontSize, setFontSize] = useState(TEXT_SIZES.FONT.MAX);
+    const [checkMarkSize, setCheckMarkSize] = useState(TEXT_SIZES.CHECK.MAX);
     const [isDragging, setIsDragging] = useState(false);
-
+    const [checkMarkImage, setCheckMarkImage] = useState(null);
     const [isCustomText, setIsCustomText] = useState(text === 'CUSTOM');
 
+    useEffect(() => {
+        const img = new window.Image();
+        img.src = process.env.PUBLIC_URL + '/static/assets/checkmark.png';
+        img.onload = () => {
+            setCheckMarkImage(img);
+        };
+    }, []);
 
     useEffect(() => {
         const image = imageRef.current;
@@ -44,8 +53,9 @@ function TextTag(props) {
             x: (position.x - initialImagePosition.x) / initialImageSize.width,
             y: (position.y - initialImagePosition.y) / initialImageSize.height,
         };
-        
+
         const initialRelativeFontSize = fontSize / initialImageSize.width;
+        const initialRelativeCheckMarkSize = checkMarkSize / initialImageSize.width;
 
         const handleResize = () => {
             const newImagePosition = { x: image.x(), y: image.y() };
@@ -56,16 +66,18 @@ function TextTag(props) {
             });
             const newFontSize = Math.max(Math.min(initialRelativeFontSize * newImageSize.width, TEXT_SIZES.FONT.MAX), TEXT_SIZES.FONT.MIN);
             setFontSize(newFontSize);
+            const newCheckMarkSize = Math.max(Math.min(initialRelativeCheckMarkSize * newImageSize.width, TEXT_SIZES.CHECK.MAX), TEXT_SIZES.CHECK.MIN);
+            setCheckMarkSize(newCheckMarkSize);
         };
         window.addEventListener('resize', handleResize);
 
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, [position, imageRef]);
+    }, [position, imageRef, checkMarkSize, fontSize]);
 
-    
- 
+
+
     const handleOnClick = () => {
         // const node = shapeRef.current;
         //First empty the selectedShapes array
@@ -73,7 +85,7 @@ function TextTag(props) {
         //Filter the shapes array to grab the shape by the id
         const selectedTextTag = textTags.find(text => text.id === id);
         console.log('Text Clicked', selectedTextTag);
-        
+
         setSelectedTextTags([selectedTextTag]);
         setSelectedTextTagID(id);
         console.log('Selected Text ID:', id);
@@ -101,7 +113,7 @@ function TextTag(props) {
         //console.log(e.target.position());
         setPosition(e.target.position());
         onTextTagChange(id, { x: e.target.x(), y: e.target.y() });
-        setIsDragging(false); 
+        setIsDragging(false);
     };
 
     const handleHideContextMenu = () => {
@@ -142,53 +154,63 @@ function TextTag(props) {
 
     return (
         <>
-        <Group
-        draggable
-        dragBoundFunc={dragBoundFunc}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onClick={handleOnClick}
-        onContextMenu={handleRightClick}
-        ref={textTagRef}
-        x={position.x}
-        y={position.y}
-        >
-        {text.trim() === 'Check Mark' ? (
-        <Circle
-            x={0}
-            y={0}
-            radius={fontSize} 
-            stroke={isDragging ? 'green' : 'black'}
-            strokeWidth={1}
-        />
-        // <TaskAltIcon fontSize="small" />
-    ) : (
-        <Text
-            text={text}
-            x={0}
-            y={0}
-            fontSize={fontSize}
-            fill={isDragging ? 'green' : initialColor}
-            fontStyle='bold' 
-            fontFamily='Inter, sans-serif'
-            textDecoration={['1', '2', '3', '4'].includes(text.trim()) ? 'underline' : 'none'}
-        />
-    )} 
-            {isCustomText && (
-                <EditableText
-                    initialText={text}
-                    x={0}
-                    y={0}
-                    fontSize={fontSize}
-                    handleTextChange={handleTextChange}
-                />
-            )}
-        </Group>
-        {selectedTextTagID === id}
-        {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
+            <Group
+                draggable
+                dragBoundFunc={dragBoundFunc}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+                onClick={handleOnClick}
+                onContextMenu={handleRightClick}
+                ref={textTagRef}
+                x={position.x}
+                y={position.y}
+            >
+                {checkMarkImage && text.trim() === 'Check Mark' ? (
+                    <>
+                        <Circle
+                            x={0}
+                            y={0}
+                            radius={checkMarkImage.width / 2}
+                            fill={isDragging ? 'green' : initialColor}
+                        />
+                        <Circle
+                            x={0}
+                            y={0}
+                            radius={checkMarkImage.width / 2}
+                            fillPatternImage={checkMarkImage}
+                            fillPatternScale={{ x: 1, y: 1 }}
+                            fillPatternOffset={{ x: checkMarkImage.width / 2, y: checkMarkImage.height / 2 }}
+                        />
+                    </>
+                ) : (
+                    <Text
+                        text={text}
+                        x={0}
+                        y={0}
+                        fontSize={fontSize}
+                        fontWeight={fontWeight}
+                        fill={isDragging ? 'green' : initialColor}
+                        fontStyle='bold'
+                        fontFamily='Inter, sans-serif'
+                        textDecoration={['1', '2', '3', '4'].includes(text.trim()) ? 'underline' : 'none'}
+                    />
+                )}
+                {isCustomText && (
+                    <EditableText
+                        initialText={text}
+                        x={0}
+                        y={0}
+                        fontSize={fontSize}
+                        handleTextChange={handleTextChange}
+                        initialColor={isDragging ? 'green' : initialColor}
+                    />
+                )}
+            </Group>
+            {selectedTextTagID === id}
+            {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>
     );
-} 
+}
 export default TextTag;
 
 
