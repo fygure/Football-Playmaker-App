@@ -566,7 +566,7 @@ function Stencil(props) {
                         </div>
                     </div>
                     <h3 style={{ marginBottom: '0px', marginTop: '-5px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Color</h3>
-                    <Box sx={{ flexGrow: 1, marginLeft: '-5px', marginTop: '-10px' }}>
+                    <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px',marginBottom: '-20px' }}>
                     <Grid container spacing={0}>
                         {colorButtons.map((color, index) => (
                             <Grid item xs={"auto"} key={index}>
@@ -580,14 +580,14 @@ function Stencil(props) {
                                         margin: '5px',
                                         '&:hover': {
                                             backgroundColor: color,
-                                            boxShadow: '0 0 10px 2px white', // Add this line
+                                            boxShadow: '0 0 10px 2px white', 
                                         },
-                                        border: selectedButton === index ? '2px solid white' : 'none', // Change this line
+                                        border: selectedButton === index ? '2px solid white' : 'none', 
                                     }}
                                     onClick={() => {
                                         // console.log(color);
                                         setSelectedColor(color);
-                                        setSelectedButton(index); // Add this line
+                                        setSelectedButton(index); 
                                       }}
                                 />
                             </Grid>

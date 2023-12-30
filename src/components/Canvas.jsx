@@ -81,6 +81,7 @@ function Canvas(props) {
         // console.log('Image Position:', imageRef.current.x(), imageRef.current.y());
         // console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
         console.log('Selected Shapes', selectedShapes);
+        console.log('Selected Text Tags', selectedTextTags);
         deselectShape();
         deselectTextTag();
     }
@@ -92,6 +93,7 @@ function Canvas(props) {
         if (e.target === e.target.getStage()) {
             //setSelectedShapes([]);
             deselectShape();
+            deselectTextTag();
         }
     };
 
