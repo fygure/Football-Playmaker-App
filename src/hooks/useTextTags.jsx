@@ -2,20 +2,22 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-function useTextTags(imageRef){
+function useTextTags(imageRef) {
     const [textTags, setTextTags] = useState([]);
 
-    const addTextTag = (text, initialColor) => {
-        const middlePosition = {
+    const addTextTag = (text, newColor) => {
+
+        console.log('Creating text tag:', text);
+        const startPosition = {
             x: imageRef.current.x() + (imageRef.current.width() / 2) - 30,
-            y: imageRef.current.height() -50
+            y: imageRef.current.height() - 60
         };
-        
+
 
         const newTextTag = {
             id: uuidv4(),
-            initialPosition: middlePosition,
-            initialColor: initialColor,
+            initialPosition: startPosition,
+            color: newColor,
             text: text,
         };
 
@@ -39,6 +41,6 @@ function useTextTags(imageRef){
     };
 
 
-    return { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu};
+    return { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu };
 }
 export default useTextTags;

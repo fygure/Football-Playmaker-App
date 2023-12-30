@@ -1,8 +1,10 @@
 // Stencil.jsx
+//TODO: add play name to file name for handleDownload function
+//TODO: toggle button for the themes
 import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-
+import theme from '../config/theme.js';
 const buttons = [
     { text: 'Check Mark', icon: 'check' },
     { text: 'HOT!' },
@@ -10,8 +12,8 @@ const buttons = [
     { text: '2', underline: true },
     { text: '3', underline: true },
     { text: '4', underline: true },
-    { text: 'Alert!' },
-    { text: 'Pre' },
+    { text: 'ALERT!' },
+    { text: 'PRE' },
 ];
 
 const buttonStyle = {
@@ -23,7 +25,6 @@ const buttonStyle = {
     transition: 'text-shadow 0.3s',
     minWidth: '0',
 };
-
 const buttonSx = {
     borderColor: '#222',
     ':hover': {
@@ -31,6 +32,19 @@ const buttonSx = {
         borderColor: '#222',
     },
 };
+
+
+const colorButtons = [
+    theme.palette.pitchBlack.main,
+    theme.palette.punky.main,
+    theme.palette.mustard.main,
+    theme.palette.kellyGreen.main,
+    theme.palette.ramsBlue.main,
+    theme.palette.purple.main,
+    theme.palette.sharpRed.main
+    // Add more colors as needed
+];
+
 
 function Stencil(props) {
     const {
@@ -45,31 +59,22 @@ function Stencil(props) {
         redLine,
         onDeleteAllShapes,
         onChangeFormation,
+        selectedColor,
+        setSelectedColor,
         onDeleteAllTextTags,
         stageRef,
     } = props;
+
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
     const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left 
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
-
-
-    //TODO: complete text tag functionality
-    // const [selectedText, setSelectedText] = useState("");
-    const textColor = 'black';
-    const handleAddTextTag = (e) => {
-        const newText = e.target.value;
-        console.log(newText);
-        // setSelectedText(newText);
-        onAddTextTag(newText, textColor);
-    };
-
+    const [selectedButton, setSelectedButton] = useState(null);
     const shapeColor = 'white';
 
     function handleDownload() {
         var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
         var link = document.createElement('a');
-        //TODO: add play name to file name
         link.download = 'stage.png';
         link.href = dataURL;
         document.body.appendChild(link);
@@ -172,7 +177,16 @@ function Stencil(props) {
 
     // QB Progression handlers
     const handleAddQBProgression = (buttonText) => {
-        console.log(buttonText);
+        //console.log(buttonText);
+        handleAddTextTag({ target: { value: buttonText } }, selectedColor);
+    };
+
+    // Text Tag handlers
+    const handleAddTextTag = (e) => {
+        const newText = e.target.value;
+        //console.log(newText);
+        // setSelectedText(newText);
+        onAddTextTag(newText, selectedColor);
     };
 
     // Components for the stencil
@@ -201,7 +215,9 @@ function Stencil(props) {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
 
-                    <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Field</h3>
+                    <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                        Field
+                    </h3>
                     <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
@@ -280,7 +296,9 @@ function Stencil(props) {
                             maxWidth: '100%',
                             marginRight: '10px',
                             whiteSpace: 'normal',
-                        }}>Offense Formation</h3>
+                        }}>
+                            Offense Formation
+                        </h3>
                         <Button
                             color="white"
                             value="OffenseExtra"
@@ -421,7 +439,9 @@ function Stencil(props) {
                             maxWidth: '100%',
                             marginRight: '10px',
                             whiteSpace: 'normal',
-                        }}>Defense Formation</h3>
+                        }}>
+                            Defense Formation
+                        </h3>
                         <Button
                             color="white"
                             value="DefenseExtra"
@@ -545,12 +565,42 @@ function Stencil(props) {
                             </div>
                         </div>
                     </div>
-
+                    <h3 style={{ marginBottom: '0px', marginTop: '-5px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Color</h3>
+                    <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px',marginBottom: '-20px' }}>
+                    <Grid container spacing={0}>
+                        {colorButtons.map((color, index) => (
+                            <Grid item xs={"auto"} key={index}>
+                                <Button
+                                    variant="contained"
+                                    sx={{
+                                        backgroundColor: color,
+                                        borderRadius: '50%',
+                                        padding: '10px',
+                                        minWidth: '10px',
+                                        margin: '5px',
+                                        '&:hover': {
+                                            backgroundColor: color,
+                                            boxShadow: '0 0 10px 2px white', 
+                                        },
+                                        border: selectedButton === index ? '2px solid white' : 'none', 
+                                    }}
+                                    onClick={() => {
+                                        // console.log(color);
+                                        setSelectedColor(color);
+                                        setSelectedButton(index); 
+                                      }}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Lines</h3>
+                    {/*TODO*/}
 
 
-
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>QB Progression</h3>
+                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                        QB Progression
+                    </h3>
                     <Box sx={{ flexGrow: 1, marginLeft: '-3px' }}>
                         <Grid container spacing={0}>
                             <Grid item xs={"auto"}>
@@ -595,13 +645,15 @@ function Stencil(props) {
                     </Box>
 
 
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Text Tags</h3>
+                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                        Text Tags
+                    </h3>
                     <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div>
                                 <ToggleButtonGroup onChange={handleAddTextTag} exclusive aria-label="text tag" sx={{ gap: '5px', flexWrap: 'wrap', marginLeft: '-4px' }}>
                                     <ToggleButton value="TEMPO" aria-label="tempo" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px' 
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
                                     }}
                                         sx={{
                                             ':hover': {
@@ -611,7 +663,7 @@ function Stencil(props) {
                                         TEMPO
                                     </ToggleButton>
                                     <ToggleButton value="SPRAY" aria-label="spray" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px' 
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
                                     }}
                                         sx={{
                                             ':hover': {
@@ -621,7 +673,7 @@ function Stencil(props) {
                                         SPRAY
                                     </ToggleButton>
                                     <ToggleButton value="STEM" aria-label="stem" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',borderRadius: '5px' 
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
                                     }}
                                         sx={{
                                             ':hover': {
@@ -631,7 +683,7 @@ function Stencil(props) {
                                         STEM
                                     </ToggleButton>
                                     <ToggleButton value="FREE" aria-label="free" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',borderRadius: '5px' 
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
                                     }}
                                         sx={{
                                             ':hover': {
@@ -641,7 +693,7 @@ function Stencil(props) {
                                         FREE
                                     </ToggleButton>
                                     <ToggleButton value="NOW" aria-label="now" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px' 
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
                                     }}
                                         sx={{
                                             ':hover': {
@@ -651,7 +703,7 @@ function Stencil(props) {
                                         NOW
                                     </ToggleButton>
                                     <ToggleButton value="MOR" aria-label="mor" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px' 
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
                                     }}
                                         sx={{
                                             ':hover': {
@@ -662,7 +714,7 @@ function Stencil(props) {
                                     </ToggleButton>
                                     {/* This is for editable text!!! */}
                                     <ToggleButton value="CUSTOM" aria-label="custom" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px' 
+                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
                                     }}
                                         sx={{
                                             ':hover': {

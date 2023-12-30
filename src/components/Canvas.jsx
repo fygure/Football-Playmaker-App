@@ -1,11 +1,10 @@
 // Canvas.jsx
-import React, { useContext, useRef, useEffect, useState } from 'react';
-import { Stage, Layer, Image, Rect, Transformer, getAbsolutePosition } from 'react-konva';
+import React, { useRef, useEffect, useState } from 'react';
+import { Stage, Layer, Image, Rect } from 'react-konva';
 import useImage from 'use-image';
-import StageDimensionsContext from '../contexts/StageDimensionsContext';
+//import StageDimensionsContext from '../contexts/StageDimensionsContext';
 import Shape from './shapes/Shape';
-import TextTag from './textTags/TextTag';
-import Konva from 'konva';
+import TextTag from './shapes/TextTag';
 
 function Canvas(props) {
     const {
@@ -17,20 +16,19 @@ function Canvas(props) {
         onSelect,
         onShapeChange,
         onShapeDelete,
-
         textTags,
         selectedTextTags,
         setSelectedTextTags,
         onTextTagChange,
         onTextTagDelete,
         onHideTextTagContextMenu,
-
         onHideContextMenu,
+        selectedColor,
         backgroundImage,
         setStageDimensions
     } = props;
 
-    const { stageDimensions } = useContext(StageDimensionsContext);
+    //const { stageDimensions } = useContext(StageDimensionsContext);
     const containerRef = useRef(null);
     const [image] = useImage(backgroundImage);
     const [selectedShapeID, setSelectedShapeID] = useState('$');
@@ -40,6 +38,16 @@ function Canvas(props) {
 
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
+
+    const updateSelectedTextTagsColor = (newColor) => {
+        selectedTextTags.forEach(tag => {
+            onTextTagChange(tag.id, { color: newColor });
+        });
+    };
+    useEffect(() => {
+        updateSelectedTextTagsColor(selectedColor);
+    }, [selectedColor]);
+
 
     useEffect(() => {
         function fitStageIntoParentContainer() {
@@ -73,6 +81,7 @@ function Canvas(props) {
         // console.log('Image Position:', imageRef.current.x(), imageRef.current.y());
         // console.log('Image Size:', imageRef.current.width(), imageRef.current.height());
         console.log('Selected Shapes', selectedShapes);
+        console.log('Selected Text Tags', selectedTextTags);
         deselectShape();
         deselectTextTag();
     }
@@ -84,6 +93,7 @@ function Canvas(props) {
         if (e.target === e.target.getStage()) {
             //setSelectedShapes([]);
             deselectShape();
+            deselectTextTag();
         }
     };
 
@@ -185,10 +195,10 @@ function Canvas(props) {
                             <TextTag
                                 key={textTag.id}
                                 id={textTag.id}
-                                text = {textTag.text}
+                                text={textTag.text}
                                 textTags={textTags}
                                 initialPosition={textTag.initialPosition}
-                                initialColor={textTag.initialColor}
+                                color={textTag.color}
                                 onTextTagChange={onTextTagChange}
                                 onTextTagDelete={onTextTagDelete}
                                 onHideTextTagContextMenu={onHideTextTagContextMenu}

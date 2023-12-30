@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Text } from 'react-konva';
 
-const EditableText = ({ initialText, x, y, fontSize, handleTextChange }) => {
+const EditableText = ({ initialText, x, y, fontSize, handleTextChange, color }) => {
     const [text, setText] = useState(initialText);
     const textRef = useRef();
     const textareaRef = useRef();
@@ -128,7 +128,8 @@ const EditableText = ({ initialText, x, y, fontSize, handleTextChange }) => {
             fontWeight={fontWeight}
             ref={textRef}
             onDblClick={handleDblClick}
-            onClick={() => console.log(text)}
+            //onClick={() => console.log(text)}
+            fill={color}
         />
     );
 };

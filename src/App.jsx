@@ -20,6 +20,7 @@ function App() {
   const stageRef = useRef(null);
   const [selectedShapes, setSelectedShapes] = useState([]);
   const [selectedTextTags, setSelectedTextTags] = useState([]);
+  const [selectedColor, setSelectedColor] = useState("#333");
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
@@ -51,6 +52,8 @@ function App() {
                 onDeleteAllShapes={deleteAllShapes}
                 onChangeFormation={deleteFormation} //deletes all other formation shapes except one chosen
 
+                selectedColor={selectedColor}
+                setSelectedColor={setSelectedColor}
                 onDeleteAllTextTags = {deleteAllTextTags}
                 
                 stageRef={stageRef}
@@ -78,14 +81,13 @@ function App() {
                 onShapeChange={updateShape}
                 onShapeDelete={deleteShape}
                 onHideContextMenu={hideShapeContextMenu}
-
                 textTags = {textTags}
                 selectedTextTags = {selectedTextTags}
                 setSelectedTextTags = {setSelectedTextTags}
                 onTextTagChange = {updateTextTag}
                 onTextTagDelete = {deleteTextTag}
                 onHideTextTagContextMenu = {hideTextTagContextMenu}
-                
+                selectedColor={selectedColor}
                 backgroundImage={backgroundImage}
                 setStageDimensions={setStageDimensions}
                 stageRef={stageRef}
