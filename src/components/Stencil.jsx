@@ -59,6 +59,8 @@ function Stencil(props) {
         redLine,
         onDeleteAllShapes,
         onChangeFormation,
+        selectedColor,
+        setSelectedColor,
         onDeleteAllTextTags,
         stageRef,
     } = props;
@@ -67,7 +69,6 @@ function Stencil(props) {
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
     const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left 
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
-    const [selectedColor, setSelectedColor] = useState("#333");
     const [selectedButton, setSelectedButton] = useState(null);
     const shapeColor = 'white';
 
@@ -584,6 +585,7 @@ function Stencil(props) {
                                         border: selectedButton === index ? '2px solid white' : 'none', // Change this line
                                     }}
                                     onClick={() => {
+                                        // console.log(color);
                                         setSelectedColor(color);
                                         setSelectedButton(index); // Add this line
                                       }}

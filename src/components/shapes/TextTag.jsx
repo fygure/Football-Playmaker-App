@@ -15,7 +15,7 @@ function TextTag(props) {
         id,
         text,
         initialPosition,
-        initialColor,
+        color,
         onTextTagChange,
         onTextTagDelete,
         onHideContextMenu,
@@ -171,7 +171,7 @@ function TextTag(props) {
                             x={0}
                             y={0}
                             radius={checkMarkImage.width / 2}
-                            fill={isDragging ? 'green' : initialColor}
+                            fill={isDragging ? 'green' : color}
                         />
                         <Circle
                             x={0}
@@ -189,7 +189,7 @@ function TextTag(props) {
                         y={0}
                         fontSize={fontSize}
                         fontWeight={fontWeight}
-                        fill={isDragging ? 'green' : initialColor}
+                        fill={isDragging ? 'green' : color}
                         fontStyle='bold'
                         fontFamily='Inter, sans-serif'
                         textDecoration={['1', '2', '3', '4'].includes(text.trim()) ? 'underline' : 'none'}
@@ -202,7 +202,7 @@ function TextTag(props) {
                         y={0}
                         fontSize={fontSize}
                         handleTextChange={handleTextChange}
-                        initialColor={isDragging ? 'green' : initialColor}
+                        color={isDragging ? 'green' : color}
                     />
                 )}
             </Group>
