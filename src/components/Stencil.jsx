@@ -3,7 +3,7 @@
 //TODO: toggle button for the themes
 import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
-import {TaskAltIcon, FlipIcon} from '@mui/icons-material';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import theme from '../config/theme.js';
 const buttons = [
     { text: 'Check Mark', icon: 'check' },
