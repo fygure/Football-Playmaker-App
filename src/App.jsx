@@ -9,8 +9,8 @@ import useBackground from './hooks/useBackground';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './config/theme';
 ////////////////////////////////////////////////////////////////////////////////////////
-/* 
-TODO: add undo/redo 
+/*
+TODO: add undo/redo
 TODO: add selection rectangle
 TODO: save and load feature (requires database)
 */
@@ -23,7 +23,7 @@ function App() {
   const [selectedColor, setSelectedColor] = useState("#333");
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
-  const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
+  const {shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
   const {textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
 
   return (
@@ -55,7 +55,7 @@ function App() {
                 selectedColor={selectedColor}
                 setSelectedColor={setSelectedColor}
                 onDeleteAllTextTags = {deleteAllTextTags}
-                
+
                 stageRef={stageRef}
               />
             </div>

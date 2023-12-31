@@ -733,19 +733,32 @@ function Stencil(props) {
                             </div>
                         </div>
                     </div>
+                    {/* I NEED to use list shapes AND textTags */}
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                         Orientation
                     </h3>
                 <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px',marginBottom: '-20px' }}>
                     <Grid container spacing={0}>
-
-
+                        <Grid item xs={"auto"}>
+                            {['Flip Up/Down', 'Flip Left/Right'].map((orientation, index) => (
+                                <Button
+                                key={index}
+                                value={orientation}
+                                variant="text"
+                                style={{
+                                    ...buttonStyle,
+                                    marginRight: '2px',
+                                }}
+                                sx={buttonSx}
+                                size="small"
+                                onClick={handleOrientation}
+                                >
+                                {orientation}
+                                </Button>
+                            ))}
+                        </Grid>
                     </Grid>
-                </Box>
-
-
-
-
+                    </Box>
                 </div>
             </div >
         </>
