@@ -10,8 +10,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './config/theme';
 import './App.css';
 ////////////////////////////////////////////////////////////////////////////////////////
-/* 
-TODO: add undo/redo 
+/*
+TODO: add undo/redo
 TODO: add selection rectangle
 TODO: save and load feature (requires database)
 */

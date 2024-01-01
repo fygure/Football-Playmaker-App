@@ -21,7 +21,7 @@ function useShapes(stageDimensions, imageRef) {
             x: imageRef.current.x() + (imageRef.current.width() / 2),
             y: imageRef.current.height() / 2
         };
-    
+
         const imageSize = {
             width: imageRef.current.width(),
             height: imageRef.current.height()
@@ -417,7 +417,7 @@ function useShapes(stageDimensions, imageRef) {
             x: imageRef.current.x() + (imageRef.current.width() / 2),
             y: imageRef.current.height() / 2
         };
-    
+
         const imageSize = {
             width: imageRef.current.width(),
             height: imageRef.current.height()

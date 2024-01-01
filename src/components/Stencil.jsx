@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import FlipIcon from '@mui/icons-material/Flip';
 import theme from '../config/theme.js';
 
 const QBProgressionButtons = [
@@ -812,19 +813,37 @@ function Stencil(props) {
                             </div>
                         </div>
                     </div>
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                    {/* I NEED to use list shapes AND textTags */}
+                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '0' }}>
                         Orientation
                     </h3>
-                <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px',marginBottom: '-20px' }}>
+                <Box sx={{ flexGrow: 1, marginLeft: '-3px',marginBottom: '-20px' }}>
                     <Grid container spacing={0}>
-
-
+                        <Grid item xs={"auto"}>
+                            {['Flip Up/Down', 'Flip Left/Right'].map((orientation, index) => (
+                                <Button
+                                key={index}
+                                value={orientation}
+                                variant="text"
+                                style={{
+                                    ...buttonStyle,
+                                    marginRight: '2px',
+                                }}
+                                sx={buttonSx}
+                                size="small"
+                                onClick={handleOrientation}
+                                startIcon={
+                                    orientation === 'Flip Up/Down' ?
+                                    <FlipIcon style={{ transform: 'rotate(90deg)' }} /> :
+                                    <FlipIcon />
+                                  }
+                                >
+                                {orientation}
+                                </Button>
+                            ))}
+                        </Grid>
                     </Grid>
-                </Box>
-
-
-
-
+                    </Box>
                 </div>
             </div >
         </>
