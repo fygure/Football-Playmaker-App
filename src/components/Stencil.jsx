@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import FlipIcon from '@mui/icons-material/Flip';
 import theme from '../config/theme.js';
 const buttons = [
     { text: 'Check Mark', icon: 'check' },
@@ -737,7 +738,7 @@ function Stencil(props) {
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '0' }}>
                         Orientation
                     </h3>
-                <Box sx={{ flexGrow: 1, marginLeft: '-3px', marginTop: '-5px',marginBottom: '-20px' }}>
+                <Box sx={{ flexGrow: 1, marginLeft: '-3px',marginBottom: '-20px' }}>
                     <Grid container spacing={0}>
                         <Grid item xs={"auto"}>
                             {['Flip Up/Down', 'Flip Left/Right'].map((orientation, index) => (
@@ -752,6 +753,11 @@ function Stencil(props) {
                                 sx={buttonSx}
                                 size="small"
                                 onClick={handleOrientation}
+                                startIcon={
+                                    orientation === 'Flip Up/Down' ?
+                                    <FlipIcon style={{ transform: 'rotate(90deg)' }} /> :
+                                    <FlipIcon />
+                                  }
                                 >
                                 {orientation}
                                 </Button>
