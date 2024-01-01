@@ -16,6 +16,7 @@ function TextTag(props) {
         text,
         initialPosition,
         color,
+        selectedColor,
         onTextTagChange,
         onTextTagDelete,
         onHideContextMenu,
@@ -89,6 +90,7 @@ function TextTag(props) {
 
         setSelectedTextTags([selectedTextTag]);
         setSelectedTextTagID(id);
+        onTextTagChange(id, { color: selectedColor });
         // console.log('Selected Text ID:', id);
     }
 

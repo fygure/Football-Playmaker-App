@@ -96,7 +96,7 @@ function Stencil(props) {
 
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
-    const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left 
+    const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
     const [selectedColorButton, setSelectedColorButton] = useState(0); // 0 is first index of colorButtons array
     const [selectedStrokeButton, setSelectedStrokeButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'stroke'));
@@ -218,6 +218,12 @@ function Stencil(props) {
         //console.log(newText);
         // setSelectedText(newText);
         onAddTextTag(newText, selectedColor);
+    };
+
+    //Orientation handlers
+    const handleOrientation = (e) => {
+        const newOrientation = e.target.value;
+        console.log(newOrientation);
     };
 
     // Components for the stencil
@@ -802,11 +808,19 @@ function Stencil(props) {
                                         }}>
                                         CUSTOM
                                     </ToggleButton>
-
                                 </ToggleButtonGroup>
                             </div>
                         </div>
                     </div>
+                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                        Orientation
+                    </h3>
+                <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px',marginBottom: '-20px' }}>
+                    <Grid container spacing={0}>
+
+
+                    </Grid>
+                </Box>
 
 
 
