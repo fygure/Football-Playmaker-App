@@ -1,12 +1,12 @@
 // Stencil.jsx
 //TODO: add play name to file name for handleDownload function
-//TODO: toggle button for the themes
 import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import FlipIcon from '@mui/icons-material/Flip';
 import theme from '../config/theme.js';
-const buttons = [
+
+const QBProgressionButtons = [
     { text: 'Check Mark', icon: 'check' },
     { text: 'HOT!' },
     { text: '1', underline: true },
@@ -17,7 +17,7 @@ const buttons = [
     { text: 'PRE' },
 ];
 
-const buttonStyle = {
+const QBProgressionButtonStyle = {
     background: '#333',
     color: 'white',
     padding: '1px 5px',
@@ -26,7 +26,8 @@ const buttonStyle = {
     transition: 'text-shadow 0.3s',
     minWidth: '0',
 };
-const buttonSx = {
+
+const QBProgressionButtonSx = {
     borderColor: '#222',
     ':hover': {
         textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
@@ -45,6 +46,34 @@ const colorButtons = [
     theme.palette.sharpRed.main
     // Add more colors as needed
 ];
+
+const lineButtons = [
+    { id: 1, label: 'straight', type: 'stroke', icon: '/static/assets/stroke-straight.png' },
+    { id: 2, label: 'dashed', type: 'stroke', icon: '/static/assets/stroke-dashed.png' },
+    { id: 3, label: 'squiggle', type: 'stroke', icon: '/static/assets/stroke-wavy.png' },
+    { id: 4, label: 'dotted', type: 'stroke', icon: '/static/assets/stroke-dotted.png' },
+    { id: 5, label: 'arrow', type: 'end', icon: '/static/assets/end-arrow.png' },
+    { id: 6, label: 'perpendicular', type: 'end', icon: '/static/assets/end-perpendicular.png' },
+    { id: 7, label: 'dotted', type: 'end', icon: '/static/assets/end-dotted.png' },
+    { id: 8, label: 'straight', type: 'end', icon: '/static/assets/end-straight.png' },
+];
+
+const lineButtonStyle = {
+    background: '#333',
+    color: 'white',
+    padding: '0px 5px',
+    fontFamily: 'Inter, sans-serif',
+    fontSize: '0.7rem',
+    transition: 'text-shadow 0.3s',
+    position: 'relative',
+    minWidth: '0',
+    minHeight: '0',
+    top: '10px', // moves the button down
+    width: '40px',
+    height: '20px',
+    borderRadius: '0px',
+};
+
 
 
 function Stencil(props) {
@@ -70,7 +99,9 @@ function Stencil(props) {
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
     const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
-    const [selectedButton, setSelectedButton] = useState(null);
+    const [selectedColorButton, setSelectedColorButton] = useState(0); // 0 is first index of colorButtons array
+    const [selectedStrokeButton, setSelectedStrokeButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'stroke'));
+    const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'arrow' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
     const shapeColor = 'white';
 
     function handleDownload() {
@@ -573,37 +604,85 @@ function Stencil(props) {
                         </div>
                     </div>
                     <h3 style={{ marginBottom: '0px', marginTop: '-5px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Color</h3>
-                    <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px',marginBottom: '-20px' }}>
-                    <Grid container spacing={0}>
-                        {colorButtons.map((color, index) => (
-                            <Grid item xs={"auto"} key={index}>
-                                <Button
-                                    variant="contained"
-                                    sx={{
-                                        backgroundColor: color,
-                                        borderRadius: '50%',
-                                        padding: '10px',
-                                        minWidth: '10px',
-                                        margin: '5px',
-                                        '&:hover': {
+                    <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px', marginBottom: '-20px' }}>
+                        <Grid container spacing={0}>
+                            {colorButtons.map((color, index) => (
+                                <Grid item xs={"auto"} key={index}>
+                                    <Button
+                                        variant="contained"
+                                        sx={{
                                             backgroundColor: color,
-                                            boxShadow: '0 0 10px 2px white',
-                                        },
-                                        border: selectedButton === index ? '2px solid white' : 'none',
-                                    }}
-                                    onClick={() => {
-                                        // console.log(color);
-                                        setSelectedColor(color);
-                                        setSelectedButton(index);
-                                      }}
-                                />
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box>
+                                            borderRadius: '50%',
+                                            padding: '10px',
+                                            minWidth: '10px',
+                                            margin: '5px',
+                                            '&:hover': {
+                                                backgroundColor: color,
+                                                boxShadow: '0 0 10px 2px white',
+                                            },
+                                            border: selectedColorButton === index ? '2px solid white' : 'none',
+                                        }}
+                                        onClick={() => {
+                                            // console.log(color);
+                                            setSelectedColor(color);
+                                            setSelectedColorButton(index);
+                                        }}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
+                    {/* TODO add functionality for lines */}
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Lines</h3>
-                    {/*TODO*/}
+                    <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '-5px', }}>
+                        <Grid container spacing={1}>
+                            <Grid item xs={12}>
+                                <Grid container spacing={0}>
+                                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '5px' }}>Stroke</h3>
+                                    {lineButtons
+                                        .filter((button) => button.type === 'stroke')
+                                        .map((button, index) => (
+                                            <Grid item xs={"auto"} key={button.id}>
+                                                <Button
+                                                    variant="text"
+                                                    style={{ ...lineButtonStyle, border: selectedStrokeButton === index ? '2px solid white' : 'none' }}
+                                                    onClick={() => {
+                                                        //TODO HERE
+                                                        console.log(button.type, button.label);
+                                                        setSelectedStrokeButton(index);
+                                                    }}
+                                                >
+                                                    <img src={button.icon} alt={button.label} style={{ width: '100%', height: 'auto' }} />
+                                                </Button>
+                                            </Grid>
+                                        ))}
+                                </Grid>
+                            </Grid>
 
+                            <Grid item xs={12}>
+                                <Grid container spacing={0}>
+                                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '5px' }}>End</h3>
+                                    {lineButtons
+                                        .filter((button) => button.type === 'end')
+                                        .map((button, index) => (
+                                            <Grid item xs={"auto"} key={button.id}>
+                                                <Button
+                                                    variant="text"
+                                                    style={{ ...lineButtonStyle, border: selectedEndButton === index ? '2px solid white' : 'none' }}
+                                                    onClick={() => {
+                                                        //TODO HERE
+                                                        console.log(button.type, button.label);
+                                                        setSelectedEndButton(index);
+                                                    }}
+                                                >
+                                                    <img src={button.icon} alt={button.label} style={{ width: '100%', height: 'auto' }} />
+                                                </Button>
+                                            </Grid>
+                                        ))}
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Box>
 
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                         QB Progression
@@ -611,17 +690,17 @@ function Stencil(props) {
                     <Box sx={{ flexGrow: 1, marginLeft: '-3px' }}>
                         <Grid container spacing={0}>
                             <Grid item xs={"auto"}>
-                                {buttons.slice(0, -2).map((button, index) => (
+                                {QBProgressionButtons.slice(0, -2).map((button, index) => (
                                     <Button
                                         key={index}
                                         value={button.text}
                                         variant="text"
                                         style={{
-                                            ...buttonStyle,
+                                            ...QBProgressionButtonStyle,
                                             textDecoration: ['1', '2', '3', '4'].includes(button.text) ? 'underline' : 'none',
                                             marginRight: '2px',
                                         }}
-                                        sx={buttonSx}
+                                        sx={QBProgressionButtonSx}
                                         size="small"
                                         onClick={() => handleAddQBProgression(button.text)}
                                     >
@@ -630,17 +709,17 @@ function Stencil(props) {
                                 ))}
                             </Grid>
                             <Grid item xs={"auto"}>
-                                {buttons.slice(-2).map((button, index) => (
+                                {QBProgressionButtons.slice(-2).map((button, index) => (
                                     <Button
                                         key={index}
                                         value={button.text}
                                         variant="text"
                                         style={{
-                                            ...buttonStyle,
-                                            // textDecoration: ['1', '2', '3', '4'].includes(button.text) ? 'underline' : 'none',
+                                            ...QBProgressionButtonStyle,
+                                            textDecoration: ['1', '2', '3', '4'].includes(button.text) ? 'underline' : 'none',
                                             marginRight: '2px',
                                         }}
-                                        sx={buttonSx}
+                                        sx={QBProgressionButtonSx}
                                         size="small"
                                         onClick={() => handleAddQBProgression(button.text)}
                                     >
