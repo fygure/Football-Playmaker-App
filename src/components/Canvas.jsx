@@ -84,16 +84,19 @@ function Canvas(props) {
         console.log('Selected Text Tags', selectedTextTags);
         deselectShape();
         deselectTextTag();
+        setSelectedTextTags([]);
     }
 
     const handleStageClick = (e) => {
         //console.log('Stage Clicked', stageDimensions);
         console.log('Shapes List:', shapes);
+        console.log('Text Tags List:', textTags);
         // if clicked on empty area - remove all selections
         if (e.target === e.target.getStage()) {
             //setSelectedShapes([]);
             deselectShape();
             deselectTextTag();
+            setSelectedTextTags([]);
         }
     };
 
@@ -198,6 +201,7 @@ function Canvas(props) {
                                 text={textTag.text}
                                 textTags={textTags}
                                 initialPosition={textTag.initialPosition}
+                                selectedColor={selectedColor}
                                 color={textTag.color}
                                 onTextTagChange={onTextTagChange}
                                 onTextTagDelete={onTextTagDelete}

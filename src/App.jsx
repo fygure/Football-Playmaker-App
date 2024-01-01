@@ -8,6 +8,7 @@ import useTextTags from './hooks/useTextTags';
 import useBackground from './hooks/useBackground';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './config/theme';
+import './App.css';
 ////////////////////////////////////////////////////////////////////////////////////////
 /* 
 TODO: add undo/redo 
@@ -20,11 +21,11 @@ function App() {
   const stageRef = useRef(null);
   const [selectedShapes, setSelectedShapes] = useState([]);
   const [selectedTextTags, setSelectedTextTags] = useState([]);
-  const [selectedColor, setSelectedColor] = useState("#333");
+  const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
-  const {textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
+  const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
 
   return (
     <>
@@ -37,12 +38,11 @@ function App() {
             height: '90vh',
             width: '98vw',
           }}>
-            <div style={{ flex: 0.2, padding: '1vw', minWidth: '15%', border: '1px solid black', height: '100%', overflow: 'auto', backgroundColor: '#333' }}>
+            <div className="custom-scrollbar">
               <Stencil
                 onAddFormation={addFormation}
                 onAddShape={addShape}
-                onAddTextTag = {addTextTag}
-
+                onAddTextTag={addTextTag}
                 fieldType={fieldType}
                 setFieldType={setFieldType}
                 setZone={setZone}
@@ -51,11 +51,9 @@ function App() {
                 redLine={redLine}
                 onDeleteAllShapes={deleteAllShapes}
                 onChangeFormation={deleteFormation} //deletes all other formation shapes except one chosen
-
                 selectedColor={selectedColor}
                 setSelectedColor={setSelectedColor}
-                onDeleteAllTextTags = {deleteAllTextTags}
-                
+                onDeleteAllTextTags={deleteAllTextTags}
                 stageRef={stageRef}
               />
             </div>
@@ -81,12 +79,12 @@ function App() {
                 onShapeChange={updateShape}
                 onShapeDelete={deleteShape}
                 onHideContextMenu={hideShapeContextMenu}
-                textTags = {textTags}
-                selectedTextTags = {selectedTextTags}
-                setSelectedTextTags = {setSelectedTextTags}
-                onTextTagChange = {updateTextTag}
-                onTextTagDelete = {deleteTextTag}
-                onHideTextTagContextMenu = {hideTextTagContextMenu}
+                textTags={textTags}
+                selectedTextTags={selectedTextTags}
+                setSelectedTextTags={setSelectedTextTags}
+                onTextTagChange={updateTextTag}
+                onTextTagDelete={deleteTextTag}
+                onHideTextTagContextMenu={hideTextTagContextMenu}
                 selectedColor={selectedColor}
                 backgroundImage={backgroundImage}
                 setStageDimensions={setStageDimensions}
