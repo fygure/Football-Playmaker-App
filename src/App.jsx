@@ -1,11 +1,14 @@
 // App.jsx
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import StageDimensionsContext from './contexts/StageDimensionsContext';
 import Canvas from './components/Canvas';
 import Stencil from './components/Stencil';
+import Footer from './components/Footer';
+import { v4 as uuidv4 } from 'uuid';
 import useShapes from './hooks/useShapes';
 import useTextTags from './hooks/useTextTags';
 import useBackground from './hooks/useBackground';
+import useFooter from './hooks/useFooter';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './config/theme';
 import './App.css';
@@ -19,6 +22,8 @@ TODO: save and load feature (requires database)
 function App() {
   const imageRef = useRef(null);
   const stageRef = useRef(null);
+   // New state variable to hold the entire state of the App component
+  const [appState, setAppState] = useState({ id: uuidv4(),});
   const [selectedShapes, setSelectedShapes] = useState([]);
   const [selectedTextTags, setSelectedTextTags] = useState([]);
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
@@ -26,6 +31,29 @@ function App() {
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
   const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
+  const { plays, addPlay, removePlay, removeAllPlays, updatePlayName } = useFooter();
+
+
+ // Update appState whenever any of the other state variables change
+ useEffect(() => {
+   setAppState({
+     shapes,
+     textTags,
+     selectedColor,
+     backgroundImage,
+     fieldType,
+     zone,
+     redLine,
+   });
+ }, [
+   shapes,
+   textTags,
+   selectedColor,
+   backgroundImage,
+   fieldType,
+   zone,
+   redLine,
+ ]);
 
   return (
     <>
@@ -91,6 +119,14 @@ function App() {
                 stageRef={stageRef}
               />
             </div>
+            <Footer
+                plays={plays}
+                appState={appState}
+                addPlay={addPlay}
+                removePlay={removePlay}
+                removeAllPlays={removeAllPlays}
+                updatePlayName={updatePlayName}
+            />
           </div>
         </StageDimensionsContext.Provider>
       </ThemeProvider>

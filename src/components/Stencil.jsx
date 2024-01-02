@@ -826,10 +826,10 @@ function Stencil(props) {
                                 value={orientation}
                                 variant="text"
                                 style={{
-                                    ...buttonStyle,
+                                    ...QBProgressionButtonStyle,
                                     marginRight: '2px',
                                 }}
-                                sx={buttonSx}
+                                sx={QBProgressionButtonSx}
                                 size="small"
                                 onClick={handleOrientation}
                                 startIcon={
@@ -844,6 +844,7 @@ function Stencil(props) {
                         </Grid>
                     </Grid>
                     </Box>
+
                 </div>
             </div >
         </>
