@@ -23,16 +23,19 @@ function App() {
   const imageRef = useRef(null);
   const stageRef = useRef(null);
    // New state variable to hold the entire state of the App component
-  const [appState, setAppState] = useState({ id: uuidv4(),});
+  const [appState, setAppState] = useState({});
+  // const [stageData, setStageData] = useState(null);
+
   const [selectedShapes, setSelectedShapes] = useState([]);
   const [selectedTextTags, setSelectedTextTags] = useState([]);
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
-  const [selectedPlay, setSelectedPlay] = useState("");
+  const [selectedPlayID, setSelectedPlayID] = useState("$");
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
   const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
-  const { plays, addPlay, removePlay, removeAllPlays, updatePlayName } = useFooter();
+  const { plays, addPlay, deletePlay, deleteAllPlays, updatePlay} = useFooter(appState);
+
 
 
  // Update appState whenever any of the other state variables change
@@ -101,6 +104,8 @@ function App() {
               backgroundColor: '#dcdcdc', // See parent div
             }}>
               <Canvas
+                // stageData={stageData}
+                // setStageData={setStageData}
                 imageRef={imageRef}
                 shapes={shapes}
                 selectedShapes={selectedShapes}
@@ -123,10 +128,13 @@ function App() {
             <Footer
                 plays={plays}
                 appState={appState}
-                addPlay={addPlay}
-                removePlay={removePlay}
-                removeAllPlays={removeAllPlays}
-                updatePlayName={updatePlayName}
+                // stageData={stageData}
+                selectedPlayID={selectedPlayID}
+                setSelectedPlayID={setSelectedPlayID}
+                OnAddPlay={addPlay}
+                OnPlayDelete={deletePlay}
+                OnDeleteAllPlays={deleteAllPlays}
+                onPlayChange={updatePlay}
             />
           </div>
         </StageDimensionsContext.Provider>

@@ -1,9 +1,21 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import theme from '../config/theme';
-function useFooter() {
+function useFooter(appState) {
+    const initialPlay = {
+        id: uuidv4(),
+        playName: 'Play 1',
+        shapes: appState.shapes,
+        textTags: appState.textTags,
+        selectedColor: appState.selectedColor,
+        backgroundImage: appState.backgroundImage,
+        fieldType: appState.fieldType,
+        zone: appState.zone,
+        redline: appState.redLine,
+    }
 
-    const [plays, setPlays] = useState([]);
+
+    const [plays, setPlays] = useState([initialPlay]);
 
     const addPlay = (playName) => {
 
@@ -20,19 +32,20 @@ function useFooter() {
         };
         setPlays([...plays, newPlay]);
     }
-    const removePlay = (id) => {
+    const deletePlay = (id) => {
         setPlays(plays.filter(play => play.id !== id));
     }
 
-    const removeAllPlays = () => {
+    const deleteAllPlays = () => {
         setPlays([]);
     }
-    const updatePlayName = (id, newPlayName) => {
-        setPlays(plays.map(play => play.id === id ? { ...play, playName: newPlayName } : play));
-      };
+
+    const updatePlay = (id, newAttributes) => {
+        setPlays(plays.map(play => play.id === id ? { ...play, ...newAttributes } : play));
+    };
 
 
-    return { plays, addPlay, removePlay, removeAllPlays, updatePlayName };
+    return { plays, addPlay, deletePlay, deleteAllPlays, updatePlay };
 }
 export default useFooter;
 

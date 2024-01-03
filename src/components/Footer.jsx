@@ -5,11 +5,34 @@ function Footer(props){
     const {
         plays,
         appState,
-        addPlay,
-        removePlay,
-        removeAllPlays,
-        updatePlayName,
+        // stageData,
+        selectedPlayID,
+        setSelectedPlayID,
+        onAddPlay,
+        onPlayDelete,
+        onDeleteAllPlays,
+        onPlayChange,
     } = props;
+
+    useEffect(() => {
+        // This code will run whenever appState changes
+        console.log('appState changed:', appState);
+    }, [appState]);
+
+    const handleAddPlay = (playName) => {
+        onAddPlay(playName);
+    }
+    const handleDeletePlay = (id) => {
+        onPlayDelete(id);
+    }
+    const handleDeleteAllPlays = () => {
+        onDeleteAllPlays();
+    }
+
+    const handlePlayNameChange = (id, newPlayName) => {
+        onPlayChange(id, {playName: newPlayName});
+    }
+
 
 
 

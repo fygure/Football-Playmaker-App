@@ -8,6 +8,8 @@ import TextTag from './shapes/TextTag';
 
 function Canvas(props) {
     const {
+        // stageData,
+        // setStageData,
         imageRef,
         stageRef,
         shapes,
@@ -38,6 +40,9 @@ function Canvas(props) {
 
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
+
+    // const stage = stageRef.current.getStage();
+    // setStageData(stage.toJSON());
 
     const updateSelectedTextTagsColor = (newColor) => {
         selectedTextTags.forEach(tag => {
