@@ -103,6 +103,10 @@ function Stencil(props) {
     const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'arrow' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
     const shapeColor = 'white';
 
+    // hooks for the undo and redo
+    const [historyStep, setHistoryStep] = useState(0);
+    const [history, setHistory] = useState([]);
+
     function handleDownload() {
         var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
         var link = document.createElement('a');
@@ -114,11 +118,19 @@ function Stencil(props) {
     }
 
     function handleUndo() {
-
+        if (historyStep === 0) 
+            return;
+        setHistoryStep(historyStep - 1);
+        const previous = history[historyStep];
+        // need to call setState on the Konva shape
     }
 
     function handleRedo() {
-
+        if (historyStep === history.length - 1) 
+            return;
+        setHistoryStep(historyStep + 1);
+        const next = history[historyStep];
+        // need to call setState on the Konva shape
     }
 
     // Formation handlers
