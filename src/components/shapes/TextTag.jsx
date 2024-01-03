@@ -83,7 +83,7 @@ function TextTag(props) {
         // const node = shapeRef.current;
         //First empty the selectedShapes array
         setSelectedTextTags([]);
-        setSelectedTextTagID([]);
+        setSelectedTextTagID('$');
         //Filter the shapes array to grab the shape by the id
         const selectedTextTag = textTags.find(text => text.id === id);
         console.log('Text Clicked', selectedTextTag);
