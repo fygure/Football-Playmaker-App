@@ -113,6 +113,14 @@ function Stencil(props) {
         document.body.removeChild(link);
     }
 
+    function handleUndo() {
+
+    }
+
+    function handleRedo() {
+
+    }
+
     // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
@@ -247,6 +255,17 @@ function Stencil(props) {
 
                 <div style={{ padding: '5px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                     <Button variant="outlined" color="kellyGreen" size="small" onClick={handleDownload} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Download Stage</Button>
+                </div>
+
+                {/* Undo and Redo buttons: */}
+                <div style={{display: 'flex', flexDirection: 'row', gap: '0.5rem'}}>
+                    <div style={{ padding: '5px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                        <Button variant="outlined" color="ramsBlue" size="small" onClick={handleUndo} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Undo</Button>
+                    </div>
+
+                    <div style={{ padding: '5px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                        <Button variant="outlined" color="ramsBlue" size="small" onClick={handleRedo} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Redo</Button>
+                    </div>
                 </div>
 
 
