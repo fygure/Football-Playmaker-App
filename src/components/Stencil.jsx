@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import theme from '../config/theme.js';
+import { shapes } from 'konva/lib/Shape.js';
 
 const QBProgressionButtons = [
     { text: 'Check Mark', icon: 'check' },
@@ -104,8 +105,7 @@ function Stencil(props) {
     const shapeColor = 'white';
 
     // hooks for the undo and redo
-    const [historyStep, setHistoryStep] = useState(0);
-    const [history, setHistory] = useState([]);
+
 
     function handleDownload() {
         var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
@@ -123,6 +123,9 @@ function Stencil(props) {
         setHistoryStep(historyStep - 1);
         const previous = history[historyStep];
         // need to call setState on the Konva shape
+        // shapes.forEach(shape => {
+
+        // })
     }
 
     function handleRedo() {
@@ -131,6 +134,7 @@ function Stencil(props) {
         setHistoryStep(historyStep + 1);
         const next = history[historyStep];
         // need to call setState on the Konva shape
+
     }
 
     // Formation handlers
@@ -185,7 +189,7 @@ function Stencil(props) {
     const handleToggleOffenseLeftRight = () => {
         const newtoggleOffenseLeftRight = !toggleOffenseLeftRight;
         setToggleOffenseLeftRight(newtoggleOffenseLeftRight);
-        const suffix = newtoggleOffenseLeftRight ? 'R' : 'L';
+        const suffix = newtoggleOffenseLeftRight ? 'R' : 'L';   
 
         //console.log(selectedOffenseFormation, suffix);
         if (['3x1', 'Bunch', 'Empty'].includes(selectedOffenseFormation)) {

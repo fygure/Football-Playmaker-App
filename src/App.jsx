@@ -26,6 +26,8 @@ function App() {
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
   const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
+  const [historyStep, setHistoryStep] = useState(0);
+  const [history, setHistory] = useState([]);
 
   return (
     <>
@@ -55,6 +57,11 @@ function App() {
                 setSelectedColor={setSelectedColor}
                 onDeleteAllTextTags={deleteAllTextTags}
                 stageRef={stageRef}
+                shapes={shapes}
+                history={history}
+                setHistory={setHistory}
+                historyStep={historyStep}
+                setHistoryStep={setHistoryStep}
               />
             </div>
             <div style={{
@@ -89,6 +96,10 @@ function App() {
                 backgroundImage={backgroundImage}
                 setStageDimensions={setStageDimensions}
                 stageRef={stageRef}
+                history={history}
+                setHistory={setHistory}
+                historyStep={historyStep}
+                setHistoryStep={setHistoryStep}
               />
             </div>
           </div>
