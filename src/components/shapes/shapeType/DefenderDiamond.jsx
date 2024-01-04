@@ -1,4 +1,5 @@
 //DefenderDiamond.jsx
+//TODO: line functionality like ReceiverOval
 import React, { useState } from 'react';
 import { Rect, Group } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
