@@ -1,4 +1,6 @@
 // CustomLine.jsx
+//TODO: add anchor point functionality for the circle
+//TODO: add bezier curve functionality
 import React, { useState } from 'react';
 import { Line, Circle, Group } from 'react-konva';
 import ContextMenu from '../menus/ContextMenu';
