@@ -126,14 +126,11 @@ function App() {
           </div>
           <div style={{
                  display: 'flex',
-                 justifyContent: 'center',
                  padding: '1vw',
                  margin: '1vw',
                  maxWidth: '93.9vw',
-                 height: '5vh',
-                 borderLeft: '0.5px solid black',
-                 borderRight: '0.5px solid black',
-                 borderBottom: '0.5px solid black',
+                 height: '3vh',
+                 border: '0.5px solid black',
                 }}>
             <Footer
                 plays={plays}

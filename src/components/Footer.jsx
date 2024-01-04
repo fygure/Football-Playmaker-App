@@ -63,6 +63,10 @@ function Footer(props){
     //Use stencil as reference to handleAddPlay and handleDeleteAllPlays
     return (
         <>
+
+<MenuIcon style={{ marginLeft: '-13px' }} />
+
+
         {/* <SpeedDial
         ariaLabel="SpeedDial"
         sx={{ position: 'absolute', bottom: 20, right: 1800 }}
