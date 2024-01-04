@@ -4,11 +4,10 @@ import StageDimensionsContext from './contexts/StageDimensionsContext';
 import Canvas from './components/Canvas';
 import Stencil from './components/Stencil';
 import Footer from './components/Footer';
-import { v4 as uuidv4 } from 'uuid';
 import useShapes from './hooks/useShapes';
 import useTextTags from './hooks/useTextTags';
 import useBackground from './hooks/useBackground';
-import useFooter from './hooks/useFooter';
+import usePlays from './hooks/usePlays';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './config/theme';
 import './App.css';
@@ -25,16 +24,14 @@ function App() {
    // New state variable to hold the entire state of the App component
   const [appState, setAppState] = useState({});
   // const [stageData, setStageData] = useState(null);
-
   const [selectedShapes, setSelectedShapes] = useState([]);
   const [selectedTextTags, setSelectedTextTags] = useState([]);
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
-  const [selectedPlayID, setSelectedPlayID] = useState("$");
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
   const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
-  const { plays, addPlay, deletePlay, deleteAllPlays, updatePlay} = useFooter(appState);
+  const { plays, addPlay, deletePlay, deleteAllPlays, updatePlay} = usePlays(appState, setAppState);
 
 
 
@@ -113,6 +110,7 @@ function App() {
                 onShapeChange={updateShape}
                 onShapeDelete={deleteShape}
                 onHideContextMenu={hideShapeContextMenu}
+
                 textTags={textTags}
                 selectedTextTags={selectedTextTags}
                 setSelectedTextTags={setSelectedTextTags}
@@ -125,12 +123,22 @@ function App() {
                 stageRef={stageRef}
               />
             </div>
+          </div>
+          <div style={{
+                 display: 'flex',
+                 justifyContent: 'center',
+                 padding: '1vw',
+                 margin: '1vw',
+                 maxWidth: '93.9vw',
+                 height: '5vh',
+                 borderLeft: '0.5px solid black',
+                 borderRight: '0.5px solid black',
+                 borderBottom: '0.5px solid black',
+                }}>
             <Footer
                 plays={plays}
                 appState={appState}
                 // stageData={stageData}
-                selectedPlayID={selectedPlayID}
-                setSelectedPlayID={setSelectedPlayID}
                 OnAddPlay={addPlay}
                 OnPlayDelete={deletePlay}
                 OnDeleteAllPlays={deleteAllPlays}
