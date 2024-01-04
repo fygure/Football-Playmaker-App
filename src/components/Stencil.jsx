@@ -92,6 +92,7 @@ function Stencil(props) {
         selectedColor,
         setSelectedColor,
         onDeleteAllTextTags,
+        onDeleteAllLines,
         stageRef,
     } = props;
 
@@ -190,6 +191,7 @@ function Stencil(props) {
     const handleDeleteAll = () => {
         onDeleteAllShapes();
         onDeleteAllTextTags();
+        onDeleteAllLines();
     };
 
     // Field handlers
