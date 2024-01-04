@@ -11,7 +11,7 @@ function dragBounds(ref) {
     };
 }
 
-export function Anchor({ x, y, id, onDragMove, onDragEnd, onDragStart }) {
+export function Anchor({ x, y, onMouseDown, onMouseMove }) {
     const anchor = useRef(null);
     return (
         <Circle
@@ -20,13 +20,11 @@ export function Anchor({ x, y, id, onDragMove, onDragEnd, onDragStart }) {
             radius={3}
             stroke="silver"
             fill="blue"
-            //draggable (uncomment to add functionality)
             onClick={(e) => { console.log('Anchor Clicked'); }}
-            onDragStart={(e) => { console.log('onDragStart'); }}
-            onDragMove={(e) => { console.log('onDragMove'); }}
-            onDragEnd={(e) => { console.log('onDragEnd'); }}
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
             dragBoundFunc={() => dragBounds(anchor)}
-            perfectDrawEnabled={false}
+            perfectDrawEnabled={true}
             ref={anchor}
         />
     );
