@@ -138,7 +138,7 @@ function Shape(props) {
             startPos: newPos,
         }));
 
-        setLines(updatedLines);
+        setLines(lines.map(line => updatedLines.find(l => l.id === line.id) || line));
     };
 
     const handleDragEnd = (e) => {
