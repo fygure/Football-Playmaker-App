@@ -17,6 +17,10 @@ const SHAPE_SIZES = {
 
 function Shape(props) {
     const {
+        lines,
+        setLines,
+        startDrawing,
+        setIsMouseDownOnAnchor,
         shapes,
         id,
         shapeType,
@@ -121,9 +125,26 @@ function Shape(props) {
         setShowContextMenu(false);
     };
 
+    const handleDragMove = (e) => {
+        const newPos = e.target.position();
+        setPosition(newPos);
+        onShapeChange(id, { x: e.target.x(), y: e.target.y() });
+
+        // Get all lines that are attached to the shape
+        const attachedLines = lines.filter(line => line.attachedShapeId === id);
+
+        const updatedLines = attachedLines.map(line => ({
+            ...line,
+            startPos: newPos,
+        }));
+
+        setLines(updatedLines);
+    };
+
     const handleDragEnd = (e) => {
         //console.log(e.target.position());
-        setPosition(e.target.position());
+        const newPos = e.target.position();
+        setPosition(newPos);
         onShapeChange(id, { x: e.target.x(), y: e.target.y() });
     };
 
@@ -163,6 +184,8 @@ function Shape(props) {
     };
 
     const commonProps = {
+        startDrawing,
+        setIsMouseDownOnAnchor,
         id,
         shapeRef,
         imageRef,
@@ -175,6 +198,7 @@ function Shape(props) {
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
+        handleDragMove,
         handleDragEnd,
         handleHideContextMenu,
         ellipseRadiuses,
