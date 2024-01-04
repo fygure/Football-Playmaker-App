@@ -134,6 +134,7 @@ function Shape(props) {
             ...prevHistory,
             { actionType: 'move', shapeID: id},
         ])
+        setHistoryStep(historyStep + 1);
         // console.log(`History is: ${history.forEach((item) => console.log(item))})}`)
     };
 

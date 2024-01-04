@@ -127,7 +127,6 @@ function Stencil(props) {
         setHistoryStep(historyStep - 1);
         const previous = history[historyStep];
         // need to call setState on the Konva shape
-        console.log(`History is: ${history}`)
     }
 
     function handleRedo() {
@@ -190,6 +189,7 @@ function Stencil(props) {
             ...prevHistory,
             { actionType: 'add', shapeID: shapes[shapes.length - 1].id },
         ])
+        setHistoryStep(historyStep + 1);
     };
 
     // Toggle handlers
@@ -225,6 +225,7 @@ function Stencil(props) {
             ...prevHistory,
             { actionType: 'deleteAll', shapeID: 'all' },
         ])
+        setHistoryStep(historyStep + 1);
     };
 
     // Field handlers
