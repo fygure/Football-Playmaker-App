@@ -25,7 +25,11 @@ function Canvas(props) {
         onHideContextMenu,
         selectedColor,
         backgroundImage,
-        setStageDimensions
+        setStageDimensions,
+        history,
+        setHistory,
+        historyStep,
+        setHistoryStep
     } = props;
 
     //const { stageDimensions } = useContext(StageDimensionsContext);
@@ -192,6 +196,10 @@ function Canvas(props) {
                                 imageRef={imageRef}
                                 setSelectedShapes={setSelectedShapes}
                                 selectedShapeID={selectedShapeID} setSelectedShapeID={setSelectedShapeID}
+                                history = {history}
+                                setHistory = {setHistory}
+                                historyStep = {historyStep}
+                                setHistoryStep = {setHistoryStep}
                             />
                         ))}
                         {textTags.map((textTag) => (

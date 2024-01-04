@@ -93,6 +93,10 @@ function Stencil(props) {
         setSelectedColor,
         onDeleteAllTextTags,
         stageRef,
+        history,
+        setHistory,
+        historyStep,
+        setHistoryStep
     } = props;
 
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
@@ -123,9 +127,7 @@ function Stencil(props) {
         setHistoryStep(historyStep - 1);
         const previous = history[historyStep];
         // need to call setState on the Konva shape
-        // shapes.forEach(shape => {
-
-        // })
+        console.log(`History is: ${history}`)
     }
 
     function handleRedo() {
@@ -183,6 +185,11 @@ function Stencil(props) {
         //console.log(e.target.value);
         const newPlayer = e.target.value;
         onAddShape(newPlayer, shapeColor);
+
+        setHistory((prevHistory) => [
+            ...prevHistory,
+            { actionType: 'add', shapeID: shapes[shapes.length - 1].id },
+        ])
     };
 
     // Toggle handlers
@@ -213,6 +220,11 @@ function Stencil(props) {
     const handleDeleteAll = () => {
         onDeleteAllShapes();
         onDeleteAllTextTags();
+
+        setHistory((prevHistory) => [
+            ...prevHistory,
+            { actionType: 'deleteAll', shapeID: 'all' },
+        ])
     };
 
     // Field handlers

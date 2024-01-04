@@ -30,6 +30,10 @@ function Shape(props) {
         setSelectedShapes,
         selectedShapeID,
         setSelectedShapeID,
+        history,
+        setHistory,
+        historyStep,
+        setHistoryStep
     } = props;
 
     const shapeRef = useRef();
@@ -125,6 +129,12 @@ function Shape(props) {
         //console.log(e.target.position());
         setPosition(e.target.position());
         onShapeChange(id, { x: e.target.x(), y: e.target.y() });
+    
+        setHistory((prevHistory) => [
+            ...prevHistory,
+            { actionType: 'move', shapeID: id},
+        ])
+        // console.log(`History is: ${history.forEach((item) => console.log(item))})}`)
     };
 
     const handleHideContextMenu = () => {
