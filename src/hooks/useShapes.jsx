@@ -26,7 +26,7 @@ function useShapes(stageDimensions, imageRef) {
             width: imageRef.current.width(),
             height: imageRef.current.height()
         };
-
+        
         const isOffenseFormation = formationType.startsWith('offense');
         //console.log(isOffenseFormation);
 
@@ -408,7 +408,7 @@ function useShapes(stageDimensions, imageRef) {
         else {
             const newShape = { id: uuidv4(), formationType: formationType, shapeType: 'None:FIXME', initialPosition: middlePosition, initialColor };
             setShapes([...shapes, newShape]);
-        }
+        }   
     };
 
     // individual shape addition
@@ -438,8 +438,6 @@ function useShapes(stageDimensions, imageRef) {
         };
 
         setShapes([...shapes, newShape]);
-
-
     };
 
     const updateShape = (id, newAttributes) => {

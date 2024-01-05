@@ -140,11 +140,14 @@ function Stencil(props) {
         const previous = history[historyStep];
         if (previous && previous.actionType === 'move') {
             const shape = Object.values(shapes).find(shape => shape.id === previous.shapeID);
-            if (shape && shape.shapeRef && shape.shapeRef.current) {
-                shape.shapeRef.current.x(shape.position.x);
-                shape.shapeRef.current.y(shape.position.y);
-                shape.shapeRef.current.getLayer().batchDraw();
-            }
+            shape.setState({
+                x: previous.x,
+                y: previous.y
+            })
+        }
+        else if (previous && previous.actionType === 'formation') {
+            onDeleteAllShapes();
+            onDeleteAllTextTags();
         }
     }
 
@@ -162,6 +165,11 @@ function Stencil(props) {
         var newFormation = e.target.value;
         setSelectedOffenseFormation(newFormation);
 
+        setHistory((prevHistory) => [
+            ...prevHistory,
+            { actionType: 'formation' },
+        ])
+        setHistoryStep(historyStep+1)
 
         if (newFormation === '2x2') {
             onAddFormation('offense2x2', shapeColor);
@@ -176,6 +184,7 @@ function Stencil(props) {
         else if (newFormation === 'Custom') {
             onAddFormation('offenseCustom', shapeColor);
         }
+
     };
 
     const handleSetDefenseFormationToggleGroup = (e) => {
