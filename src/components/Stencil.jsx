@@ -1,6 +1,6 @@
 // Stencil.jsx
 //TODO: add play name to file name for handleDownload function
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import theme from '../config/theme.js';
@@ -121,12 +121,31 @@ function Stencil(props) {
         document.body.removeChild(link);
     }
 
+    const [undoClicked, setUndoClicked] = useState(false);
+
+    function handleUndoClick() {
+        if (historyStep > 0) 
+            setHistoryStep(historyStep - 1);
+        setUndoClicked(true);
+    }
+    
+    useEffect(() => {
+        if (undoClicked) {
+            handleUndo();
+            setUndoClicked(false);
+        }
+    }, [shapes, undoClicked]);
+    
     function handleUndo() {
-        if (historyStep === 0) 
-            return;
-        setHistoryStep(historyStep - 1);
         const previous = history[historyStep];
-        // need to call setState on the Konva shape
+        if (previous && previous.actionType === 'move') {
+            const shape = Object.values(shapes).find(shape => shape.id === previous.shapeID);
+            if (shape && shape.shapeRef && shape.shapeRef.current) {
+                shape.shapeRef.current.x(shape.position.x);
+                shape.shapeRef.current.y(shape.position.y);
+                shape.shapeRef.current.getLayer().batchDraw();
+            }
+        }
     }
 
     function handleRedo() {
@@ -289,7 +308,7 @@ function Stencil(props) {
                 {/* Undo and Redo buttons: */}
                 <div style={{display: 'flex', flexDirection: 'row', gap: '0.5rem'}}>
                     <div style={{ padding: '5px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                        <Button variant="outlined" color="ramsBlue" size="small" onClick={handleUndo} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Undo</Button>
+                        <Button variant="outlined" color="ramsBlue" size="small" onClick={handleUndoClick} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Undo</Button>
                     </div>
 
                     <div style={{ padding: '5px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
