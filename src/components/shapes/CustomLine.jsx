@@ -57,7 +57,7 @@ function CustomLine(props) {
                     <Circle
                         x={line.endPos.x}
                         y={line.endPos.y}
-                        radius={10}
+                        radius={8}
                         fill="grey"
                         onDragMove={handleAnchorDragMove}
                         draggable

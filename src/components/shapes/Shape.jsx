@@ -1,11 +1,12 @@
 // Shape.jsx
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Star, Rect, Circle, Ring } from 'react-konva';
 import ContextMenu from '../menus/ContextMenu';
 import CenterSquare from './shapeType/CenterSquare';
 import LinemanOval from './shapeType/LinemanOval';
 import ReceiverOval from './shapeType/ReceiverOval';
 import DefenderDiamond from './shapeType/DefenderDiamond';
+import { throttle, isEqual } from 'lodash';
 
 // Shape Sizes Configuration
 const SHAPE_SIZES = {
@@ -95,14 +96,10 @@ function Shape(props) {
         };
     }, [position, imageRef]);
 
+    const selectedShape = useMemo(() => shapes.find(shape => shape.id === id), [shapes, id]);
     const handleOnClick = () => {
-        // const node = shapeRef.current;
-        //First empty the selectedShapes array
         setSelectedShapes([]);
-        //Filter the shapes array to grab the shape by the id
-        const selectedShape = shapes.find(shape => shape.id === id);
         console.log('Shape Clicked', selectedShape);
-        //Then add that shape to the selectedShapes array
         setSelectedShapes([selectedShape]);
         setSelectedShapeID(id);
         console.log('Selected Shape ID:', id);
@@ -125,13 +122,11 @@ function Shape(props) {
         setShowContextMenu(false);
     };
 
-    const handleDragMove = (e) => {
+    const attachedLines = useMemo(() => lines.filter(line => line.attachedShapeId === id), [lines, id]);
+    const handleDragMove = throttle((e) => {
         const newPos = e.target.position();
         setPosition(newPos);
-        // onShapeChange(id, { x: e.target.x(), y: e.target.y() });
-
-        // Get all lines that are attached to the shape
-        const attachedLines = lines.filter(line => line.attachedShapeId === id);
+        //onShapeChange(id, { x: e.target.x(), y: e.target.y() });
 
         // Update start pos of line to new pos
         const updatedLines = attachedLines.map(line => ({
@@ -141,7 +136,7 @@ function Shape(props) {
 
         // Updates startPos of only lines attached to shape
         setLines(lines.map(line => updatedLines.find(l => l.id === line.id) || line));
-    };
+    }, 100); // Update at most once every 100ms
 
     const handleDragEnd = (e) => {
         //console.log(e.target.position());
