@@ -451,8 +451,8 @@ function useShapes(stageDimensions, imageRef) {
     //Unused for now
     //Deletes all shapes not of the formationType
     const deleteFormation = (formationType) => {
-        //console.log(formationType);
-        setShapes(shapes.filter(shape => shape.formationType === formationType));
+        console.log(`Filtering by: ${formationType}`);
+        setShapes(shapes.filter(shape => shape.formationType.includes(formationType)));
     }
 
     const deleteAllShapes = () => {

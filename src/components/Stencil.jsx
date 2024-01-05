@@ -146,8 +146,9 @@ function Stencil(props) {
             })
         }
         else if (previous && previous.actionType === 'formation') {
-            onDeleteAllShapes();
-            onDeleteAllTextTags();
+            console.log(`Clearing formation of htis type: ${history[historyStep].shapeID}`)
+            onChangeFormation(history[historyStep].shapeID);
+            // onDeleteAllTextTags();
         }
     }
 
@@ -167,7 +168,7 @@ function Stencil(props) {
 
         setHistory((prevHistory) => [
             ...prevHistory,
-            { actionType: 'formation' },
+            { actionType: 'formation', shapeID: `${newFormation}` },
         ])
         setHistoryStep(historyStep+1)
 
@@ -190,6 +191,12 @@ function Stencil(props) {
     const handleSetDefenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
         setSelectedDefenseFormation(newFormation);
+
+        setHistory((prevHistory) => [
+            ...prevHistory,
+            { actionType: 'formation', shapeID: `${newFormation}` },
+        ])
+        setHistoryStep(historyStep+1)
 
         if (newFormation === '4-3') {
             (toggleDefenseLeftRight) ? onAddFormation('defense4-3R', shapeColor) : onAddFormation('defense4-3L', shapeColor);
