@@ -6,7 +6,7 @@ import { Line, Circle, Group } from 'react-konva';
 import ContextMenu from '../menus/ContextMenu';
 
 function CustomLine(props) {
-    const { id, line, lines, onLineDelete } = props;
+    const { id, line, lines, onLineDelete, setLines } = props;
 
     //TODO move this state to the parent component and set false upon image/stage click
     const [isSelected, setIsSelected] = useState(false);
@@ -34,6 +34,11 @@ function CustomLine(props) {
         onLineDelete(id);
     };
 
+    const handleDragMove = (e) => {
+        const newEndPos = e.target.position();
+        setLines(lines.map(line => line.id === id ? { ...line, endPos: newEndPos } : line));
+    };
+
     return (
         <>
             <Group
@@ -47,12 +52,15 @@ function CustomLine(props) {
                     lineCap="round"
                     onClick={handleLineClick}
                 />
+                {/* Line end anchor */}
                 {isSelected && (
                     <Circle
                         x={line.endPos.x}
                         y={line.endPos.y}
                         radius={10}
                         fill="grey"
+                        onDragMove={handleDragMove}
+                        draggable
                     />
                 )}
                 {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}

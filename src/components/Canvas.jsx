@@ -165,6 +165,7 @@ function Canvas(props) {
                                 line={line}
                                 lines={lines}
                                 onLineDelete={onLineDelete}
+                                setLines={setLines}
                             />
                         ))}
                         {shapes.map((shape) => (
