@@ -66,7 +66,7 @@ const DefenderDiamond = (props) => {
         />
     ));
 
-    const strokeOptions = { color: 'black', strokeWidth: 2 };
+    const strokeOptions = { color: 'black', strokeWidth: .2 };
     var textAlignment = -5;
     if (text.length > 1) {
         textAlignment -= 5;
