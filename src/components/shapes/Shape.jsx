@@ -128,7 +128,7 @@ function Shape(props) {
     const handleDragMove = (e) => {
         const newPos = e.target.position();
         setPosition(newPos);
-        onShapeChange(id, { x: e.target.x(), y: e.target.y() });
+        // onShapeChange(id, { x: e.target.x(), y: e.target.y() });
 
         // Get all lines that are attached to the shape
         const attachedLines = lines.filter(line => line.attachedShapeId === id);
