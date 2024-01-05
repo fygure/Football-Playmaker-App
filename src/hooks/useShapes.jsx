@@ -41,7 +41,7 @@ function useShapes(stageDimensions, imageRef) {
                 { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.33, y: middlePosition.y + imageSize.height * 0.24 }, initialColor, text: 'Z' },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.012, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x, y: middlePosition.y + imageSize.height * 0.205 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
@@ -64,7 +64,7 @@ function useShapes(stageDimensions, imageRef) {
                 { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.27, y: middlePosition.y + imageSize.height * 0.203 }, initialColor, text: 'Z' },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.012, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x, y: middlePosition.y + imageSize.height * 0.205 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
@@ -87,7 +87,7 @@ function useShapes(stageDimensions, imageRef) {
                 { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.24, y: middlePosition.y + imageSize.height * 0.265 }, initialColor, text: 'Z' },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.012, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x, y: middlePosition.y + imageSize.height * 0.205 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
@@ -110,7 +110,7 @@ function useShapes(stageDimensions, imageRef) {
                 { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.27, y: middlePosition.y + imageSize.height * 0.203 }, initialColor, text: 'Z' },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.012, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x, y: middlePosition.y + imageSize.height * 0.205 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
@@ -133,7 +133,7 @@ function useShapes(stageDimensions, imageRef) {
                 { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.34, y: middlePosition.y + imageSize.height * 0.203 }, initialColor, text: 'Z' },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.012, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x, y: middlePosition.y + imageSize.height * 0.205 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
@@ -155,7 +155,7 @@ function useShapes(stageDimensions, imageRef) {
                 { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.21, y: middlePosition.y + imageSize.height * 0.203 }, initialColor, text: 'Z' },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.012, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x, y: middlePosition.y + imageSize.height * 0.205 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
@@ -177,7 +177,7 @@ function useShapes(stageDimensions, imageRef) {
                 { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.4, y: middlePosition.y + imageSize.height * 0.233 }, initialColor, text: 'Z' },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.012, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x, y: middlePosition.y + imageSize.height * 0.205 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
@@ -200,7 +200,7 @@ function useShapes(stageDimensions, imageRef) {
                 { id: uuidv4(), formationType: formationType, shapeType: 'Zoval', initialPosition: { x: middlePosition.x + imageSize.width * 0.15, y: middlePosition.y + imageSize.height * 0.307 }, initialColor, text: 'Z' },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x + imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x - imageSize.width * 0.012, y: middlePosition.y + imageSize.height * 0.185 }, initialColor },
+                { id: uuidv4(), formationType: formationType, shapeType: 'Center', initialPosition: { x: middlePosition.x, y: middlePosition.y + imageSize.height * 0.205 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.045, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
                 { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.2 }, initialColor },
             ];
