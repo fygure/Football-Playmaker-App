@@ -133,11 +133,13 @@ function Shape(props) {
         // Get all lines that are attached to the shape
         const attachedLines = lines.filter(line => line.attachedShapeId === id);
 
+        // Update start pos of line to new pos
         const updatedLines = attachedLines.map(line => ({
             ...line,
             startPos: newPos,
         }));
 
+        // Updates startPos of only lines attached to shape
         setLines(lines.map(line => updatedLines.find(l => l.id === line.id) || line));
     };
 
