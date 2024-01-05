@@ -34,7 +34,7 @@ function CustomLine(props) {
         onLineDelete(id);
     };
 
-    const handleDragMove = (e) => {
+    const handleAnchorDragMove = (e) => {
         const newEndPos = e.target.position();
         setLines(lines.map(line => line.id === id ? { ...line, endPos: newEndPos } : line));
     };
@@ -59,7 +59,7 @@ function CustomLine(props) {
                         y={line.endPos.y}
                         radius={10}
                         fill="grey"
-                        onDragMove={handleDragMove}
+                        onDragMove={handleAnchorDragMove}
                         draggable
                     />
                 )}
