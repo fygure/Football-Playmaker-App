@@ -18,6 +18,8 @@ const getAnchorPoints = (ellipseRadiusX, ellipseRadiusY) => {
 const LinemanOval = (props) => {
     const {
         id,
+        startDrawing,
+        setIsMouseDownOnAnchor,
         shapeRef,
         position,
         initialColor,
@@ -27,6 +29,7 @@ const LinemanOval = (props) => {
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
+        handleDragMove,
         handleDragEnd,
         handleHideContextMenu,
         ellipseRadiuses,
@@ -41,9 +44,13 @@ const LinemanOval = (props) => {
             key={`anchor-${index}`}
             x={point.x}
             y={point.y}
-            onDragStart={() => { console.log('onDragStart'); }}
-            onDragMove={() => { console.log('onDragMove'); }}
-            onDragEnd={() => { console.log('onDragEnd'); }}
+            onMouseDown={(e) => {
+                const startPos = e.target.getStage().getPointerPosition();
+                console.log('Anchor onMouseDown', startPos);
+                startDrawing(startPos, id, shapeRef.current);
+                setIsMouseDownOnAnchor(true);
+                e.cancelBubble = true;
+            }}
         />
     ));
 
@@ -84,10 +91,11 @@ const LinemanOval = (props) => {
                 draggable
                 dragBoundFunc={dragBoundFunc}
                 onDragStart={handleDragStart}
+                onDragMove={handleDragMove}
                 onDragEnd={handleDragEnd}
+                onContextMenu={handleRightClick}
                 x={position.x}
                 y={position.y}
-                onContextMenu={handleRightClick}
             >
                 <Ellipse
                     x={0}
