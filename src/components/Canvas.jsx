@@ -45,6 +45,7 @@ function Canvas(props) {
     const [isMouseDownOnAnchor, setIsMouseDownOnAnchor] = useState(false);
     const [selectedShapeID, setSelectedShapeID] = useState('$');
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
+    const [isLineSelected, setIsLineSelected] = useState(false);
 
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
@@ -96,6 +97,7 @@ function Canvas(props) {
         deselectShape();
         deselectTextTag();
         setSelectedTextTags([]);
+        setIsLineSelected(false);
     }
 
     const handleStageClick = (e) => {
@@ -109,6 +111,7 @@ function Canvas(props) {
             deselectShape();
             deselectTextTag();
             setSelectedTextTags([]);
+            setIsLineSelected(false);
         }
     };
 
@@ -166,6 +169,8 @@ function Canvas(props) {
                                 lines={lines}
                                 onLineDelete={onLineDelete}
                                 setLines={setLines}
+                                setIsLineSelected={setIsLineSelected}
+                                isLineSelected={isLineSelected}
                             />
                         ))}
                         {shapes.map((shape) => (
