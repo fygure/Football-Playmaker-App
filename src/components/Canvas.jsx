@@ -45,7 +45,7 @@ function Canvas(props) {
     const [isMouseDownOnAnchor, setIsMouseDownOnAnchor] = useState(false);
     const [selectedShapeID, setSelectedShapeID] = useState('$');
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
-    const [isLineSelected, setIsLineSelected] = useState(false);
+    const [selectedLineID, setSelectedLineID] = useState('$');
 
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
@@ -97,7 +97,7 @@ function Canvas(props) {
         deselectShape();
         deselectTextTag();
         setSelectedTextTags([]);
-        setIsLineSelected(false);
+        setSelectedLineID('$');
     }
 
     const handleStageClick = (e) => {
@@ -111,7 +111,7 @@ function Canvas(props) {
             deselectShape();
             deselectTextTag();
             setSelectedTextTags([]);
-            setIsLineSelected(false);
+            setSelectedLineID('$');
         }
     };
 
@@ -134,6 +134,7 @@ function Canvas(props) {
     const handleStageMouseUp = (e) => {
         const endPos = e.target.getStage().getPointerPosition();
         console.log('Stage onMouseUp', endPos);
+        console.log('Selected Line ID:', selectedLineID);
         stopDrawing();
         setIsMouseDownOnAnchor(false);
     };
@@ -169,8 +170,10 @@ function Canvas(props) {
                                 lines={lines}
                                 onLineDelete={onLineDelete}
                                 setLines={setLines}
-                                setIsLineSelected={setIsLineSelected}
-                                isLineSelected={isLineSelected}
+                                selectedLineID={selectedLineID}
+                                setSelectedLineID={setSelectedLineID}
+                                setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
+                                startDrawing={startDrawing}
                             />
                         ))}
                         {shapes.map((shape) => (

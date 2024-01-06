@@ -6,14 +6,14 @@ import { Line, Circle, Group } from 'react-konva';
 import ContextMenu from '../menus/ContextMenu';
 
 function CustomLine(props) {
-    const { id, line, lines, onLineDelete, setLines, isLineSelected, setIsLineSelected } = props;
-
+    const { id, line, lines, onLineDelete, setLines, startDrawing, setIsMouseDownOnAnchor, selectedLineID, setSelectedLineID } = props;
+    const isSelected = selectedLineID === id;
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
     const lineRef = useRef();
 
     const handleLineClick = () => {
-        setIsLineSelected(!isLineSelected);
+        setSelectedLineID(isSelected ? null : id);
     };
 
     const handleRightClick = (e) => {
@@ -78,7 +78,7 @@ function CustomLine(props) {
                     onClick={handleLineClick}
                 />
                 {/* Line end anchor */}
-                {isLineSelected && (
+                {isSelected && (
                     <Group
                     >
                         {/* Halo */}
@@ -89,6 +89,7 @@ function CustomLine(props) {
                             stroke="lightgrey"
                             strokeWidth={4}
                             fill="lightgrey"
+
                         />
                         <Circle
                             x={line.endPos.x}
