@@ -29,6 +29,9 @@ function Shape(props) {
         initialColor,
         onShapeChange,
         onShapeDelete,
+
+        onLineDelete,
+
         onHideContextMenu,
         imageRef,
         stageRef,
@@ -116,6 +119,13 @@ function Shape(props) {
     const handleDeleteClick = () => {
         setShowContextMenu(false);
         onShapeDelete(id);
+          // Delete all lines associated with the shape
+        lines.forEach((line) => {
+            if (line.attachedShapeId === id) {
+            onLineDelete(line.id);
+            }
+  });
+
     };
 
     const handleDragStart = () => {

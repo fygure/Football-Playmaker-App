@@ -182,6 +182,9 @@ function Canvas(props) {
                                 initialColor={shape.initialColor}
                                 onShapeChange={onShapeChange}
                                 onShapeDelete={onShapeDelete}
+
+                                onLineDelete={onLineDelete}
+
                                 onHideContextMenu={onHideContextMenu}
                                 stageRef={stageRef}
                                 imageRef={imageRef}
