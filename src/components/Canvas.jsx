@@ -175,6 +175,8 @@ function Canvas(props) {
                                 setSelectedLineID={setSelectedLineID}
                                 setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
                                 startDrawing={startDrawing}
+                                stageRef={stageRef}
+                                imageRef={imageRef}
                             />
                         ))}
                         {shapes.map((shape) => (
