@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import theme from '../config/theme.js';
-import { shapes } from 'konva/lib/Shape.js';
 
 const QBProgressionButtons = [
     { text: 'Check Mark', icon: 'check' },
@@ -80,6 +79,7 @@ function Stencil(props) {
     const {
         onAddFormation,
         onAddShape,
+        onUpdateShape,
         onAddTextTag,
         fieldType,
         setFieldType,
@@ -93,6 +93,7 @@ function Stencil(props) {
         setSelectedColor,
         onDeleteAllTextTags,
         stageRef,
+        shapes,
         history,
         setHistory,
         historyStep,
@@ -138,17 +139,19 @@ function Stencil(props) {
     
     function handleUndo() {
         console.log("===========:::UNDO INVOKED:::===========")
-        console.log(`Shapes' Type: ${typeof(shapes)}`)
-        console.log(`First shape: ${shapes[0]}`)
         const previous = history[historyStep];
         if (previous && previous.actionType === 'move') {
-            console.log(`Shapes' Type: ${typeof(shapes)}`)
-            console.log(`First shape: ${shapes[0]}`)
-            // // const shape = shapes.find(shape => shape.id === previous.shapeID);
-            // shape.setState({
-            //     x: previous.x,
-            //     y: previous.y
-            // })
+            const shapeIdToFind = previous.shapeID
+            const shapeMoved = shapes.find(shape => shape.id === previous.shapeID);
+                // create new array (filtered out of the shapes based on the condition)
+                // call the setShapes and pass that filtered array in.
+            if (shapeMoved) { 
+                const movedShapeWithOldCoords = { ...shapeMoved, initialPosition: previous.initialPosition };
+                const newShapes = shapes.map(shape => shape.id === shapeIdToFind ? movedShapeWithOldCoords : shape);
+                console.log(`Previous Initial Position: ${previous.initialPosition}`)
+                onUpdateShape(previous.shapeID, { initialPosition: previous.initialPosition });
+            }
+
         }
         // Two bugs: (1) Wipes board on some formation combinations. (2)
         else if (previous && previous.actionType === 'formation') {

@@ -44,6 +44,7 @@ function App() {
               <Stencil
                 onAddFormation={addFormation}
                 onAddShape={addShape}
+                onUpdateShape={updateShape}
                 onAddTextTag={addTextTag}
                 fieldType={fieldType}
                 setFieldType={setFieldType}
