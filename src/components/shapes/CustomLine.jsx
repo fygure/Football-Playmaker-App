@@ -1,11 +1,17 @@
 // CustomLine.jsx
 //TODO: add bezier curve functionality
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Line, Circle, Group } from 'react-konva';
 import ContextMenu from '../menus/ContextMenu';
 
+const CIRCLE_SIZES = {
+    CONTROL: { MIN: 5, MAX: 5 },
+    HALO: { MIN: 14, MAX: 14 },
+    ANCHOR: { MIN: 8, MAX: 8 },
+};
+
 function CustomLine(props) {
-    const { id, line, lines, onLineDelete, setLines, startDrawing, setIsMouseDownOnAnchor, selectedLineID, setSelectedLineID } = props;
+    const { id, line, lines, onLineDelete, setLines, startDrawing, setIsMouseDownOnAnchor, selectedLineID, setSelectedLineID, imageRef, stageRef } = props;
     const isSelected = selectedLineID === id;
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
@@ -14,6 +20,44 @@ function CustomLine(props) {
         y: (line.startPos.y + line.endPos.y) / 2,
     });
     const customLineRef = useRef();
+    //Anchor sizes
+    const [controlCircleRadius, setControlCircleRadius] = useState(CIRCLE_SIZES.CONTROL.MAX);
+    const [haloCircleRadius, setHaloCircleRadius] = useState(CIRCLE_SIZES.HALO.MAX);
+    const [anchorCircleRadius, setAnchorCircleRadius] = useState(CIRCLE_SIZES.ANCHOR.MAX);
+    // Calculate the initial circle sizes relative to the image size
+    useEffect(() => {
+        const image = imageRef.current;
+        const initialImagePosition = { x: image.x(), y: image.y() };
+        const initialImageSize = { width: image.width(), height: image.height() };
+        const initialRelativePosition = {
+            x: (controlPoint.x - initialImagePosition.x) / initialImageSize.width,
+            y: (controlPoint.y - initialImagePosition.y) / initialImageSize.height,
+        };
+
+        const initialControlCircleRadius = controlCircleRadius / initialImageSize.width;
+        const initialHaloCircleRadius = haloCircleRadius / initialImageSize.width;
+        const initialAnchorCircleRadius = anchorCircleRadius / initialImageSize.width;
+
+        const handleResize = () => {
+            const newImagePosition = { x: image.x(), y: image.y() };
+            const newImageSize = { width: image.width(), height: image.height() };
+
+            setControlPoint({
+                x: initialRelativePosition.x * newImageSize.width + newImagePosition.x,
+                y: initialRelativePosition.y * newImageSize.height + newImagePosition.y,
+            });
+            setControlCircleRadius(Math.min(CIRCLE_SIZES.CONTROL.MAX, Math.max(CIRCLE_SIZES.CONTROL.MIN, initialControlCircleRadius * newImageSize.width)));
+            setHaloCircleRadius(Math.min(CIRCLE_SIZES.HALO.MAX, Math.max(CIRCLE_SIZES.HALO.MIN, initialHaloCircleRadius * newImageSize.width)));
+            setAnchorCircleRadius(Math.min(CIRCLE_SIZES.ANCHOR.MAX, Math.max(CIRCLE_SIZES.ANCHOR.MIN, initialAnchorCircleRadius * newImageSize.width)));
+        };
+
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [imageRef, controlPoint, controlCircleRadius, haloCircleRadius, anchorCircleRadius]);
 
     const handleLineClick = () => {
         setSelectedLineID(isSelected ? null : id);
@@ -132,7 +176,7 @@ function CustomLine(props) {
                         <Circle
                             x={controlPoint.x}
                             y={controlPoint.y}
-                            radius={5}
+                            radius={controlCircleRadius}
                             fill="darkgrey"
                             stroke="black"
                             strokeWidth={2}
@@ -143,7 +187,7 @@ function CustomLine(props) {
                         <Circle
                             x={line.endPos.x}
                             y={line.endPos.y}
-                            radius={14}
+                            radius={haloCircleRadius}
                             stroke="black"
                             strokeWidth={2}
                             name="larger-circle"
@@ -177,7 +221,7 @@ function CustomLine(props) {
                         <Circle
                             x={line.endPos.x}
                             y={line.endPos.y}
-                            radius={8}
+                            radius={anchorCircleRadius}
                             fill="darkgrey"
                             stroke={"black"}
                             strokeWidth={0.5}
