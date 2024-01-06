@@ -9,9 +9,10 @@ import useBackground from './hooks/useBackground';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './config/theme';
 import './App.css';
+import useLines from './hooks/useLines';
 ////////////////////////////////////////////////////////////////////////////////////////
-/* 
-TODO: add undo/redo 
+/*
+TODO: add undo/redo
 TODO: add selection rectangle
 TODO: save and load feature (requires database)
 */
@@ -26,6 +27,7 @@ function App() {
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
   const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
+  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine } = useLines(imageRef, stageRef);
 
   return (
     <>
@@ -54,6 +56,7 @@ function App() {
                 selectedColor={selectedColor}
                 setSelectedColor={setSelectedColor}
                 onDeleteAllTextTags={deleteAllTextTags}
+                onDeleteAllLines={deleteAllLines}
                 stageRef={stageRef}
               />
             </div>
@@ -73,6 +76,15 @@ function App() {
             }}>
               <Canvas
                 imageRef={imageRef}
+                lines={lines}
+                setLines={setLines}
+                startPos={startPos}
+                endPos={endPos}
+                startDrawing={startDrawing}
+                draw={draw}
+                stopDrawing={stopDrawing}
+                deleteAllLines={deleteAllLines}
+                onLineDelete={deleteLine}
                 shapes={shapes}
                 selectedShapes={selectedShapes}
                 setSelectedShapes={setSelectedShapes}

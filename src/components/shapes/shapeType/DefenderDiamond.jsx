@@ -1,24 +1,29 @@
 //DefenderDiamond.jsx
-import React, { useState } from 'react';
+//TODO: line functionality like ReceiverOval
+import React, { useState, useEffect } from 'react';
 import { Rect, Group } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 import { Anchor } from '../Anchor';
 import EditableText from '../EditableText';
 
+const offset = 1.7;
+
 const getAnchorPoints = (width, height) => {
     const halfWidth = width / 2;
     const halfHeight = height / 2;
     return [
-        { x: halfWidth - 14, y: -25 }, // top point
-        { x: width - 3, y: halfHeight - 14.5 }, // right point
-        { x: halfWidth - 14, y: height - 3 }, // bottom point
-        { x: -25, y: halfHeight - 14.5 }, // left point
+        { x: 0, y: -halfHeight * offset }, // top point
+        { x: halfWidth * offset, y: 0 }, // right point
+        { x: 0, y: halfHeight * offset }, // bottom point
+        { x: -halfWidth * offset, y: 0 }, // left point
     ];
 }
 
 const DefenderDiamond = (props) => {
     const {
         id,
+        startDrawing,
+        setIsMouseDownOnAnchor,
         shapeRef,
         position,
         initialColor,
@@ -28,6 +33,7 @@ const DefenderDiamond = (props) => {
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
+        handleDragMove,
         handleDragEnd,
         handleHideContextMenu,
         fontSize,
@@ -39,19 +45,28 @@ const DefenderDiamond = (props) => {
         setSelectedShapeID,
     } = props;
 
-    const anchorPoints = getAnchorPoints(rectSize.width, rectSize.height);
+    const [anchorPoints, setAnchorPoints] = useState(getAnchorPoints(rectSize.width, rectSize.height));
+
+    useEffect(() => {
+        setAnchorPoints(getAnchorPoints(rectSize.width, rectSize.height));
+    }, [rectSize]);
+
     const anchors = anchorPoints.map((point, index) => (
         <Anchor
             key={`anchor-${index}`}
             x={point.x}
             y={point.y}
-            onDragStart={() => { console.log('onDragStart'); }}
-            onDragMove={() => { console.log('onDragMove'); }}
-            onDragEnd={() => { console.log('onDragEnd'); }}
+            onMouseDown={(e) => {
+                const startPos = e.target.getStage().getPointerPosition();
+                console.log('Anchor onMouseDown', startPos);
+                startDrawing(startPos, id, shapeRef.current);
+                setIsMouseDownOnAnchor(true);
+                e.cancelBubble = true;
+            }}
         />
     ));
 
-    const strokeOptions = { color: 'black', strokeWidth: 2 };
+    const strokeOptions = { color: 'black', strokeWidth: .2 };
     var textAlignment = -5;
     if (text.length > 1) {
         textAlignment -= 5;
@@ -66,6 +81,7 @@ const DefenderDiamond = (props) => {
                 y={position.y}
                 draggable={true}
                 onDragStart={handleDragStart}
+                onDragMove={handleDragMove}
                 onDragEnd={handleDragEnd}
                 dragBoundFunc={dragBoundFunc}
                 onClick={handleOnClick}
@@ -80,6 +96,7 @@ const DefenderDiamond = (props) => {
                     offsetY={rectSize.height / 2}
                     strokeWidth={strokeOptions.strokeWidth}
                     cornerRadius={2}
+                    fill={initialColor}
                 />
                 <EditableText
                     initialText={text}

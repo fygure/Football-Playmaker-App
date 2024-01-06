@@ -4,6 +4,7 @@ import { Group, Ellipse, Text } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 import { Anchor } from '../Anchor';
 import EditableText from '../EditableText';
+import useLines from '../../../hooks/useLines';
 
 const getAnchorPoints = (ellipseRadiusX, ellipseRadiusY) => {
     return [
@@ -16,6 +17,8 @@ const getAnchorPoints = (ellipseRadiusX, ellipseRadiusY) => {
 
 function ReceiverOval(props) {
     const {
+        startDrawing,
+        setIsMouseDownOnAnchor,
         id,
         shapeRef,
         imageRef,
@@ -28,6 +31,7 @@ function ReceiverOval(props) {
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
+        handleDragMove,
         handleDragEnd,
         handleTextChange,
         handleHideContextMenu,
@@ -45,9 +49,13 @@ function ReceiverOval(props) {
             key={`anchor-${index}`}
             x={point.x}
             y={point.y}
-            onDragStart={() => { console.log('onDragStart'); }}
-            onDragMove={() => { console.log('onDragMove'); }}
-            onDragEnd={() => { console.log('onDragEnd'); }}
+            onMouseDown={(e) => {
+                const startPos = e.target.getStage().getPointerPosition();
+                console.log('Anchor onMouseDown', startPos);
+                startDrawing(startPos, id, shapeRef.current);
+                setIsMouseDownOnAnchor(true);
+                e.cancelBubble = true;
+            }}
         />
     ));
 
@@ -64,6 +72,7 @@ function ReceiverOval(props) {
                 draggable
                 dragBoundFunc={dragBoundFunc}
                 onDragStart={handleDragStart}
+                onDragMove={handleDragMove}
                 onDragEnd={handleDragEnd}
                 onClick={handleOnClick}
                 onContextMenu={handleRightClick}
@@ -87,15 +96,6 @@ function ReceiverOval(props) {
                     fontSize={fontSize}
                     handleTextChange={handleTextChange}
                 />
-                {/* <Text
-                    text={text}
-                    align="center"
-                    x={-ellipseRadiuses.x / 2 + textAlignment}
-                    y={-ellipseRadiuses.y / 2 + 1}
-                    fill="black"
-                    listening={false}
-                    fontSize={fontSize}
-                /> */}
                 {selectedShapeID === id && anchors}
             </Group>
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}

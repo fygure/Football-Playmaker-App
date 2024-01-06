@@ -1,21 +1,28 @@
 // CenterSquare.jsx
+//TODO: line functionality like ReceiverOval
 import React, { useState } from 'react';
 import { Rect, Group } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 import { Anchor } from '../Anchor';
 
+const offset = 1.5;
+
 const getAnchorPoints = (width, height) => {
+    const halfWidth = width / 2;
+    const halfHeight = height / 2;
     return [
-        { x: -5, y: height / 2 },
-        { x: width / 2, y: -5 },
-        { x: width + 5, y: height / 2 },
-        { x: width / 2, y: height + 5 },
+        { x: 0, y: -halfHeight * offset }, // top point
+        { x: halfWidth * offset, y: 0 }, // right point
+        { x: 0, y: halfHeight * offset }, // bottom point
+        { x: -halfWidth * offset, y: 0 }, // left point
     ];
 }
 
 const CenterSquare = (props) => {
     const {
         id,
+        startDrawing,
+        setIsMouseDownOnAnchor,
         shapeRef,
         position,
         initialColor,
@@ -25,6 +32,7 @@ const CenterSquare = (props) => {
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
+        handleDragMove,
         handleDragEnd,
         handleHideContextMenu,
         rectSize,
@@ -39,9 +47,13 @@ const CenterSquare = (props) => {
             key={`anchor-${index}`}
             x={point.x}
             y={point.y}
-            onDragStart={() => { console.log('onDragStart'); }}
-            onDragMove={() => { console.log('onDragMove'); }}
-            onDragEnd={() => { console.log('onDragEnd'); }}
+            onMouseDown={(e) => {
+                const startPos = e.target.getStage().getPointerPosition();
+                console.log('Anchor onMouseDown', startPos);
+                startDrawing(startPos, id, shapeRef.current);
+                setIsMouseDownOnAnchor(true);
+                e.cancelBubble = true;
+            }}
         />
     ));
 
@@ -75,6 +87,7 @@ const CenterSquare = (props) => {
                 onContextMenu={handleRightClick}
                 draggable={true}
                 onDragStart={handleDragStart}
+                onDragMove={handleDragMove}
                 onDragEnd={handleDragEnd}
                 dragBoundFunc={dragBoundFunc}
             >
@@ -84,6 +97,8 @@ const CenterSquare = (props) => {
                     stroke={strokeOptions.color}
                     strokeWidth={strokeOptions.strokeWidth}
                     cornerRadius={2}
+                    offsetX={rectSize.width / 2}
+                    offsetY={rectSize.height / 2}
                     onClick={handleCenterClick}
                     fillLinearGradientStartPoint={{ x: state.leftState, y: 0 }}
                     fillLinearGradientEndPoint={{ x: state.rightState, y: 0 }}
@@ -91,8 +106,8 @@ const CenterSquare = (props) => {
                 />
                 {stateIndex === 3 && (
                     <Rect
-                        x={rectSize.width / 2 - 1}
-                        y={0}
+                        x={-1.6}
+                        y={-rectSize.height / 2}
                         onClick={handleCenterClick}
                         width={centerLineWidth}
                         height={rectSize.height}
