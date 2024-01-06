@@ -124,54 +124,52 @@ function Stencil(props) {
 
     const [undoClicked, setUndoClicked] = useState(false);
 
-    function handleUndoClick() {
-        if (historyStep > 0) 
-            setHistoryStep(historyStep - 1);
-        setUndoClicked(true);
-    }
+    // function handleUndoClick() {
+    //     if (historyStep > 0) 
+    //         setHistoryStep(historyStep - 1);
+    //     setUndoClicked(true);
+    // }
     
-    useEffect(() => {
-        if (undoClicked) {
-            handleUndo();
-            setUndoClicked(false);
-        }
-    }, [shapes, undoClicked]);
+    // useEffect(() => {
+    //     if (undoClicked) {
+    //         handleUndo();
+    //         setUndoClicked(false);
+    //     }
+    // }, [shapes, undoClicked]);
     
-    function handleUndo() {
-        console.log("===========:::UNDO INVOKED:::===========")
-        if (historyStep > 0)
-            setHistoryStep(historyStep-1)
-        
-        const previous = history[historyStep];
-        if (previous && previous.actionType === 'move') {
-            const shapeIdToFind = previous.shapeID
-            const shapeMoved = shapes.find(shape => shape.id === previous.shapeID);
-                // create new array (filtered out of the shapes based on the condition)
-                // call the setShapes and pass that filtered array in.
-                const movedShapeWithOldCoords = { ...shapeMoved, x: previous.x, y: previous.y };
-                const newShapes = shapes.map(shape => shape.id === shapeIdToFind ? movedShapeWithOldCoords : shape);
-                console.log(`Previous Initial Position: ${previous.x}, ${previous.y} of shape: ${previous.shapeID}`)
-                onUpdateShape(previous.shapeID, { x: previous.x, y: previous.y });
+    // function handleUndo() {
+    //     console.log("===========:::UNDO INVOKED:::===========")
 
-        }
-        // Two bugs: (1) Wipes board on some formation combinations. (2)
-        else if (previous && previous.actionType === 'formation') {
-            console.log(`Clearing formation of type: ${previous.shapeID}`)
-            console.log(`History step is: ${historyStep}`)
-            console.log(`History is: ${history.forEach((item) => console.log(item))})}`)
-            onChangeFormation(previous.shapeID);
-            // onDeleteAllTextTags();
-        }
-    }
+    //     console.log(`History step is: ${historyStep}`)
+    //     const previous = history[historyStep];
+    //     if (previous && previous.actionType === 'move') {
+    //         const shapeIdToFind = previous.shapeID
+    //         const shapeMoved = shapes.find(shape => shape.id === previous.shapeID);
+    //             // create new array (filtered out of the shapes based on the condition)
+    //             // call the setShapes and pass that filtered array in.
+    //             const movedShapeWithOldCoords = { ...shapeMoved, x: previous.x, y: previous.y };
+    //             const newShapes = shapes.map(shape => shape.id === shapeIdToFind ? movedShapeWithOldCoords : shape);
+    //             console.log(`Previous Initial Position: ${previous.x}, ${previous.y} of shape: ${previous.shapeID}`)
+    //             onUpdateShape(previous.shapeID, { x: previous.x, y: previous.y });
+            
+    //     }
+    //     // Two bugs: (1) Wipes board on some formation combinations. (2)
+    //     else if (previous && previous.actionType === 'formation') {
+    //         console.log(`Clearing formation of type: ${previous.shapeID}`)
+    //         console.log(`History step is: ${historyStep}`)
+    //         console.log(`History is: ${history.forEach((item) => console.log(item))})}`)
+    //         onChangeFormation(previous.shapeID);
+    //         // onDeleteAllTextTags();
+    //     }
+    // }
 
-    function handleRedo() {
-        if (historyStep === history.length - 1) 
-            return;
-        setHistoryStep(historyStep + 1);
-        const next = history[historyStep];
-        // need to call setState on the Konva shape
-
-    }
+    const handleUndoClick = () => {
+        undo();
+      };
+      
+      const handleRedoClick = () => {
+        redo();
+      };
 
     // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
@@ -231,12 +229,6 @@ function Stencil(props) {
         //console.log(e.target.value);
         const newPlayer = e.target.value;
         onAddShape(newPlayer, shapeColor);
-
-        setHistory((prevHistory) => [
-            ...prevHistory,
-            { actionType: 'add', shapeID: shapes[shapes.length - 1].id },
-        ])
-        setHistoryStep(historyStep + 1);
     };
 
     // Toggle handlers

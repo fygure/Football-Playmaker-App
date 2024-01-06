@@ -434,7 +434,7 @@ function useShapes(stageDimensions, imageRef) {
             initialPosition: isOffensePlayer
                 ? { x: middlePosition.x - imageSize.width * 0.45, y: middlePosition.y + imageSize.height * 0.45 }
                 : { x: middlePosition.x - imageSize.width * 0.45, y: middlePosition.y - imageSize.height * 0.45 },
-            initialColor, text: 'XT'
+            initialColOkayor, text: 'XT'
         };
 
         setShapes([...shapes, newShape]);
@@ -466,6 +466,34 @@ function useShapes(stageDimensions, imageRef) {
     const hideShapeContextMenu = () => {
         setShapes(shapes.map(shape => ({ ...shape, showContextMenu: false })));
     };
+
+    const [history, setHistory] = useState([]);
+    const [historyStep, setHistoryStep] = useState(0);
+        
+    const snapshot = () => {
+      const stageSnapshot = stageRef.current.toJSON();
+      setHistory([...history.slice(0, historyStep + 1), stageSnapshot]);
+      setHistoryStep(historyStep + 1);
+    };
+    
+    const undo = () => {
+      if (historyStep > 0) {
+        const prevState = history[historyStep - 1];
+        stageRef.current = Konva.Node.create(prevState);
+        setHistoryStep(historyStep - 1);
+      }
+    };
+    
+    const redo = () => {
+      if (historyStep < history.length - 1) {
+        const nextState = history[historyStep + 1];
+        stageRef.current = Konva.Node.create(nextState);
+        setHistoryStep(historyStep + 1);
+      }
+    };
+
+
+
 
     return { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu };
 }

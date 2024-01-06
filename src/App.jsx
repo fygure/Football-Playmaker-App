@@ -24,7 +24,7 @@ function App() {
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
-  const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
+  const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, undo, reedo } = useShapes(stageDimensions, imageRef);
   const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
   const [historyStep, setHistoryStep] = useState(0);
   const [history, setHistory] = useState([]);
@@ -97,10 +97,8 @@ function App() {
                 backgroundImage={backgroundImage}
                 setStageDimensions={setStageDimensions}
                 stageRef={stageRef}
-                history={history}
-                setHistory={setHistory}
-                historyStep={historyStep}
-                setHistoryStep={setHistoryStep}
+                undo={ undo }
+                redo={ redo }
               />
             </div>
           </div>

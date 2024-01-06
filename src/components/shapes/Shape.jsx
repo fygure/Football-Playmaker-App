@@ -133,10 +133,10 @@ function Shape(props) {
 
         setHistory((prevHistory) => [
             ...prevHistory,
-            { actionType: 'move', shapeID: id, x: e.target.x(), y: e.target.y() },
+            { actionType: 'move', shapeID: id, x: e.target.x(), y: e.target.y(), position: position },
         ])
         setHistoryStep(historyStep + 1);
-        // console.log(`History is: ${history.forEach((item) => console.log(item))})}`)
+        console.log(`DragEnd: History is: ${historyStep}`)
     };
 
     const handleHideContextMenu = () => {
