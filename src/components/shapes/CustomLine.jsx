@@ -10,7 +10,7 @@ function CustomLine(props) {
     const isSelected = selectedLineID === id;
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
-    const lineRef = useRef();
+    const customLineRef = useRef();
 
     const handleLineClick = () => {
         setSelectedLineID(isSelected ? null : id);
@@ -35,11 +35,29 @@ function CustomLine(props) {
 
     const handleAnchorDragMove = (e) => {
         const newEndPos = e.target.position();
-        setLines(lines.map(line => line.id === id ? { ...line, endPos: newEndPos } : line));
+
+        // Update the end position of the currently dragged line
+        const updatedLines = lines.map(line =>
+            line.id === id ? { ...line, endPos: newEndPos } : line
+        );
+
+        // Find any lines that have a `drawnFromRef` that matches the current line's reference
+        const connectedLines = updatedLines.filter(line =>
+            line.drawnFromRef === customLineRef.current
+        );
+
+        // Update the start position of the connected lines
+        const finalLines = updatedLines.map(line =>
+            connectedLines.find(connectedLine => connectedLine.id === line.id)
+                ? { ...line, startPos: newEndPos }
+                : line
+        );
+
+        setLines(finalLines);
     };
 
     const dragBoundFunc = (pos) => {
-        const stage = lineRef.current.getStage();
+        const stage = customLineRef.current.getStage();
         const { width: stageWidth, height: stageHeight } = stage.size();
 
         let x = pos.x;
@@ -67,7 +85,7 @@ function CustomLine(props) {
         <>
             <Group
                 onContextMenu={handleRightClick}
-                ref={lineRef}
+                ref={customLineRef}
             >
                 <Line
                     points={[line.startPos.x, line.startPos.y, line.endPos.x, line.endPos.y]}
@@ -85,17 +103,29 @@ function CustomLine(props) {
                         <Circle
                             x={line.endPos.x}
                             y={line.endPos.y}
-                            radius={12}
-                            stroke="lightgrey"
-                            strokeWidth={4}
-                            fill="lightgrey"
-
+                            radius={14}
+                            stroke="black"
+                            strokeWidth={0.5}
+                            fill="grey"
+                            onMouseDown={(e) => {
+                                const startPos = e.target.getStage().getPointerPosition();
+                                //need function to handle drawing from an anchor here
+                                startDrawing(startPos, '$', customLineRef.current);
+                                setIsMouseDownOnAnchor(true);
+                                e.cancelBubble = true;
+                            }}
+                            onClick={(e) => {
+                                console.log(customLineRef.current);
+                                console.log(customLineRef.current.children[0].points());
+                            }}
                         />
                         <Circle
                             x={line.endPos.x}
                             y={line.endPos.y}
-                            radius={6}
-                            fill="grey"
+                            radius={8}
+                            fill="lightgrey"
+                            stroke={"black"}
+                            strokeWidth={0.5}
                             onDragMove={handleAnchorDragMove}
                             draggable
                             dragBoundFunc={dragBoundFunc}

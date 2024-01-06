@@ -122,11 +122,12 @@ function Shape(props) {
         setShowContextMenu(false);
     };
 
-    const attachedLines = useMemo(() => lines.filter(line => line.attachedShapeId === id), [lines, id]);
+
     const handleDragMove = throttle((e) => {
         const newPos = e.target.position();
         setPosition(newPos);
         //onShapeChange(id, { x: e.target.x(), y: e.target.y() });
+        const attachedLines = lines.filter(line => line.attachedShapeId === id);
 
         // Update start pos of line to new pos
         const updatedLines = attachedLines.map(line => ({

@@ -6,14 +6,16 @@ const useLines = (imageRef, stageRef) => {
     const [startPos, setStartPos] = useState(null);
     const [endPos, setEndPos] = useState(null);
     const [lines, setLines] = useState([]);
-    const [attachedShapeId, setAttachedShapeId] = useState(null);
-    const [attachedShapeRef, setAttachedShapeRef] = useState(null);
+    const [attachedShapeId, setAttachedShapeId] = useState('$');
+    const [drawnFromRef, setDrawnFromRef] = useState('$');
 
+    //if shapeId remains '$', then line is attached from another line
     const startDrawing = (pos, shapeId, shapeRef) => {
         setStartPos(pos);
         setAttachedShapeId(shapeId);
-        setAttachedShapeRef(shapeRef);
+        setDrawnFromRef(shapeRef);
     };
+
 
     const draw = (pos) => {
         if (startPos) {
@@ -27,15 +29,15 @@ const useLines = (imageRef, stageRef) => {
                 startPos,
                 endPos,
                 "attachedShapeId": attachedShapeId,
-                "attachedShapeRef": attachedShapeRef,
+                "drawnFromRef": drawnFromRef,
                 id: uuidv4(),
                 color: 'black',
             };
             setLines(prevLines => [...prevLines, newLine]);
             setStartPos(null);
             setEndPos(null);
-            setAttachedShapeId(null);
-            setAttachedShapeRef(null);
+            setAttachedShapeId('$');
+            setDrawnFromRef('$');
         }
     };
 
