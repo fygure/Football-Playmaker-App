@@ -45,6 +45,7 @@ function Canvas(props) {
     const [isMouseDownOnAnchor, setIsMouseDownOnAnchor] = useState(false);
     const [selectedShapeID, setSelectedShapeID] = useState('$');
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
+    const [selectedLineID, setSelectedLineID] = useState('$');
 
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
@@ -96,6 +97,7 @@ function Canvas(props) {
         deselectShape();
         deselectTextTag();
         setSelectedTextTags([]);
+        setSelectedLineID('$');
     }
 
     const handleStageClick = (e) => {
@@ -109,6 +111,7 @@ function Canvas(props) {
             deselectShape();
             deselectTextTag();
             setSelectedTextTags([]);
+            setSelectedLineID('$');
         }
     };
 
@@ -131,6 +134,7 @@ function Canvas(props) {
     const handleStageMouseUp = (e) => {
         const endPos = e.target.getStage().getPointerPosition();
         console.log('Stage onMouseUp', endPos);
+        console.log('Selected Line ID:', selectedLineID);
         stopDrawing();
         setIsMouseDownOnAnchor(false);
     };
@@ -158,7 +162,8 @@ function Canvas(props) {
                             height={image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
                             onClick={handleImageClick}
                         />
-                        {lines.map((line, index) => (
+                        {/* Sorting causes lines to render later */}
+                        {lines.sort((a, b) => (a.id === selectedLineID ? 1 : -1)).map((line, index) => (
                             <CustomLine
                                 key={line.id}
                                 id={line.id}
@@ -166,6 +171,10 @@ function Canvas(props) {
                                 lines={lines}
                                 onLineDelete={onLineDelete}
                                 setLines={setLines}
+                                selectedLineID={selectedLineID}
+                                setSelectedLineID={setSelectedLineID}
+                                setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
+                                startDrawing={startDrawing}
                             />
                         ))}
                         {shapes.map((shape) => (
