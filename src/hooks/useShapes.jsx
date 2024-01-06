@@ -450,6 +450,7 @@ function useShapes(stageDimensions, imageRef) {
 
     //Unused for now
     //Deletes all shapes not of the formationType
+    //REFACTORED: Changed it to where it contains the formationType since the names aren't consistent. Refer to lines 168-218 in Stencil.jsx
     const deleteFormation = (formationType) => {
         console.log(`Filtering by: ${formationType}`);
         setShapes(shapes.filter(shape => shape.formationType.includes(formationType)));

@@ -137,17 +137,25 @@ function Stencil(props) {
     }, [shapes, undoClicked]);
     
     function handleUndo() {
+        console.log("===========:::UNDO INVOKED:::===========")
+        console.log(`Shapes' Type: ${typeof(shapes)}`)
+        console.log(`First shape: ${shapes[0]}`)
         const previous = history[historyStep];
         if (previous && previous.actionType === 'move') {
-            const shape = Object.values(shapes).find(shape => shape.id === previous.shapeID);
-            shape.setState({
-                x: previous.x,
-                y: previous.y
-            })
+            console.log(`Shapes' Type: ${typeof(shapes)}`)
+            console.log(`First shape: ${shapes[0]}`)
+            // // const shape = shapes.find(shape => shape.id === previous.shapeID);
+            // shape.setState({
+            //     x: previous.x,
+            //     y: previous.y
+            // })
         }
+        // Two bugs: (1) Wipes board on some formation combinations. (2)
         else if (previous && previous.actionType === 'formation') {
-            console.log(`Clearing formation of htis type: ${history[historyStep].shapeID}`)
-            onChangeFormation(history[historyStep].shapeID);
+            console.log(`Clearing formation of type: ${previous.shapeID}`)
+            console.log(`History step is: ${historyStep}`)
+            console.log(`History is: ${history.forEach((item) => console.log(item))})}`)
+            onChangeFormation(previous.shapeID);
             // onDeleteAllTextTags();
         }
     }
@@ -164,13 +172,13 @@ function Stencil(props) {
     // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
-        setSelectedOffenseFormation(newFormation);
-
         setHistory((prevHistory) => [
             ...prevHistory,
             { actionType: 'formation', shapeID: `${newFormation}` },
         ])
         setHistoryStep(historyStep+1)
+
+        setSelectedOffenseFormation(newFormation);
 
         if (newFormation === '2x2') {
             onAddFormation('offense2x2', shapeColor);
