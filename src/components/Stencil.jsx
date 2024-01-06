@@ -320,9 +320,10 @@ function Stencil(props) {
                                 {fieldType !== 'blank' && (
                                     <CheckboxOption onChange={handleToggleRedZone} checked={zone === 'redzone'}>Red Zone</CheckboxOption>
                                 )}
-                                {fieldType !== 'blank' && fieldType === 'nfl' && (<CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>)}
+                                {(fieldType === 'nfl' || fieldType === 'college') && (
+                                    <CheckboxOption onChange={handleToggleRedLine} checked={redLine}>Red Line</CheckboxOption>
+                                )}
                             </div>
-
                         </div>
                     </div>
 
