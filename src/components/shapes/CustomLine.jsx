@@ -1,5 +1,4 @@
 // CustomLine.jsx
-//TODO: add anchor point functionality for the circle
 //TODO: add bezier curve functionality
 import React, { useState, useRef } from 'react';
 import { Line, Circle, Group } from 'react-konva';
@@ -10,6 +9,10 @@ function CustomLine(props) {
     const isSelected = selectedLineID === id;
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+    const [controlPoint, setControlPoint] = useState({
+        x: (line.startPos.x + line.endPos.x) / 2,
+        y: (line.startPos.y + line.endPos.y) / 2,
+    });
     const customLineRef = useRef();
 
     const handleLineClick = () => {
@@ -54,6 +57,32 @@ function CustomLine(props) {
         );
 
         setLines(finalLines);
+
+        // Update the position of the larger circle
+        const largerCircle = customLineRef.current.findOne('.larger-circle');
+        if (largerCircle) {
+            largerCircle.position(newEndPos);
+        }
+
+        // connected lines immediately
+        connectedLines.forEach(line => {
+            const lineNode = customLineRef.current.findOne(`.line-${line.id}`);
+            if (lineNode) {
+                lineNode.points([newEndPos.x, newEndPos.y, line.controlPoint.x, line.controlPoint.y, line.endPos.x, line.endPos.y]);
+            }
+        });
+    };
+
+    const handleControlPointDragMove = (e) => {
+        const newControlPoint = e.target.position();
+        setControlPoint(newControlPoint);
+
+        // Update the line's points to create a quadratic curve
+        const newPoints = [line.startPos.x, line.startPos.y, newControlPoint.x, newControlPoint.y, line.endPos.x, line.endPos.y];
+        const updatedLines = lines.map(l =>
+            l.id === id ? { ...l, points: newPoints } : l
+        );
+        setLines(updatedLines);
     };
 
     const dragBoundFunc = (pos) => {
@@ -88,47 +117,74 @@ function CustomLine(props) {
                 ref={customLineRef}
             >
                 <Line
-                    points={[line.startPos.x, line.startPos.y, line.endPos.x, line.endPos.y]}
+                    points={[line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]}
                     stroke={line.color}
                     strokeWidth={4}
                     tension={0.5}
                     lineCap="round"
+                    name={`line-${line.id}`}
                     onClick={handleLineClick}
                 />
                 {/* Line end anchor */}
                 {isSelected && (
-                    <Group
-                    >
-                        {/* Halo */}
+                    <Group>
+                        {/* Control point */}
+                        <Circle
+                            x={controlPoint.x}
+                            y={controlPoint.y}
+                            radius={5}
+                            fill="darkgrey"
+                            stroke="black"
+                            strokeWidth={2}
+                            draggable
+                            onDragMove={handleControlPointDragMove}
+                        />
+                        {/* Halo... may need refactoring on click */}
                         <Circle
                             x={line.endPos.x}
                             y={line.endPos.y}
                             radius={14}
                             stroke="black"
-                            strokeWidth={0.5}
+                            strokeWidth={2}
+                            name="larger-circle"
                             fill="grey"
                             onMouseDown={(e) => {
                                 const startPos = e.target.getStage().getPointerPosition();
                                 //need function to handle drawing from an anchor here
                                 startDrawing(startPos, '$', customLineRef.current);
                                 setIsMouseDownOnAnchor(true);
+                                e.target.moveToTop();
                                 e.cancelBubble = true;
+
+                                // Move the smaller circle to the top
+                                const smallerCircle = customLineRef.current.findOne('.smaller-circle');
+                                if (smallerCircle) {
+                                    smallerCircle.moveToTop();
+                                }
                             }}
-                            onClick={(e) => {
-                                console.log(customLineRef.current);
-                                console.log(customLineRef.current.children[0].points());
+                            onMouseEnter={(e) => {
+                                const container = e.target.getStage().container();
+                                //To style it, import custom image
+                                //container.style.cursor = 'url(/path/to/your/cursor/image.png) 16 16, crosshair';
+                                container.style.cursor = 'crosshair';
+                            }}
+                            onMouseLeave={(e) => {
+                                const container = e.target.getStage().container();
+                                container.style.cursor = 'default';
                             }}
                         />
+                        {/* Anchor */}
                         <Circle
                             x={line.endPos.x}
                             y={line.endPos.y}
                             radius={8}
-                            fill="lightgrey"
+                            fill="darkgrey"
                             stroke={"black"}
                             strokeWidth={0.5}
                             onDragMove={handleAnchorDragMove}
                             draggable
                             dragBoundFunc={dragBoundFunc}
+                            name="smaller-circle"
                         />
                     </Group>
                 )}

@@ -162,7 +162,8 @@ function Canvas(props) {
                             height={image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
                             onClick={handleImageClick}
                         />
-                        {lines.map((line, index) => (
+                        {/* Sorting causes lines to render later */}
+                        {lines.sort((a, b) => (a.id === selectedLineID ? 1 : -1)).map((line, index) => (
                             <CustomLine
                                 key={line.id}
                                 id={line.id}
