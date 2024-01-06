@@ -441,7 +441,10 @@ function useShapes(stageDimensions, imageRef) {
     };
 
     const updateShape = (id, newAttributes) => {
+        console.log(`updating shape: ${id}, with new attributes: ${newAttributes.x} and ${newAttributes.y}`)
         setShapes(shapes.map(shape => shape.id === id ? { ...shape, ...newAttributes } : shape));
+        console.log(`AFTER UPDATE, shapes is now:`)
+        shapes.forEach(shape => console.log(shape));
     };
 
     const deleteShape = (id) => {

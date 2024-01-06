@@ -129,10 +129,11 @@ function Shape(props) {
         //console.log(e.target.position());
         setPosition(e.target.position());
         onShapeChange(id, { x: e.target.x(), y: e.target.y() });
-    
+        
+
         setHistory((prevHistory) => [
             ...prevHistory,
-            { actionType: 'move', shapeID: id},
+            { actionType: 'move', shapeID: id, x: e.target.x(), y: e.target.y() },
         ])
         setHistoryStep(historyStep + 1);
         // console.log(`History is: ${history.forEach((item) => console.log(item))})}`)

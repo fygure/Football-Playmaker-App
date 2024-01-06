@@ -139,18 +139,19 @@ function Stencil(props) {
     
     function handleUndo() {
         console.log("===========:::UNDO INVOKED:::===========")
+        if (historyStep > 0)
+            setHistoryStep(historyStep-1)
+        
         const previous = history[historyStep];
         if (previous && previous.actionType === 'move') {
             const shapeIdToFind = previous.shapeID
             const shapeMoved = shapes.find(shape => shape.id === previous.shapeID);
                 // create new array (filtered out of the shapes based on the condition)
                 // call the setShapes and pass that filtered array in.
-            if (shapeMoved) { 
-                const movedShapeWithOldCoords = { ...shapeMoved, initialPosition: previous.initialPosition };
+                const movedShapeWithOldCoords = { ...shapeMoved, x: previous.x, y: previous.y };
                 const newShapes = shapes.map(shape => shape.id === shapeIdToFind ? movedShapeWithOldCoords : shape);
-                console.log(`Previous Initial Position: ${previous.initialPosition}`)
-                onUpdateShape(previous.shapeID, { initialPosition: previous.initialPosition });
-            }
+                console.log(`Previous Initial Position: ${previous.x}, ${previous.y} of shape: ${previous.shapeID}`)
+                onUpdateShape(previous.shapeID, { x: previous.x, y: previous.y });
 
         }
         // Two bugs: (1) Wipes board on some formation combinations. (2)
