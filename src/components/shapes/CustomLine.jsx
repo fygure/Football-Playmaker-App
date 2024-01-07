@@ -177,7 +177,7 @@ function CustomLine(props) {
                     lineCap="round"
                     name={`line-${line.id}`}
                     onClick={handleLineClick}
-                    //TODO: dash value from stencil, [0,0] is solid, [10,10] is dashed, [1,7] is dotted
+                    //TODO: dash value from stencil stroke type, [0,0] is solid, [10,10] is dashed, [1,7] is dotted
                     dash={[0, 0]}
                 //shadowBlur={5}
                 //shadowOffset={{ x: 10, y: 5 }}
