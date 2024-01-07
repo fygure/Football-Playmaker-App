@@ -162,12 +162,25 @@ function CustomLine(props) {
             >
                 <Line
                     points={[line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]}
+                    stroke="transparent"
+                    strokeWidth={25} // This is the click box size
+                    tension={0.3}
+                    lineCap="round"
+                    onClick={handleLineClick}
+                />
+                <Line
+                    points={[line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]}
+                    //TODO: stroke color from stencil
                     stroke={line.color}
-                    strokeWidth={4}
-                    tension={0.5}
+                    strokeWidth={3}
+                    tension={0.3} //Determines curvature intensity
                     lineCap="round"
                     name={`line-${line.id}`}
                     onClick={handleLineClick}
+                    //TODO: dash value from stencil, [0,0] is solid, [10,10] is dashed, [1,7] is dotted
+                    dash={[0, 0]}
+                //shadowBlur={5}
+                //shadowOffset={{ x: 10, y: 5 }}
                 />
                 {/* Line end anchor */}
                 {isSelected && (
