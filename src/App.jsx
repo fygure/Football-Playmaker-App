@@ -23,6 +23,8 @@ function App() {
   const [selectedShapes, setSelectedShapes] = useState([]);
   const [selectedTextTags, setSelectedTextTags] = useState([]);
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
+  const [selectedLineStroke, setSelectedLineStroke] = useState('straight'); // default straight line
+  const [selectedLineEnd, setSelectedLineEnd] = useState('arrow'); // default arrow line end
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
@@ -55,6 +57,10 @@ function App() {
                 onChangeFormation={deleteFormation} //deletes all other formation shapes except one chosen
                 selectedColor={selectedColor}
                 setSelectedColor={setSelectedColor}
+                selectedLineStroke={selectedLineStroke}
+                setSelectedLineStroke={setSelectedLineStroke}
+                selectedLineEnd={selectedLineEnd}
+                setSelectedLineEnd={setSelectedLineEnd}
                 onDeleteAllTextTags={deleteAllTextTags}
                 onDeleteAllLines={deleteAllLines}
                 stageRef={stageRef}
@@ -98,6 +104,8 @@ function App() {
                 onTextTagDelete={deleteTextTag}
                 onHideTextTagContextMenu={hideTextTagContextMenu}
                 selectedColor={selectedColor}
+                selectedLineStroke={selectedLineStroke}
+                selectedLineEnd={selectedLineEnd}
                 backgroundImage={backgroundImage}
                 setStageDimensions={setStageDimensions}
                 stageRef={stageRef}

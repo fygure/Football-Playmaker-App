@@ -78,6 +78,8 @@ const lineButtonStyle = {
 
 function Stencil(props) {
     const {
+        onChangeLineStroke,
+        onChangeLineEnd,
         onAddFormation,
         onAddShape,
         onAddTextTag,
@@ -91,6 +93,10 @@ function Stencil(props) {
         onChangeFormation,
         selectedColor,
         setSelectedColor,
+        selectedLineStroke,
+        setSelectedLineStroke,
+        selectedLineEnd,
+        setSelectedLineEnd,
         onDeleteAllTextTags,
         onDeleteAllLines,
         stageRef,
@@ -629,6 +635,7 @@ function Stencil(props) {
                                             // console.log(color);
                                             setSelectedColor(color);
                                             setSelectedColorButton(index);
+                                            //TODO: apply color to selected line
                                         }}
                                     />
                                 </Grid>
@@ -651,6 +658,7 @@ function Stencil(props) {
                                                     style={{ ...lineButtonStyle, border: selectedStrokeButton === index ? '2px solid white' : 'none' }}
                                                     onClick={() => {
                                                         //TODO HERE
+                                                        setSelectedLineStroke(button.label);
                                                         console.log(button.type, button.label);
                                                         setSelectedStrokeButton(index);
                                                     }}
@@ -674,6 +682,7 @@ function Stencil(props) {
                                                     style={{ ...lineButtonStyle, border: selectedEndButton === index ? '2px solid white' : 'none' }}
                                                     onClick={() => {
                                                         //TODO HERE
+                                                        setSelectedLineEnd(button.label);
                                                         console.log(button.type, button.label);
                                                         setSelectedEndButton(index);
                                                     }}

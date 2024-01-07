@@ -35,6 +35,8 @@ function Canvas(props) {
         onHideTextTagContextMenu,
         onHideContextMenu,
         selectedColor,
+        selectedLineStroke,
+        selectedLineEnd,
         backgroundImage,
         setStageDimensions
     } = props;
@@ -58,6 +60,8 @@ function Canvas(props) {
 
     useEffect(() => {
         updateSelectedTextTagsColor(selectedColor);
+        //TODO: update selected Lines color, stroke, end in state here
+        // & add selectedLineStroke, selectedLineEnd to dependencies
     }, [selectedColor]);
 
 
@@ -169,6 +173,9 @@ function Canvas(props) {
                                 id={line.id}
                                 line={line}
                                 lines={lines}
+                                selectedColor={selectedColor}
+                                selectedLineStroke={selectedLineStroke}
+                                selectedLineEnd={selectedLineEnd}
                                 onLineDelete={onLineDelete}
                                 setLines={setLines}
                                 selectedLineID={selectedLineID}

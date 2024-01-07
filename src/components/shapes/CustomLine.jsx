@@ -11,7 +11,22 @@ const CIRCLE_SIZES = {
 };
 
 function CustomLine(props) {
-    const { id, line, lines, onLineDelete, setLines, startDrawing, setIsMouseDownOnAnchor, selectedLineID, setSelectedLineID, imageRef, stageRef } = props;
+    const { 
+            id, 
+            line, 
+            lines, 
+            selectedColor,
+            selectedLineStroke,
+            selectedLineEnd,
+            onLineDelete, 
+            setLines, 
+            startDrawing, 
+            setIsMouseDownOnAnchor, 
+            selectedLineID, 
+            setSelectedLineID, 
+            imageRef, 
+            stageRef 
+        } = props;
     const isSelected = selectedLineID === id;
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
@@ -170,7 +185,8 @@ function CustomLine(props) {
                 />
                 <Line
                     points={[line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]}
-                    //TODO: stroke color from stencil
+                    //TODO: stroke = selectedColor
+                    // & only apply stroke color if line is selected
                     stroke={line.color}
                     strokeWidth={3}
                     tension={0.3} //Determines curvature intensity
