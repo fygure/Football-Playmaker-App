@@ -15,10 +15,14 @@ function Canvas(props) {
         endPos,
         lines,
         setLines,
+        onLineChange,
         startDrawing,
         draw,
         stopDrawing,
         deleteAllLines,
+        colorButtonPressCount,
+        strokeTypeButtonPressCount,
+        strokeEndButtonPressCount,
         onLineDelete,
         imageRef,
         stageRef,
@@ -36,6 +40,8 @@ function Canvas(props) {
         onHideTextTagContextMenu,
         onHideContextMenu,
         selectedColor,
+        selectedLineStroke,
+        selectedLineEnd,
         backgroundImage,
         setStageDimensions,
         orientation,
@@ -60,6 +66,8 @@ function Canvas(props) {
 
     useEffect(() => {
         updateSelectedTextTagsColor(selectedColor);
+        //TODO: update selected Lines color, stroke, end in state here
+        // & add selectedLineStroke, selectedLineEnd to dependencies
     }, [selectedColor]);
 
 
@@ -171,7 +179,15 @@ function Canvas(props) {
                                 id={line.id}
                                 line={line}
                                 lines={lines}
+                                color={line.color}
+                                colorButtonPressCount={colorButtonPressCount}
+                                strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                                strokeEndButtonPressCount={strokeEndButtonPressCount}
+                                selectedColor={selectedColor}
+                                selectedLineStroke={selectedLineStroke}
+                                selectedLineEnd={selectedLineEnd}
                                 onLineDelete={onLineDelete}
+                                onLineChange={onLineChange}
                                 setLines={setLines}
                                 selectedLineID={selectedLineID}
                                 setSelectedLineID={setSelectedLineID}
@@ -226,7 +242,7 @@ function Canvas(props) {
                         {startPos && endPos && (
                             <Line
                                 points={[startPos.x, startPos.y, endPos.x, endPos.y]}
-                                stroke="red"
+                                stroke="#7393B3"
                                 strokeWidth={4}
                                 tension={0.5}
                                 lineCap="round"

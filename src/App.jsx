@@ -20,20 +20,24 @@ import useLines from './hooks/useLines';
 /*
 TODO: add undo/redo
 TODO: add selection rectangle
-TODO: save and load feature (requires database)
 */
 ////////////////////////////////////////////////////////////////////////////////////////
 function App() {
   const imageRef = useRef(null);
   const stageRef = useRef(null);
+  const [colorButtonPressCount, setColorButtonPressCount] = useState(0);
+  const [strokeTypeButtonPressCount, setStrokeTypeButtonPressCount] = useState(0);
+  const [strokeEndButtonPressCount, setStrokeEndButtonPressCount] = useState(0);
   const [selectedShapes, setSelectedShapes] = useState([]);
   const [selectedTextTags, setSelectedTextTags] = useState([]);
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
+  const [selectedLineStroke, setSelectedLineStroke] = useState('straight'); // default straight line
+  const [selectedLineEnd, setSelectedLineEnd] = useState('arrow'); // default arrow line end
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
-  const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
-  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine } = useLines(imageRef, stageRef);
+  const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
+  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, stageRef);
   const [orientation, setOrientation] = useState('');
   const [open, setOpen] = useState(false);
 
@@ -62,6 +66,7 @@ function App() {
     {icon: <DeleteForeverOutlinedIcon/>,  action: handleDeleteAll},
   ];
 
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -88,8 +93,15 @@ function App() {
                 onChangeFormation={deleteFormation} //deletes all other formation shapes except one chosen
                 selectedColor={selectedColor}
                 setSelectedColor={setSelectedColor}
+                selectedLineStroke={selectedLineStroke}
+                setSelectedLineStroke={setSelectedLineStroke}
+                selectedLineEnd={selectedLineEnd}
+                setSelectedLineEnd={setSelectedLineEnd}
                 onDeleteAllTextTags={deleteAllTextTags}
                 onDeleteAllLines={deleteAllLines}
+                setColorButtonPressCount={setColorButtonPressCount}
+                setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                 stageRef={stageRef}
 
                 setOrientation={setOrientation}
@@ -113,6 +125,9 @@ function App() {
             }}>
               <Canvas
                 imageRef={imageRef}
+                colorButtonPressCount={colorButtonPressCount}
+                strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                strokeEndButtonPressCount={strokeEndButtonPressCount}
                 lines={lines}
                 setLines={setLines}
                 startPos={startPos}
@@ -121,6 +136,7 @@ function App() {
                 draw={draw}
                 stopDrawing={stopDrawing}
                 deleteAllLines={deleteAllLines}
+                onLineChange={updateLine}
                 onLineDelete={deleteLine}
                 shapes={shapes}
                 selectedShapes={selectedShapes}
@@ -135,6 +151,8 @@ function App() {
                 onTextTagDelete={deleteTextTag}
                 onHideTextTagContextMenu={hideTextTagContextMenu}
                 selectedColor={selectedColor}
+                selectedLineStroke={selectedLineStroke}
+                selectedLineEnd={selectedLineEnd}
                 backgroundImage={backgroundImage}
                 setStageDimensions={setStageDimensions}
                 stageRef={stageRef}
