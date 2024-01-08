@@ -2,15 +2,19 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-function useTextTags(imageRef) {
+function useTextTags(imageRef, stageRef) {
     const [textTags, setTextTags] = useState([]);
 
     const addTextTag = (text, newColor, position) => {
 
         console.log('Creating text tag:', text);
         const startPosition = {
-            x: imageRef.current.x() + (imageRef.current.width() / 2) - 30,
+            x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
             y: imageRef.current.height() - 60
+            // x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
+            // y: imageRef.current.y() + (imageRef.current.height() /2)
+            // x:stageRef.current.width() / 2,
+            // y:stageRef.current.height() /2
         };
 
         const whichPosition = position ? position : startPosition;
@@ -46,32 +50,67 @@ function useTextTags(imageRef) {
     const [isLeftRightFlipped, setIsLeftRightFlipped] = useState(false);
     const flipAllTextTags = (flipType) => {
         console.log('Flip Type:', flipType);
+        const imageCenter = {
+            x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
+            y: imageRef.current.y() + (imageRef.current.height() /2)
+        }
 
         setTextTags(prevTextTags => {
             // Create new text tags for all the text tags
             let newTextTags = prevTextTags.map(textTag => {
                 let newPosition;
+                let newInitialPosition;
                 let newAttributes = {};
-                let offset;
+                // let offset;
+                // if (flipType === "Up/Down") {
+                //     //FIXME: offset is where you calculate the orientation
+                //     offset = isUpDownFlipped ? 10 : -10; //example
+                //     // Check if the x and y attributes exist
+                //     if ('x' in textTag && 'y' in textTag) {
+                //         newPosition = { x: textTag.x, y: textTag.y + offset };
+                //         newAttributes = { x: newPosition.x, y: newPosition.y };
+                //     } else { // else use the initial position
+                //         newPosition = { ...textTag.initialPosition, y: textTag.initialPosition.y + offset * 5 };
+                //     }
+                // } else if (flipType === "Left/Right") {
+                //     //FIXME: offset is where you calculate the orientation
+                //     offset = isLeftRightFlipped ? 10 : -10; //example
+                //     // Check if the x and y attributes exist
+                //     if ('x' in textTag && 'y' in textTag) {
+                //         newPosition = { x: textTag.x + offset, y: textTag.y };
+                //         newAttributes = { x: newPosition.x, y: newPosition.y };
+                //     } else { // else use the initial position
+                //         newPosition = { ...textTag.initialPosition, x: textTag.initialPosition.x + offset * 5 };
+                //     }
+                // }
+                // if (flipType === "Up/Down") {
+                //     // Calculate the new y position as a reflection over the center of the canvas
+                //     let newY = imageRef.current.height() - (textTag.y || textTag.initialPosition.y);
+                //     newPosition = { x: textTag.x || textTag.initialPosition.x, y: newY };
+                //     newAttributes = { x: newPosition.x, y: newPosition.y };
+                // } else if (flipType === "Left/Right") {
+                //     // Calculate the new x position as a reflection over the center of the canvas
+                //     let newX = imageRef.current.width() - (textTag.x || textTag.initialPosition.x);
+                //     newPosition = { x: newX, y: textTag.y || textTag.initialPosition.y };
+                //     newAttributes = { x: newPosition.x, y: newPosition.y };
+                // }
                 if (flipType === "Up/Down") {
-                    //FIXME: offset is where you calculate the orientation
-                    offset = isUpDownFlipped ? 10 : -10; //example
+                    let newY = imageCenter.y - (textTag.y - imageCenter.y);
                     // Check if the x and y attributes exist
                     if ('x' in textTag && 'y' in textTag) {
-                        newPosition = { x: textTag.x, y: textTag.y + offset };
+                        newPosition = { x: textTag.x, y:  newY};
                         newAttributes = { x: newPosition.x, y: newPosition.y };
                     } else { // else use the initial position
-                        newPosition = { ...textTag.initialPosition, y: textTag.initialPosition.y + offset * 5 };
+                        newPosition = { ...textTag.initialPosition, y: imageCenter.y - (textTag.initialPosition.y - imageCenter.y)};
                     }
                 } else if (flipType === "Left/Right") {
-                    //FIXME: offset is where you calculate the orientation
-                    offset = isLeftRightFlipped ? 10 : -10; //example
+                    let newX = imageCenter.x - (textTag.x - imageCenter.x);
                     // Check if the x and y attributes exist
                     if ('x' in textTag && 'y' in textTag) {
-                        newPosition = { x: textTag.x + offset, y: textTag.y };
+                        newPosition = { x: newX , y: textTag.y };
                         newAttributes = { x: newPosition.x, y: newPosition.y };
                     } else { // else use the initial position
-                        newPosition = { ...textTag.initialPosition, x: textTag.initialPosition.x + offset * 5 };
+                        newPosition = { ...textTag.initialPosition, x: imageCenter.x - (textTag.initialPosition.x - imageCenter.x) };
                     }
                 }
                 // Create a new text tag with the new position
