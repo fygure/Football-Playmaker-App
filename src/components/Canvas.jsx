@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Stage, Layer, Image, Rect, Line } from 'react-konva';
 import useImage from 'use-image';
 import useLines from '../hooks/useLines';
+import  useTextTags  from '../hooks/useTextTags';
 //import StageDimensionsContext from '../contexts/StageDimensionsContext';
 import Shape from './shapes/Shape';
 import TextTag from './shapes/TextTag';
@@ -14,10 +15,14 @@ function Canvas(props) {
         endPos,
         lines,
         setLines,
+        onLineChange,
         startDrawing,
         draw,
         stopDrawing,
         deleteAllLines,
+        colorButtonPressCount,
+        strokeTypeButtonPressCount,
+        strokeEndButtonPressCount,
         onLineDelete,
         imageRef,
         stageRef,
@@ -35,8 +40,11 @@ function Canvas(props) {
         onHideTextTagContextMenu,
         onHideContextMenu,
         selectedColor,
+        selectedLineStroke,
+        selectedLineEnd,
         backgroundImage,
-        setStageDimensions
+        setStageDimensions,
+        orientation,
     } = props;
 
     //const { stageDimensions } = useContext(StageDimensionsContext);
@@ -58,6 +66,8 @@ function Canvas(props) {
 
     useEffect(() => {
         updateSelectedTextTagsColor(selectedColor);
+        //TODO: update selected Lines color, stroke, end in state here
+        // & add selectedLineStroke, selectedLineEnd to dependencies
     }, [selectedColor]);
 
 
@@ -169,7 +179,15 @@ function Canvas(props) {
                                 id={line.id}
                                 line={line}
                                 lines={lines}
+                                color={line.color}
+                                colorButtonPressCount={colorButtonPressCount}
+                                strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                                strokeEndButtonPressCount={strokeEndButtonPressCount}
+                                selectedColor={selectedColor}
+                                selectedLineStroke={selectedLineStroke}
+                                selectedLineEnd={selectedLineEnd}
                                 onLineDelete={onLineDelete}
+                                onLineChange={onLineChange}
                                 setLines={setLines}
                                 selectedLineID={selectedLineID}
                                 setSelectedLineID={setSelectedLineID}
@@ -224,7 +242,7 @@ function Canvas(props) {
                         {startPos && endPos && (
                             <Line
                                 points={[startPos.x, startPos.y, endPos.x, endPos.y]}
-                                stroke="red"
+                                stroke="#7393B3"
                                 strokeWidth={4}
                                 tension={0.5}
                                 lineCap="round"
