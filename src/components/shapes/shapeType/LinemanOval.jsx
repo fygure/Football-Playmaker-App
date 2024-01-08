@@ -1,7 +1,6 @@
 // LinemanOval.jsx
-//TODO: line functionality like ReceiverOval
 import React, { useState } from 'react';
-import { Ellipse, Group, Line } from 'react-konva';
+import { Ellipse, Group } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 import { Anchor } from '../Anchor';
 
@@ -25,7 +24,6 @@ const LinemanOval = (props) => {
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        handleOnClick,
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
@@ -54,7 +52,9 @@ const LinemanOval = (props) => {
         />
     ));
 
-    const strokeOptions = { color: 'black', strokeWidth: 2 };
+    const isSelected = selectedShapeID === id;
+    const haloRadiuses = { x: ellipseRadiuses.x + 8, y: ellipseRadiuses.y + 8 };
+    const strokeOptions = { color: 'black', strokeWidth: 1 };
 
     const states = [
         { leftState: 0, rightState: 200 }, // fully initialColor
@@ -97,6 +97,34 @@ const LinemanOval = (props) => {
                 x={position.x}
                 y={position.y}
             >
+                {isSelected && (
+                    <Ellipse
+                        x={0}
+                        y={0}
+                        fill="grey"
+                        radiusX={haloRadiuses.x}
+                        radiusY={haloRadiuses.y}
+                        stroke={'black'}
+                        strokeWidth={2}
+                        onMouseDown={(e) => {
+                            const startPos = e.target.getStage().getPointerPosition();
+                            console.log('Shape Halo onMouseDown', startPos);
+                            startDrawing(startPos, id, shapeRef.current);
+                            setIsMouseDownOnAnchor(true);
+                            e.cancelBubble = true;
+                        }}
+                        onMouseEnter={(e) => {
+                            const container = e.target.getStage().container();
+                            //To style it, import custom image
+                            //container.style.cursor = 'url(/path/to/your/cursor/image.png) 16 16, crosshair';
+                            container.style.cursor = 'crosshair';
+                        }}
+                        onMouseLeave={(e) => {
+                            const container = e.target.getStage().container();
+                            container.style.cursor = 'default';
+                        }}
+                    />
+                )}
                 <Ellipse
                     x={0}
                     y={0}
@@ -109,7 +137,6 @@ const LinemanOval = (props) => {
                     fillLinearGradientEndPoint={{ x: state.colorState.rightState, y: 0 }}
                     fillLinearGradientColorStops={[0, initialColor, 1, 'black']}
                 />
-                {selectedShapeID === id && anchors}
 
             </Group>
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}

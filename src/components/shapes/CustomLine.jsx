@@ -177,6 +177,7 @@ function CustomLine(props) {
         };
     };
 
+    // Sine Wave Calculations
     // Calculate the direction of the line
     const dx = line.endPos.x - line.startPos.x;
     const dy = line.endPos.y - line.startPos.y;
@@ -237,10 +238,8 @@ function CustomLine(props) {
                 {/* Real Line */}
                 <Line
                     points={[line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]}
-                    //TODO: stroke = selectedColor
-                    // & only apply stroke color if line is selected
                     stroke={isSelected ? selectedColor : line.color}
-                    strokeWidth={3}
+                    strokeWidth={2.5}
                     tension={0.3} //Determines curvature intensity
                     lineCap="round"
                     name={`line-${line.id}`}
