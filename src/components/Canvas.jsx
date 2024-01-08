@@ -14,6 +14,7 @@ function Canvas(props) {
         endPos,
         lines,
         setLines,
+        onLineChange,
         startDrawing,
         draw,
         stopDrawing,
@@ -173,10 +174,12 @@ function Canvas(props) {
                                 id={line.id}
                                 line={line}
                                 lines={lines}
+                                color={line.color}
                                 selectedColor={selectedColor}
                                 selectedLineStroke={selectedLineStroke}
                                 selectedLineEnd={selectedLineEnd}
                                 onLineDelete={onLineDelete}
+                                onLineChange={onLineChange}
                                 setLines={setLines}
                                 selectedLineID={selectedLineID}
                                 setSelectedLineID={setSelectedLineID}

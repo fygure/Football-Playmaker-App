@@ -29,7 +29,7 @@ function App() {
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
   const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
-  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine } = useLines(imageRef, stageRef);
+  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, stageRef);
 
   return (
     <>
@@ -90,6 +90,7 @@ function App() {
                 draw={draw}
                 stopDrawing={stopDrawing}
                 deleteAllLines={deleteAllLines}
+                onLineChange={updateLine}
                 onLineDelete={deleteLine}
                 shapes={shapes}
                 selectedShapes={selectedShapes}

@@ -14,10 +14,12 @@ function CustomLine(props) {
         id,
         line,
         lines,
+        color,
         selectedColor,
         selectedLineStroke,
         selectedLineEnd,
         onLineDelete,
+        onLineChange,
         setLines,
         startDrawing,
         setIsMouseDownOnAnchor,
@@ -73,8 +75,15 @@ function CustomLine(props) {
         };
     }, [imageRef, controlPoint, controlCircleRadius, haloCircleRadius, anchorCircleRadius]);
 
+    useEffect(() => {
+        if (isSelected) {
+            onLineChange(id, { color: selectedColor });
+        }
+    }, [selectedColor]);
+
     const handleLineClick = () => {
-        setSelectedLineID(isSelected ? null : id);
+        setSelectedLineID(isSelected ? '$' : id);
+        onLineChange(id, { color: selectedColor });
     };
 
     const handleRightClick = (e) => {
@@ -214,6 +223,7 @@ function CustomLine(props) {
             <Group
                 onContextMenu={handleRightClick}
                 ref={customLineRef}
+                onClick={() => { console.log(selectedColor, selectedLineStroke) }}
             >
                 {/* Transparent Line */}
                 <Line
@@ -224,11 +234,12 @@ function CustomLine(props) {
                     lineCap="round"
                     onClick={handleLineClick}
                 />
+                {/* Real Line */}
                 <Line
                     points={[line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]}
                     //TODO: stroke = selectedColor
                     // & only apply stroke color if line is selected
-                    stroke={line.color}
+                    stroke={isSelected ? selectedColor : line.color}
                     strokeWidth={3}
                     tension={0.3} //Determines curvature intensity
                     lineCap="round"
