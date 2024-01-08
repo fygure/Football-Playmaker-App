@@ -1,7 +1,11 @@
 // CustomLine.jsx
 import React, { useState, useRef, useEffect } from 'react';
-import { Line, Circle, Group } from 'react-konva';
+import { Line, Circle, Group, Rect } from 'react-konva';
 import ContextMenu from '../menus/ContextMenu';
+import PerpendicularEnd from './lineEnds/PerpendicularEnd';
+import DottedEnd from './lineEnds/DottedEnd';
+import ArrowEnd from './lineEnds/ArrowEnd';
+import calculateWaveLinePoints from './lineEnds/calculateWaveLinePoints';
 
 const CIRCLE_SIZES = {
     CONTROL: { MIN: 5, MAX: 5 },
@@ -186,48 +190,48 @@ function CustomLine(props) {
         };
     };
 
-    // Sine Wave Calculations
-    // Calculate the direction of the line
-    const dx = line.endPos.x - line.startPos.x;
-    const dy = line.endPos.y - line.startPos.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
+    // // Sine Wave Calculations
+    // // Calculate the direction of the line
+    // const dx = line.endPos.x - line.startPos.x;
+    // const dy = line.endPos.y - line.startPos.y;
+    // const distance = Math.sqrt(dx * dx + dy * dy);
 
-    // Calculate the direction perpendicular to the line
-    const perp_dx = -dy / distance;
-    const perp_dy = dx / distance;
+    // // Calculate the direction perpendicular to the line
+    // const perp_dx = -dy / distance;
+    // const perp_dy = dx / distance;
 
-    // Define the frequency and amplitude of the waves
-    const waves = 8;
-    const amplitude = 8;
+    // // Define the frequency and amplitude of the waves
+    // const waves = 8;
+    // const amplitude = 8;
 
-    // Calculate the number of points based on the distance
-    const pointsCount = Math.floor(distance / 5); // Adjust the divisor to change the density of the points
+    // // Calculate the number of points based on the distance
+    // const pointsCount = Math.floor(distance / 5); // Adjust the divisor to change the density of the points
 
-    // Generate the points for the wavy line
-    const waveLinePoints = [];
-    for (let i = 0; i <= pointsCount; i++) {
-        const t = i / pointsCount;
-        const wave = amplitude * Math.sin(t * 2 * Math.PI * waves);
+    // // Generate the points for the wavy line
+    // const waveLinePoints = [];
+    // for (let i = 0; i <= pointsCount; i++) {
+    //     const t = i / pointsCount;
+    //     const wave = amplitude * Math.sin(t * 2 * Math.PI * waves);
 
-        // Calculate the position along the curve defined by the control point
-        const u = 1 - t;
-        const tt = t * t;
-        const uu = u * u;
-        const p = { x: 0, y: 0 };
-        p.x = uu * line.startPos.x; //influence of the starting point
-        p.y = uu * line.startPos.y;
-        p.x += 2 * u * t * controlPoint.x; //influence of the control point
-        p.y += 2 * u * t * controlPoint.y;
-        p.x += tt * line.endPos.x; //influence of the end point
-        p.y += tt * line.endPos.y;
+    //     // Calculate the position along the curve defined by the control point
+    //     const u = 1 - t;
+    //     const tt = t * t;
+    //     const uu = u * u;
+    //     const p = { x: 0, y: 0 };
+    //     p.x = uu * line.startPos.x; //influence of the starting point
+    //     p.y = uu * line.startPos.y;
+    //     p.x += 2 * u * t * controlPoint.x; //influence of the control point
+    //     p.y += 2 * u * t * controlPoint.y;
+    //     p.x += tt * line.endPos.x; //influence of the end point
+    //     p.y += tt * line.endPos.y;
 
-        // Add the sine wave along the direction perpendicular to the curve
-        const x = p.x + perp_dx * wave;
-        const y = p.y + perp_dy * wave;
-        waveLinePoints.push(x, y);
-    }
+    //     // Add the sine wave along the direction perpendicular to the curve
+    //     const x = p.x + perp_dx * wave;
+    //     const y = p.y + perp_dy * wave;
+    //     waveLinePoints.push(x, y);
+    // }
 
-
+    let waveLinePoints = calculateWaveLinePoints(line, controlPoint);
     return (
         <>
             <Group
@@ -246,7 +250,13 @@ function CustomLine(props) {
                 />
                 {/* Real Line */}
                 <Line
-                    points={isSelected && line.strokeType === 'squiggle' ? waveLinePoints : line.strokeType === 'squiggle' ? waveLinePoints : [line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]}
+                    points={
+                        (isSelected && line.strokeType === 'squiggle')
+                            ? waveLinePoints
+                            : (line.strokeType === 'squiggle')
+                                ? waveLinePoints
+                                : [line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]
+                    }
                     stroke={line.color}
                     strokeWidth={2.5}
                     tension={0.3} //Determines curvature intensity
@@ -255,6 +265,18 @@ function CustomLine(props) {
                     onClick={handleLineClick}
                     dash={isSelected && line.strokeType === 'dashed' ? [10, 10] : isSelected && line.strokeType === 'dotted' ? [1, 7] : line.strokeType === 'dashed' ? [10, 10] : line.strokeType === 'dotted' ? [1, 7] : [0, 0]}
                 />
+                {/* Arrow Line End */}
+                {line.strokeEnd === 'arrow' && (
+                    <ArrowEnd line={line} controlPoint={controlPoint} color={line.color} />
+                )}
+                {/* Perpendicular Line End */}
+                {line.strokeEnd === 'perpendicular' && (
+                    <PerpendicularEnd line={line} controlPoint={controlPoint} color={line.color} />
+                )}
+                {/* Dotted Line End */}
+                {line.strokeEnd === 'dotted' && (
+                    <DottedEnd line={line} color={line.color} />
+                )}
                 {/* Line end anchor */}
                 {isSelected && (
                     <Group>
@@ -269,7 +291,7 @@ function CustomLine(props) {
                             draggable
                             onDragMove={handleControlPointDragMove}
                         />
-                        {/* Halo... may need refactoring on click */}
+                        {/* Halo */}
                         <Circle
                             x={line.endPos.x}
                             y={line.endPos.y}

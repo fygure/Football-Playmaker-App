@@ -109,6 +109,9 @@ function Stencil(props) {
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
     const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
+    const [selectedColorButton, setSelectedColorButton] = useState(0); // 0 is first index of colorButtons array
+    const [selectedStrokeButton, setSelectedStrokeButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'stroke'));
+    const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'arrow' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
     const shapeColor = 'white';
 
     function handleDownload() {
@@ -641,10 +644,12 @@ function Stencil(props) {
                                                 backgroundColor: color,
                                                 boxShadow: '0 0 10px 2px white',
                                             },
+                                            border: selectedColorButton === index ? '2px solid white' : 'none',
                                         }}
                                         onClick={() => {
                                             //console.log(color);
                                             setSelectedColor(color);
+                                            setSelectedColorButton(index);
                                             handleColorButtonPress();
                                         }}
                                     />
@@ -667,7 +672,8 @@ function Stencil(props) {
                                                     style={{
                                                         ...lineButtonStyle,
                                                         borderRadius: '25px',
-                                                        marginRight: '5px'
+                                                        marginRight: '5px',
+                                                        border: selectedStrokeButton === index ? '2px solid white' : 'none'
                                                     }}
                                                     sx={{
                                                         '&:hover': {
@@ -678,6 +684,7 @@ function Stencil(props) {
                                                         setSelectedLineStroke(button.label);
                                                         handleStrokeTypeButtonPress();
                                                         console.log(button.type, button.label);
+                                                        setSelectedStrokeButton(index);
                                                     }}
                                                 >
                                                     <img src={button.icon} alt={button.label} style={{ width: '100%', height: 'auto' }} />
@@ -699,7 +706,8 @@ function Stencil(props) {
                                                     style={{
                                                         ...lineButtonStyle,
                                                         borderRadius: '25px',
-                                                        marginRight: '5px'
+                                                        marginRight: '5px',
+                                                        border: selectedEndButton === index ? '2px solid white' : 'none'
                                                     }}
                                                     sx={{
                                                         '&:hover': {
@@ -710,6 +718,7 @@ function Stencil(props) {
                                                         setSelectedLineEnd(button.label);
                                                         handleStrokeEndButtonPress();
                                                         console.log(button.type, button.label);
+                                                        setSelectedEndButton(index);
                                                     }}
                                                 >
                                                     <img src={button.icon} alt={button.label} style={{ width: '100%', height: 'auto' }} />

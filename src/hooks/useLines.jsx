@@ -68,15 +68,15 @@ const useLines = (imageRef, stageRef) => {
     //handle resizing
     useEffect(() => {
         const image = imageRef.current;
-        const initialImagePosition = { x: image.x(), y: image.y() };
-        const initialImageSize = { width: image.width(), height: image.height() };
+        let initialImagePosition = { x: image.x(), y: image.y() };
+        let initialImageSize = { width: image.width(), height: image.height() };
 
-        const initialRelativeLines = lines.map(line => {
-            const initialRelativeStartPos = {
+        let initialRelativeLines = lines.map(line => {
+            let initialRelativeStartPos = {
                 x: (line.startPos.x - initialImagePosition.x) / initialImageSize.width,
                 y: (line.startPos.y - initialImagePosition.y) / initialImageSize.height,
             };
-            const initialRelativeEndPos = {
+            let initialRelativeEndPos = {
                 x: (line.endPos.x - initialImagePosition.x) / initialImageSize.width,
                 y: (line.endPos.y - initialImagePosition.y) / initialImageSize.height,
             };
