@@ -19,7 +19,8 @@ import useLines from './hooks/useLines';
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: add undo/redo
-TODO: add selection rectangle
+TODO: footer navbar
+TOOD: orientation
 */
 ////////////////////////////////////////////////////////////////////////////////////////
 function App() {
@@ -36,11 +37,12 @@ function App() {
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
-  const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
+  const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
   const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, stageRef);
-  const [orientation, setOrientation] = useState('');
-  const [open, setOpen] = useState(false);
+  const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
 
+  //TODO: Name of download should be play's name from user input
+  // requires footer navbar
   const handleDownload = () => {
     var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
     var link = document.createElement('a');
@@ -57,13 +59,13 @@ function App() {
     deleteAllLines();
   };
 
-  const handleToggle = () => {
-    setOpen(!open);
+  const handleToggleSpeedDial = () => {
+    setIsSpeedDialOpen(!isSpeedDialOpen);
   };
 
   const actions = [
-    {icon: <DownloadIcon/>, action: handleDownload},
-    {icon: <DeleteForeverOutlinedIcon/>,  action: handleDeleteAll},
+    { icon: <DeleteForeverOutlinedIcon />, action: handleDeleteAll },
+    { icon: <DownloadIcon />, action: handleDownload },
   ];
 
 
@@ -103,9 +105,7 @@ function App() {
                 setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
                 setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                 stageRef={stageRef}
-
-                setOrientation={setOrientation}
-                flipAllTextTags = {flipAllTextTags}
+                flipAllTextTags={flipAllTextTags}
               />
             </div>
             <div style={{
@@ -157,17 +157,18 @@ function App() {
                 setStageDimensions={setStageDimensions}
                 stageRef={stageRef}
               />
-                  <SpeedDial
-                 ariaLabel="SpeedDial"
-                 icon={open ? <CloseIcon sx = {{color: 'red'}} /> : <MoreVertIcon sx={{color: 'black'}} />}
-                 direction = {'down'}
-                 FabProps={{ size: 'small', color: 'white'}}
-                 onClick={handleToggle}
-                 open={open}
-                 sx = {{position: 'fixed', top: '20px', right: '15px', marginTop: '15px', marginRight: '2.5vw'}} // Update this line
+              <SpeedDial
+                ariaLabel="SpeedDial"
+                icon={isSpeedDialOpen ? <CloseIcon sx={{ color: 'red' }} /> : <MoreVertIcon sx={{ color: 'black' }} />}
+                direction={'down'}
+                FabProps={{ size: 'small', color: 'white' }}
+                onClick={handleToggleSpeedDial}
+                open={isSpeedDialOpen}
+                sx={{ position: 'fixed', top: '20px', right: '15px', marginTop: '15px', marginRight: '2.5vw' }} // Update this line
               >
-                 {actions.map((action) => (
+                {actions.map((action, index) => (
                   <SpeedDialAction
+                    key={`dial-${index}`}
                     icon={action.icon}
                     onClick={action.action}
                   />

@@ -52,11 +52,11 @@ function useTextTags(imageRef) {
                 let updatedAttributes;
                 if (text.x !== undefined && text.y !== undefined) {
                     console.log('Moved and Flipping Up/Down');
-                    console.log('It has x', text.x, 'and y', text.y);
+                    //console.log('It has x', text.x, 'and y', text.y);
                     updatedAttributes = { y: text.y * -1 };
                 } else if (text.initialPosition) {
                     console.log('Initial Flipping Up/Down');
-                    console.log('It has initial x', text.initialPosition.x, 'and initial y', text.initialPosition.y);
+                    //console.log('It has initial x', text.initialPosition.x, 'and initial y', text.initialPosition.y);
                     updatedAttributes = {
                         x: text.initialPosition.x,
                         y: text.initialPosition.y * -1
@@ -65,8 +65,7 @@ function useTextTags(imageRef) {
                 updateTextTag(text.id, updatedAttributes);
             });
         }
-        else if (flipType === 'Left/Right')
-        {
+        else if (flipType === 'Left/Right') {
             textTags.forEach(text => {
                 let updatedAttributes;
                 if (text.x !== undefined && text.y !== undefined) {

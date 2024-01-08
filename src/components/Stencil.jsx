@@ -103,7 +103,6 @@ function Stencil(props) {
         setStrokeEndButtonPressCount,
         setStrokeTypeButtonPressCount,
         stageRef,
-        setOrientation,
         flipAllTextTags,
     } = props;
 
@@ -238,7 +237,6 @@ function Stencil(props) {
     const handleOrientation = (e) => {
         const newOrientation = e.target.value;
         // console.log('handle orientation',newOrientation);
-        setOrientation(newOrientation);
         flipAllTextTags(newOrientation);
     };
 
@@ -270,18 +268,9 @@ function Stencil(props) {
         <>
             <div>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                    <Button variant="outlined" color="sharpRed" size="small" onClick={handleDeleteAll} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Clear All</Button>
-                </div>
-
-                <div style={{ padding: '5px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                    <Button variant="outlined" color="kellyGreen" size="small" onClick={handleDownload} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Download Stage</Button>
-                </div>
-
-
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
 
-                    <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                    <h3 style={{ marginBottom: '2px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                         Field
                     </h3>
                     <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
