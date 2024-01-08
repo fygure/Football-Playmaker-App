@@ -99,6 +99,9 @@ function Stencil(props) {
         setSelectedLineEnd,
         onDeleteAllTextTags,
         onDeleteAllLines,
+        setColorButtonPressCount,
+        setStrokeEndButtonPressCount,
+        setStrokeTypeButtonPressCount,
         stageRef,
     } = props;
 
@@ -106,9 +109,6 @@ function Stencil(props) {
     const [selectedDefenseFormation, setSelectedDefenseFormation] = useState("");
     const [toggleOffenseLeftRight, setToggleOffenseLeftRight] = useState(false); // false = Left
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
-    const [selectedColorButton, setSelectedColorButton] = useState(0); // 0 is first index of colorButtons array
-    const [selectedStrokeButton, setSelectedStrokeButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'stroke'));
-    const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'arrow' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
     const shapeColor = 'white';
 
     function handleDownload() {
@@ -233,6 +233,18 @@ function Stencil(props) {
     const handleOrientation = (e) => {
         const newOrientation = e.target.value;
         console.log(newOrientation);
+    };
+
+    const handleColorButtonPress = () => {
+        setColorButtonPressCount(prevCount => prevCount + 1);
+    };
+
+    const handleStrokeTypeButtonPress = () => {
+        setStrokeTypeButtonPressCount(prevCount => prevCount + 1);
+    };
+
+    const handleStrokeEndButtonPress = () => {
+        setStrokeEndButtonPressCount(prevCount => prevCount + 1);
     };
 
     // Components for the stencil
@@ -629,20 +641,17 @@ function Stencil(props) {
                                                 backgroundColor: color,
                                                 boxShadow: '0 0 10px 2px white',
                                             },
-                                            border: selectedColorButton === index ? '2px solid white' : 'none',
                                         }}
                                         onClick={() => {
-                                            // console.log(color);
+                                            //console.log(color);
                                             setSelectedColor(color);
-                                            setSelectedColorButton(index);
-                                            //TODO: apply color to selected line
+                                            handleColorButtonPress();
                                         }}
                                     />
                                 </Grid>
                             ))}
                         </Grid>
                     </Box>
-                    {/* TODO add functionality for lines */}
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Lines</h3>
                     <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '-5px', }}>
                         <Grid container spacing={1}>
@@ -655,12 +664,20 @@ function Stencil(props) {
                                             <Grid item xs={"auto"} key={button.id}>
                                                 <Button
                                                     variant="text"
-                                                    style={{ ...lineButtonStyle, border: selectedStrokeButton === index ? '2px solid white' : 'none' }}
+                                                    style={{
+                                                        ...lineButtonStyle,
+                                                        borderRadius: '25px',
+                                                        marginRight: '5px'
+                                                    }}
+                                                    sx={{
+                                                        '&:hover': {
+                                                            boxShadow: '0px 0px 10px 2px white',
+                                                        },
+                                                    }}
                                                     onClick={() => {
-                                                        //TODO HERE
                                                         setSelectedLineStroke(button.label);
+                                                        handleStrokeTypeButtonPress();
                                                         console.log(button.type, button.label);
-                                                        setSelectedStrokeButton(index);
                                                     }}
                                                 >
                                                     <img src={button.icon} alt={button.label} style={{ width: '100%', height: 'auto' }} />
@@ -679,12 +696,20 @@ function Stencil(props) {
                                             <Grid item xs={"auto"} key={button.id}>
                                                 <Button
                                                     variant="text"
-                                                    style={{ ...lineButtonStyle, border: selectedEndButton === index ? '2px solid white' : 'none' }}
+                                                    style={{
+                                                        ...lineButtonStyle,
+                                                        borderRadius: '25px',
+                                                        marginRight: '5px'
+                                                    }}
+                                                    sx={{
+                                                        '&:hover': {
+                                                            boxShadow: '0px 0px 10px 2px white',
+                                                        },
+                                                    }}
                                                     onClick={() => {
-                                                        //TODO HERE
                                                         setSelectedLineEnd(button.label);
+                                                        handleStrokeEndButtonPress();
                                                         console.log(button.type, button.label);
-                                                        setSelectedEndButton(index);
                                                     }}
                                                 >
                                                     <img src={button.icon} alt={button.label} style={{ width: '100%', height: 'auto' }} />

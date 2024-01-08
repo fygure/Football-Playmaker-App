@@ -15,6 +15,9 @@ function CustomLine(props) {
         line,
         lines,
         color,
+        colorButtonPressCount,
+        strokeTypeButtonPressCount,
+        strokeEndButtonPressCount,
         selectedColor,
         selectedLineStroke,
         selectedLineEnd,
@@ -75,15 +78,21 @@ function CustomLine(props) {
         };
     }, [imageRef, controlPoint, controlCircleRadius, haloCircleRadius, anchorCircleRadius]);
 
+    //Rerenders lines based on button inputs
     useEffect(() => {
+        console.log(selectedColor, selectedLineStroke, selectedLineEnd)
         if (isSelected) {
-            onLineChange(id, { color: selectedColor });
+            onLineChange(id, {
+                color: selectedColor,
+                strokeType: selectedLineStroke,
+                strokeEnd: selectedLineEnd,
+            });
         }
-    }, [selectedColor]);
+    }, [selectedColor, selectedLineStroke, selectedLineEnd, colorButtonPressCount, strokeTypeButtonPressCount, strokeEndButtonPressCount]);
 
     const handleLineClick = () => {
+        console.log(selectedLineStroke);
         setSelectedLineID(isSelected ? '$' : id);
-        onLineChange(id, { color: selectedColor });
     };
 
     const handleRightClick = (e) => {
@@ -224,11 +233,11 @@ function CustomLine(props) {
             <Group
                 onContextMenu={handleRightClick}
                 ref={customLineRef}
-                onClick={() => { console.log(selectedColor, selectedLineStroke) }}
+                onClick={() => { console.log(selectedColor, selectedLineStroke, selectedLineEnd); }}
             >
                 {/* Transparent Line */}
                 <Line
-                    points={[line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]}
+                    points={selectedLineStroke === 'squiggle' ? waveLinePoints : [line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]}
                     stroke="transparent"
                     strokeWidth={30} // This is the click box size
                     tension={0.3}
@@ -237,17 +246,14 @@ function CustomLine(props) {
                 />
                 {/* Real Line */}
                 <Line
-                    points={[line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]}
-                    stroke={isSelected ? selectedColor : line.color}
+                    points={isSelected && line.strokeType === 'squiggle' ? waveLinePoints : line.strokeType === 'squiggle' ? waveLinePoints : [line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]}
+                    stroke={line.color}
                     strokeWidth={2.5}
                     tension={0.3} //Determines curvature intensity
                     lineCap="round"
                     name={`line-${line.id}`}
                     onClick={handleLineClick}
-                    //TODO: dash value from stencil stroke type, [0,0] is solid, [10,10] is dashed, [1,7] is dotted
-                    dash={[0, 0]}
-                //shadowBlur={5}
-                //shadowOffset={{ x: 10, y: 5 }}
+                    dash={isSelected && line.strokeType === 'dashed' ? [10, 10] : isSelected && line.strokeType === 'dotted' ? [1, 7] : line.strokeType === 'dashed' ? [10, 10] : line.strokeType === 'dotted' ? [1, 7] : [0, 0]}
                 />
                 {/* Line end anchor */}
                 {isSelected && (

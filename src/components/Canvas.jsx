@@ -19,6 +19,9 @@ function Canvas(props) {
         draw,
         stopDrawing,
         deleteAllLines,
+        colorButtonPressCount,
+        strokeTypeButtonPressCount,
+        strokeEndButtonPressCount,
         onLineDelete,
         imageRef,
         stageRef,
@@ -175,6 +178,9 @@ function Canvas(props) {
                                 line={line}
                                 lines={lines}
                                 color={line.color}
+                                colorButtonPressCount={colorButtonPressCount}
+                                strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                                strokeEndButtonPressCount={strokeEndButtonPressCount}
                                 selectedColor={selectedColor}
                                 selectedLineStroke={selectedLineStroke}
                                 selectedLineEnd={selectedLineEnd}
@@ -234,7 +240,7 @@ function Canvas(props) {
                         {startPos && endPos && (
                             <Line
                                 points={[startPos.x, startPos.y, endPos.x, endPos.y]}
-                                stroke="red"
+                                stroke="#7393B3"
                                 strokeWidth={4}
                                 tension={0.5}
                                 lineCap="round"

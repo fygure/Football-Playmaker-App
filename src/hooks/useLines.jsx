@@ -42,6 +42,8 @@ const useLines = (imageRef, stageRef) => {
                 "drawnFromRef": drawnFromRef,
                 id: uuidv4(),
                 color: 'black',
+                strokeType: 'straight',
+                strokeEnd: 'straight',
             };
             setLines(prevLines => [...prevLines, newLine]);
             setStartPos(null);

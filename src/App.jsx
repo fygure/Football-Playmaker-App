@@ -20,6 +20,9 @@ TODO: save and load feature (requires database)
 function App() {
   const imageRef = useRef(null);
   const stageRef = useRef(null);
+  const [colorButtonPressCount, setColorButtonPressCount] = useState(0);
+  const [strokeTypeButtonPressCount, setStrokeTypeButtonPressCount] = useState(0);
+  const [strokeEndButtonPressCount, setStrokeEndButtonPressCount] = useState(0);
   const [selectedShapes, setSelectedShapes] = useState([]);
   const [selectedTextTags, setSelectedTextTags] = useState([]);
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
@@ -63,6 +66,9 @@ function App() {
                 setSelectedLineEnd={setSelectedLineEnd}
                 onDeleteAllTextTags={deleteAllTextTags}
                 onDeleteAllLines={deleteAllLines}
+                setColorButtonPressCount={setColorButtonPressCount}
+                setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                 stageRef={stageRef}
               />
             </div>
@@ -82,6 +88,9 @@ function App() {
             }}>
               <Canvas
                 imageRef={imageRef}
+                colorButtonPressCount={colorButtonPressCount}
+                strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                strokeEndButtonPressCount={strokeEndButtonPressCount}
                 lines={lines}
                 setLines={setLines}
                 startPos={startPos}
