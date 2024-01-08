@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Stage, Layer, Image, Rect, Line } from 'react-konva';
 import useImage from 'use-image';
 import useLines from '../hooks/useLines';
-import  useTextTags  from '../hooks/useTextTags';
+import useTextTags from '../hooks/useTextTags';
 //import StageDimensionsContext from '../contexts/StageDimensionsContext';
 import Shape from './shapes/Shape';
 import TextTag from './shapes/TextTag';
@@ -66,8 +66,6 @@ function Canvas(props) {
 
     useEffect(() => {
         updateSelectedTextTagsColor(selectedColor);
-        //TODO: update selected Lines color, stroke, end in state here
-        // & add selectedLineStroke, selectedLineEnd to dependencies
     }, [selectedColor]);
 
 
