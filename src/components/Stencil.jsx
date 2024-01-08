@@ -103,6 +103,8 @@ function Stencil(props) {
         setStrokeEndButtonPressCount,
         setStrokeTypeButtonPressCount,
         stageRef,
+        setOrientation,
+        flipAllTextTags,
     } = props;
 
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
@@ -235,7 +237,9 @@ function Stencil(props) {
     //Orientation handlers
     const handleOrientation = (e) => {
         const newOrientation = e.target.value;
-        console.log(newOrientation);
+        // console.log('handle orientation',newOrientation);
+        setOrientation(newOrientation);
+        flipAllTextTags(newOrientation);
     };
 
     const handleColorButtonPress = () => {
@@ -261,13 +265,14 @@ function Stencil(props) {
             style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
         />
     );
+
     return (
         <>
             <div>
+
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                     <Button variant="outlined" color="sharpRed" size="small" onClick={handleDeleteAll} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Clear All</Button>
                 </div>
-
 
                 <div style={{ padding: '5px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                     <Button variant="outlined" color="kellyGreen" size="small" onClick={handleDownload} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Download Stage</Button>
@@ -866,7 +871,7 @@ function Stencil(props) {
                     <Box sx={{ flexGrow: 1, marginLeft: '-3px', marginBottom: '-20px' }}>
                         <Grid container spacing={0}>
                             <Grid item xs={"auto"}>
-                                {['Flip Up/Down', 'Flip Left/Right'].map((orientation, index) => (
+                                {['Up/Down', 'Left/Right'].map((orientation, index) => (
                                     <Button
                                         key={index}
                                         value={orientation}
@@ -879,7 +884,7 @@ function Stencil(props) {
                                         size="small"
                                         onClick={handleOrientation}
                                         startIcon={
-                                            orientation === 'Flip Up/Down' ?
+                                            orientation === 'Up/Down' ?
                                                 <FlipIcon style={{ transform: 'rotate(90deg)' }} /> :
                                                 <FlipIcon />
                                         }

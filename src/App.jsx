@@ -1,5 +1,5 @@
 // App.jsx
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import StageDimensionsContext from './contexts/StageDimensionsContext';
 import Canvas from './components/Canvas';
 import Stencil from './components/Stencil';
@@ -8,13 +8,18 @@ import useTextTags from './hooks/useTextTags';
 import useBackground from './hooks/useBackground';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './config/theme';
+import CloseIcon from '@mui/icons-material/Close';
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DownloadIcon from '@mui/icons-material/Download';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import './App.css';
 import useLines from './hooks/useLines';
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: add undo/redo
 TODO: add selection rectangle
-TODO: save and load feature (requires database)
 */
 ////////////////////////////////////////////////////////////////////////////////////////
 function App() {
@@ -33,6 +38,34 @@ function App() {
   const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
   const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu } = useTextTags(imageRef);
   const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, stageRef);
+  const [orientation, setOrientation] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const handleDownload = () => {
+    var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
+    var link = document.createElement('a');
+    link.download = 'stage.png';
+    link.href = dataURL;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleDeleteAll = () => {
+    deleteAllShapes();
+    deleteAllTextTags();
+    deleteAllLines();
+  };
+
+  const handleToggle = () => {
+    setOpen(!open);
+  };
+
+  const actions = [
+    {icon: <DownloadIcon/>, action: handleDownload},
+    {icon: <DeleteForeverOutlinedIcon/>,  action: handleDeleteAll},
+  ];
+
 
   return (
     <>
@@ -70,10 +103,14 @@ function App() {
                 setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
                 setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                 stageRef={stageRef}
+
+                setOrientation={setOrientation}
+                flipAllTextTags = {flipAllTextTags}
               />
             </div>
             <div style={{
               display: 'flex',
+              flexWrap: 'wrap',
               justifyContent: 'center',
               alignItems: 'center',
               flex: 1.8,
@@ -120,6 +157,22 @@ function App() {
                 setStageDimensions={setStageDimensions}
                 stageRef={stageRef}
               />
+                  <SpeedDial
+                 ariaLabel="SpeedDial"
+                 icon={open ? <CloseIcon sx = {{color: 'red'}} /> : <MoreVertIcon sx={{color: 'black'}} />}
+                 direction = {'down'}
+                 FabProps={{ size: 'small', color: 'white'}}
+                 onClick={handleToggle}
+                 open={open}
+                 sx = {{position: 'fixed', top: '20px', right: '15px', marginTop: '15px', marginRight: '2.5vw'}} // Update this line
+              >
+                 {actions.map((action) => (
+                  <SpeedDialAction
+                    icon={action.icon}
+                    onClick={action.action}
+                  />
+                ))}
+              </SpeedDial>
             </div>
           </div>
         </StageDimensionsContext.Provider>
