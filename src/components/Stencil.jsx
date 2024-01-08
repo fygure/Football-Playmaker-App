@@ -78,6 +78,8 @@ const lineButtonStyle = {
 
 function Stencil(props) {
     const {
+        onChangeLineStroke,
+        onChangeLineEnd,
         onAddFormation,
         onAddShape,
         onAddTextTag,
@@ -91,8 +93,15 @@ function Stencil(props) {
         onChangeFormation,
         selectedColor,
         setSelectedColor,
+        selectedLineStroke,
+        setSelectedLineStroke,
+        selectedLineEnd,
+        setSelectedLineEnd,
         onDeleteAllTextTags,
         onDeleteAllLines,
+        setColorButtonPressCount,
+        setStrokeEndButtonPressCount,
+        setStrokeTypeButtonPressCount,
         stageRef,
     } = props;
 
@@ -227,6 +236,18 @@ function Stencil(props) {
     const handleOrientation = (e) => {
         const newOrientation = e.target.value;
         console.log(newOrientation);
+    };
+
+    const handleColorButtonPress = () => {
+        setColorButtonPressCount(prevCount => prevCount + 1);
+    };
+
+    const handleStrokeTypeButtonPress = () => {
+        setStrokeTypeButtonPressCount(prevCount => prevCount + 1);
+    };
+
+    const handleStrokeEndButtonPress = () => {
+        setStrokeEndButtonPressCount(prevCount => prevCount + 1);
     };
 
     // Components for the stencil
@@ -626,16 +647,16 @@ function Stencil(props) {
                                             border: selectedColorButton === index ? '2px solid white' : 'none',
                                         }}
                                         onClick={() => {
-                                            // console.log(color);
+                                            //console.log(color);
                                             setSelectedColor(color);
                                             setSelectedColorButton(index);
+                                            handleColorButtonPress();
                                         }}
                                     />
                                 </Grid>
                             ))}
                         </Grid>
                     </Box>
-                    {/* TODO add functionality for lines */}
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Lines</h3>
                     <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '-5px', }}>
                         <Grid container spacing={1}>
@@ -648,9 +669,20 @@ function Stencil(props) {
                                             <Grid item xs={"auto"} key={button.id}>
                                                 <Button
                                                     variant="text"
-                                                    style={{ ...lineButtonStyle, border: selectedStrokeButton === index ? '2px solid white' : 'none' }}
+                                                    style={{
+                                                        ...lineButtonStyle,
+                                                        borderRadius: '25px',
+                                                        marginRight: '5px',
+                                                        border: selectedStrokeButton === index ? '2px solid white' : 'none'
+                                                    }}
+                                                    sx={{
+                                                        '&:hover': {
+                                                            boxShadow: '0px 0px 10px 2px white',
+                                                        },
+                                                    }}
                                                     onClick={() => {
-                                                        //TODO HERE
+                                                        setSelectedLineStroke(button.label);
+                                                        handleStrokeTypeButtonPress();
                                                         console.log(button.type, button.label);
                                                         setSelectedStrokeButton(index);
                                                     }}
@@ -671,9 +703,20 @@ function Stencil(props) {
                                             <Grid item xs={"auto"} key={button.id}>
                                                 <Button
                                                     variant="text"
-                                                    style={{ ...lineButtonStyle, border: selectedEndButton === index ? '2px solid white' : 'none' }}
+                                                    style={{
+                                                        ...lineButtonStyle,
+                                                        borderRadius: '25px',
+                                                        marginRight: '5px',
+                                                        border: selectedEndButton === index ? '2px solid white' : 'none'
+                                                    }}
+                                                    sx={{
+                                                        '&:hover': {
+                                                            boxShadow: '0px 0px 10px 2px white',
+                                                        },
+                                                    }}
                                                     onClick={() => {
-                                                        //TODO HERE
+                                                        setSelectedLineEnd(button.label);
+                                                        handleStrokeEndButtonPress();
                                                         console.log(button.type, button.label);
                                                         setSelectedEndButton(index);
                                                     }}

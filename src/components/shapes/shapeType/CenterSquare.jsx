@@ -1,5 +1,4 @@
 // CenterSquare.jsx
-//TODO: line functionality like ReceiverOval
 import React, { useState } from 'react';
 import { Rect, Group } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
@@ -28,7 +27,6 @@ const CenterSquare = (props) => {
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        handleOnClick,
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
@@ -57,8 +55,10 @@ const CenterSquare = (props) => {
         />
     ));
 
-    const strokeOptions = { color: 'black', strokeWidth: 2 };
+    const isSelected = selectedShapeID === id;
+    const strokeOptions = { color: 'black', strokeWidth: 1 };
     const centerLineWidth = 3.5;
+    const haloOffset = 13;
 
     const states = [
         { leftState: 0, rightState: 100, colorOne: initialColor, colorTwo: "black" }, // fully initialColor
@@ -91,6 +91,35 @@ const CenterSquare = (props) => {
                 onDragEnd={handleDragEnd}
                 dragBoundFunc={dragBoundFunc}
             >
+                {isSelected && (
+                    <Rect
+                        width={rectSize.width + haloOffset}
+                        height={rectSize.height + haloOffset}
+                        stroke={strokeOptions.color}
+                        fill='grey'
+                        strokeWidth={2}
+                        cornerRadius={2}
+                        offsetX={(rectSize.width + haloOffset) / 2}
+                        offsetY={(rectSize.height + haloOffset) / 2}
+                        onMouseDown={(e) => {
+                            const startPos = e.target.getStage().getPointerPosition();
+                            console.log('Shape Halo onMouseDown', startPos);
+                            startDrawing(startPos, id, shapeRef.current);
+                            setIsMouseDownOnAnchor(true);
+                            e.cancelBubble = true;
+                        }}
+                        onMouseEnter={(e) => {
+                            const container = e.target.getStage().container();
+                            //To style it, import custom image
+                            //container.style.cursor = 'url(/path/to/your/cursor/image.png) 16 16, crosshair';
+                            container.style.cursor = 'crosshair';
+                        }}
+                        onMouseLeave={(e) => {
+                            const container = e.target.getStage().container();
+                            container.style.cursor = 'default';
+                        }}
+                    />
+                )}
                 <Rect
                     width={rectSize.width}
                     height={rectSize.height}
@@ -114,7 +143,6 @@ const CenterSquare = (props) => {
                         fill="black"
                     />
                 )}
-                {selectedShapeID === id && anchors}
             </Group>
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>

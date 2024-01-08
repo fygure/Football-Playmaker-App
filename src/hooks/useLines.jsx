@@ -25,13 +25,25 @@ const useLines = (imageRef, stageRef) => {
 
     const stopDrawing = () => {
         if (startPos && endPos) {
+            //console.log(drawnFromRef);
+            let snapPos;
+            if (drawnFromRef.attrs.x !== undefined && drawnFromRef.attrs.y !== undefined) {
+                snapPos = { x: drawnFromRef.attrs.x, y: drawnFromRef.attrs.y };
+            } else {
+                //console.log(drawnFromRef.children.slice(-1)[0].children.slice(1)[0].attrs.x);
+                snapPos = { x: drawnFromRef.children.slice(-1)[0].children.slice(-1)[0].attrs.x, y: drawnFromRef.children.slice(-1)[0].children.slice(-1)[0].attrs.y };
+            }
+            //console.log(startPos);
+            //const snapPos = { drawnFromRef.attrs.x, drawnFromRef.attrs.y };
             const newLine = {
-                startPos,
+                startPos: snapPos,
                 endPos,
                 "attachedShapeId": attachedShapeId,
                 "drawnFromRef": drawnFromRef,
                 id: uuidv4(),
                 color: 'black',
+                strokeType: 'straight',
+                strokeEnd: 'straight',
             };
             setLines(prevLines => [...prevLines, newLine]);
             setStartPos(null);
@@ -39,6 +51,10 @@ const useLines = (imageRef, stageRef) => {
             setAttachedShapeId('$');
             setDrawnFromRef('$');
         }
+    };
+
+    const updateLine = (id, newAttributes) => {
+        setLines(lines.map(line => line.id === id ? { ...line, ...newAttributes } : line));
     };
 
     const deleteAllLines = () => {
@@ -52,15 +68,15 @@ const useLines = (imageRef, stageRef) => {
     //handle resizing
     useEffect(() => {
         const image = imageRef.current;
-        const initialImagePosition = { x: image.x(), y: image.y() };
-        const initialImageSize = { width: image.width(), height: image.height() };
+        let initialImagePosition = { x: image.x(), y: image.y() };
+        let initialImageSize = { width: image.width(), height: image.height() };
 
-        const initialRelativeLines = lines.map(line => {
-            const initialRelativeStartPos = {
+        let initialRelativeLines = lines.map(line => {
+            let initialRelativeStartPos = {
                 x: (line.startPos.x - initialImagePosition.x) / initialImageSize.width,
                 y: (line.startPos.y - initialImagePosition.y) / initialImageSize.height,
             };
-            const initialRelativeEndPos = {
+            let initialRelativeEndPos = {
                 x: (line.endPos.x - initialImagePosition.x) / initialImageSize.width,
                 y: (line.endPos.y - initialImagePosition.y) / initialImageSize.height,
             };
@@ -103,6 +119,7 @@ const useLines = (imageRef, stageRef) => {
         deleteAllLines,
         setLines,
         deleteLine,
+        updateLine,
     };
 };
 
