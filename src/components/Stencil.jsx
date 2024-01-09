@@ -5,6 +5,7 @@ import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButto
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import FlipIcon from '@mui/icons-material/Flip';
 import theme from '../config/theme.js';
+import { set } from 'lodash';
 
 const QBProgressionButtons = [
     { text: 'Check Mark', icon: 'check' },
@@ -234,12 +235,18 @@ function Stencil(props) {
         onAddTextTag(newText, selectedColor);
     };
 
+    const [isProcessing, setIsProcessing] = useState(false);
+
+
     //Orientation handlers
-    const handleOrientation = (e) => {
+    const handleOrientation = async (e) => {
+        setIsProcessing(true);
         const newOrientation = e.target.value;
         console.log('handle orientation',newOrientation);
         flipAllTextTags(newOrientation);
         flipAllShapes(newOrientation);
+
+        setIsProcessing(false);
     };
 
     const handleColorButtonPress = () => {
@@ -873,6 +880,7 @@ function Stencil(props) {
                                         }}
                                         sx={QBProgressionButtonStyle}
                                         size="small"
+                                        disabled={isProcessing}
                                         onClick={handleOrientation}
                                         startIcon={
                                             orientation === 'Up/Down' ?

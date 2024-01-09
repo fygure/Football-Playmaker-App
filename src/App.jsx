@@ -12,11 +12,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DownloadIcon from '@mui/icons-material/Download';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
-import { TbSwordOff } from "react-icons/tb";
+import { GiZeusSword } from "react-icons/gi";
 import { SiJpeg } from "react-icons/si";
+import { PiFilePng } from "react-icons/pi";
 import './App.css';
 import useLines from './hooks/useLines';
 import { set } from 'lodash';
@@ -88,9 +88,9 @@ function App() {
 
   const actions = [
     { icon: <DeleteForeverOutlinedIcon />, action: handleDeleteAll },
-    { icon: <DownloadIcon />, action: handleDownloadPNG },
-    { icon: <SiJpeg />, action: handleDownloadJPEG },
-    { icon: <TbSwordOff />, action: handleDeleteOffenseFormation},
+    { icon: < PiFilePng size={25} />, action: handleDownloadPNG },
+    { icon: <SiJpeg size={20} />, action: handleDownloadJPEG },
+    { icon: <GiZeusSword size={30}/>, action: handleDeleteOffenseFormation},
     { icon: <RemoveModeratorIcon />, action: handleDeleteDefenseFormation },
   ];
 
