@@ -235,7 +235,7 @@ function Stencil(props) {
     const handleFeedbackFormOpen = () => {
         setSelectedFeedback(true);
     };
-    
+
     const handleFeedbackFormClose = () => {
         setSelectedFeedback(false);
     };
@@ -847,7 +847,15 @@ function Stencil(props) {
                     <Button
                         color="white"
                         value="feedback"
-                        style={{marginTop: '1rem', marginBottom: '1rem'}}
+                        style={{
+                            marginTop: '1rem',
+                            marginBottom: '1rem',
+                            padding: '1px 3px',
+                            textAlign: 'left', // align text to the left
+                            fontSize: '0.5rem', // make text smaller
+                            border: 'none', // remove border
+                            width: 'fit-content', // adjust width to fit content
+                        }}
                         sx={{
                             background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
                             ':hover': {
@@ -863,18 +871,14 @@ function Stencil(props) {
                         }}
                         onClick={handleFeedbackFormOpen}
                     >
-                        Want to share feedback?
+                        Share Feedback!
                     </Button>
                     <FeedBackForm open={selectedFeedback} handleFeedbackFormClose={handleFeedbackFormClose} handleFeedbackFormSubmit={handleFeedbackSubmit}></FeedBackForm>
 
-                <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px',marginBottom: '-20px' }}>
-                    <Grid container spacing={0}>
-
-
-                    </Grid>
-                </Box>
-
-
+                    <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px', marginBottom: '-20px' }}>
+                        <Grid container spacing={0}>
+                        </Grid>
+                    </Box>
 
 
                 </div>
