@@ -233,12 +233,18 @@ function Stencil(props) {
 
     const handleFeedbackFormOpen = () => {
         setSelectedFeedback(true);
-      };
+    };
     
-      const handleFeedbackFormClose = () => {
+    const handleFeedbackFormClose = () => {
         setSelectedFeedback(false);
-      };
+    };
 
+    const handleFeedbackSubmit = (event) => {
+        event.preventDefault();
+        const data = event.target;
+        console.log(`Submission received: ${data} ${data}`);
+        setSelectedFeedback(false);
+    };
 
 
     // Components for the stencil
@@ -857,7 +863,7 @@ function Stencil(props) {
                     >
                         Want to share feedback?
                     </Button>
-                    <FeedBackForm open={selectedFeedback} handleFeedbackFormClose={handleFeedbackFormClose}></FeedBackForm>
+                    <FeedBackForm open={selectedFeedback} handleFeedbackFormClose={handleFeedbackFormClose} handleFeedbackFormSubmit={handleFeedbackSubmit}></FeedBackForm>
 
                 <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px',marginBottom: '-20px' }}>
                     <Grid container spacing={0}>
