@@ -456,6 +456,7 @@ function useShapes(imageRef) {
         setShapes(shapes.map(shape => ({ ...shape, showContextMenu: false })));
     };
 
+
     return { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu };
 }
 export default useShapes;

@@ -2,8 +2,11 @@
 import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import FeedBackForm from './feedback/FeedBackForm.jsx';
 import FlipIcon from '@mui/icons-material/Flip';
 import theme from '../config/theme.js';
+import Konva from 'konva';
+import { Email } from '@mui/icons-material';
 
 const QBProgressionButtons = [
     { text: 'Check Mark', icon: 'check' },
@@ -113,7 +116,9 @@ function Stencil(props) {
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
     const [selectedColorButton, setSelectedColorButton] = useState(0); // 0 is first index of colorButtons array
     const [selectedStrokeButton, setSelectedStrokeButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'stroke'));
+    const [selectedFeedback, setSelectedFeedback] = useState(false);
     const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
+  
     const shapeColor = 'white';
 
     function handleDownload() {
@@ -252,6 +257,25 @@ function Stencil(props) {
     const handleStrokeEndButtonPress = () => {
         setStrokeEndButtonPressCount(prevCount => prevCount + 1);
     };
+
+    //     const [selectedFeedback, setSelectedFeedback] = useState(false);
+
+    const handleFeedbackFormOpen = () => {
+        setSelectedFeedback(true);
+    };
+
+    const handleFeedbackFormClose = () => {
+        setSelectedFeedback(false);
+    };
+
+    const handleFeedbackSubmit = (event) => {
+        event.preventDefault();
+        const email = event.target.elements.email.value;
+        const feedback = event.target.elements.feedback.value;
+        console.log(`Submission received: ${email} ${feedback}`);
+        setSelectedFeedback(false);
+    };
+
 
     // Components for the stencil
     const CheckboxOption = ({ onChange, children, checked }) => (
@@ -861,6 +885,7 @@ function Stencil(props) {
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '0' }}>
                         Orientation
                     </h3>
+
                     <Box sx={{ flexGrow: 1, marginLeft: '-3px', marginBottom: '-20px' }}>
                         <Grid container spacing={0}>
                             <Grid item xs={"auto"}>
@@ -888,6 +913,43 @@ function Stencil(props) {
                             </Grid>
                         </Grid>
                     </Box>
+
+                    <Button
+                        color="white"
+                        value="feedback"
+                        style={{
+                            marginTop: '1rem',
+                            marginBottom: '1rem',
+                            padding: '1px 3px',
+                            textAlign: 'left', // align text to the left
+                            fontSize: '0.5rem', // make text smaller
+                            border: 'none', // remove border
+                            width: 'fit-content', // adjust width to fit content
+                        }}
+                        sx={{
+                            background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
+                            ':hover': {
+                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                            },
+                            // textDecoration: 'underline',
+                            '&:hover': {
+                                textDecoration: 'underline',
+                            },
+                            '&:focus': {
+                                outline: 'none',
+                            },
+                        }}
+                        onClick={handleFeedbackFormOpen}
+                    >
+                        Share Feedback!
+                    </Button>
+                    <FeedBackForm open={selectedFeedback} handleFeedbackFormClose={handleFeedbackFormClose} handleFeedbackFormSubmit={handleFeedbackSubmit}></FeedBackForm>
+
+                    <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px', marginBottom: '-20px' }}>
+                        <Grid container spacing={0}>
+                        </Grid>
+                    </Box>
+
                 </div>
             </div >
         </>
