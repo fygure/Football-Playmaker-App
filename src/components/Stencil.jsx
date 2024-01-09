@@ -118,7 +118,7 @@ function Stencil(props) {
     const [selectedStrokeButton, setSelectedStrokeButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'stroke'));
     const [selectedFeedback, setSelectedFeedback] = useState(false);
     const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
-  
+
     const shapeColor = 'white';
 
     function handleDownload() {
@@ -295,8 +295,8 @@ function Stencil(props) {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
 
-                    <Button onClick={() => { }} variant='contained'>Undo</Button>
-                    <Button onClick={() => { }} variant='contained'>Redo</Button>
+                    {/* <Button onClick={() => { }} variant='contained'>Undo</Button>
+                    <Button onClick={() => { }} variant='contained'>Redo</Button> */}
 
                     <h3 style={{ marginBottom: '2px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                         Field
@@ -679,7 +679,7 @@ function Stencil(props) {
                             ))}
                         </Grid>
                     </Box>
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Lines</h3>
+                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '1.8rem', }}>Lines</h3>
                     <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '-5px', }}>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
@@ -882,7 +882,7 @@ function Stencil(props) {
                         </div>
                     </div>
                     {/* I NEED to use list shapes AND textTags */}
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '0' }}>
+                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '1rem' }}>
                         Orientation
                     </h3>
 
@@ -918,7 +918,7 @@ function Stencil(props) {
                         color="white"
                         value="feedback"
                         style={{
-                            marginTop: '1rem',
+                            marginTop: '2rem',
                             marginBottom: '1rem',
                             padding: '1px 3px',
                             textAlign: 'left', // align text to the left
