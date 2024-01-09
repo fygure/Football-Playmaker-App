@@ -7,14 +7,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function FeedBackForm({open}) {
+export default function FeedBackForm({open, handleFeedbackFormClose}) {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
-      </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleFeedbackFormClose}>
         <DialogTitle>Feedback</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -40,8 +37,8 @@ export default function FeedBackForm({open}) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Send</Button>
+          <Button onClick={handleFeedbackFormClose}>Cancel</Button>
+          <Button onClick={handleFeedbackFormClose}>Send</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

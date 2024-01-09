@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import FeedBackForm from './feedback/FeedBackForm.jsx';
 import theme from '../config/theme.js';
 import Konva from 'konva';
 
@@ -102,6 +103,7 @@ function Stencil(props) {
     const [selectedColorButton, setSelectedColorButton] = useState(0); // 0 is first index of colorButtons array
     const [selectedStrokeButton, setSelectedStrokeButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'stroke'));
     const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'arrow' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
+    const [selectedFeedback, setSelectedFeedback] = useState(false);
     const shapeColor = 'white';
 
     function handleDownload() {
@@ -226,6 +228,18 @@ function Stencil(props) {
         const newOrientation = e.target.value;
         console.log(newOrientation);
     };
+
+    //     const [selectedFeedback, setSelectedFeedback] = useState(false);
+
+    const handleFeedbackFormOpen = () => {
+        setSelectedFeedback(true);
+      };
+    
+      const handleFeedbackFormClose = () => {
+        setSelectedFeedback(false);
+      };
+
+
 
     // Components for the stencil
     const CheckboxOption = ({ onChange, children, checked }) => (
@@ -839,10 +853,11 @@ function Stencil(props) {
                                 outline: 'none',
                             },
                         }}
-                        // onClick={() => window.open('https://forms.gle/4q3f6P7FQm5Zxh6W8', '_blank')}
+                        onClick={handleFeedbackFormOpen}
                     >
                         Want to share feedback?
                     </Button>
+                    <FeedBackForm open={selectedFeedback} handleFeedbackFormClose={handleFeedbackFormClose}></FeedBackForm>
 
                 <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px',marginBottom: '-20px' }}>
                     <Grid container spacing={0}>
