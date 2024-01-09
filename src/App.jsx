@@ -14,9 +14,12 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
+import { TbSwordOff } from "react-icons/tb";
+import { SiJpeg } from "react-icons/si";
 import './App.css';
 import useLines from './hooks/useLines';
-import { SiJpeg } from "react-icons/si";
+import { set } from 'lodash';
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -38,7 +41,7 @@ function App() {
   const [selectedLineEnd, setSelectedLineEnd] = useState('arrow'); // default arrow line end
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
-  const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes} = useShapes(stageDimensions, imageRef);
+  const { setShapes, shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes} = useShapes(stageDimensions, imageRef);
   const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
   const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, stageRef);
   const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
@@ -72,6 +75,13 @@ function App() {
     deleteAllLines();
   };
 
+  const handleDeleteDefenseFormation = () => {
+    setShapes(shapes.filter(shape => !shape.formationType.toLowerCase().startsWith('defense')));
+  }
+  const handleDeleteOffenseFormation = () => {
+    setShapes(shapes.filter(shape => !shape.formationType.toLowerCase().startsWith('offense')));
+  }
+
   const handleToggleSpeedDial = () => {
     setIsSpeedDialOpen(!isSpeedDialOpen);
   };
@@ -80,8 +90,9 @@ function App() {
     { icon: <DeleteForeverOutlinedIcon />, action: handleDeleteAll },
     { icon: <DownloadIcon />, action: handleDownloadPNG },
     { icon: <SiJpeg />, action: handleDownloadJPEG },
+    { icon: <TbSwordOff />, action: handleDeleteOffenseFormation},
+    { icon: <RemoveModeratorIcon />, action: handleDeleteDefenseFormation },
   ];
-
 
   return (
     <>

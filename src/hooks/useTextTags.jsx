@@ -57,10 +57,10 @@ function useTextTags(imageRef, stageRef) {
 
         setTextTags(prevTextTags => {
             // Create new text tags for all the text tags
-                let newTextTags = prevTextTags.map(textTag => {
+            let newTextTags = prevTextTags.map(textTag => {
                 let newPosition;
                 let newAttributes = {};
-                // let offset;
+                let offset;
                 // if (flipType === "Up/Down") {
                 //     //FIXME: offset is where you calculate the orientation
                 //     offset = isUpDownFlipped ? 10 : -10; //example
@@ -93,24 +93,25 @@ function useTextTags(imageRef, stageRef) {
                 //     newPosition = { x: newX, y: textTag.y || textTag.initialPosition.y };
                 //     newAttributes = { x: newPosition.x, y: newPosition.y };
                 // }
+                //////////////////////////////////////////////////////////////////////////////////////////
+                //FIX ME THERE'S A RUNTIME BUG
                 if (flipType === "Up/Down") {
-                    let newY = imageCenter.y - (textTag.y - imageCenter.y);
-                    // Check if the x and y attributes exist
-                    if (textTag && 'x' in textTag && 'y' in textTag) {
-                        newPosition = { x: textTag.x, y:  newY};
+                    if ('x' in textTag && 'y' in textTag) {
+                        let newY = imageCenter.y - (textTag.y - imageCenter.y);
+                        newPosition = { x: textTag.x, y: newY };
                         newAttributes = { x: newPosition.x, y: newPosition.y };
-                    }
-                    else if (textTag && textTag.initialPosition) { // else use the initial position
-                        newPosition = { ...textTag.initialPosition, y: imageCenter.y - (textTag.initialPosition.y - imageCenter.y)};
+                    } else {
+                        let newY = imageCenter.y - (textTag.initialPosition.y - imageCenter.y);
+                        newPosition = { ...textTag.initialPosition, y: newY };
                     }
                 } else if (flipType === "Left/Right") {
-                    let newX = imageCenter.x - (textTag.x - imageCenter.x);
-                    // Check if the x and y attributes exist
-                    if (textTag && 'x' in textTag && 'y' in textTag) {
-                        newPosition = { x: newX , y: textTag.y };
+                    if ('x' in textTag && 'y' in textTag) {
+                        let newX = imageCenter.x - (textTag.x - imageCenter.x);
+                        newPosition = { x: newX, y: textTag.y };
                         newAttributes = { x: newPosition.x, y: newPosition.y };
-                    } else if (textTag && textTag.initialPosition) { // else use the initial position
-                        newPosition = { ...textTag.initialPosition, x: imageCenter.x - (textTag.initialPosition.x - imageCenter.x) };
+                    } else {
+                        let newX = imageCenter.x - (textTag.initialPosition.x - imageCenter.x);
+                        newPosition = { ...textTag.initialPosition, x: newX };
                     }
                 }
                 // Create a new text tag with the new position
