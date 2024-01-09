@@ -1,18 +1,8 @@
 // ReceiverOval.jsx
 import React from 'react';
-import { Group, Ellipse, Text } from 'react-konva';
+import { Group, Ellipse } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
-import { Anchor } from '../Anchor';
 import EditableText from '../EditableText';
-
-// const getAnchorPoints = (ellipseRadiusX, ellipseRadiusY) => {
-//     return [
-//         { x: 0, y: -ellipseRadiusY - 5 },
-//         { x: ellipseRadiusX + 5, y: 0 },
-//         { x: 0, y: ellipseRadiusY + 5 },
-//         { x: -ellipseRadiusX - 5, y: 0 },
-//     ];
-// }
 
 function ReceiverOval(props) {
     const {
@@ -42,23 +32,6 @@ function ReceiverOval(props) {
         setSelectedShapeID
     } = props;
 
-    // UNUSED
-    // const anchorPoints = getAnchorPoints(ellipseRadiuses.x, ellipseRadiuses.y);
-    // const anchors = anchorPoints.map((point, index) => (
-    //     <Anchor
-    //         key={`anchor-${index}`}
-    //         x={point.x}
-    //         y={point.y}
-    //         onMouseDown={(e) => {
-    //             const startPos = e.target.getStage().getPointerPosition();
-    //             console.log('Anchor onMouseDown', startPos);
-    //             startDrawing(startPos, id, shapeRef.current);
-    //             setIsMouseDownOnAnchor(true);
-    //             e.cancelBubble = true;
-    //         }}
-    //     />
-    // ));
-
     const isSelected = selectedShapeID === id;
     const strokeOptions = { color: 'black', strokeWidth: 1 };
     const haloRadiuses = { x: ellipseRadiuses.x + 8, y: ellipseRadiuses.y + 8 };
@@ -67,8 +40,6 @@ function ReceiverOval(props) {
     if (text.length > 1) {
         textAlignment -= 5;
     }
-
-
 
     return (
         <>

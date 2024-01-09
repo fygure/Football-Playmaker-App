@@ -1,9 +1,8 @@
+//TextTag.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import ContextMenu from '../menus/ContextMenu';
 import { Circle, Group, Text, Rect } from 'react-konva';
 import EditableText from './EditableText';
-
-
 
 const TEXT_SIZES = {
     FONT: { MIN: 6, MAX: 13 },

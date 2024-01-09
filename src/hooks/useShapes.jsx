@@ -2,17 +2,8 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-function useShapes(stageDimensions, imageRef) {
+function useShapes(imageRef) {
     const [shapes, setShapes] = useState([]);
-    // const middlePosition = {
-    //     x: imageRef.current.x() + (imageRef.current.width() / 2),
-    //     y: imageRef.current.height() / 2
-    // };
-
-    // const imageSize = {
-    //     width: imageRef.current.width(),
-    //     height: imageRef.current.height()
-    // };
 
     //Shape Handlers
     const addFormation = (formationType, initialColor) => {
@@ -465,6 +456,6 @@ function useShapes(stageDimensions, imageRef) {
         setShapes(shapes.map(shape => ({ ...shape, showContextMenu: false })));
     };
 
-    return { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu };
+    return { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu };
 }
 export default useShapes;

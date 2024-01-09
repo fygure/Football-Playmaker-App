@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const useLines = (imageRef, stageRef) => {
+const useLines = (imageRef) => {
     const [startPos, setStartPos] = useState(null);
     const [endPos, setEndPos] = useState(null);
     const [lines, setLines] = useState([]);

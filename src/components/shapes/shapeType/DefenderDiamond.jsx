@@ -1,22 +1,8 @@
 //DefenderDiamond.jsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Rect, Group } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
-import { Anchor } from '../Anchor';
 import EditableText from '../EditableText';
-
-// const offset = 1.7;
-
-// const getAnchorPoints = (width, height) => {
-//     const halfWidth = width / 2;
-//     const halfHeight = height / 2;
-//     return [
-//         { x: 0, y: -halfHeight * offset }, // top point
-//         { x: halfWidth * offset, y: 0 }, // right point
-//         { x: 0, y: halfHeight * offset }, // bottom point
-//         { x: -halfWidth * offset, y: 0 }, // left point
-//     ];
-// }
 
 const DefenderDiamond = (props) => {
     const {
@@ -44,27 +30,6 @@ const DefenderDiamond = (props) => {
         setSelectedShapeID,
     } = props;
 
-    // const [anchorPoints, setAnchorPoints] = useState(getAnchorPoints(rectSize.width, rectSize.height));
-
-    // useEffect(() => {
-    //     setAnchorPoints(getAnchorPoints(rectSize.width, rectSize.height));
-    // }, [rectSize]);
-
-    // const anchors = anchorPoints.map((point, index) => (
-    //     <Anchor
-    //         key={`anchor-${index}`}
-    //         x={point.x}
-    //         y={point.y}
-    //         onMouseDown={(e) => {
-    //             const startPos = e.target.getStage().getPointerPosition();
-    //             console.log('Anchor onMouseDown', startPos);
-    //             startDrawing(startPos, id, shapeRef.current);
-    //             setIsMouseDownOnAnchor(true);
-    //             e.cancelBubble = true;
-    //         }}
-    //     />
-    // ));
-
     const isSelected = selectedShapeID === id;
     const haloOffset = 12;
     const strokeOptions = { color: 'black', strokeWidth: .2 };
@@ -72,7 +37,6 @@ const DefenderDiamond = (props) => {
     if (text.length > 1) {
         textAlignment -= 5;
     }
-
 
     return (
         <>

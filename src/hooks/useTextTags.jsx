@@ -97,6 +97,6 @@ function useTextTags(imageRef) {
     };
 
 
-    return { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags };
+    return { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags };
 }
 export default useTextTags;

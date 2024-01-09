@@ -1,5 +1,5 @@
 // App.jsx
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import StageDimensionsContext from './contexts/StageDimensionsContext';
 import Canvas from './components/Canvas';
 import Stencil from './components/Stencil';
@@ -35,18 +35,19 @@ function App() {
   const [selectedLineStroke, setSelectedLineStroke] = useState('straight'); // default straight line
   const [selectedLineEnd, setSelectedLineEnd] = useState('arrow'); // default arrow line end
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
-  const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
-  const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
-  const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
-  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, stageRef);
   const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
+  const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
+  const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(imageRef);
+  const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
+  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef);
+
 
   //TODO: Name of download should be play's name from user input
   // requires footer navbar
   const handleDownload = () => {
     var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
     var link = document.createElement('a');
-    link.download = 'stage.png';
+    link.download = 'stage.jpeg'; //.png also
     link.href = dataURL;
     document.body.appendChild(link);
     link.click();
@@ -82,6 +83,8 @@ function App() {
           }}>
             <div className="custom-scrollbar">
               <Stencil
+                // undo={undo}
+                // redo={redo}
                 onAddFormation={addFormation}
                 onAddShape={addShape}
                 onAddTextTag={addTextTag}

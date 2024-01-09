@@ -1,5 +1,4 @@
 // Stencil.jsx
-//TODO: add play name to file name for handleDownload function
 import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
@@ -78,6 +77,8 @@ const lineButtonStyle = {
 
 function Stencil(props) {
     const {
+        // undo,
+        // redo,
         onChangeLineStroke,
         onChangeLineEnd,
         onAddFormation,
@@ -269,6 +270,9 @@ function Stencil(props) {
             <div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
+
+                    <Button onClick={() => { }} variant='contained'>Undo</Button>
+                    <Button onClick={() => { }} variant='contained'>Redo</Button>
 
                     <h3 style={{ marginBottom: '2px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                         Field

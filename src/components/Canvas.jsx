@@ -2,9 +2,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Stage, Layer, Image, Rect, Line } from 'react-konva';
 import useImage from 'use-image';
-import useLines from '../hooks/useLines';
-import useTextTags from '../hooks/useTextTags';
-//import StageDimensionsContext from '../contexts/StageDimensionsContext';
 import Shape from './shapes/Shape';
 import TextTag from './shapes/TextTag';
 import CustomLine from './shapes/CustomLine';
@@ -133,7 +130,7 @@ function Canvas(props) {
         //console.log(e);
         if (isMouseDownOnAnchor && e.evt.buttons === 1) {
             const pos = e.target.getStage().getPointerPosition();
-            console.log('Stage onMouseMove', pos);
+            //console.log('Stage onMouseMove', pos);
             draw(pos);
         }
     };
@@ -141,8 +138,8 @@ function Canvas(props) {
     //completes drawing the line
     const handleStageMouseUp = (e) => {
         const endPos = e.target.getStage().getPointerPosition();
-        console.log('Stage onMouseUp', endPos);
-        console.log('Selected Line ID:', selectedLineID);
+        //console.log('Stage onMouseUp', endPos);
+        //console.log('Selected Line ID:', selectedLineID);
         stopDrawing();
         setIsMouseDownOnAnchor(false);
     };
