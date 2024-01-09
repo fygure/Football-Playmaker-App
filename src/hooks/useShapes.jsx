@@ -466,5 +466,5 @@ function useShapes(stageDimensions, imageRef) {
     };
 
     return { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu };
-}
+}   
 export default useShapes;

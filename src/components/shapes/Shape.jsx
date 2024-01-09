@@ -122,7 +122,6 @@ function Shape(props) {
     };
 
     const handleDragEnd = (e) => {
-        //console.log(e.target.position());
         setPosition(e.target.position());
         onShapeChange(id, { x: e.target.x(), y: e.target.y() });
     };

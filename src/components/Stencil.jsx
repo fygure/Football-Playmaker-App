@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import theme from '../config/theme.js';
+import Konva from 'konva';
 
 const QBProgressionButtons = [
     { text: 'Check Mark', icon: 'check' },
@@ -815,6 +816,34 @@ function Stencil(props) {
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                         Orientation
                     </h3>
+
+                    {/* <Button 
+                        color="white"
+                        style={{ marginTop: '10', fontFamily: 'Inter, sans-serif', fontWeight: 100, fontSize: '1', cursor: 'pointer', padding: '' }}
+                    >Want to share feedback?
+                    </Button> */}
+                    <Button
+                        color="white"
+                        value="feedback"
+                        style={{marginTop: '1rem', marginBottom: '1rem'}}
+                        sx={{
+                            background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
+                            ':hover': {
+                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                            },
+                            // textDecoration: 'underline',
+                            '&:hover': {
+                                textDecoration: 'underline',
+                            },
+                            '&:focus': {
+                                outline: 'none',
+                            },
+                        }}
+                        // onClick={() => window.open('https://forms.gle/4q3f6P7FQm5Zxh6W8', '_blank')}
+                    >
+                        Want to share feedback?
+                    </Button>
+
                 <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px',marginBottom: '-20px' }}>
                     <Grid container spacing={0}>
 
