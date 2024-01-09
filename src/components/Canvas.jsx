@@ -8,7 +8,6 @@ import useTextTags from '../hooks/useTextTags';
 import Shape from './shapes/Shape';
 import TextTag from './shapes/TextTag';
 import CustomLine from './shapes/CustomLine';
-
 function Canvas(props) {
     const {
         startPos,

@@ -104,6 +104,7 @@ function Stencil(props) {
         setStrokeTypeButtonPressCount,
         stageRef,
         flipAllTextTags,
+        flipAllShapes,
     } = props;
 
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
@@ -236,8 +237,9 @@ function Stencil(props) {
     //Orientation handlers
     const handleOrientation = (e) => {
         const newOrientation = e.target.value;
-        // console.log('handle orientation',newOrientation);
+        console.log('handle orientation',newOrientation);
         flipAllTextTags(newOrientation);
+        flipAllShapes(newOrientation);
     };
 
     const handleColorButtonPress = () => {

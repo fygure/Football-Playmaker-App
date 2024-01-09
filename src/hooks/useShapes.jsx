@@ -465,6 +465,72 @@ function useShapes(stageDimensions, imageRef) {
         setShapes(shapes.map(shape => ({ ...shape, showContextMenu: false })));
     };
 
-    return { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu };
+    const [isUpDownFlipped, setIsUpDownFlipped] = useState(false);
+    const [isLeftRightFlipped, setIsLeftRightFlipped] = useState(false);
+    const flipAllShapes = (flipType) => {
+        console.log('Flip Type:', flipType);
+        const imageCenter = {
+            x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
+            y: imageRef.current.y() + (imageRef.current.height() / 2)
+        }
+        setShapes(prevShapes => {
+            return prevShapes.map(shape => {
+              let reflectedShape = { ...shape };
+
+              if (flipType === 'Up/Down') {
+                reflectedShape.y = 2 * imageCenter.y - shape.y;
+              } else if (flipType === 'Left/Right') {
+                reflectedShape.x = 2 * imageCenter.x - shape.x;
+              }
+
+              return reflectedShape;
+            });
+          });
+
+
+        // setShapes(prevShapes => {
+        //         let newShapes = prevShapes.map(shape => {
+        //         let newPosition;
+        //         let newAttributes = {};
+        //         if (flipType === 'Up/Down') {
+        //             let newY = imageCenter.y - (shape.y - imageCenter.y);
+
+        //             if (shape && 'x' in shape && 'y' in shape) {
+        //                 newPosition = { x: shape.x, y: newY };
+        //                 newAttributes = { x: newPosition.x, y: newPosition.y };
+        //             } else if (shape && shape.initialPosition) {
+        //                 newPosition = { ...shape.initialPosition, y: imageCenter.y - (shape.initialPosition.y - imageCenter.y) };
+        //             }
+        //         } else if (flipType === 'Left/Right') {
+        //             let newX = imageCenter.x - (shape.x - imageCenter.x);
+        //             if (shape && 'x' in shape && 'y' in shape) {
+        //                 newPosition = { x: newX, y: shape.y };
+        //                 newAttributes = { x: newPosition.x, y: newPosition.y };
+        //             } else if (shape && shape.initialPosition) {
+        //                 newPosition = { ...shape.initialPosition, x: imageCenter.x - (shape.initialPosition.x - imageCenter.x) };
+        //             }
+        //         }
+
+        //         const newShape = {
+        //             id: uuidv4(),
+        //             initialPosition: newPosition,
+        //             color: shape.color,
+        //             text: shape.text,
+        //             ...newAttributes
+        //         };
+
+        //         return newShape;
+        //     });
+
+        //     return newShapes;
+        // });
+        // if (flipType === "Up/Down") {
+        //     setIsUpDownFlipped(!isUpDownFlipped);
+        // } else if (flipType === "Left/Right") {
+        //     setIsLeftRightFlipped(!isLeftRightFlipped);
+        // }
+    };
+
+    return { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes};
 }
 export default useShapes;

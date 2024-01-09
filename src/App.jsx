@@ -16,6 +16,8 @@ import DownloadIcon from '@mui/icons-material/Download';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import './App.css';
 import useLines from './hooks/useLines';
+import { SiJpeg } from "react-icons/si";
+
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: add undo/redo
@@ -36,14 +38,14 @@ function App() {
   const [selectedLineEnd, setSelectedLineEnd] = useState('arrow'); // default arrow line end
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
-  const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(stageDimensions, imageRef);
+  const { shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes} = useShapes(stageDimensions, imageRef);
   const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
   const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, stageRef);
   const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
 
   //TODO: Name of download should be play's name from user input
   // requires footer navbar
-  const handleDownload = () => {
+  const handleDownloadPNG = () => {
     var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
     var link = document.createElement('a');
     link.download = 'stage.png';
@@ -52,6 +54,17 @@ function App() {
     link.click();
     document.body.removeChild(link);
   };
+
+  const handleDownloadJPEG = () => {
+    var dataURL = stageRef.current.toDataURL({ pixelRatio: 3, mimeType: "image/jpeg" });
+    var link = document.createElement('a');
+    link.download = 'stage.jpeg';
+    link.href = dataURL;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
 
   const handleDeleteAll = () => {
     deleteAllShapes();
@@ -65,7 +78,8 @@ function App() {
 
   const actions = [
     { icon: <DeleteForeverOutlinedIcon />, action: handleDeleteAll },
-    { icon: <DownloadIcon />, action: handleDownload },
+    { icon: <DownloadIcon />, action: handleDownloadPNG },
+    { icon: <SiJpeg />, action: handleDownloadJPEG },
   ];
 
 
@@ -106,6 +120,7 @@ function App() {
                 setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                 stageRef={stageRef}
                 flipAllTextTags={flipAllTextTags}
+                flipAllShapes={flipAllShapes}
               />
             </div>
             <div style={{
