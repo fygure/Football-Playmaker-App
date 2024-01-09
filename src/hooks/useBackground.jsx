@@ -10,9 +10,9 @@ function useBackground() {
     useEffect(() => {
         const changeBackground = () => {
             let newImage = `field_${fieldType}_${zone}`;
-            if (redLine && fieldType === 'nfl') {
+            if (redLine && (fieldType === 'nfl' || fieldType === 'college')) {
                 newImage += '_redline';
-            }
+              }
             newImage += '.png';
             setBackgroundImage(process.env.PUBLIC_URL + '/static/assets/' + newImage);
         };

@@ -1,13 +1,26 @@
 // Canvas.jsx
 import React, { useRef, useEffect, useState } from 'react';
-import { Stage, Layer, Image, Rect } from 'react-konva';
+import { Stage, Layer, Image, Rect, Line } from 'react-konva';
 import useImage from 'use-image';
-//import StageDimensionsContext from '../contexts/StageDimensionsContext';
 import Shape from './shapes/Shape';
 import TextTag from './shapes/TextTag';
+import CustomLine from './shapes/CustomLine';
 
 function Canvas(props) {
     const {
+        startPos,
+        endPos,
+        lines,
+        setLines,
+        onLineChange,
+        startDrawing,
+        draw,
+        stopDrawing,
+        deleteAllLines,
+        colorButtonPressCount,
+        strokeTypeButtonPressCount,
+        strokeEndButtonPressCount,
+        onLineDelete,
         imageRef,
         stageRef,
         shapes,
@@ -24,17 +37,20 @@ function Canvas(props) {
         onHideTextTagContextMenu,
         onHideContextMenu,
         selectedColor,
+        selectedLineStroke,
+        selectedLineEnd,
         backgroundImage,
-        setStageDimensions
+        setStageDimensions,
+        orientation,
     } = props;
 
     //const { stageDimensions } = useContext(StageDimensionsContext);
     const containerRef = useRef(null);
     const [image] = useImage(backgroundImage);
+    const [isMouseDownOnAnchor, setIsMouseDownOnAnchor] = useState(false);
     const [selectedShapeID, setSelectedShapeID] = useState('$');
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
-    const [selectionRect, setSelectionRect] = useState({ x: 0, y: 0, width: 0, height: 0, visible: false });
-    const [initialMousePosition, setInitialMousePosition] = useState({ x: 0, y: 0 });
+    const [selectedLineID, setSelectedLineID] = useState('$');
 
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
@@ -44,6 +60,7 @@ function Canvas(props) {
             onTextTagChange(tag.id, { color: newColor });
         });
     };
+
     useEffect(() => {
         updateSelectedTextTagsColor(selectedColor);
     }, [selectedColor]);
@@ -85,73 +102,46 @@ function Canvas(props) {
         deselectShape();
         deselectTextTag();
         setSelectedTextTags([]);
+        setSelectedLineID('$');
     }
 
     const handleStageClick = (e) => {
         //console.log('Stage Clicked', stageDimensions);
         console.log('Shapes List:', shapes);
         console.log('Text Tags List:', textTags);
+        console.log('Lines List:', lines);
         // if clicked on empty area - remove all selections
         if (e.target === e.target.getStage()) {
             //setSelectedShapes([]);
             deselectShape();
             deselectTextTag();
             setSelectedTextTags([]);
+            setSelectedLineID('$');
         }
     };
 
-    const handleStageMouseDown = (e) => {
-        const pos = e.target.getStage().getPointerPosition();
-        //console.log('Mouse Down pos', pos);
-        setSelectionRect({ x: pos.x, y: pos.y, width: 0, height: 0, visible: true });
-        setInitialMousePosition({ x: pos.x, y: pos.y });
-    };
+    // const handleStageMouseDown = (e) => {
+    //     const pos = e.target.getStage().getPointerPosition();
+    //     console.log('Mouse Down pos', pos);
+    // };
 
+    //draws the line
     const handleStageMouseMove = (e) => {
-        if (!selectionRect.visible) return;
-        const pos = e.target.getStage().getPointerPosition();
-        setSelectionRect({
-            ...selectionRect,
-            width: (pos.x - selectionRect.x),
-            height: (pos.y - selectionRect.y)
-        });
+        //console.log(e);
+        if (isMouseDownOnAnchor && e.evt.buttons === 1) {
+            const pos = e.target.getStage().getPointerPosition();
+            //console.log('Stage onMouseMove', pos);
+            draw(pos);
+        }
     };
 
+    //completes drawing the line
     const handleStageMouseUp = (e) => {
-        setSelectionRect({ ...selectionRect, visible: false });
-        const pos = e.target.getStage().getPointerPosition();
-        // Check each shape to see if it is within the selection rectangle
-        const rect = {
-            x: Math.min(initialMousePosition.x, pos.x),
-            y: Math.min(initialMousePosition.y, pos.y),
-            width: Math.abs(initialMousePosition.x - pos.x),
-            height: Math.abs(initialMousePosition.y - pos.y),
-        };
-        // console.log('Mouse Up pos',pos);
-        // console.log('rect x', rect.x,'rect y', rect.y );
-        const isShapeWithinSelection = (shape, rect) => {
-            const shapeX = shape.x !== undefined ? shape.x : shape.initialPosition.x;
-            const shapeY = shape.y !== undefined ? shape.y : shape.initialPosition.y;
-
-            const shapeRight = shapeX + shape.width;
-            const shapeBottom = shapeY + shape.height;
-
-            const rectRight = rect.x + rect.width;
-            const rectBottom = rect.y + rect.height;
-
-            const topLeftIsInside = shapeX >= rect.x && shapeX <= rectRight && shapeY >= rect.y && shapeY <= rectBottom;
-            const topRightIsInside = shapeRight >= rect.x && shapeRight <= rectRight && shapeY >= rect.y && shapeY <= rectBottom;
-            const bottomLeftIsInside = shapeX >= rect.x && shapeX <= rectRight && shapeBottom >= rect.y && shapeBottom <= rectBottom;
-            const bottomRightIsInside = shapeRight >= rect.x && shapeRight <= rectRight && shapeBottom >= rect.y && shapeBottom <= rectBottom;
-
-            return topLeftIsInside || topRightIsInside || bottomLeftIsInside || bottomRightIsInside;
-
-        };
-        // Filter shapes that are within the selection rectangle
-        const selectedNewShapes = shapes.filter(shape => isShapeWithinSelection(shape, rect));
-        //console.log('Selected Shapes', selectedNewShapes);
-        setSelectedShapes(selectedNewShapes);
-        // console.log('selected shapes', selectedShapes );
+        const endPos = e.target.getStage().getPointerPosition();
+        //console.log('Stage onMouseUp', endPos);
+        //console.log('Selected Line ID:', selectedLineID);
+        stopDrawing();
+        setIsMouseDownOnAnchor(false);
     };
 
     return (
@@ -162,7 +152,7 @@ function Canvas(props) {
                     width={containerRef.current ? containerRef.current.offsetWidth : 0}
                     height={containerRef.current ? containerRef.current.offsetHeight : 0}
                     onClick={handleStageClick}
-                    onMouseDown={handleStageMouseDown}
+                    //onMouseDown={handleStageMouseDown}
                     onMouseMove={handleStageMouseMove}
                     onMouseUp={handleStageMouseUp}
                 >
@@ -177,8 +167,37 @@ function Canvas(props) {
                             height={image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
                             onClick={handleImageClick}
                         />
+                        {/* Sorting causes lines to render later */}
+                        {lines.sort((a, b) => (a.id === selectedLineID ? 1 : -1)).map((line, index) => (
+                            <CustomLine
+                                key={line.id}
+                                id={line.id}
+                                line={line}
+                                lines={lines}
+                                color={line.color}
+                                colorButtonPressCount={colorButtonPressCount}
+                                strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                                strokeEndButtonPressCount={strokeEndButtonPressCount}
+                                selectedColor={selectedColor}
+                                selectedLineStroke={selectedLineStroke}
+                                selectedLineEnd={selectedLineEnd}
+                                onLineDelete={onLineDelete}
+                                onLineChange={onLineChange}
+                                setLines={setLines}
+                                selectedLineID={selectedLineID}
+                                setSelectedLineID={setSelectedLineID}
+                                setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
+                                startDrawing={startDrawing}
+                                stageRef={stageRef}
+                                imageRef={imageRef}
+                            />
+                        ))}
                         {shapes.map((shape) => (
                             <Shape
+                                lines={lines}
+                                setLines={setLines}
+                                setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
+                                startDrawing={startDrawing}
                                 key={shape.id}
                                 id={shape.id}
                                 shapeType={shape.shapeType}
@@ -187,6 +206,9 @@ function Canvas(props) {
                                 initialColor={shape.initialColor}
                                 onShapeChange={onShapeChange}
                                 onShapeDelete={onShapeDelete}
+
+                                onLineDelete={onLineDelete}
+
                                 onHideContextMenu={onHideContextMenu}
                                 stageRef={stageRef}
                                 imageRef={imageRef}
@@ -211,15 +233,17 @@ function Canvas(props) {
                                 selectedTextTagID={selectedTextTagID} setSelectedTextTagID={setSelectedTextTagID}
                             />
                         ))}
-                        {selectionRect.visible && (
-                            <Rect
-                                x={selectionRect.x}
-                                y={selectionRect.y}
-                                width={selectionRect.width}
-                                height={selectionRect.height}
-                                fill="rgba(169, 169, 169, 0.5)"
+                        {/* drawing line */}
+                        {startPos && endPos && (
+                            <Line
+                                points={[startPos.x, startPos.y, endPos.x, endPos.y]}
+                                stroke="#7393B3"
+                                strokeWidth={4}
+                                tension={0.5}
+                                lineCap="round"
                             />
                         )}
+
 
                     </Layer>
                 </Stage>

@@ -1,9 +1,9 @@
 // Stencil.jsx
-//TODO: add play name to file name for handleDownload function
 import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import FeedBackForm from './feedback/FeedBackForm.jsx';
+import FlipIcon from '@mui/icons-material/Flip';
 import theme from '../config/theme.js';
 import Konva from 'konva';
 import { Email } from '@mui/icons-material';
@@ -80,6 +80,10 @@ const lineButtonStyle = {
 
 function Stencil(props) {
     const {
+        // undo,
+        // redo,
+        onChangeLineStroke,
+        onChangeLineEnd,
         onAddFormation,
         onAddShape,
         onAddTextTag,
@@ -93,8 +97,17 @@ function Stencil(props) {
         onChangeFormation,
         selectedColor,
         setSelectedColor,
+        selectedLineStroke,
+        setSelectedLineStroke,
+        selectedLineEnd,
+        setSelectedLineEnd,
         onDeleteAllTextTags,
+        onDeleteAllLines,
+        setColorButtonPressCount,
+        setStrokeEndButtonPressCount,
+        setStrokeTypeButtonPressCount,
         stageRef,
+        flipAllTextTags,
     } = props;
 
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
@@ -103,8 +116,9 @@ function Stencil(props) {
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
     const [selectedColorButton, setSelectedColorButton] = useState(0); // 0 is first index of colorButtons array
     const [selectedStrokeButton, setSelectedStrokeButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'stroke'));
-    const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'arrow' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
     const [selectedFeedback, setSelectedFeedback] = useState(false);
+    const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
+  
     const shapeColor = 'white';
 
     function handleDownload() {
@@ -193,6 +207,7 @@ function Stencil(props) {
     const handleDeleteAll = () => {
         onDeleteAllShapes();
         onDeleteAllTextTags();
+        onDeleteAllLines();
     };
 
     // Field handlers
@@ -227,7 +242,20 @@ function Stencil(props) {
     //Orientation handlers
     const handleOrientation = (e) => {
         const newOrientation = e.target.value;
-        console.log(newOrientation);
+        // console.log('handle orientation',newOrientation);
+        flipAllTextTags(newOrientation);
+    };
+
+    const handleColorButtonPress = () => {
+        setColorButtonPressCount(prevCount => prevCount + 1);
+    };
+
+    const handleStrokeTypeButtonPress = () => {
+        setStrokeTypeButtonPressCount(prevCount => prevCount + 1);
+    };
+
+    const handleStrokeEndButtonPress = () => {
+        setStrokeEndButtonPressCount(prevCount => prevCount + 1);
     };
 
     //     const [selectedFeedback, setSelectedFeedback] = useState(false);
@@ -260,22 +288,17 @@ function Stencil(props) {
             style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
         />
     );
+
     return (
         <>
             <div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                    <Button variant="outlined" color="sharpRed" size="small" onClick={handleDeleteAll} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Clear All</Button>
-                </div>
-
-
-                <div style={{ padding: '5px 0px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                    <Button variant="outlined" color="kellyGreen" size="small" onClick={handleDownload} sx={{ padding: '1px 5px', borderRadius: '0px', fontSize: '0.7rem' }}>Download Stage</Button>
-                </div>
-
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
 
-                    <h3 style={{ marginBottom: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                    <Button onClick={() => { }} variant='contained'>Undo</Button>
+                    <Button onClick={() => { }} variant='contained'>Redo</Button>
+
+                    <h3 style={{ marginBottom: '2px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                         Field
                     </h3>
                     <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
@@ -340,9 +363,10 @@ function Stencil(props) {
                                 {fieldType !== 'blank' && (
                                     <CheckboxOption onChange={handleToggleRedZone} checked={zone === 'redzone'}>Red Zone</CheckboxOption>
                                 )}
-                                {fieldType !== 'blank' && fieldType === 'nfl' && (<CheckboxOption onChange={handleToggleRedLine} checked={redLine}>NFL Red Line</CheckboxOption>)}
+                                {(fieldType === 'nfl' || fieldType === 'college') && (
+                                    <CheckboxOption onChange={handleToggleRedLine} checked={redLine}>Red Line</CheckboxOption>
+                                )}
                             </div>
-
                         </div>
                     </div>
 
@@ -645,16 +669,16 @@ function Stencil(props) {
                                             border: selectedColorButton === index ? '2px solid white' : 'none',
                                         }}
                                         onClick={() => {
-                                            // console.log(color);
+                                            //console.log(color);
                                             setSelectedColor(color);
                                             setSelectedColorButton(index);
+                                            handleColorButtonPress();
                                         }}
                                     />
                                 </Grid>
                             ))}
                         </Grid>
                     </Box>
-                    {/* TODO add functionality for lines */}
                     <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Lines</h3>
                     <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '-5px', }}>
                         <Grid container spacing={1}>
@@ -667,9 +691,20 @@ function Stencil(props) {
                                             <Grid item xs={"auto"} key={button.id}>
                                                 <Button
                                                     variant="text"
-                                                    style={{ ...lineButtonStyle, border: selectedStrokeButton === index ? '2px solid white' : 'none' }}
+                                                    style={{
+                                                        ...lineButtonStyle,
+                                                        borderRadius: '25px',
+                                                        marginRight: '5px',
+                                                        border: selectedStrokeButton === index ? '2px solid white' : 'none'
+                                                    }}
+                                                    sx={{
+                                                        '&:hover': {
+                                                            boxShadow: '0px 0px 10px 2px white',
+                                                        },
+                                                    }}
                                                     onClick={() => {
-                                                        //TODO HERE
+                                                        setSelectedLineStroke(button.label);
+                                                        handleStrokeTypeButtonPress();
                                                         console.log(button.type, button.label);
                                                         setSelectedStrokeButton(index);
                                                     }}
@@ -690,9 +725,20 @@ function Stencil(props) {
                                             <Grid item xs={"auto"} key={button.id}>
                                                 <Button
                                                     variant="text"
-                                                    style={{ ...lineButtonStyle, border: selectedEndButton === index ? '2px solid white' : 'none' }}
+                                                    style={{
+                                                        ...lineButtonStyle,
+                                                        borderRadius: '25px',
+                                                        marginRight: '5px',
+                                                        border: selectedEndButton === index ? '2px solid white' : 'none'
+                                                    }}
+                                                    sx={{
+                                                        '&:hover': {
+                                                            boxShadow: '0px 0px 10px 2px white',
+                                                        },
+                                                    }}
                                                     onClick={() => {
-                                                        //TODO HERE
+                                                        setSelectedLineEnd(button.label);
+                                                        handleStrokeEndButtonPress();
                                                         console.log(button.type, button.label);
                                                         setSelectedEndButton(index);
                                                     }}
@@ -835,15 +881,39 @@ function Stencil(props) {
                             </div>
                         </div>
                     </div>
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                    {/* I NEED to use list shapes AND textTags */}
+                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '0' }}>
                         Orientation
                     </h3>
 
-                    {/* <Button 
-                        color="white"
-                        style={{ marginTop: '10', fontFamily: 'Inter, sans-serif', fontWeight: 100, fontSize: '1', cursor: 'pointer', padding: '' }}
-                    >Want to share feedback?
-                    </Button> */}
+                    <Box sx={{ flexGrow: 1, marginLeft: '-3px', marginBottom: '-20px' }}>
+                        <Grid container spacing={0}>
+                            <Grid item xs={"auto"}>
+                                {['Up/Down', 'Left/Right'].map((orientation, index) => (
+                                    <Button
+                                        key={index}
+                                        value={orientation}
+                                        variant="text"
+                                        style={{
+                                            ...QBProgressionButtonStyle,
+                                            marginRight: '2px',
+                                        }}
+                                        sx={QBProgressionButtonStyle}
+                                        size="small"
+                                        onClick={handleOrientation}
+                                        startIcon={
+                                            orientation === 'Up/Down' ?
+                                                <FlipIcon style={{ transform: 'rotate(90deg)' }} /> :
+                                                <FlipIcon />
+                                        }
+                                    >
+                                        {orientation}
+                                    </Button>
+                                ))}
+                            </Grid>
+                        </Grid>
+                    </Box>
+
                     <Button
                         color="white"
                         value="feedback"
@@ -879,7 +949,6 @@ function Stencil(props) {
                         <Grid container spacing={0}>
                         </Grid>
                     </Box>
-
 
                 </div>
             </div >

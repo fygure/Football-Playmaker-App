@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+//EditableText.jsx
+import React, { useState, useRef } from 'react';
 import { Text } from 'react-konva';
 
 const EditableText = ({ initialText, x, y, fontSize, handleTextChange, color }) => {
     const [text, setText] = useState(initialText);
     const textRef = useRef();
-    const textareaRef = useRef();
     const handleOutsideClickRef = useRef();
     const handleBlurRef = useRef();
     const fontWeight = 700;

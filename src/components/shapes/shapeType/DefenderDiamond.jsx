@@ -1,24 +1,14 @@
 //DefenderDiamond.jsx
-import React, { useState } from 'react';
+import React from 'react';
 import { Rect, Group } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
-import { Anchor } from '../Anchor';
 import EditableText from '../EditableText';
-
-const getAnchorPoints = (width, height) => {
-    const halfWidth = width / 2;
-    const halfHeight = height / 2;
-    return [
-        { x: halfWidth - 14, y: -25 }, // top point
-        { x: width - 3, y: halfHeight - 14.5 }, // right point
-        { x: halfWidth - 14, y: height - 3 }, // bottom point
-        { x: -25, y: halfHeight - 14.5 }, // left point
-    ];
-}
 
 const DefenderDiamond = (props) => {
     const {
         id,
+        startDrawing,
+        setIsMouseDownOnAnchor,
         shapeRef,
         position,
         initialColor,
@@ -28,6 +18,7 @@ const DefenderDiamond = (props) => {
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
+        handleDragMove,
         handleDragEnd,
         handleHideContextMenu,
         fontSize,
@@ -39,24 +30,13 @@ const DefenderDiamond = (props) => {
         setSelectedShapeID,
     } = props;
 
-    const anchorPoints = getAnchorPoints(rectSize.width, rectSize.height);
-    const anchors = anchorPoints.map((point, index) => (
-        <Anchor
-            key={`anchor-${index}`}
-            x={point.x}
-            y={point.y}
-            onDragStart={() => { console.log('onDragStart'); }}
-            onDragMove={() => { console.log('onDragMove'); }}
-            onDragEnd={() => { console.log('onDragEnd'); }}
-        />
-    ));
-
-    const strokeOptions = { color: 'black', strokeWidth: 2 };
+    const isSelected = selectedShapeID === id;
+    const haloOffset = 12;
+    const strokeOptions = { color: 'black', strokeWidth: .2 };
     var textAlignment = -5;
     if (text.length > 1) {
         textAlignment -= 5;
     }
-
 
     return (
         <>
@@ -66,11 +46,42 @@ const DefenderDiamond = (props) => {
                 y={position.y}
                 draggable={true}
                 onDragStart={handleDragStart}
+                onDragMove={handleDragMove}
                 onDragEnd={handleDragEnd}
                 dragBoundFunc={dragBoundFunc}
                 onClick={handleOnClick}
                 onContextMenu={handleRightClick}
             >
+                {isSelected && (
+                    <Rect
+                        width={rectSize.width + haloOffset}
+                        height={rectSize.height + haloOffset}
+                        rotation={45}
+                        stroke={strokeOptions.color}
+                        strokeWidth={2}
+                        cornerRadius={2}
+                        fill='grey'
+                        offsetX={(rectSize.width + haloOffset) / 2}
+                        offsetY={(rectSize.height + haloOffset) / 2}
+                        onMouseDown={(e) => {
+                            const startPos = e.target.getStage().getPointerPosition();
+                            console.log('Shape Halo onMouseDown', startPos);
+                            startDrawing(startPos, id, shapeRef.current);
+                            setIsMouseDownOnAnchor(true);
+                            e.cancelBubble = true;
+                        }}
+                        onMouseEnter={(e) => {
+                            const container = e.target.getStage().container();
+                            //To style it, import custom image
+                            //container.style.cursor = 'url(/path/to/your/cursor/image.png) 16 16, crosshair';
+                            container.style.cursor = 'crosshair';
+                        }}
+                        onMouseLeave={(e) => {
+                            const container = e.target.getStage().container();
+                            container.style.cursor = 'default';
+                        }}
+                    />
+                )}
                 <Rect
                     width={rectSize.width}
                     height={rectSize.height}
@@ -80,6 +91,7 @@ const DefenderDiamond = (props) => {
                     offsetY={rectSize.height / 2}
                     strokeWidth={strokeOptions.strokeWidth}
                     cornerRadius={2}
+                    fill={initialColor}
                 />
                 <EditableText
                     initialText={text}
@@ -88,7 +100,6 @@ const DefenderDiamond = (props) => {
                     fontSize={fontSize}
                     handleTextChange={handleTextChange}
                 />
-                {selectedShapeID === id && anchors}
             </Group>
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>

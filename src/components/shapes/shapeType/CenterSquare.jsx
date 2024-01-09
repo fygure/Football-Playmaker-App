@@ -2,29 +2,21 @@
 import React, { useState } from 'react';
 import { Rect, Group } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
-import { Anchor } from '../Anchor';
-
-const getAnchorPoints = (width, height) => {
-    return [
-        { x: -5, y: height / 2 },
-        { x: width / 2, y: -5 },
-        { x: width + 5, y: height / 2 },
-        { x: width / 2, y: height + 5 },
-    ];
-}
 
 const CenterSquare = (props) => {
     const {
         id,
+        startDrawing,
+        setIsMouseDownOnAnchor,
         shapeRef,
         position,
         initialColor,
         showContextMenu,
         contextMenuPosition,
-        handleOnClick,
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
+        handleDragMove,
         handleDragEnd,
         handleHideContextMenu,
         rectSize,
@@ -33,20 +25,10 @@ const CenterSquare = (props) => {
         setSelectedShapeID,
     } = props;
 
-    const anchorPoints = getAnchorPoints(rectSize.width, rectSize.height);
-    const anchors = anchorPoints.map((point, index) => (
-        <Anchor
-            key={`anchor-${index}`}
-            x={point.x}
-            y={point.y}
-            onDragStart={() => { console.log('onDragStart'); }}
-            onDragMove={() => { console.log('onDragMove'); }}
-            onDragEnd={() => { console.log('onDragEnd'); }}
-        />
-    ));
-
-    const strokeOptions = { color: 'black', strokeWidth: 2 };
+    const isSelected = selectedShapeID === id;
+    const strokeOptions = { color: 'black', strokeWidth: 1 };
     const centerLineWidth = 3.5;
+    const haloOffset = 13;
 
     const states = [
         { leftState: 0, rightState: 100, colorOne: initialColor, colorTwo: "black" }, // fully initialColor
@@ -75,15 +57,47 @@ const CenterSquare = (props) => {
                 onContextMenu={handleRightClick}
                 draggable={true}
                 onDragStart={handleDragStart}
+                onDragMove={handleDragMove}
                 onDragEnd={handleDragEnd}
                 dragBoundFunc={dragBoundFunc}
             >
+                {isSelected && (
+                    <Rect
+                        width={rectSize.width + haloOffset}
+                        height={rectSize.height + haloOffset}
+                        stroke={strokeOptions.color}
+                        fill='grey'
+                        strokeWidth={2}
+                        cornerRadius={2}
+                        offsetX={(rectSize.width + haloOffset) / 2}
+                        offsetY={(rectSize.height + haloOffset) / 2}
+                        onMouseDown={(e) => {
+                            const startPos = e.target.getStage().getPointerPosition();
+                            console.log('Shape Halo onMouseDown', startPos);
+                            startDrawing(startPos, id, shapeRef.current);
+                            setIsMouseDownOnAnchor(true);
+                            e.cancelBubble = true;
+                        }}
+                        onMouseEnter={(e) => {
+                            const container = e.target.getStage().container();
+                            //To style it, import custom image
+                            //container.style.cursor = 'url(/path/to/your/cursor/image.png) 16 16, crosshair';
+                            container.style.cursor = 'crosshair';
+                        }}
+                        onMouseLeave={(e) => {
+                            const container = e.target.getStage().container();
+                            container.style.cursor = 'default';
+                        }}
+                    />
+                )}
                 <Rect
                     width={rectSize.width}
                     height={rectSize.height}
                     stroke={strokeOptions.color}
                     strokeWidth={strokeOptions.strokeWidth}
                     cornerRadius={2}
+                    offsetX={rectSize.width / 2}
+                    offsetY={rectSize.height / 2}
                     onClick={handleCenterClick}
                     fillLinearGradientStartPoint={{ x: state.leftState, y: 0 }}
                     fillLinearGradientEndPoint={{ x: state.rightState, y: 0 }}
@@ -91,15 +105,14 @@ const CenterSquare = (props) => {
                 />
                 {stateIndex === 3 && (
                     <Rect
-                        x={rectSize.width / 2 - 1}
-                        y={0}
+                        x={-1.6}
+                        y={-rectSize.height / 2}
                         onClick={handleCenterClick}
                         width={centerLineWidth}
                         height={rectSize.height}
                         fill="black"
                     />
                 )}
-                {selectedShapeID === id && anchors}
             </Group>
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
         </>

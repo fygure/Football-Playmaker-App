@@ -1,11 +1,10 @@
 // Shape.jsx
-import React, { useState, useRef, useEffect } from 'react';
-import { Star, Rect, Circle, Ring } from 'react-konva';
-import ContextMenu from '../menus/ContextMenu';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import CenterSquare from './shapeType/CenterSquare';
 import LinemanOval from './shapeType/LinemanOval';
 import ReceiverOval from './shapeType/ReceiverOval';
 import DefenderDiamond from './shapeType/DefenderDiamond';
+import { throttle } from 'lodash';
 
 // Shape Sizes Configuration
 const SHAPE_SIZES = {
@@ -17,6 +16,10 @@ const SHAPE_SIZES = {
 
 function Shape(props) {
     const {
+        lines,
+        setLines,
+        startDrawing,
+        setIsMouseDownOnAnchor,
         shapes,
         id,
         shapeType,
@@ -24,6 +27,9 @@ function Shape(props) {
         initialColor,
         onShapeChange,
         onShapeDelete,
+
+        onLineDelete,
+
         onHideContextMenu,
         imageRef,
         stageRef,
@@ -91,14 +97,10 @@ function Shape(props) {
         };
     }, [position, imageRef]);
 
+    const selectedShape = useMemo(() => shapes.find(shape => shape.id === id), [shapes, id]);
     const handleOnClick = () => {
-        // const node = shapeRef.current;
-        //First empty the selectedShapes array
         setSelectedShapes([]);
-        //Filter the shapes array to grab the shape by the id
-        const selectedShape = shapes.find(shape => shape.id === id);
         console.log('Shape Clicked', selectedShape);
-        //Then add that shape to the selectedShapes array
         setSelectedShapes([selectedShape]);
         setSelectedShapeID(id);
         console.log('Selected Shape ID:', id);
@@ -115,15 +117,42 @@ function Shape(props) {
     const handleDeleteClick = () => {
         setShowContextMenu(false);
         onShapeDelete(id);
+        // Delete all lines associated with the shape
+        lines.forEach((line) => {
+            if (line.attachedShapeId === id) {
+                onLineDelete(line.id);
+            }
+        });
+
     };
 
     const handleDragStart = () => {
         setShowContextMenu(false);
     };
 
+
+    const handleDragMove = throttle((e) => {
+        const newPos = e.target.position();
+        setPosition(newPos);
+        //onShapeChange(id, { x: e.target.x(), y: e.target.y() });
+        const attachedLines = lines.filter(line => line.attachedShapeId === id);
+
+        // Update start pos of line to new pos
+        const updatedLines = attachedLines.map(line => ({
+            ...line,
+            startPos: newPos,
+        }));
+
+        // Updates startPos of only lines attached to shape
+        setLines(lines.map(line => updatedLines.find(l => l.id === line.id) || line));
+    }, 100); // Update at most once every 100ms
+
     const handleDragEnd = (e) => {
-        setPosition(e.target.position());
+        //console.log(e.target.position());
+        const newPos = e.target.position();
+        setPosition(newPos);
         onShapeChange(id, { x: e.target.x(), y: e.target.y() });
+        //setHistory([...history, { action : drag,  get shape object by id }]);
     };
 
     const handleHideContextMenu = () => {
@@ -162,6 +191,8 @@ function Shape(props) {
     };
 
     const commonProps = {
+        startDrawing,
+        setIsMouseDownOnAnchor,
         id,
         shapeRef,
         imageRef,
@@ -174,6 +205,7 @@ function Shape(props) {
         handleRightClick,
         handleDeleteClick,
         handleDragStart,
+        handleDragMove,
         handleDragEnd,
         handleHideContextMenu,
         ellipseRadiuses,
