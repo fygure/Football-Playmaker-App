@@ -6,6 +6,7 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import FeedBackForm from './feedback/FeedBackForm.jsx';
 import theme from '../config/theme.js';
 import Konva from 'konva';
+import { Email } from '@mui/icons-material';
 
 const QBProgressionButtons = [
     { text: 'Check Mark', icon: 'check' },
@@ -241,8 +242,9 @@ function Stencil(props) {
 
     const handleFeedbackSubmit = (event) => {
         event.preventDefault();
-        const data = event.target;
-        console.log(`Submission received: ${data} ${data}`);
+        const email = event.target.elements.email.value;
+        const feedback = event.target.elements.feedback.value;
+        console.log(`Submission received: ${email} ${feedback}`);
         setSelectedFeedback(false);
     };
 
