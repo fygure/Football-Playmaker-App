@@ -36,12 +36,12 @@ export default function FeedBackForm({open, handleFeedbackFormClose, handleFeedb
                     fullWidth
                     variant="standard"
                 />
+                <DialogActions>
+                    <Button onClick={handleFeedbackFormClose}>Cancel</Button>
+                    <Button type="submit" label="Submit">Send</Button>
+                </DialogActions>
             </form>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleFeedbackFormClose}>Cancel</Button>
-          <Button type="submit" label="Submit"onClick={handleFeedbackFormSubmit}>Send</Button>
-        </DialogActions>
       </Dialog>
     </React.Fragment>
   );
