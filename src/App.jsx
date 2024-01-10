@@ -36,6 +36,7 @@ function App() {
   const [selectedLineEnd, setSelectedLineEnd] = useState('straight'); // default arrow line end
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
+  const [currentLayerData, setCurrentLayerData] = useState(null);
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(imageRef);
   const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
@@ -85,6 +86,8 @@ function App() {
               <Stencil
                 // undo={undo}
                 // redo={redo}
+                currentLayerData={currentLayerData}
+                setCurrentLayerData={setCurrentLayerData}
                 onAddFormation={addFormation}
                 onAddShape={addShape}
                 onAddTextTag={addTextTag}
@@ -128,6 +131,8 @@ function App() {
             }}>
               <Canvas
                 imageRef={imageRef}
+                currentLayerData={currentLayerData}
+                setCurrentLayerData={setCurrentLayerData}
                 colorButtonPressCount={colorButtonPressCount}
                 strokeTypeButtonPressCount={strokeTypeButtonPressCount}
                 strokeEndButtonPressCount={strokeEndButtonPressCount}

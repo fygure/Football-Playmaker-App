@@ -81,6 +81,8 @@ function Stencil(props) {
     const {
         // undo,
         // redo,
+        currentLayerData,
+        setCurrentLayerData,
         onChangeLineStroke,
         onChangeLineEnd,
         onAddFormation,
@@ -915,7 +917,11 @@ function Stencil(props) {
 
                 <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '40px', marginBottom: '0px' }}>
                     <Grid container spacing={0}>
-                        <BottomDrawer stageRef={stageRef} />
+                        <BottomDrawer
+                            stageRef={stageRef}
+                            setCurrentLayerData={setCurrentLayerData}
+                            currentLayerData={currentLayerData}
+                        />
                     </Grid>
                 </Box>
 

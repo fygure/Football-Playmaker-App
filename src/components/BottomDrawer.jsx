@@ -18,7 +18,14 @@ import TextField from '@mui/material/TextField';
 import Konva from 'konva';
 import { v4 as uuidv4 } from 'uuid';
 
-export default function BottomDrawer(stageRef) {
+function BottomDrawer(props) {
+    const {
+        stageRef,
+        currentLayerData,
+        setCurrentLayerData,
+
+    } = props;
+
     const [state, setState] = useState({
         bottom: false,
     });
@@ -28,6 +35,7 @@ export default function BottomDrawer(stageRef) {
     const [dialogTitle, setDialogTitle] = useState('');
     const [dialogText, setDialogText] = useState('');
     const [dialogAction, setDialogAction] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const openDialog = (title, text, action) => {
         setDialogTitle(title);
@@ -79,7 +87,8 @@ export default function BottomDrawer(stageRef) {
     };
 
     const renameItem = (index) => {
-        openDialog('Rename Play', items[index], (newName) => {
+        //console.log(items[index].name);
+        openDialog('Rename Play', items[index].name, (newName) => {
             if (newName !== null) {
                 // Check if a list item with the same name already exists
                 const itemExists = items.some((item, i) => item.name === newName && i !== index);
@@ -100,15 +109,15 @@ export default function BottomDrawer(stageRef) {
         //the stage with that playName as the ID
         console.log('Rendering play:', playName);
 
-        console.log(items);
+        console.log(currentLayerData);
 
-        //METHOD 2:
-        // Deserialize the saved stage or layer from the JSON string
-        //const stage = Konva.Node.create(item.stage, 'container');
-        // Now you have a Konva stage with the saved state
-        // You can add it to the DOM or use it as needed
-        // For example, you can replace the current stage with the new one
+        const layerData = {
+            playName: playName,
+        }
 
+        setCurrentLayerData(layerData);
+        console.log(layerData);
+        setSelectedItem(text.id);
     };
 
     const list = (anchor) => (
@@ -127,14 +136,23 @@ export default function BottomDrawer(stageRef) {
                                 event.preventDefault();
                                 renameItem(index);
                             }}
-                            style={{ padding: '0px 20px', margin: '10px 0' }}
+                            style={{
+                                padding: '0px 20px',
+                                margin: '10px 0',
+                            }}
                         >
                             <ButtonBase
                                 onClick={() => {
                                     toggleDrawer('bottom', false);
                                     handleItemClick(text);
                                 }}
-                                style={{ border: '1px solid #000', textAlign: 'center', width: '100%', height: '100%' }}
+                                style={{
+                                    border: '1px solid #000',
+                                    textAlign: 'center',
+                                    width: '100%',
+                                    height: '100%',
+                                    backgroundColor: text.id === selectedItem ? 'lightblue' : 'white',
+                                }}
                             >
                                 <ListItemText primary={text.name} />
                             </ButtonBase>
@@ -201,3 +219,5 @@ export default function BottomDrawer(stageRef) {
         </div>
     );
 }
+
+export default BottomDrawer;

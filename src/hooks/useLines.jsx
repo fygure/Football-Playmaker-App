@@ -66,47 +66,52 @@ const useLines = (imageRef) => {
     };
 
     //handle resizing
+    //handle resizing
     useEffect(() => {
-        const image = imageRef.current;
-        let initialImagePosition = { x: image.x(), y: image.y() };
-        let initialImageSize = { width: image.width(), height: image.height() };
+        if (imageRef.current) {
+            const image = imageRef.current;
+            let initialImagePosition = { x: image.x(), y: image.y() };
+            let initialImageSize = { width: image.width(), height: image.height() };
 
-        let initialRelativeLines = lines.map(line => {
-            let initialRelativeStartPos = {
-                x: (line.startPos.x - initialImagePosition.x) / initialImageSize.width,
-                y: (line.startPos.y - initialImagePosition.y) / initialImageSize.height,
-            };
-            let initialRelativeEndPos = {
-                x: (line.endPos.x - initialImagePosition.x) / initialImageSize.width,
-                y: (line.endPos.y - initialImagePosition.y) / initialImageSize.height,
-            };
-            return { ...line, startPos: initialRelativeStartPos, endPos: initialRelativeEndPos };
-        });
-
-        const handleResize = () => {
-            const newImagePosition = { x: image.x(), y: image.y() };
-            const newImageSize = { width: image.width(), height: image.height() };
-
-            const newLines = initialRelativeLines.map(line => {
-                const newStartPos = {
-                    x: line.startPos.x * newImageSize.width + newImagePosition.x,
-                    y: line.startPos.y * newImageSize.height + newImagePosition.y,
+            let initialRelativeLines = lines.map(line => {
+                let initialRelativeStartPos = {
+                    x: (line.startPos.x - initialImagePosition.x) / initialImageSize.width,
+                    y: (line.startPos.y - initialImagePosition.y) / initialImageSize.height,
                 };
-                const newEndPos = {
-                    x: line.endPos.x * newImageSize.width + newImagePosition.x,
-                    y: line.endPos.y * newImageSize.height + newImagePosition.y,
+                let initialRelativeEndPos = {
+                    x: (line.endPos.x - initialImagePosition.x) / initialImageSize.width,
+                    y: (line.endPos.y - initialImagePosition.y) / initialImageSize.height,
                 };
-                return { ...line, startPos: newStartPos, endPos: newEndPos };
+                return { ...line, startPos: initialRelativeStartPos, endPos: initialRelativeEndPos };
             });
 
-            setLines(newLines);
-        };
+            const handleResize = () => {
+                if (imageRef.current) {
+                    const newImagePosition = { x: image.x(), y: image.y() };
+                    const newImageSize = { width: image.width(), height: image.height() };
 
-        window.addEventListener('resize', handleResize);
+                    const newLines = initialRelativeLines.map(line => {
+                        const newStartPos = {
+                            x: line.startPos.x * newImageSize.width + newImagePosition.x,
+                            y: line.startPos.y * newImageSize.height + newImagePosition.y,
+                        };
+                        const newEndPos = {
+                            x: line.endPos.x * newImageSize.width + newImagePosition.x,
+                            y: line.endPos.y * newImageSize.height + newImagePosition.y,
+                        };
+                        return { ...line, startPos: newStartPos, endPos: newEndPos };
+                    });
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
+                    setLines(newLines);
+                }
+            };
+
+            window.addEventListener('resize', handleResize);
+
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
+        }
     }, [lines, imageRef]);
 
     return {
