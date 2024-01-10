@@ -33,7 +33,7 @@ function App() {
   const [selectedTextTags, setSelectedTextTags] = useState([]);
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
   const [selectedLineStroke, setSelectedLineStroke] = useState('straight'); // default straight line
-  const [selectedLineEnd, setSelectedLineEnd] = useState('arrow'); // default arrow line end
+  const [selectedLineEnd, setSelectedLineEnd] = useState('straight'); // default arrow line end
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
