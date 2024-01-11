@@ -34,7 +34,7 @@ function CustomLine(props) {
         selectedLineID,
         setSelectedLineID,
         imageRef,
-        stageRef
+        stageRef,
     } = props;
     const isSelected = selectedLineID === id;
     const [showContextMenu, setShowContextMenu] = useState(false);
@@ -44,11 +44,11 @@ function CustomLine(props) {
         y: (line.controlPoint.y + line.controlPoint.y) / 2,
     });
     const customLineRef = useRef();
-    //Anchor sizes
+    //anchor sizes
     const [controlCircleRadius, setControlCircleRadius] = useState(CIRCLE_SIZES.CONTROL.MAX);
     const [haloCircleRadius, setHaloCircleRadius] = useState(CIRCLE_SIZES.HALO.MAX);
     const [anchorCircleRadius, setAnchorCircleRadius] = useState(CIRCLE_SIZES.ANCHOR.MAX);
-    // Calculate the initial circle sizes relative to the image size
+    //calculate the initial circle sizes relative to the image size
     useEffect(() => {
         const image = imageRef.current;
         const initialImagePosition = { x: image.x(), y: image.y() };
@@ -83,7 +83,7 @@ function CustomLine(props) {
         };
     }, [imageRef, controlPoint, controlCircleRadius, haloCircleRadius, anchorCircleRadius]);
 
-    //Rerenders lines based on button inputs
+    //rerenders lines based on button inputs
     useEffect(() => {
         console.log(selectedColor, selectedLineStroke, selectedLineEnd)
         if (isSelected) {
@@ -120,17 +120,17 @@ function CustomLine(props) {
     const handleAnchorDragMove = (e) => {
         const newEndPos = e.target.position();
 
-        // Update the end position of the currently dragged line
+        //update the end position of the currently dragged line
         const updatedLines = lines.map(line =>
             line.id === id ? { ...line, endPos: newEndPos } : line
         );
 
-        // Find any lines that have a `drawnFromId` that matches the current line's ID
+        //find any lines that have a `drawnFromId` that matches the current line's ID
         const connectedLines = updatedLines.filter(line =>
             line.drawnFromId === id
         );
 
-        // Update the start position of the connected lines
+        //update the start position of the connected lines
         const finalLines = updatedLines.map(line =>
             connectedLines.find(connectedLine => connectedLine.id === line.id)
                 ? { ...line, startPos: newEndPos }
@@ -139,13 +139,13 @@ function CustomLine(props) {
 
         setLines(finalLines);
 
-        // Update the position of the larger circle
+        //update the position of the larger circle
         const largerCircle = customLineRef.current.findOne('.larger-circle');
         if (largerCircle) {
             largerCircle.position(newEndPos);
         }
 
-        // connected lines immediately
+        //connected lines immediately
         connectedLines.forEach(line => {
             const lineNode = customLineRef.current.findOne(`.line-${line.id}`);
             if (lineNode) {
@@ -156,14 +156,14 @@ function CustomLine(props) {
 
     const handleControlPointDragMove = (e) => {
         const newControlPoint = e.target.position();
+        //console.log('new control point', newControlPoint);
         setControlPoint(newControlPoint);
 
         // Update the line's points to create a quadratic curve
         const newPoints = [line.startPos.x, line.startPos.y, newControlPoint.x, newControlPoint.y, line.endPos.x, line.endPos.y];
         const updatedLines = lines.map(l =>
-            l.id === id ? { ...l, points: newPoints } : l
+            l.id === id ? { ...l, points: newPoints, controlPoint: newControlPoint } : l
         );
-        onLineChange(id, { controlPoint: newControlPoint });
         setLines(updatedLines);
     };
 
@@ -263,8 +263,7 @@ function CustomLine(props) {
                             fill="grey"
                             onMouseDown={(e) => {
                                 const startPos = e.target.getStage().getPointerPosition();
-
-                                startDrawing(startPos, '$', customLineRef.current, id);
+                                startDrawing(startPos, '$', id, null);
                                 setIsMouseDownOnAnchor(true);
                                 e.target.moveToTop();
                                 e.cancelBubble = true;

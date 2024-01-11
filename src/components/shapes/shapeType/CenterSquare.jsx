@@ -74,7 +74,7 @@ const CenterSquare = (props) => {
                         onMouseDown={(e) => {
                             const startPos = e.target.getStage().getPointerPosition();
                             console.log('Shape Halo onMouseDown', startPos);
-                            startDrawing(startPos, id, shapeRef.current);
+                            startDrawing(startPos, id, null, position);
                             setIsMouseDownOnAnchor(true);
                             e.cancelBubble = true;
                         }}
