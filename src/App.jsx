@@ -47,13 +47,14 @@ function App() {
   const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
   const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef);
 
-
-  //TODO: Name of download should be play's name from user input
-  // requires footer navbar
   const handleDownloadPNG = () => {
     var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
     var link = document.createElement('a');
-    link.download = 'stage.jpeg'; //.png also
+    if (currentLayerData === null) {
+      link.download = 'untitled.png';
+    } else {
+      link.download = `${currentLayerData.name}.png`
+    }
     link.href = dataURL;
     document.body.appendChild(link);
     link.click();
@@ -63,7 +64,11 @@ function App() {
   const handleDownloadJPEG = () => {
     var dataURL = stageRef.current.toDataURL({ pixelRatio: 3, mimeType: "image/jpeg" });
     var link = document.createElement('a');
-    link.download = 'stage.jpeg';
+    if (currentLayerData === null) {
+      link.download = 'untitled.jpeg';
+    } else {
+      link.download = `${currentLayerData.name}.jpeg`
+    }
     link.href = dataURL;
     document.body.appendChild(link);
     link.click();
@@ -89,11 +94,11 @@ function App() {
   };
 
   const actions = [
-    { icon: <DeleteForeverOutlinedIcon />, action: handleDeleteAll },
-    { icon: < PiFilePng size={25} />, action: handleDownloadPNG },
-    { icon: <SiJpeg size={20} />, action: handleDownloadJPEG },
-    { icon: <GiZeusSword size={30}/>, action: handleDeleteOffenseFormation},
-    { icon: <RemoveModeratorIcon />, action: handleDeleteDefenseFormation },
+    { icon: <DeleteForeverOutlinedIcon fontSize='large' />, action: handleDeleteAll },
+    { icon: <GiZeusSword size={30} />, action: handleDeleteOffenseFormation },
+    { icon: <RemoveModeratorIcon fontSize='medium' />, action: handleDeleteDefenseFormation },
+    { icon: < PiFilePng size={30} />, action: handleDownloadPNG },
+    { icon: <SiJpeg size={25} />, action: handleDownloadJPEG },
   ];
 
   return (

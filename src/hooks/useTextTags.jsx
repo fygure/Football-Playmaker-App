@@ -50,11 +50,10 @@ function useTextTags(imageRef, stageRef) {
         }
     };
 
-
     const [isUpDownFlipped, setIsUpDownFlipped] = useState(false);
     const [isLeftRightFlipped, setIsLeftRightFlipped] = useState(false);
     const flipAllTextTags = (flipType) => {
-        if(!flipType){
+        if (!flipType) {
             console.error("You're clicking too fast, flipType is undefined");
             return;
         }
@@ -87,21 +86,18 @@ function useTextTags(imageRef, stageRef) {
                     } else if (textTag && textTag.initialPosition) {
                         let newX = imageCenter.x - (textTag.initialPosition.x - imageCenter.x);
                         newPosition = { ...textTag.initialPosition, x: newX };
-
                     }
-                    // Create a new text tag with the new position
-                    const newTextTag = {
-                        id: uuidv4(),
-                        initialPosition: newPosition,
-                        color: textTag.color,
-                        text: textTag.text,
-                        ...newAttributes
-                    };
+                }
+                // Create a new text tag with the new position
+                const newTextTag = {
+                    id: uuidv4(),
+                    initialPosition: newPosition,
+                    color: textTag.color,
+                    text: textTag.text,
+                    ...newAttributes
+                };
 
-                    return newTextTag;
-                });
-
-                return newTextTags;
+                return newTextTag;
             });
 
             if (flipType === "Up/Down") {
@@ -109,10 +105,12 @@ function useTextTags(imageRef, stageRef) {
             } else if (flipType === "Left/Right") {
                 setIsLeftRightFlipped(!isLeftRightFlipped);
             }
-        }
-    };
 
+            return newTextTags;
+        });
+    };
 
     return { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags };
 }
+
 export default useTextTags;
