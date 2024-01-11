@@ -1,11 +1,12 @@
 // CustomLine.jsx
 import React, { useState, useRef, useEffect } from 'react';
-import { Line, Circle, Group, Rect } from 'react-konva';
+import { Line, Circle, Group } from 'react-konva';
 import ContextMenu from '../menus/ContextMenu';
 import PerpendicularEnd from './lineEnds/PerpendicularEnd';
 import DottedEnd from './lineEnds/DottedEnd';
 import ArrowEnd from './lineEnds/ArrowEnd';
 import calculateWaveLinePoints from './lineEnds/calculateWaveLinePoints';
+import { v4 as uuidv4 } from 'uuid';
 
 const CIRCLE_SIZES = {
     CONTROL: { MIN: 5, MAX: 5 },
@@ -33,21 +34,21 @@ function CustomLine(props) {
         selectedLineID,
         setSelectedLineID,
         imageRef,
-        stageRef
+        stageRef,
     } = props;
     const isSelected = selectedLineID === id;
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
     const [controlPoint, setControlPoint] = useState({
-        x: (line.startPos.x + line.endPos.x) / 2,
-        y: (line.startPos.y + line.endPos.y) / 2,
+        x: (line.controlPoint.x + line.controlPoint.x) / 2,
+        y: (line.controlPoint.y + line.controlPoint.y) / 2,
     });
     const customLineRef = useRef();
-    //Anchor sizes
+    //anchor sizes
     const [controlCircleRadius, setControlCircleRadius] = useState(CIRCLE_SIZES.CONTROL.MAX);
     const [haloCircleRadius, setHaloCircleRadius] = useState(CIRCLE_SIZES.HALO.MAX);
     const [anchorCircleRadius, setAnchorCircleRadius] = useState(CIRCLE_SIZES.ANCHOR.MAX);
-    // Calculate the initial circle sizes relative to the image size
+    //calculate the initial circle sizes relative to the image size
     useEffect(() => {
         const image = imageRef.current;
         const initialImagePosition = { x: image.x(), y: image.y() };
@@ -82,7 +83,7 @@ function CustomLine(props) {
         };
     }, [imageRef, controlPoint, controlCircleRadius, haloCircleRadius, anchorCircleRadius]);
 
-    //Rerenders lines based on button inputs
+    //rerenders lines based on button inputs
     useEffect(() => {
         console.log(selectedColor, selectedLineStroke, selectedLineEnd)
         if (isSelected) {
@@ -119,17 +120,17 @@ function CustomLine(props) {
     const handleAnchorDragMove = (e) => {
         const newEndPos = e.target.position();
 
-        // Update the end position of the currently dragged line
+        //update the end position of the currently dragged line
         const updatedLines = lines.map(line =>
             line.id === id ? { ...line, endPos: newEndPos } : line
         );
 
-        // Find any lines that have a `drawnFromRef` that matches the current line's reference
+        //find any lines that have a `drawnFromId` that matches the current line's ID
         const connectedLines = updatedLines.filter(line =>
-            line.drawnFromRef === customLineRef.current
+            line.drawnFromId === id
         );
 
-        // Update the start position of the connected lines
+        //update the start position of the connected lines
         const finalLines = updatedLines.map(line =>
             connectedLines.find(connectedLine => connectedLine.id === line.id)
                 ? { ...line, startPos: newEndPos }
@@ -138,13 +139,13 @@ function CustomLine(props) {
 
         setLines(finalLines);
 
-        // Update the position of the larger circle
+        //update the position of the larger circle
         const largerCircle = customLineRef.current.findOne('.larger-circle');
         if (largerCircle) {
             largerCircle.position(newEndPos);
         }
 
-        // connected lines immediately
+        //connected lines immediately
         connectedLines.forEach(line => {
             const lineNode = customLineRef.current.findOne(`.line-${line.id}`);
             if (lineNode) {
@@ -155,12 +156,13 @@ function CustomLine(props) {
 
     const handleControlPointDragMove = (e) => {
         const newControlPoint = e.target.position();
+        //console.log('new control point', newControlPoint);
         setControlPoint(newControlPoint);
 
         // Update the line's points to create a quadratic curve
         const newPoints = [line.startPos.x, line.startPos.y, newControlPoint.x, newControlPoint.y, line.endPos.x, line.endPos.y];
         const updatedLines = lines.map(l =>
-            l.id === id ? { ...l, points: newPoints } : l
+            l.id === id ? { ...l, points: newPoints, controlPoint: newControlPoint } : l
         );
         setLines(updatedLines);
     };
@@ -189,47 +191,6 @@ function CustomLine(props) {
             y
         };
     };
-
-    // // Sine Wave Calculations
-    // // Calculate the direction of the line
-    // const dx = line.endPos.x - line.startPos.x;
-    // const dy = line.endPos.y - line.startPos.y;
-    // const distance = Math.sqrt(dx * dx + dy * dy);
-
-    // // Calculate the direction perpendicular to the line
-    // const perp_dx = -dy / distance;
-    // const perp_dy = dx / distance;
-
-    // // Define the frequency and amplitude of the waves
-    // const waves = 8;
-    // const amplitude = 8;
-
-    // // Calculate the number of points based on the distance
-    // const pointsCount = Math.floor(distance / 5); // Adjust the divisor to change the density of the points
-
-    // // Generate the points for the wavy line
-    // const waveLinePoints = [];
-    // for (let i = 0; i <= pointsCount; i++) {
-    //     const t = i / pointsCount;
-    //     const wave = amplitude * Math.sin(t * 2 * Math.PI * waves);
-
-    //     // Calculate the position along the curve defined by the control point
-    //     const u = 1 - t;
-    //     const tt = t * t;
-    //     const uu = u * u;
-    //     const p = { x: 0, y: 0 };
-    //     p.x = uu * line.startPos.x; //influence of the starting point
-    //     p.y = uu * line.startPos.y;
-    //     p.x += 2 * u * t * controlPoint.x; //influence of the control point
-    //     p.y += 2 * u * t * controlPoint.y;
-    //     p.x += tt * line.endPos.x; //influence of the end point
-    //     p.y += tt * line.endPos.y;
-
-    //     // Add the sine wave along the direction perpendicular to the curve
-    //     const x = p.x + perp_dx * wave;
-    //     const y = p.y + perp_dy * wave;
-    //     waveLinePoints.push(x, y);
-    // }
 
     let waveLinePoints = calculateWaveLinePoints(line, controlPoint);
     return (
@@ -302,8 +263,7 @@ function CustomLine(props) {
                             fill="grey"
                             onMouseDown={(e) => {
                                 const startPos = e.target.getStage().getPointerPosition();
-                                //need function to handle drawing from an anchor here
-                                startDrawing(startPos, '$', customLineRef.current);
+                                startDrawing(startPos, '$', id, null);
                                 setIsMouseDownOnAnchor(true);
                                 e.target.moveToTop();
                                 e.cancelBubble = true;
