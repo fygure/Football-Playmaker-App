@@ -242,9 +242,9 @@ function Stencil(props) {
     const handleOrientation = async (e) => {
         setIsProcessing(true);
         const newOrientation = e.target.value;
-        console.log('handle orientation',newOrientation);
+        console.log('handle orientation', newOrientation);
         flipAllTextTags(newOrientation);
-        flipAllShapes(newOrientation);
+        //flipAllShapes(newOrientation);
 
         setIsProcessing(false);
     };
