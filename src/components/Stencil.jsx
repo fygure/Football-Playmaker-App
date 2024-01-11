@@ -777,7 +777,7 @@ function Stencil(props) {
                     </Box>
 
 
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '7px' }}>
                         Text Tags
                     </h3>
                     <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
