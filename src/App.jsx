@@ -1,5 +1,5 @@
 // App.jsx
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import StageDimensionsContext from './contexts/StageDimensionsContext';
 import Canvas from './components/Canvas';
 import Stencil from './components/Stencil';
@@ -34,24 +34,26 @@ function App() {
   const [colorButtonPressCount, setColorButtonPressCount] = useState(0);
   const [strokeTypeButtonPressCount, setStrokeTypeButtonPressCount] = useState(0);
   const [strokeEndButtonPressCount, setStrokeEndButtonPressCount] = useState(0);
-  const [selectedShapes, setSelectedShapes] = useState([]);
+  const [selectedShapes, setSelectedShapes] = useState([]); //This is for Selection Rectangle
   const [selectedTextTags, setSelectedTextTags] = useState([]);
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
   const [selectedLineStroke, setSelectedLineStroke] = useState('straight'); // default straight line
-  const [selectedLineEnd, setSelectedLineEnd] = useState('arrow'); // default arrow line end
+  const [selectedLineEnd, setSelectedLineEnd] = useState('straight'); // default arrow line end
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
-  const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
-  const { setShapes, shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes} = useShapes(stageDimensions, imageRef);
-  const { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
-  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, stageRef);
   const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
+  const [currentLayerData, setCurrentLayerData] = useState(null);
+  const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
+  const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes } = useShapes(imageRef);
+  const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
+  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef);
+
 
   //TODO: Name of download should be play's name from user input
   // requires footer navbar
   const handleDownloadPNG = () => {
     var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
     var link = document.createElement('a');
-    link.download = 'stage.png';
+    link.download = 'stage.jpeg'; //.png also
     link.href = dataURL;
     document.body.appendChild(link);
     link.click();
@@ -107,6 +109,13 @@ function App() {
           }}>
             <div className="custom-scrollbar">
               <Stencil
+                shapes={shapes}
+                setShapes={setShapes}
+                textTags={textTags}
+                setTextTags={setTextTags}
+                setSelectedTextTags={setSelectedTextTags}
+                currentLayerData={currentLayerData}
+                setCurrentLayerData={setCurrentLayerData}
                 onAddFormation={addFormation}
                 onAddShape={addShape}
                 onAddTextTag={addTextTag}
@@ -132,6 +141,9 @@ function App() {
                 stageRef={stageRef}
                 flipAllTextTags={flipAllTextTags}
                 flipAllShapes={flipAllShapes}
+                backgroundImage={backgroundImage}
+                lines={lines}
+                setLines={setLines}
               />
             </div>
             <div style={{
@@ -151,6 +163,8 @@ function App() {
             }}>
               <Canvas
                 imageRef={imageRef}
+                currentLayerData={currentLayerData}
+                setCurrentLayerData={setCurrentLayerData}
                 colorButtonPressCount={colorButtonPressCount}
                 strokeTypeButtonPressCount={strokeTypeButtonPressCount}
                 strokeEndButtonPressCount={strokeEndButtonPressCount}

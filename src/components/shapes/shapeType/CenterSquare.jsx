@@ -2,20 +2,6 @@
 import React, { useState } from 'react';
 import { Rect, Group } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
-import { Anchor } from '../Anchor';
-
-const offset = 1.5;
-
-const getAnchorPoints = (width, height) => {
-    const halfWidth = width / 2;
-    const halfHeight = height / 2;
-    return [
-        { x: 0, y: -halfHeight * offset }, // top point
-        { x: halfWidth * offset, y: 0 }, // right point
-        { x: 0, y: halfHeight * offset }, // bottom point
-        { x: -halfWidth * offset, y: 0 }, // left point
-    ];
-}
 
 const CenterSquare = (props) => {
     const {
@@ -38,22 +24,6 @@ const CenterSquare = (props) => {
         selectedShapeID,
         setSelectedShapeID,
     } = props;
-
-    const anchorPoints = getAnchorPoints(rectSize.width, rectSize.height);
-    const anchors = anchorPoints.map((point, index) => (
-        <Anchor
-            key={`anchor-${index}`}
-            x={point.x}
-            y={point.y}
-            onMouseDown={(e) => {
-                const startPos = e.target.getStage().getPointerPosition();
-                console.log('Anchor onMouseDown', startPos);
-                startDrawing(startPos, id, shapeRef.current);
-                setIsMouseDownOnAnchor(true);
-                e.cancelBubble = true;
-            }}
-        />
-    ));
 
     const isSelected = selectedShapeID === id;
     const strokeOptions = { color: 'black', strokeWidth: 1 };
@@ -104,7 +74,7 @@ const CenterSquare = (props) => {
                         onMouseDown={(e) => {
                             const startPos = e.target.getStage().getPointerPosition();
                             console.log('Shape Halo onMouseDown', startPos);
-                            startDrawing(startPos, id, shapeRef.current);
+                            startDrawing(startPos, id, null, position);
                             setIsMouseDownOnAnchor(true);
                             e.cancelBubble = true;
                         }}

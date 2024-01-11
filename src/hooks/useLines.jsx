@@ -2,18 +2,28 @@
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const useLines = (imageRef, stageRef) => {
+const useLines = (imageRef) => {
     const [startPos, setStartPos] = useState(null);
     const [endPos, setEndPos] = useState(null);
     const [lines, setLines] = useState([]);
     const [attachedShapeId, setAttachedShapeId] = useState('$');
-    const [drawnFromRef, setDrawnFromRef] = useState('$');
+    const [drawnFromId, setDrawnFromId] = useState('$');
+    const [shapePos, setShapePos] = useState(null);
 
     //if shapeId remains '$', then line is attached from another line
-    const startDrawing = (pos, shapeId, shapeRef) => {
+    const startDrawing = (pos, shapeId, id, shapePosition) => {
+        if (shapePosition) {
+            setShapePos(shapePosition);
+        }
+        if (!id) {
+            console.log('Drawn From Shape ID:', shapeId);
+            setDrawnFromId(shapeId);
+        } else {
+            console.log('Drawn From line ID:', id);
+            setDrawnFromId(id);
+        }
         setStartPos(pos);
         setAttachedShapeId(shapeId);
-        setDrawnFromRef(shapeRef);
     };
 
 
@@ -25,31 +35,41 @@ const useLines = (imageRef, stageRef) => {
 
     const stopDrawing = () => {
         if (startPos && endPos) {
-            //console.log(drawnFromRef);
             let snapPos;
-            if (drawnFromRef.attrs.x !== undefined && drawnFromRef.attrs.y !== undefined) {
-                snapPos = { x: drawnFromRef.attrs.x, y: drawnFromRef.attrs.y };
+
+            if (drawnFromId === attachedShapeId) {
+                // drawnFromId is a shape ID
+                snapPos = shapePos;
             } else {
-                //console.log(drawnFromRef.children.slice(-1)[0].children.slice(1)[0].attrs.x);
-                snapPos = { x: drawnFromRef.children.slice(-1)[0].children.slice(-1)[0].attrs.x, y: drawnFromRef.children.slice(-1)[0].children.slice(-1)[0].attrs.y };
+                // drawnFromId is a line ID
+                const drawnFromLine = lines.find(line => line.id === drawnFromId);
+                if (drawnFromLine) {
+                    snapPos = drawnFromLine.endPos;
+                } else {
+                    console.error(`Line with ID ${drawnFromId} not found`);
+                    return;
+                }
             }
-            //console.log(startPos);
-            //const snapPos = { drawnFromRef.attrs.x, drawnFromRef.attrs.y };
+
             const newLine = {
                 startPos: snapPos,
                 endPos,
                 "attachedShapeId": attachedShapeId,
-                "drawnFromRef": drawnFromRef,
+                "drawnFromId": drawnFromId,
                 id: uuidv4(),
                 color: 'black',
                 strokeType: 'straight',
                 strokeEnd: 'straight',
+                controlPoint: {
+                    x: (snapPos.x + endPos.x) / 2,
+                    y: (snapPos.y + endPos.y) / 2,
+                },
             };
             setLines(prevLines => [...prevLines, newLine]);
             setStartPos(null);
             setEndPos(null);
             setAttachedShapeId('$');
-            setDrawnFromRef('$');
+            setDrawnFromId('$');
         }
     };
 
@@ -67,46 +87,50 @@ const useLines = (imageRef, stageRef) => {
 
     //handle resizing
     useEffect(() => {
-        const image = imageRef.current;
-        let initialImagePosition = { x: image.x(), y: image.y() };
-        let initialImageSize = { width: image.width(), height: image.height() };
+        if (imageRef.current) {
+            const image = imageRef.current;
+            let initialImagePosition = { x: image.x(), y: image.y() };
+            let initialImageSize = { width: image.width(), height: image.height() };
 
-        let initialRelativeLines = lines.map(line => {
-            let initialRelativeStartPos = {
-                x: (line.startPos.x - initialImagePosition.x) / initialImageSize.width,
-                y: (line.startPos.y - initialImagePosition.y) / initialImageSize.height,
-            };
-            let initialRelativeEndPos = {
-                x: (line.endPos.x - initialImagePosition.x) / initialImageSize.width,
-                y: (line.endPos.y - initialImagePosition.y) / initialImageSize.height,
-            };
-            return { ...line, startPos: initialRelativeStartPos, endPos: initialRelativeEndPos };
-        });
-
-        const handleResize = () => {
-            const newImagePosition = { x: image.x(), y: image.y() };
-            const newImageSize = { width: image.width(), height: image.height() };
-
-            const newLines = initialRelativeLines.map(line => {
-                const newStartPos = {
-                    x: line.startPos.x * newImageSize.width + newImagePosition.x,
-                    y: line.startPos.y * newImageSize.height + newImagePosition.y,
+            let initialRelativeLines = lines.map(line => {
+                let initialRelativeStartPos = {
+                    x: (line.startPos.x - initialImagePosition.x) / initialImageSize.width,
+                    y: (line.startPos.y - initialImagePosition.y) / initialImageSize.height,
                 };
-                const newEndPos = {
-                    x: line.endPos.x * newImageSize.width + newImagePosition.x,
-                    y: line.endPos.y * newImageSize.height + newImagePosition.y,
+                let initialRelativeEndPos = {
+                    x: (line.endPos.x - initialImagePosition.x) / initialImageSize.width,
+                    y: (line.endPos.y - initialImagePosition.y) / initialImageSize.height,
                 };
-                return { ...line, startPos: newStartPos, endPos: newEndPos };
+                return { ...line, startPos: initialRelativeStartPos, endPos: initialRelativeEndPos };
             });
 
-            setLines(newLines);
-        };
+            const handleResize = () => {
+                if (imageRef.current) {
+                    const newImagePosition = { x: image.x(), y: image.y() };
+                    const newImageSize = { width: image.width(), height: image.height() };
 
-        window.addEventListener('resize', handleResize);
+                    const newLines = initialRelativeLines.map(line => {
+                        const newStartPos = {
+                            x: line.startPos.x * newImageSize.width + newImagePosition.x,
+                            y: line.startPos.y * newImageSize.height + newImagePosition.y,
+                        };
+                        const newEndPos = {
+                            x: line.endPos.x * newImageSize.width + newImagePosition.x,
+                            y: line.endPos.y * newImageSize.height + newImagePosition.y,
+                        };
+                        return { ...line, startPos: newStartPos, endPos: newEndPos };
+                    });
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
+                    setLines(newLines);
+                }
+            };
+
+            window.addEventListener('resize', handleResize);
+
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
+        }
     }, [lines, imageRef]);
 
     return {
