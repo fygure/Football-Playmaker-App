@@ -123,7 +123,8 @@ function Shape(props) {
         lines.forEach((line) => {
             if (line.attachedShapeId === id) {
             onLineDelete(line.id);
-            }
+
+        }
   });
 
     };

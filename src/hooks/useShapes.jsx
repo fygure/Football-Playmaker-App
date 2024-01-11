@@ -466,78 +466,67 @@ function useShapes(stageDimensions, imageRef) {
     };
 
 
-//     const [isUpDownFlipped, setIsUpDownFlipped] = useState(false);
-//     const [isLeftRightFlipped, setIsLeftRightFlipped] = useState(false);
-//     const flipAllShapes = (flipType) => {
-//         console.log('Flip Type:', flipType);
-//         if(!flipType){
-//             console.log("I FOUND IT")
-//             return;
-//         }
-//         const imageCenter = {
-//             x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
-//             y: imageRef.current.y() + (imageRef.current.height() / 2)
-//         }
-//         setShapes(prevShapes => {
-//             // Create new text tags for all the text tags
-//             let newShapes = prevShapes.map(shape => {
-//                 let newPosition;
-//                 let newAttributes = {};
+    const [isUpDownFlipped, setIsUpDownFlipped] = useState(false);
+    const [isLeftRightFlipped, setIsLeftRightFlipped] = useState(false);
+    const flipAllShapes = (flipType) => {
+        if(!flipType){
+            console.error("You're clicking too fast, flipType in flipAllShapes is undefined");
+            return;
+        }
+        console.log('Flip Type:', flipType);
+        const imageCenter = {
+            x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
+            y: imageRef.current.y() + (imageRef.current.height() / 2)
+        }
+        setShapes(prevShapes => {
+            // Create new shapes for all the shapes
+            let newShapes = prevShapes.map(shape => {
+                let newPosition;
+                let newAttributes = {};
+                if (flipType === "Up/Down") {
+                    if (shape && 'x' in shape && 'y' in shape) {
+                        let newY = imageCenter.y - (shape.y - imageCenter.y);
+                        newPosition = { x: shape.x, y: newY };
+                        newAttributes = { x: newPosition.x, y: newPosition.y };
+                        console.log("shape initial newAttributes: ", newAttributes);
+                    } else if (shape && shape.initialPosition) {
+                        let newY = imageCenter.y - (shape.initialPosition.y - imageCenter.y);
+                        newPosition = { x: shape.initialPosition.x, y: newY };
+                        console.log("shape initial newPosition: ", newPosition);
+                    }
+                } else if (flipType === "Left/Right") {
+                    if (shape && 'x' in shape && 'y' in shape) {
+                        let newX = imageCenter.x - (shape.x - imageCenter.x);
+                        newPosition = { x: newX, y: shape.y };
+                        newAttributes = { x: newPosition.x, y: newPosition.y };
+                    } else if (shape && shape.initialPosition) {
+                        let newX = imageCenter.x - (shape.initialPosition.x - imageCenter.x);
+                        newPosition = { y: shape.initialPosition.y, x: newX };
+                    }
+                }
+                // Create a new text tag with the new position
+                const newShape = {
+                    id: uuidv4(),
+                    initialPosition: newPosition,
+                    initialColor: shape.initialColor,
+                    ...newAttributes,
+                    formationType: shape.formationType,
+                    shapeType: shape.shapeType,
+                    text: shape.text,
+                };
+                return newShape;
+            });
 
-//                 if (flipType === "Up/Down") {
-//                     if (shape && 'x' in shape && 'y' in shape) {
-//                         let newY = imageCenter.y - (shape.y - imageCenter.y);
-//                         newPosition = { x: shape.x, y: newY };
-//                         newAttributes = { x: newPosition.x, y: newPosition.y };
-//                     } else if (shape && shape.initialPosition) {
-//                         let newY = imageCenter.y - (shape.initialPosition.y - imageCenter.y);
-//                         newPosition = { ...shape.initialPosition, y: newY };
-//                     }
-//                 } else if (flipType === "Left/Right") {
-//                     if (shape && 'x' in shape && 'y' in shape) {
-//                         let newX = imageCenter.x - (shape.x - imageCenter.x);
-//                         newPosition = { x: newX, y: shape.y };
-//                         newAttributes = { x: newPosition.x, y: newPosition.y };
-//                     } else if (shape && shape.initialPosition) {
-//                         let newX = imageCenter.x - (shape.initialPosition.x - imageCenter.x);
-//                         newPosition = { ...shape.initialPosition, x: newX };
-//                     }
-//                 }
-//                 // Create a new text tag with the new position
-//                 const newShape = {
-//                     ...shape,
-//                     initialPosition: newPosition,
-//                     ...newAttributes
-//                 };
-//                 return newShape;
-//             });
+            return newShapes;
+        });
 
-//             return newShapes;
-//         });
+        if (flipType === "Up/Down") {
+            setIsUpDownFlipped(!isUpDownFlipped);
+        } else if (flipType === "Left/Right") {
+            setIsLeftRightFlipped(!isLeftRightFlipped);
+        }
+};
 
-//         if (flipType === "Up/Down") {
-//             setIsUpDownFlipped(!isUpDownFlipped);
-//         } else if (flipType === "Left/Right") {
-//             setIsLeftRightFlipped(!isLeftRightFlipped);
-//         }
-// };
-
-
-
-    //     // const middlePosition = {
-    //     //     x: imageRef.current.x() + (imageRef.current.width() / 2),
-    //     //     y: imageRef.current.height() / 2
-    //     // };
-
-    //     // const imageSize = {
-    //     //     width: imageRef.current.width(),
-    //     //     height: imageRef.current.height()
-    //     // };
-
-    //     // const newShape =  {id: uuidv4(), shapeType: 'DefenderC', initialPosition: { x: middlePosition.x - imageSize.width * 0.2, y: middlePosition.y + imageSize.height * 0.075 }, initialColor: 'black', text: 'C' }
-    //     // setShapes([newShape]);
-    // };
-
-    return { setShapes, shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, };
+    return { setShapes, shapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes};
 }
 export default useShapes;

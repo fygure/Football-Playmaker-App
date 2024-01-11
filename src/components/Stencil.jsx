@@ -242,7 +242,7 @@ function Stencil(props) {
         const newOrientation = e.target.value;
         console.log('handle orientation', newOrientation);
         flipAllTextTags(newOrientation);
-        //flipAllShapes(newOrientation);
+        flipAllShapes(newOrientation);
         setIsProcessing(false);
     };
 
