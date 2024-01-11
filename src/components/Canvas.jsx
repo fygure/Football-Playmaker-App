@@ -77,8 +77,8 @@ function Canvas(props) {
 
     useEffect(() => {
         function fitStageIntoParentContainer() {
-            console.log('stageRef.current:', stageRef.current);
-            console.log('containerRef.current:', containerRef.current);
+            // console.log('stageRef.current:', stageRef.current);
+            // console.log('containerRef.current:', containerRef.current);
             if (containerRef.current && stageRef.current) {
                 const { offsetWidth, offsetHeight } = containerRef.current;
 
@@ -149,7 +149,7 @@ function Canvas(props) {
 
     //completes drawing the line
     const handleStageMouseUp = (e) => {
-        const endPos = e.target.getStage().getPointerPosition();
+        //const endPos = e.target.getStage().getPointerPosition();
         //console.log('Stage onMouseUp', endPos);
         //console.log('Selected Line ID:', selectedLineID);
         stopDrawing();
@@ -170,23 +170,45 @@ function Canvas(props) {
                 >
                     {currentLayerData ?
                         <LoadedLayer
-                            //TODO:
-                            //currentLayerData is what holds everything as an object
-                            //before setCurrentLayerData is called, 
-                            //lines/shapes/textTags are deep copied & stored in an object with a play name associated with it.
-                            //depending on the play name, it finds the play array of the object within the plays array
-                            //and sets the currentLayerData to that play object
-                            //currentLayerData object will have a play name key value, shapesList etc key values and the image?
-                            //LoadedStage will render the stage similar to how its done below
                             currentLayerData={currentLayerData}
                             stageRef={stageRef}
                             imageRef={imageRef}
                             containerRef={containerRef}
                             image={image}
                             handleImageClick={handleImageClick}
-                        //TODO: pass in all the props for all image, shapes, textTags, lines, drawing line
+                            textTags={textTags}
+                            selectedColor={selectedColor}
+                            onTextTagChange={onTextTagChange}
+                            onTextTagDelete={onTextTagDelete}
+                            onHideTextTagContextMenu={onHideTextTagContextMenu}
+                            setSelectedTextTags={setSelectedTextTags}
+                            selectedTextTagID={selectedTextTagID}
+                            setSelectedTextTagID={setSelectedTextTagID}
+                            shapes={shapes}
+                            onShapeChange={onShapeChange}
+                            onShapeDelete={onShapeDelete}
+                            onLineDelete={onLineDelete}
+                            onHideContextMenu={onHideContextMenu}
+                            setSelectedShapes={setSelectedShapes}
+                            selectedShapeID={selectedShapeID}
+                            setSelectedShapeID={setSelectedShapeID}
+                            lines={lines}
+                            setLines={setLines}
+                            setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
+                            startDrawing={startDrawing}
+                            startPos={startPos}
+                            endPos={endPos}
+                            selectedLineID={selectedLineID}
+                            setSelectedLineID={setSelectedLineID}
+                            colorButtonPressCount={colorButtonPressCount}
+                            strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                            strokeEndButtonPressCount={strokeEndButtonPressCount}
+                            onLineChange={onLineChange}
+                            selectedLineStroke={selectedLineStroke}
+                            selectedLineEnd={selectedLineEnd}
                         /> : (
                             <Layer>
+                                {/* TODO: add default text tag for play name HERE */}
                                 {/* Image tag = background image (field type) */}
                                 <Image
                                     ref={imageRef}
@@ -241,7 +263,8 @@ function Canvas(props) {
                                         stageRef={stageRef}
                                         imageRef={imageRef}
                                         setSelectedShapes={setSelectedShapes}
-                                        selectedShapeID={selectedShapeID} setSelectedShapeID={setSelectedShapeID}
+                                        selectedShapeID={selectedShapeID}
+                                        setSelectedShapeID={setSelectedShapeID}
                                     />
                                 ))}
                                 {textTags.map((textTag) => (

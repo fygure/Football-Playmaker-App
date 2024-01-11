@@ -79,9 +79,11 @@ const lineButtonStyle = {
 
 function Stencil(props) {
     const {
-        // undo,
-        // redo,
         textTags,
+        setTextTags,
+        shapes,
+        setShapes,
+        setSelectedTextTags,
         currentLayerData,
         setCurrentLayerData,
         onChangeLineStroke,
@@ -111,6 +113,8 @@ function Stencil(props) {
         stageRef,
         flipAllTextTags,
         backgroundImage,
+        lines,
+        setLines,
     } = props;
 
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
@@ -925,6 +929,12 @@ function Stencil(props) {
                             currentLayerData={currentLayerData}
                             backgroundImage={backgroundImage}
                             textTags={textTags}
+                            setTextTags={setTextTags}
+                            setSelectedTextTags={setSelectedTextTags}
+                            shapes={shapes}
+                            setShapes={setShapes}
+                            lines={lines}
+                            setLines={setLines}
                         />
                     </Grid>
                 </Box>

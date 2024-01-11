@@ -29,7 +29,7 @@ function App() {
   const [colorButtonPressCount, setColorButtonPressCount] = useState(0);
   const [strokeTypeButtonPressCount, setStrokeTypeButtonPressCount] = useState(0);
   const [strokeEndButtonPressCount, setStrokeEndButtonPressCount] = useState(0);
-  const [selectedShapes, setSelectedShapes] = useState([]);
+  const [selectedShapes, setSelectedShapes] = useState([]); //This is for Selection Rectangle
   const [selectedTextTags, setSelectedTextTags] = useState([]);
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
   const [selectedLineStroke, setSelectedLineStroke] = useState('straight'); // default straight line
@@ -84,9 +84,11 @@ function App() {
           }}>
             <div className="custom-scrollbar">
               <Stencil
-                // undo={undo}
-                // redo={redo}
+                shapes={shapes}
+                setShapes={setShapes}
                 textTags={textTags}
+                setTextTags={setTextTags}
+                setSelectedTextTags={setSelectedTextTags}
                 currentLayerData={currentLayerData}
                 setCurrentLayerData={setCurrentLayerData}
                 onAddFormation={addFormation}
@@ -114,6 +116,8 @@ function App() {
                 stageRef={stageRef}
                 flipAllTextTags={flipAllTextTags}
                 backgroundImage={backgroundImage}
+                lines={lines}
+                setLines={setLines}
               />
             </div>
             <div style={{

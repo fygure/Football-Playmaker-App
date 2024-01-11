@@ -1,20 +1,64 @@
 //LoadedLayer.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Stage, Layer, Text, Image } from 'react-konva';
+import { Layer, Text, Image, Line } from 'react-konva';
 import TextTag from './TextTag';
+import Shape from './Shape';
+import CustomLine from './CustomLine';
 // import useImage from 'use-image';
 
 const LoadedLayer = (props) => {
     const {
         currentLayerData,
         stageRef,
-        // imageRef,
+        imageRef,
         image,
         containerRef,
         handleImageClick,
+        textTags,
+        selectedColor,
+        onTextTagChange,
+        onTextTagDelete,
+        onHideTextTagContextMenu,
+        setSelectedTextTags,
+        selectedTextTagID,
+        setSelectedTextTagID,
+        shapes,
+        lines,
+        setLines,
+        setIsMouseDownOnAnchor,
+        startDrawing,
+        onShapeChange,
+        onShapeDelete,
+        onLineDelete,
+        onHideContextMenu,
+        setSelectedShapes,
+        selectedShapeID,
+        setSelectedShapeID,
+        startPos,
+        endPos,
+        selectedLineID,
+        setSelectedLineID,
+        colorButtonPressCount,
+        strokeTypeButtonPressCount,
+        strokeEndButtonPressCount,
+        onLineChange,
+        selectedLineStroke,
+        selectedLineEnd,
     } = props;
 
-    const imageRef = useRef(null);
+    const middlePosition = {
+        x: imageRef.current.x() + (imageRef.current.width() / 2),
+        y: imageRef.current.height() / 2
+    };
+
+    const imageSize = {
+        width: imageRef.current.width(),
+        height: imageRef.current.height()
+    };
+
+    const playNamePos = { x: middlePosition.x - imageSize.width * 0.5, y: middlePosition.y - imageSize.height * 0.5 };
+
+    //const imageRef = useRef(null);
     //FIXME: rendering image based on currentLayerData, problem is in useBackground and stencil
     //const [image] = useImage(currentLayerData.backgroundImage);
 
@@ -23,6 +67,7 @@ const LoadedLayer = (props) => {
         console.log('currentLayerData:', currentLayerData);
     }, [currentLayerData]);
 
+    //NOTE: if x and y are undefined, use initialPosition else use x and y
     return (
         <>
             <Layer>
@@ -35,14 +80,92 @@ const LoadedLayer = (props) => {
                     height={image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
                     onClick={handleImageClick}
                 />
+                {/* Play Name Text */}
                 <Text
                     text={currentLayerData.name}
-                    x={50}
-                    y={50}
-                    fontSize={15}
-                    fontWeight={12}
+                    x={playNamePos.x}
+                    y={playNamePos.y}
+                    textDecoration='underline'
+                    fontSize={25}
+                    fontStyle='bold'
+                    fontFamily='Inter, sans-serif'
                     fill={'black'}
                 />
+                {/* Sorting causes lines to render later */}
+                {lines.sort((a, b) => (a.id === selectedLineID ? 1 : -1)).map((line, index) => (
+                    <CustomLine
+                        key={line.id}
+                        id={line.id}
+                        line={line}
+                        lines={lines}
+                        color={line.color}
+                        colorButtonPressCount={colorButtonPressCount}
+                        strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                        strokeEndButtonPressCount={strokeEndButtonPressCount}
+                        selectedColor={selectedColor}
+                        selectedLineStroke={selectedLineStroke}
+                        selectedLineEnd={selectedLineEnd}
+                        onLineDelete={onLineDelete}
+                        onLineChange={onLineChange}
+                        setLines={setLines}
+                        selectedLineID={selectedLineID}
+                        setSelectedLineID={setSelectedLineID}
+                        setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
+                        startDrawing={startDrawing}
+                        stageRef={stageRef}
+                        imageRef={imageRef}
+                    />
+                ))}
+                {shapes.map((shape) => (
+                    <Shape
+                        lines={lines}
+                        setLines={setLines}
+                        setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
+                        startDrawing={startDrawing}
+                        key={shape.id}
+                        id={shape.id}
+                        shapeType={shape.shapeType}
+                        shapes={shapes}
+                        initialPosition={shape.x && shape.y ? { x: shape.x, y: shape.y } : shape.initialPosition}
+                        initialColor={shape.initialColor}
+                        onShapeChange={onShapeChange}
+                        onShapeDelete={onShapeDelete}
+                        onLineDelete={onLineDelete}
+                        onHideContextMenu={onHideContextMenu}
+                        stageRef={stageRef}
+                        imageRef={imageRef}
+                        setSelectedShapes={setSelectedShapes}
+                        selectedShapeID={selectedShapeID}
+                        setSelectedShapeID={setSelectedShapeID}
+                    />
+                ))}
+                {textTags.map((textTag) => (
+                    <TextTag
+                        key={textTag.id}
+                        id={textTag.id}
+                        text={textTag.text}
+                        textTags={textTags}
+                        initialPosition={textTag.x && textTag.y ? { x: textTag.x, y: textTag.y } : textTag.initialPosition}
+                        selectedColor={selectedColor}
+                        color={textTag.color}
+                        onTextTagChange={onTextTagChange}
+                        onTextTagDelete={onTextTagDelete}
+                        onHideTextTagContextMenu={onHideTextTagContextMenu}
+                        imageRef={imageRef}
+                        setSelectedTextTags={setSelectedTextTags}
+                        selectedTextTagID={selectedTextTagID} setSelectedTextTagID={setSelectedTextTagID}
+                    />
+                ))}
+                {/* drawing line */}
+                {startPos && endPos && (
+                    <Line
+                        points={[startPos.x, startPos.y, endPos.x, endPos.y]}
+                        stroke="#7393B3"
+                        strokeWidth={4}
+                        tension={0.5}
+                        lineCap="round"
+                    />
+                )}
             </Layer>
         </>
     )

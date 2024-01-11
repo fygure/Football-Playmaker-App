@@ -5,15 +5,27 @@ import { v4 as uuidv4 } from 'uuid';
 const useLines = (imageRef) => {
     const [startPos, setStartPos] = useState(null);
     const [endPos, setEndPos] = useState(null);
+    // const [controlPoint, setControlPoint] = useState({
+    //     x: 0,
+    //     y: 0,
+    // });
     const [lines, setLines] = useState([]);
     const [attachedShapeId, setAttachedShapeId] = useState('$');
     const [drawnFromRef, setDrawnFromRef] = useState('$');
+    const [drawnFromId, setDrawnFromId] = useState('$');
 
     //if shapeId remains '$', then line is attached from another line
-    const startDrawing = (pos, shapeId, shapeRef) => {
+    const startDrawing = (pos, shapeId, shapeRef, id) => {
+        if (!id) {
+            console.log('Drawn From Shape ID:', shapeId);
+            setDrawnFromId(shapeId);
+        } else {
+            console.log('Drawn From line ID:', id);
+            setDrawnFromId(id);
+        }
         setStartPos(pos);
         setAttachedShapeId(shapeId);
-        setDrawnFromRef(shapeRef);
+        //setDrawnFromRef(shapeRef);
     };
 
 
@@ -27,29 +39,51 @@ const useLines = (imageRef) => {
         if (startPos && endPos) {
             //console.log(drawnFromRef);
             let snapPos;
-            if (drawnFromRef.attrs.x !== undefined && drawnFromRef.attrs.y !== undefined) {
-                snapPos = { x: drawnFromRef.attrs.x, y: drawnFromRef.attrs.y };
+
+            if (drawnFromId === attachedShapeId) {
+                // drawnFromId is a shape ID
+                snapPos = startPos;
             } else {
-                //console.log(drawnFromRef.children.slice(-1)[0].children.slice(1)[0].attrs.x);
-                snapPos = { x: drawnFromRef.children.slice(-1)[0].children.slice(-1)[0].attrs.x, y: drawnFromRef.children.slice(-1)[0].children.slice(-1)[0].attrs.y };
+                // drawnFromId is a line ID
+                const drawnFromLine = lines.find(line => line.id === drawnFromId);
+                if (drawnFromLine) {
+                    snapPos = drawnFromLine.endPos;
+                } else {
+                    console.error(`Line with ID ${drawnFromId} not found`);
+                    return;
+                }
             }
+
+            // let snapPos;
+            // if (drawnFromRef.attrs.x !== undefined && drawnFromRef.attrs.y !== undefined) {
+            //     snapPos = { x: drawnFromRef.attrs.x, y: drawnFromRef.attrs.y };
+            // } else {
+            //     console.log(drawnFromRef.children.slice(-1)[0].children.slice(1)[0].attrs.x);
+            //     snapPos = { x: drawnFromRef.children.slice(-1)[0].children.slice(-1)[0].attrs.x, y: drawnFromRef.children.slice(-1)[0].children.slice(-1)[0].attrs.y };
+            // }
             //console.log(startPos);
             //const snapPos = { drawnFromRef.attrs.x, drawnFromRef.attrs.y };
             const newLine = {
                 startPos: snapPos,
                 endPos,
                 "attachedShapeId": attachedShapeId,
-                "drawnFromRef": drawnFromRef,
+                //"drawnFromRef": drawnFromRef,
+                "drawnFromId": drawnFromId,
                 id: uuidv4(),
                 color: 'black',
                 strokeType: 'straight',
                 strokeEnd: 'straight',
+                controlPoint: {
+                    x: (snapPos.x + endPos.x) / 2,
+                    y: (snapPos.y + endPos.y) / 2,
+                },
             };
             setLines(prevLines => [...prevLines, newLine]);
             setStartPos(null);
             setEndPos(null);
             setAttachedShapeId('$');
-            setDrawnFromRef('$');
+            setDrawnFromId('$');
+            //setDrawnFromRef('$');
         }
     };
 

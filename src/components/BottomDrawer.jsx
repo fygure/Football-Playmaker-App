@@ -26,6 +26,12 @@ function BottomDrawer(props) {
         setCurrentLayerData,
         backgroundImage,
         textTags,
+        setTextTags,
+        setSelectedTextTags,
+        shapes,
+        setShapes,
+        lines,
+        setLines,
     } = props;
 
     const [state, setState] = useState({
@@ -55,11 +61,32 @@ function BottomDrawer(props) {
         closeDialog();
     };
 
+    const checkIfDrawerEmpty = () => {
+        if (items.length === 0) {
+            console.log('Play drawer is empty');
+            //FIXME: ASK CLIENT ABOUT THIS NAMING
+            // //Create empty objects for everything
+            const newItem = {
+                id: uuidv4(),
+                name: 'Default',
+                backgroundImage: backgroundImage,
+                textTagList: [],
+                shapeList: [],
+                lineList: [],
+                //drawingLine: (startPos && endPos)
+            };
+            setItems([newItem]);
+        }
+    };
+
     const toggleDrawer = (anchor, open) => (event) => {
+        setSelectedTextTags([]);
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
         setState({ ...state, [anchor]: open });
+
+        checkIfDrawerEmpty();
 
         console.log('Current items in drawer:', items);
         // const stage = stageRef.stageRef.current;
@@ -68,34 +95,60 @@ function BottomDrawer(props) {
     };
 
     const addItem = () => {
+        setSelectedTextTags([]);
         openDialog('Add Play', '', (newPlayName) => {
             if (newPlayName !== null) {
-                // Check if a list item with the same name already exists
                 const itemExists = items.some(item => item.name === newPlayName);
                 if (itemExists) {
-                    // If a list item with the same name exists, show an error message
                     alert('A play with this name already exists.');
+                } else if (newPlayName === '') {
+                    alert('Please enter a name for the play.');
                 } else {
-                    // If no list item with the same name exists, add the new item
-                    //TODO: Add deep copy of shapes, textTags and lines to newItem
-                    console.log('Adding play with text tags:', textTags);
-
+                    //TODO: Add deep copy of shapes and lines to newItem
                     // const shallowCopyTextTags = [...textTags];
-                    const deepCopyTextTags = _.cloneDeep(textTags);
+
                     // console.log('Shallow copy comparison:', shallowCopyTextTags[0] === textTags[0]);
                     // console.log('Deep copy comparison:', deepCopyTextTags[0] === textTags[0]);
+                    const deepCopyTextTags = _.cloneDeep(textTags).map(tag => ({ ...tag, id: uuidv4() }));
 
+                    let shapeIdMapping = {};
+                    const deepCopyShapes = _.cloneDeep(shapes).map(shape => {
+                        const newId = uuidv4();
+                        shapeIdMapping[shape.id] = newId;
+                        return { ...shape, id: newId };
+                    });
+
+                    let lineIdMapping = {};
+                    //Mapping of old line IDs to new line IDs
+                    const deepCopyLines = _.cloneDeep(lines).map(line => {
+                        const newId = uuidv4();
+                        lineIdMapping[line.id] = newId;
+                        return { ...line, id: newId, attachedShapeId: shapeIdMapping[line.attachedShapeId] };
+                    });
+                    //update drawnFromId to new line IDs
+                    const deepCopyLinesAgain = _.cloneDeep(deepCopyLines).map(line => {
+                        return { ...line, drawnFromId: lineIdMapping[line.drawnFromId] || line.drawnFromId };
+                    });
+
+                    console.log('Adding play:', newPlayName);
+                    console.log('||', newPlayName, 'Text Tags:', deepCopyTextTags);
+                    console.log('||', newPlayName, 'Shapes:', deepCopyShapes);
+                    console.log('||', newPlayName, 'Lines:', deepCopyLines);
                     const newItem = {
                         id: uuidv4(),
                         name: newPlayName,
                         backgroundImage: backgroundImage,
                         textTagList: deepCopyTextTags,
-                        //shapeList:
-                        //textTagList:
-                        //lineList:
+                        shapeList: deepCopyShapes,
+                        lineList: deepCopyLinesAgain,
                         //drawingLine: (startPos && endPos)
                     };
                     setItems((prevItems) => [...prevItems, newItem]);
+                    setTextTags(newItem.textTagList);
+                    setShapes(newItem.shapeList);
+                    setLines(newItem.lineList);
+                    setCurrentLayerData(newItem);
+                    setSelectedItem(newItem.id);
                 }
             }
         });
@@ -103,6 +156,7 @@ function BottomDrawer(props) {
 
     const removeItem = (index) => {
         setItems(items.filter((item, i) => i !== index));
+        checkIfDrawerEmpty();
     };
 
     const renameItem = (index) => {
@@ -122,20 +176,24 @@ function BottomDrawer(props) {
         });
     };
 
+    //TODO: add button on play item to save current changes to play
     const handleItemClick = (text) => {
+        console.log('IM HERE', text);
         const playName = text.name;
         //Pass playName to a function that can render 
         //the stage with that playName as the ID
         console.log('Rendering play:', playName);
-
         console.log(currentLayerData);
-        //TODO:
-        //Extract the items list and find the item with playName associated
-        // create DEEP COPY of the item in layerData
-        const item = items.find(item => item.name === playName);
-        const layerData = _.cloneDeep(item);
-        //console.log(layerData);
 
+        //Extract the items list and find the item with playName associated
+        const item = items.find(item => item.name === playName);
+
+        //Create DEEP COPY of the item in layerData
+        const layerData = _.cloneDeep(item);
+
+        setTextTags(layerData.textTagList);
+        setShapes(layerData.shapeList);
+        setLines(layerData.lineList);
         setCurrentLayerData(layerData);
         setSelectedItem(text.id);
     };
@@ -147,7 +205,7 @@ function BottomDrawer(props) {
         >
             <Grid container spacing={2}>
                 {items.map((text, index) => (
-                    <Grid item xs={4}>
+                    <Grid item xs={4} key={text.id}>
                         <ListItem
                             key={index}
                             onKeyDown={toggleDrawer(anchor, false)}

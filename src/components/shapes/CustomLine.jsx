@@ -6,6 +6,7 @@ import PerpendicularEnd from './lineEnds/PerpendicularEnd';
 import DottedEnd from './lineEnds/DottedEnd';
 import ArrowEnd from './lineEnds/ArrowEnd';
 import calculateWaveLinePoints from './lineEnds/calculateWaveLinePoints';
+import { v4 as uuidv4 } from 'uuid';
 
 const CIRCLE_SIZES = {
     CONTROL: { MIN: 5, MAX: 5 },
@@ -39,8 +40,8 @@ function CustomLine(props) {
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
     const [controlPoint, setControlPoint] = useState({
-        x: (line.startPos.x + line.endPos.x) / 2,
-        y: (line.startPos.y + line.endPos.y) / 2,
+        x: (line.controlPoint.x + line.controlPoint.x) / 2,
+        y: (line.controlPoint.y + line.controlPoint.y) / 2,
     });
     const customLineRef = useRef();
     //Anchor sizes
@@ -124,9 +125,9 @@ function CustomLine(props) {
             line.id === id ? { ...line, endPos: newEndPos } : line
         );
 
-        // Find any lines that have a `drawnFromRef` that matches the current line's reference
+        // Find any lines that have a `drawnFromId` that matches the current line's ID
         const connectedLines = updatedLines.filter(line =>
-            line.drawnFromRef === customLineRef.current
+            line.drawnFromId === id
         );
 
         // Update the start position of the connected lines
@@ -162,6 +163,7 @@ function CustomLine(props) {
         const updatedLines = lines.map(l =>
             l.id === id ? { ...l, points: newPoints } : l
         );
+        onLineChange(id, { controlPoint: newControlPoint });
         setLines(updatedLines);
     };
 
@@ -261,8 +263,8 @@ function CustomLine(props) {
                             fill="grey"
                             onMouseDown={(e) => {
                                 const startPos = e.target.getStage().getPointerPosition();
-                                //need function to handle drawing from an anchor here
-                                startDrawing(startPos, '$', customLineRef.current);
+
+                                startDrawing(startPos, '$', customLineRef.current, id);
                                 setIsMouseDownOnAnchor(true);
                                 e.target.moveToTop();
                                 e.cancelBubble = true;
