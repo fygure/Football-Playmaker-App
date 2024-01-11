@@ -1,11 +1,13 @@
 // Stencil.jsx
-//TODO: add play name to file name for handleDownload function
 import React, { useState } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import FeedBackForm from './feedback/FeedBackForm.jsx';
 import FlipIcon from '@mui/icons-material/Flip';
 import theme from '../config/theme.js';
 import { set } from 'lodash';
+import BottomDrawer from './BottomDrawer.jsx';
+
 
 const QBProgressionButtons = [
     { text: 'Check Mark', icon: 'check' },
@@ -79,6 +81,13 @@ const lineButtonStyle = {
 
 function Stencil(props) {
     const {
+        textTags,
+        setTextTags,
+        shapes,
+        setShapes,
+        setSelectedTextTags,
+        currentLayerData,
+        setCurrentLayerData,
         onChangeLineStroke,
         onChangeLineEnd,
         onAddFormation,
@@ -106,6 +115,10 @@ function Stencil(props) {
         stageRef,
         flipAllTextTags,
         flipAllShapes,
+        backgroundImage,
+        lines,
+        setLines,
+
     } = props;
 
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
@@ -114,7 +127,9 @@ function Stencil(props) {
     const [toggleDefenseLeftRight, setToggleDefenseLeftRight] = useState(false);
     const [selectedColorButton, setSelectedColorButton] = useState(0); // 0 is first index of colorButtons array
     const [selectedStrokeButton, setSelectedStrokeButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'stroke'));
-    const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'arrow' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
+    const [selectedFeedback, setSelectedFeedback] = useState(false);
+    const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
+
     const shapeColor = 'white';
 
     function handleDownload() {
@@ -258,6 +273,25 @@ function Stencil(props) {
         setStrokeEndButtonPressCount(prevCount => prevCount + 1);
     };
 
+    //     const [selectedFeedback, setSelectedFeedback] = useState(false);
+
+    const handleFeedbackFormOpen = () => {
+        setSelectedFeedback(true);
+    };
+
+    const handleFeedbackFormClose = () => {
+        setSelectedFeedback(false);
+    };
+
+    const handleFeedbackSubmit = (event) => {
+        event.preventDefault();
+        const email = event.target.elements.email.value;
+        const feedback = event.target.elements.feedback.value;
+        console.log(`Submission received: ${email} ${feedback}`);
+        setSelectedFeedback(false);
+    };
+
+
     // Components for the stencil
     const CheckboxOption = ({ onChange, children, checked }) => (
         <FormControlLabel
@@ -272,202 +306,205 @@ function Stencil(props) {
 
     return (
         <>
-            <div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
 
-                    <h3 style={{ marginBottom: '2px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
-                        Field
-                    </h3>
-                    <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <div>
-                                <ToggleButtonGroup onChange={handleSetFieldType} exclusive aria-label="field type" sx={{ gap: '10px', flexWrap: 'wrap' }}>
-                                    <ToggleButton value="hs" aria-label="high school" style={{
-                                        background: fieldType === "hs" ? 'white' : '#333',
-                                        color: fieldType === "hs" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        HIGH SCHOOL
-                                    </ToggleButton>
-                                    <ToggleButton value="college" aria-label="college" style={{
-                                        background: fieldType === "college" ? 'white' : '#333',
-                                        color: fieldType === "college" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        COLLEGE
-                                    </ToggleButton>
-                                    <ToggleButton value="nfl" aria-label="nfl" style={{
-                                        background: fieldType === "nfl" ? 'white' : '#333',
-                                        color: fieldType === "nfl" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        NFL
-                                    </ToggleButton>
-                                    <ToggleButton value="blank" aria-label="blank" style={{
-                                        background: fieldType === "blank" ? 'white' : '#333',
-                                        color: fieldType === "blank" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        BLANK
-                                    </ToggleButton>
-                                </ToggleButtonGroup>
-                            </div>
-                            <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-26px', marginTop: '-6px', flexWrap: 'wrap' }}>
-                                {fieldType !== 'blank' && (
-                                    <CheckboxOption onChange={handleToggleRedZone} checked={zone === 'redzone'}>Red Zone</CheckboxOption>
-                                )}
-                                {(fieldType === 'nfl' || fieldType === 'college') && (
-                                    <CheckboxOption onChange={handleToggleRedLine} checked={redLine}>Red Line</CheckboxOption>
-                                )}
-                            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
+
+                {/* <Button onClick={() => { }} variant='contained'>Undo</Button>
+                    <Button onClick={() => { }} variant='contained'>Redo</Button> */}
+
+                <h3 style={{ marginBottom: '2px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                    Field
+                </h3>
+                <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div>
+                            <ToggleButtonGroup onChange={handleSetFieldType} exclusive aria-label="field type" sx={{ gap: '10px', flexWrap: 'wrap' }}>
+                                <ToggleButton value="hs" aria-label="high school" style={{
+                                    background: fieldType === "hs" ? 'white' : '#333',
+                                    color: fieldType === "hs" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    HIGH SCHOOL
+                                </ToggleButton>
+                                <ToggleButton value="college" aria-label="college" style={{
+                                    background: fieldType === "college" ? 'white' : '#333',
+                                    color: fieldType === "college" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    COLLEGE
+                                </ToggleButton>
+                                <ToggleButton value="nfl" aria-label="nfl" style={{
+                                    background: fieldType === "nfl" ? 'white' : '#333',
+                                    color: fieldType === "nfl" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    NFL
+                                </ToggleButton>
+                                <ToggleButton value="blank" aria-label="blank" style={{
+                                    background: fieldType === "blank" ? 'white' : '#333',
+                                    color: fieldType === "blank" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    BLANK
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </div>
+                        <div style={{ display: 'flex', gap: '25px', padding: '10px', marginLeft: '-26px', marginTop: '-6px', flexWrap: 'wrap' }}>
+                            {fieldType !== 'blank' && (
+                                <CheckboxOption onChange={handleToggleRedZone} checked={zone === 'redzone'}>Red Zone</CheckboxOption>
+                            )}
+                            {(fieldType === 'nfl' || fieldType === 'college') && (
+                                <CheckboxOption onChange={handleToggleRedLine} checked={redLine}>Red Line</CheckboxOption>
+                            )}
                         </div>
                     </div>
+                </div>
 
 
-                    <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                        <h3 style={{
-                            marginBottom: '2px',
-                            fontFamily: 'Inter, sans-serif',
-                            fontWeight: 500,
-                            marginTop: '-5px',
-                            maxWidth: '100%',
-                            marginRight: '10px',
-                            whiteSpace: 'normal',
-                        }}>
-                            Offense Formation
-                        </h3>
-                        <Button
-                            color="white"
-                            value="OffenseExtra"
-                            sx={{
-                                background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
-                                ':hover': {
-                                    textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                },
+                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <h3 style={{
+                        marginBottom: '2px',
+                        fontFamily: 'Inter, sans-serif',
+                        fontWeight: 500,
+                        marginTop: '-5px',
+                        maxWidth: '100%',
+                        marginRight: '10px',
+                        whiteSpace: 'normal',
+                    }}>
+                        Offense Formation
+                    </h3>
+                    <Button
+                        color="white"
+                        value="OffenseExtra"
+                        sx={{
+                            background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
+                            ':hover': {
+                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                            },
+                            textDecoration: 'underline',
+                            '&:hover': {
                                 textDecoration: 'underline',
-                                '&:hover': {
-                                    textDecoration: 'underline',
-                                },
-                                '&:focus': {
-                                    outline: 'none',
-                                },
-                            }}
-                            onClick={handleAddPlayer}
-                        >
-                            +Add Player
-                        </Button>
-                    </div>
+                            },
+                            '&:focus': {
+                                outline: 'none',
+                            },
+                        }}
+                        onClick={handleAddPlayer}
+                    >
+                        +Add Player
+                    </Button>
+                </div>
 
-                    <div style={{ display: 'flex', justifyContent: "flex-start", flexDirection: 'row' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <div>
-                                <ToggleButtonGroup onChange={handleOffenseFormationToggleGroup} exclusive aria-label="offense formation" style={{ gap: '10px', flexWrap: 'wrap' }}>
-                                    <ToggleButton value="Bunch" aria-label="BUNCH" style={{
-                                        background: selectedOffenseFormation === "Bunch" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "Bunch" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
+                <div style={{ display: 'flex', justifyContent: "flex-start", flexDirection: 'row' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div>
+                            <ToggleButtonGroup onChange={handleOffenseFormationToggleGroup} exclusive aria-label="offense formation" style={{ gap: '10px', flexWrap: 'wrap' }}>
+                                <ToggleButton value="Bunch" aria-label="BUNCH" style={{
+                                    background: selectedOffenseFormation === "Bunch" ? 'white' : '#333',
+                                    color: selectedOffenseFormation === "Bunch" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
 
-                                        BUNCH
-                                    </ToggleButton>
-                                    <ToggleButton value="3x1" aria-label="3X1" style={{
-                                        background: selectedOffenseFormation === "3x1" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "3x1" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        3X1
-                                    </ToggleButton>
-                                    <ToggleButton value="Empty" aria-label="EMPTY" style={{
-                                        background: selectedOffenseFormation === "Empty" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "Empty" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        EMPTY
-                                    </ToggleButton>
+                                    BUNCH
+                                </ToggleButton>
+                                <ToggleButton value="3x1" aria-label="3X1" style={{
+                                    background: selectedOffenseFormation === "3x1" ? 'white' : '#333',
+                                    color: selectedOffenseFormation === "3x1" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    3X1
+                                </ToggleButton>
+                                <ToggleButton value="Empty" aria-label="EMPTY" style={{
+                                    background: selectedOffenseFormation === "Empty" ? 'white' : '#333',
+                                    color: selectedOffenseFormation === "Empty" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    EMPTY
+                                </ToggleButton>
 
 
-                                    <ToggleButton value="2x2" aria-label="2X2" style={{
-                                        background: selectedOffenseFormation === "2x2" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "2x2" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        2X2
-                                    </ToggleButton>
+                                <ToggleButton value="2x2" aria-label="2X2" style={{
+                                    background: selectedOffenseFormation === "2x2" ? 'white' : '#333',
+                                    color: selectedOffenseFormation === "2x2" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    2X2
+                                </ToggleButton>
 
-                                    <ToggleButton value="Custom" aria-label="blank" style={{
-                                        background: selectedOffenseFormation === "Custom" ? 'white' : '#333',
-                                        color: selectedOffenseFormation === "Custom" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        CUSTOM
-                                    </ToggleButton>
-                                </ToggleButtonGroup>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: "space-between", flexDirection: 'row', marginLeft: '-26px', marginTop: '-6px', marginRight: '-16px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
+                                <ToggleButton value="Custom" aria-label="blank" style={{
+                                    background: selectedOffenseFormation === "Custom" ? 'white' : '#333',
+                                    color: selectedOffenseFormation === "Custom" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    CUSTOM
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: "space-between", flexDirection: 'row', marginLeft: '-26px', marginTop: '-6px', marginRight: '-16px', alignItems: 'center', padding: '10px', fontWeight: 500 }}>
 
-                                {selectedOffenseFormation !== '2x2' && selectedOffenseFormation !== 'Custom' && (
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <CheckboxOption onChange={handleToggleOffenseLeftRight} checked={toggleOffenseLeftRight}> L</CheckboxOption>
-                                        <span style={{ display: 'flex', marginLeft: '10px', marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
-                                    </div>
-                                )}
+                            {selectedOffenseFormation !== '2x2' && selectedOffenseFormation !== 'Custom' && (
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <CheckboxOption onChange={handleToggleOffenseLeftRight} checked={toggleOffenseLeftRight}> L</CheckboxOption>
+                                    <span style={{ display: 'flex', marginLeft: '10px', marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
+                                </div>
+                            )}
 
-                                {/* <div style={{ display: 'flex', justifyContent: "space-between", marginLeft: '0px', marginTop: '0px', paddingLeft: '0' }}>
+                            {/* <div style={{ display: 'flex', justifyContent: "space-between", marginLeft: '0px', marginTop: '0px', paddingLeft: '0' }}>
                                     <Button
                                         color="white"
                                         sx={{
@@ -488,122 +525,122 @@ function Stencil(props) {
                                         +Add Player
                                     </Button>
                                 </div> */}
-                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                        <h3 style={{
-                            marginBottom: '2px',
-                            fontFamily: 'Inter, sans-serif',
-                            fontWeight: 500,
-                            marginTop: '-5px',
-                            maxWidth: '100%',
-                            marginRight: '10px',
-                            whiteSpace: 'normal',
-                        }}>
-                            Defense Formation
-                        </h3>
-                        <Button
-                            color="white"
-                            value="DefenseExtra"
-                            sx={{
-                                background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
-                                ':hover': {
-                                    textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                },
+                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <h3 style={{
+                        marginBottom: '2px',
+                        fontFamily: 'Inter, sans-serif',
+                        fontWeight: 500,
+                        marginTop: '-5px',
+                        maxWidth: '100%',
+                        marginRight: '10px',
+                        whiteSpace: 'normal',
+                    }}>
+                        Defense Formation
+                    </h3>
+                    <Button
+                        color="white"
+                        value="DefenseExtra"
+                        sx={{
+                            background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
+                            ':hover': {
+                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                            },
+                            textDecoration: 'underline',
+                            '&:hover': {
                                 textDecoration: 'underline',
-                                '&:hover': {
-                                    textDecoration: 'underline',
-                                },
-                                '&:focus': {
-                                    outline: 'none',
-                                },
-                            }}
-                            onClick={handleAddPlayer}
-                        >
-                            +Add Player
-                        </Button>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <div>
-                                <ToggleButtonGroup onChange={handleSetDefenseFormationToggleGroup} exclusive aria-label="defense formation" sx={{ gap: '10px', flexWrap: 'wrap' }}>
-                                    <ToggleButton value="4-3" aria-label="4-3" style={{
-                                        background: selectedDefenseFormation === "4-3" ? 'white' : '#333',
-                                        color: selectedDefenseFormation === "4-3" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        4-3
-                                    </ToggleButton>
-                                    <ToggleButton value="3-4" aria-label="3-4" style={{
-                                        background: selectedDefenseFormation === "3-4" ? 'white' : '#333',
-                                        color: selectedDefenseFormation === "3-4" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        3-4
-                                    </ToggleButton>
-                                    <ToggleButton value="4-2-5" aria-label="4-2-5" style={{
-                                        background: selectedDefenseFormation === "4-2-5" ? 'white' : '#333',
-                                        color: selectedDefenseFormation === "4-2-5" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        4-2-5
-                                    </ToggleButton>
-                                    <ToggleButton value="3-3Stack" aria-label="3-3Stack" style={{
-                                        background: selectedDefenseFormation === "3-3Stack" ? 'white' : '#333',
-                                        color: selectedDefenseFormation === "3-3Stack" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        3-3 STACK
-                                    </ToggleButton>
-                                    <ToggleButton value="Custom" aria-label="blank" style={{
-                                        background: selectedDefenseFormation === "Custom" ? 'white' : '#333',
-                                        color: selectedDefenseFormation === "Custom" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                background: 'white',
-                                                color: '#333',
-                                                boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        CUSTOM
-                                    </ToggleButton>
-                                </ToggleButtonGroup>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: "space-between", marginLeft: '-26px', marginTop: '-6px', alignItems: 'center', padding: '10px', fontWeight: 500, marginRight: '-13px' }}>
-                                {selectedDefenseFormation !== 'Custom' && (
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <CheckboxOption onChange={handleToggleDefenseLeftRight} checked={toggleDefenseLeftRight}>L</CheckboxOption>
-                                        <span style={{ display: 'flex', marginLeft: '10px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
-                                    </div>
-                                )}
-                                {/* <div style={{ display: 'flex', justifyContent: "space-between", marginLeft: '0px', marginTop: '0px' }}>
+                            },
+                            '&:focus': {
+                                outline: 'none',
+                            },
+                        }}
+                        onClick={handleAddPlayer}
+                    >
+                        +Add Player
+                    </Button>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div>
+                            <ToggleButtonGroup onChange={handleSetDefenseFormationToggleGroup} exclusive aria-label="defense formation" sx={{ gap: '10px', flexWrap: 'wrap' }}>
+                                <ToggleButton value="4-3" aria-label="4-3" style={{
+                                    background: selectedDefenseFormation === "4-3" ? 'white' : '#333',
+                                    color: selectedDefenseFormation === "4-3" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    4-3
+                                </ToggleButton>
+                                <ToggleButton value="3-4" aria-label="3-4" style={{
+                                    background: selectedDefenseFormation === "3-4" ? 'white' : '#333',
+                                    color: selectedDefenseFormation === "3-4" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    3-4
+                                </ToggleButton>
+                                <ToggleButton value="4-2-5" aria-label="4-2-5" style={{
+                                    background: selectedDefenseFormation === "4-2-5" ? 'white' : '#333',
+                                    color: selectedDefenseFormation === "4-2-5" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    4-2-5
+                                </ToggleButton>
+                                <ToggleButton value="3-3Stack" aria-label="3-3Stack" style={{
+                                    background: selectedDefenseFormation === "3-3Stack" ? 'white' : '#333',
+                                    color: selectedDefenseFormation === "3-3Stack" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    3-3 STACK
+                                </ToggleButton>
+                                <ToggleButton value="Custom" aria-label="blank" style={{
+                                    background: selectedDefenseFormation === "Custom" ? 'white' : '#333',
+                                    color: selectedDefenseFormation === "Custom" ? '#333' : 'white', border: '1px solid white', padding: '1px 5px', fontFamily: 'Inter, sans-serif', borderRadius: '0px', fontSize: '0.7rem', transition: 'background 0.3s, color 0.3s, box-shadow 0.3s',
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            background: 'white',
+                                            color: '#333',
+                                            boxShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    CUSTOM
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: "space-between", marginLeft: '-26px', marginTop: '-6px', alignItems: 'center', padding: '10px', fontWeight: 500, marginRight: '-13px' }}>
+                            {selectedDefenseFormation !== 'Custom' && (
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <CheckboxOption onChange={handleToggleDefenseLeftRight} checked={toggleDefenseLeftRight}>L</CheckboxOption>
+                                    <span style={{ display: 'flex', marginLeft: '10px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
+                                </div>
+                            )}
+                            {/* <div style={{ display: 'flex', justifyContent: "space-between", marginLeft: '0px', marginTop: '0px' }}>
                                     <Button
                                         color="white"
                                         sx={{
@@ -624,239 +661,239 @@ function Stencil(props) {
                                         +Add Player
                                     </Button>
                                 </div> */}
-                            </div>
                         </div>
                     </div>
-                    <h3 style={{ marginBottom: '0px', marginTop: '-5px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Color</h3>
-                    <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px', marginBottom: '-20px' }}>
-                        <Grid container spacing={0}>
-                            {colorButtons.map((color, index) => (
-                                <Grid item xs={"auto"} key={index}>
-                                    <Button
-                                        variant="contained"
-                                        sx={{
+                </div>
+                <h3 style={{ marginBottom: '0px', marginTop: '-5px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Color</h3>
+                <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px', marginBottom: '-20px' }}>
+                    <Grid container spacing={0}>
+                        {colorButtons.map((color, index) => (
+                            <Grid item xs={"auto"} key={index}>
+                                <Button
+                                    variant="contained"
+                                    sx={{
+                                        backgroundColor: color,
+                                        borderRadius: '50%',
+                                        padding: '10px',
+                                        minWidth: '10px',
+                                        margin: '5px',
+                                        '&:hover': {
                                             backgroundColor: color,
-                                            borderRadius: '50%',
-                                            padding: '10px',
-                                            minWidth: '10px',
-                                            margin: '5px',
-                                            '&:hover': {
-                                                backgroundColor: color,
-                                                boxShadow: '0 0 10px 2px white',
-                                            },
-                                            border: selectedColorButton === index ? '2px solid white' : 'none',
-                                        }}
-                                        onClick={() => {
-                                            //console.log(color);
-                                            setSelectedColor(color);
-                                            setSelectedColorButton(index);
-                                            handleColorButtonPress();
-                                        }}
-                                    />
-                                </Grid>
+                                            boxShadow: '0 0 10px 2px white',
+                                        },
+                                        border: selectedColorButton === index ? '2px solid white' : 'none',
+                                    }}
+                                    onClick={() => {
+                                        //console.log(color);
+                                        setSelectedColor(color);
+                                        setSelectedColorButton(index);
+                                        handleColorButtonPress();
+                                    }}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '1.8rem', }}>Lines</h3>
+                <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '-5px', }}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                            <Grid container spacing={0}>
+                                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '5px' }}>Stroke</h3>
+                                {lineButtons
+                                    .filter((button) => button.type === 'stroke')
+                                    .map((button, index) => (
+                                        <Grid item xs={"auto"} key={button.id}>
+                                            <Button
+                                                variant="text"
+                                                style={{
+                                                    ...lineButtonStyle,
+                                                    borderRadius: '25px',
+                                                    marginRight: '5px',
+                                                    border: selectedStrokeButton === index ? '2px solid white' : 'none'
+                                                }}
+                                                sx={{
+                                                    '&:hover': {
+                                                        boxShadow: '0px 0px 10px 2px white',
+                                                    },
+                                                }}
+                                                onClick={() => {
+                                                    setSelectedLineStroke(button.label);
+                                                    handleStrokeTypeButtonPress();
+                                                    console.log(button.type, button.label);
+                                                    setSelectedStrokeButton(index);
+                                                }}
+                                            >
+                                                <img src={button.icon} alt={button.label} style={{ width: '100%', height: 'auto' }} />
+                                            </Button>
+                                        </Grid>
+                                    ))}
+                            </Grid>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Grid container spacing={0}>
+                                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '5px' }}>End</h3>
+                                {lineButtons
+                                    .filter((button) => button.type === 'end')
+                                    .map((button, index) => (
+                                        <Grid item xs={"auto"} key={button.id}>
+                                            <Button
+                                                variant="text"
+                                                style={{
+                                                    ...lineButtonStyle,
+                                                    borderRadius: '25px',
+                                                    marginRight: '5px',
+                                                    border: selectedEndButton === index ? '2px solid white' : 'none'
+                                                }}
+                                                sx={{
+                                                    '&:hover': {
+                                                        boxShadow: '0px 0px 10px 2px white',
+                                                    },
+                                                }}
+                                                onClick={() => {
+                                                    setSelectedLineEnd(button.label);
+                                                    handleStrokeEndButtonPress();
+                                                    console.log(button.type, button.label);
+                                                    setSelectedEndButton(index);
+                                                }}
+                                            >
+                                                <img src={button.icon} alt={button.label} style={{ width: '100%', height: 'auto' }} />
+                                            </Button>
+                                        </Grid>
+                                    ))}
+                            </Grid>
+                        </Grid>
+
+                    </Grid>
+                </Box>
+
+                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                    QB Progression
+                </h3>
+                <Box sx={{ flexGrow: 1, marginLeft: '-3px' }}>
+                    <Grid container spacing={0}>
+                        <Grid item xs={"auto"}>
+                            {QBProgressionButtons.slice(0, -2).map((button, index) => (
+                                <Button
+                                    key={index}
+                                    value={button.text}
+                                    variant="text"
+                                    style={{
+                                        ...QBProgressionButtonStyle,
+                                        textDecoration: ['1', '2', '3', '4'].includes(button.text) ? 'underline' : 'none',
+                                        marginRight: '2px',
+                                    }}
+                                    sx={QBProgressionButtonSx}
+                                    size="small"
+                                    onClick={() => handleAddQBProgression(button.text)}
+                                >
+                                    {button.text === 'Check Mark' ? <TaskAltIcon fontSize="small" /> : button.text}
+                                </Button>
                             ))}
                         </Grid>
-                    </Box>
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Lines</h3>
-                    <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '-5px', }}>
-                        <Grid container spacing={1}>
-                            <Grid item xs={12}>
-                                <Grid container spacing={0}>
-                                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '5px' }}>Stroke</h3>
-                                    {lineButtons
-                                        .filter((button) => button.type === 'stroke')
-                                        .map((button, index) => (
-                                            <Grid item xs={"auto"} key={button.id}>
-                                                <Button
-                                                    variant="text"
-                                                    style={{
-                                                        ...lineButtonStyle,
-                                                        borderRadius: '25px',
-                                                        marginRight: '5px',
-                                                        border: selectedStrokeButton === index ? '2px solid white' : 'none'
-                                                    }}
-                                                    sx={{
-                                                        '&:hover': {
-                                                            boxShadow: '0px 0px 10px 2px white',
-                                                        },
-                                                    }}
-                                                    onClick={() => {
-                                                        setSelectedLineStroke(button.label);
-                                                        handleStrokeTypeButtonPress();
-                                                        console.log(button.type, button.label);
-                                                        setSelectedStrokeButton(index);
-                                                    }}
-                                                >
-                                                    <img src={button.icon} alt={button.label} style={{ width: '100%', height: 'auto' }} />
-                                                </Button>
-                                            </Grid>
-                                        ))}
-                                </Grid>
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <Grid container spacing={0}>
-                                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '5px' }}>End</h3>
-                                    {lineButtons
-                                        .filter((button) => button.type === 'end')
-                                        .map((button, index) => (
-                                            <Grid item xs={"auto"} key={button.id}>
-                                                <Button
-                                                    variant="text"
-                                                    style={{
-                                                        ...lineButtonStyle,
-                                                        borderRadius: '25px',
-                                                        marginRight: '5px',
-                                                        border: selectedEndButton === index ? '2px solid white' : 'none'
-                                                    }}
-                                                    sx={{
-                                                        '&:hover': {
-                                                            boxShadow: '0px 0px 10px 2px white',
-                                                        },
-                                                    }}
-                                                    onClick={() => {
-                                                        setSelectedLineEnd(button.label);
-                                                        handleStrokeEndButtonPress();
-                                                        console.log(button.type, button.label);
-                                                        setSelectedEndButton(index);
-                                                    }}
-                                                >
-                                                    <img src={button.icon} alt={button.label} style={{ width: '100%', height: 'auto' }} />
-                                                </Button>
-                                            </Grid>
-                                        ))}
-                                </Grid>
-                            </Grid>
+                        <Grid item xs={"auto"}>
+                            {QBProgressionButtons.slice(-2).map((button, index) => (
+                                <Button
+                                    key={index}
+                                    value={button.text}
+                                    variant="text"
+                                    style={{
+                                        ...QBProgressionButtonStyle,
+                                        textDecoration: ['1', '2', '3', '4'].includes(button.text) ? 'underline' : 'none',
+                                        marginRight: '2px',
+                                    }}
+                                    sx={QBProgressionButtonSx}
+                                    size="small"
+                                    onClick={() => handleAddQBProgression(button.text)}
+                                >
+                                    {button.text}
+                                </Button>
+                            ))}
                         </Grid>
-                    </Box>
-
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
-                        QB Progression
-                    </h3>
-                    <Box sx={{ flexGrow: 1, marginLeft: '-3px' }}>
-                        <Grid container spacing={0}>
-                            <Grid item xs={"auto"}>
-                                {QBProgressionButtons.slice(0, -2).map((button, index) => (
-                                    <Button
-                                        key={index}
-                                        value={button.text}
-                                        variant="text"
-                                        style={{
-                                            ...QBProgressionButtonStyle,
-                                            textDecoration: ['1', '2', '3', '4'].includes(button.text) ? 'underline' : 'none',
-                                            marginRight: '2px',
-                                        }}
-                                        sx={QBProgressionButtonSx}
-                                        size="small"
-                                        onClick={() => handleAddQBProgression(button.text)}
-                                    >
-                                        {button.text === 'Check Mark' ? <TaskAltIcon fontSize="small" /> : button.text}
-                                    </Button>
-                                ))}
-                            </Grid>
-                            <Grid item xs={"auto"}>
-                                {QBProgressionButtons.slice(-2).map((button, index) => (
-                                    <Button
-                                        key={index}
-                                        value={button.text}
-                                        variant="text"
-                                        style={{
-                                            ...QBProgressionButtonStyle,
-                                            textDecoration: ['1', '2', '3', '4'].includes(button.text) ? 'underline' : 'none',
-                                            marginRight: '2px',
-                                        }}
-                                        sx={QBProgressionButtonSx}
-                                        size="small"
-                                        onClick={() => handleAddQBProgression(button.text)}
-                                    >
-                                        {button.text}
-                                    </Button>
-                                ))}
-                            </Grid>
-                        </Grid>
-                    </Box>
+                    </Grid>
+                </Box>
 
 
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '7px' }}>
-                        Text Tags
-                    </h3>
-                    <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <div>
-                                <ToggleButtonGroup onChange={handleAddTextTag} exclusive aria-label="text tag" sx={{ gap: '5px', flexWrap: 'wrap', marginLeft: '-4px' }}>
-                                    <ToggleButton value="TEMPO" aria-label="tempo" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        TEMPO
-                                    </ToggleButton>
-                                    <ToggleButton value="SPRAY" aria-label="spray" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        SPRAY
-                                    </ToggleButton>
-                                    <ToggleButton value="STEM" aria-label="stem" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        STEM
-                                    </ToggleButton>
-                                    <ToggleButton value="FREE" aria-label="free" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        FREE
-                                    </ToggleButton>
-                                    <ToggleButton value="NOW" aria-label="now" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        NOW
-                                    </ToggleButton>
-                                    <ToggleButton value="MOR" aria-label="mor" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        MOR
-                                    </ToggleButton>
-                                    {/* This is for editable text!!! */}
-                                    <ToggleButton value="CUSTOM" aria-label="custom" style={{
-                                        background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
-                                    }}
-                                        sx={{
-                                            ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                        }}>
-                                        CUSTOM
-                                    </ToggleButton>
-                                </ToggleButtonGroup>
-                            </div>
+                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                    Text Tags
+                </h3>
+                <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div>
+                            <ToggleButtonGroup onChange={handleAddTextTag} exclusive aria-label="text tag" sx={{ gap: '5px', flexWrap: 'wrap', marginLeft: '-4px' }}>
+                                <ToggleButton value="TEMPO" aria-label="tempo" style={{
+                                    background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    TEMPO
+                                </ToggleButton>
+                                <ToggleButton value="SPRAY" aria-label="spray" style={{
+                                    background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    SPRAY
+                                </ToggleButton>
+                                <ToggleButton value="STEM" aria-label="stem" style={{
+                                    background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    STEM
+                                </ToggleButton>
+                                <ToggleButton value="FREE" aria-label="free" style={{
+                                    background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    FREE
+                                </ToggleButton>
+                                <ToggleButton value="NOW" aria-label="now" style={{
+                                    background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    NOW
+                                </ToggleButton>
+                                <ToggleButton value="MOR" aria-label="mor" style={{
+                                    background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    MOR
+                                </ToggleButton>
+                                {/* This is for editable text!!! */}
+                                <ToggleButton value="CUSTOM" aria-label="custom" style={{
+                                    background: '#333', color: 'white', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s', borderRadius: '5px'
+                                }}
+                                    sx={{
+                                        ':hover': {
+                                            textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                        },
+                                    }}>
+                                    CUSTOM
+                                </ToggleButton>
+                            </ToggleButtonGroup>
                         </div>
                     </div>
                     {/* I NEED to use list shapes AND textTags */}
@@ -892,7 +929,94 @@ function Stencil(props) {
                         </Grid>
                     </Box>
                 </div>
-            </div >
+                {/* I NEED to use list shapes AND textTags */}
+                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '1rem' }}>
+                    Orientation
+                </h3>
+
+                <Box sx={{ flexGrow: 1, marginLeft: '-3px', marginBottom: '-20px' }}>
+                    <Grid container spacing={0}>
+                        <Grid item xs={"auto"}>
+                            {['Up/Down', 'Left/Right'].map((orientation, index) => (
+                                <Button
+                                    key={index}
+                                    value={orientation}
+                                    variant="text"
+                                    style={{
+                                        ...QBProgressionButtonStyle,
+                                        marginRight: '2px',
+                                    }}
+                                    sx={QBProgressionButtonStyle}
+                                    size="small"
+                                    onClick={handleOrientation}
+                                    startIcon={
+                                        orientation === 'Up/Down' ?
+                                            <FlipIcon style={{ transform: 'rotate(90deg)' }} /> :
+                                            <FlipIcon />
+                                    }
+                                >
+                                    {orientation}
+                                </Button>
+                            ))}
+                        </Grid>
+                    </Grid>
+                </Box>
+
+                <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '40px', marginBottom: '0px' }}>
+                    <Grid container spacing={0}>
+                        <BottomDrawer
+                            stageRef={stageRef}
+                            setCurrentLayerData={setCurrentLayerData}
+                            currentLayerData={currentLayerData}
+                            backgroundImage={backgroundImage}
+                            textTags={textTags}
+                            setTextTags={setTextTags}
+                            setSelectedTextTags={setSelectedTextTags}
+                            shapes={shapes}
+                            setShapes={setShapes}
+                            lines={lines}
+                            setLines={setLines}
+                        />
+                    </Grid>
+                </Box>
+
+                <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '0px', marginBottom: '0px' }}>
+                    <Grid container spacing={0}>
+                        <Button
+                            color="white"
+                            value="feedback"
+                            style={{
+                                marginTop: '2rem',
+                                marginBottom: '1rem',
+                                padding: '1px 3px',
+                                textAlign: 'left', // align text to the left
+                                fontSize: '0.5rem', // make text smaller
+                                border: 'none', // remove border
+                                width: 'fit-content', // adjust width to fit content
+                            }}
+                            sx={{
+                                background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
+                                ':hover': {
+                                    textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+                                },
+                                // textDecoration: 'underline',
+                                '&:hover': {
+                                    textDecoration: 'underline',
+                                },
+                                '&:focus': {
+                                    outline: 'none',
+                                },
+                            }}
+                            onClick={handleFeedbackFormOpen}
+                        >
+                            Share Feedback!
+                        </Button>
+                    </Grid>
+                </Box>
+                <FeedBackForm open={selectedFeedback} handleFeedbackFormClose={handleFeedbackFormClose} handleFeedbackFormSubmit={handleFeedbackSubmit}></FeedBackForm>
+
+
+            </div>
         </>
     );
 }

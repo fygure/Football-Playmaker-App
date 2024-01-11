@@ -6,43 +6,48 @@ function useTextTags(imageRef, stageRef) {
     const [textTags, setTextTags] = useState([]);
 
     const addTextTag = (text, newColor, position) => {
+        if (imageRef.current) {
+            console.log('Creating text tag:', text);
+            const startPosition = {
+                x: imageRef.current.x() + (imageRef.current.width() / 2) - 30,
+                y: imageRef.current.height() - 60
+            };
 
-        console.log('Creating text tag:', text);
-        const startPosition = {
-            x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
-            y: imageRef.current.height() - 60
-            // x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
-            // y: imageRef.current.y() + (imageRef.current.height() /2)
-            // x:stageRef.current.width() / 2,
-            // y:stageRef.current.height() /2
-        };
+            const whichPosition = position ? position : startPosition;
 
-        const whichPosition = position ? position : startPosition;
+            const newTextTag = {
+                id: uuidv4(),
+                initialPosition: whichPosition,
+                color: newColor,
+                text: text,
+            };
 
-        const newTextTag = {
-            id: uuidv4(),
-            initialPosition: whichPosition,
-            color: newColor,
-            text: text,
-        };
-
-        setTextTags([...textTags, newTextTag]);
+            setTextTags([...textTags, newTextTag]);
+        }
     };
 
     const updateTextTag = (id, newAttributes) => {
-        setTextTags(textTags.map(text => text.id === id ? { ...text, ...newAttributes } : text));
+        if (imageRef.current) {
+            setTextTags(textTags.map(text => text.id === id ? { ...text, ...newAttributes } : text));
+        }
     };
 
     const deleteTextTag = (id) => {
-        setTextTags(textTags.filter(text => text.id !== id));
+        if (imageRef.current) {
+            setTextTags(textTags.filter(text => text.id !== id));
+        }
     };
 
     const deleteAllTextTags = () => {
-        setTextTags([]);
+        if (imageRef.current) {
+            setTextTags([]);
+        }
     };
 
     const hideTextTagContextMenu = () => {
-        setTextTags(textTags.map(text => ({ ...text, showContextMenu: false })));
+        if (imageRef.current) {
+            setTextTags(textTags.map(text => ({ ...text, showContextMenu: false })));
+        }
     };
 
 
@@ -82,31 +87,32 @@ function useTextTags(imageRef, stageRef) {
                     } else if (textTag && textTag.initialPosition) {
                         let newX = imageCenter.x - (textTag.initialPosition.x - imageCenter.x);
                         newPosition = { ...textTag.initialPosition, x: newX };
-                    }
-                }
-                // Create a new text tag with the new position
-                const newTextTag = {
-                    id: uuidv4(),
-                    initialPosition: newPosition,
-                    color: textTag.color,
-                    text: textTag.text,
-                    ...newAttributes
-                };
 
-                return newTextTag;
+                    }
+                    // Create a new text tag with the new position
+                    const newTextTag = {
+                        id: uuidv4(),
+                        initialPosition: newPosition,
+                        color: textTag.color,
+                        text: textTag.text,
+                        ...newAttributes
+                    };
+
+                    return newTextTag;
+                });
+
+                return newTextTags;
             });
 
-            return newTextTags;
-        });
-
-        if (flipType === "Up/Down") {
-            setIsUpDownFlipped(!isUpDownFlipped);
-        } else if (flipType === "Left/Right") {
-            setIsLeftRightFlipped(!isLeftRightFlipped);
+            if (flipType === "Up/Down") {
+                setIsUpDownFlipped(!isUpDownFlipped);
+            } else if (flipType === "Left/Right") {
+                setIsLeftRightFlipped(!isLeftRightFlipped);
+            }
         }
     };
 
 
-    return { textTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags };
+    return { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags };
 }
 export default useTextTags;
