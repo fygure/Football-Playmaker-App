@@ -475,7 +475,7 @@ function useShapes(stageDimensions, imageRef) {
         }
         console.log('Flip Type:', flipType);
         const imageCenter = {
-            x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
+            x: imageRef.current.x() + (imageRef.current.width() / 2),
             y: imageRef.current.y() + (imageRef.current.height() / 2)
         }
         setShapes(prevShapes => {
