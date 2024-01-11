@@ -18,7 +18,10 @@ const LoadedLayer = (props) => {
     //FIXME: rendering image based on currentLayerData, problem is in useBackground and stencil
     //const [image] = useImage(currentLayerData.backgroundImage);
 
-
+    //TESTING
+    useEffect(() => {
+        console.log('currentLayerData:', currentLayerData);
+    }, [currentLayerData]);
 
     return (
         <>
