@@ -897,7 +897,7 @@ function Stencil(props) {
                         </div>
                     </div>
                     {/* I NEED to use list shapes AND textTags */}
-                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '0' }}>
+                    {/* <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '0' }}>
                         Orientation
                     </h3>
                     <Box sx={{ flexGrow: 1, marginLeft: '-3px', marginBottom: '-20px' }}>
@@ -927,7 +927,7 @@ function Stencil(props) {
                                 ))}
                             </Grid>
                         </Grid>
-                    </Box>
+                    </Box> */}
                 </div>
                 {/* I NEED to use list shapes AND textTags */}
                 <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '1rem' }}>
