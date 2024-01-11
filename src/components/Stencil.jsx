@@ -5,7 +5,9 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import FeedBackForm from './feedback/FeedBackForm.jsx';
 import FlipIcon from '@mui/icons-material/Flip';
 import theme from '../config/theme.js';
+import { set } from 'lodash';
 import BottomDrawer from './BottomDrawer.jsx';
+
 
 const QBProgressionButtons = [
     { text: 'Check Mark', icon: 'check' },
@@ -112,9 +114,11 @@ function Stencil(props) {
         setStrokeTypeButtonPressCount,
         stageRef,
         flipAllTextTags,
+        flipAllShapes,
         backgroundImage,
         lines,
         setLines,
+
     } = props;
 
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
@@ -246,11 +250,15 @@ function Stencil(props) {
         onAddTextTag(newText, selectedColor);
     };
 
+    const [isProcessing, setIsProcessing] = useState(false);
     //Orientation handlers
-    const handleOrientation = (e) => {
+    const handleOrientation = async (e) => {
+        setIsProcessing(true);
         const newOrientation = e.target.value;
-        // console.log('handle orientation',newOrientation);
+        console.log('handle orientation', newOrientation);
         flipAllTextTags(newOrientation);
+        flipAllShapes(newOrientation);
+        setIsProcessing(false);
     };
 
     const handleColorButtonPress = () => {
@@ -756,6 +764,7 @@ function Stencil(props) {
                                     ))}
                             </Grid>
                         </Grid>
+
                     </Grid>
                 </Box>
 
@@ -887,6 +896,38 @@ function Stencil(props) {
                             </ToggleButtonGroup>
                         </div>
                     </div>
+                    {/* I NEED to use list shapes AND textTags */}
+                    <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '0' }}>
+                        Orientation
+                    </h3>
+                    <Box sx={{ flexGrow: 1, marginLeft: '-3px', marginBottom: '-20px' }}>
+                        <Grid container spacing={0}>
+                            <Grid item xs={"auto"}>
+                                {['Up/Down','Left/Right'].map((orientation, index) => (
+                                    <Button
+                                        key={index}
+                                        value={orientation}
+                                        variant="text"
+                                        style={{
+                                            ...QBProgressionButtonStyle,
+                                            marginRight: '2px',
+                                        }}
+                                        sx={QBProgressionButtonStyle}
+                                        size="small"
+                                        disabled={isProcessing}
+                                        onClick={handleOrientation}
+                                        startIcon={
+                                            orientation === 'Up/Down' ?
+                                                <FlipIcon style={{ transform: 'rotate(90deg)' }} /> :
+                                                <FlipIcon />
+                                        }
+                                    >
+                                        {orientation}
+                                    </Button>
+                                ))}
+                            </Grid>
+                        </Grid>
+                    </Box>
                 </div>
                 {/* I NEED to use list shapes AND textTags */}
                 <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '1rem' }}>

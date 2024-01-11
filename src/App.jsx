@@ -12,10 +12,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DownloadIcon from '@mui/icons-material/Download';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
+import { GiZeusSword } from "react-icons/gi";
+import { SiJpeg } from "react-icons/si";
+import { PiFilePng } from "react-icons/pi";
 import './App.css';
 import useLines from './hooks/useLines';
+import { set } from 'lodash';
+
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: add undo/redo
@@ -38,14 +43,14 @@ function App() {
   const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
   const [currentLayerData, setCurrentLayerData] = useState(null);
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
-  const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu } = useShapes(imageRef);
+  const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes } = useShapes(imageRef);
   const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
   const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef);
 
 
   //TODO: Name of download should be play's name from user input
   // requires footer navbar
-  const handleDownload = () => {
+  const handleDownloadPNG = () => {
     var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
     var link = document.createElement('a');
     link.download = 'stage.jpeg'; //.png also
@@ -55,11 +60,29 @@ function App() {
     document.body.removeChild(link);
   };
 
+  const handleDownloadJPEG = () => {
+    var dataURL = stageRef.current.toDataURL({ pixelRatio: 3, mimeType: "image/jpeg" });
+    var link = document.createElement('a');
+    link.download = 'stage.jpeg';
+    link.href = dataURL;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+
   const handleDeleteAll = () => {
     deleteAllShapes();
     deleteAllTextTags();
     deleteAllLines();
   };
+
+  const handleDeleteDefenseFormation = () => {
+    setShapes(shapes.filter(shape => !shape.formationType.toLowerCase().startsWith('defense')));
+  }
+  const handleDeleteOffenseFormation = () => {
+    setShapes(shapes.filter(shape => !shape.formationType.toLowerCase().startsWith('offense')));
+  }
 
   const handleToggleSpeedDial = () => {
     setIsSpeedDialOpen(!isSpeedDialOpen);
@@ -67,9 +90,11 @@ function App() {
 
   const actions = [
     { icon: <DeleteForeverOutlinedIcon />, action: handleDeleteAll },
-    { icon: <DownloadIcon />, action: handleDownload },
+    { icon: < PiFilePng size={25} />, action: handleDownloadPNG },
+    { icon: <SiJpeg size={20} />, action: handleDownloadJPEG },
+    { icon: <GiZeusSword size={30}/>, action: handleDeleteOffenseFormation},
+    { icon: <RemoveModeratorIcon />, action: handleDeleteDefenseFormation },
   ];
-
 
   return (
     <>
@@ -115,6 +140,7 @@ function App() {
                 setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                 stageRef={stageRef}
                 flipAllTextTags={flipAllTextTags}
+                flipAllShapes={flipAllShapes}
                 backgroundImage={backgroundImage}
                 lines={lines}
                 setLines={setLines}

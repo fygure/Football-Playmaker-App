@@ -295,6 +295,7 @@ function Canvas(props) {
                                     />
                                 )}
                             </Layer>
+
                         )}
                 </Stage>
 

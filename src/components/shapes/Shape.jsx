@@ -124,6 +124,7 @@ function Shape(props) {
             }
         });
 
+
     };
 
     const handleDragStart = () => {
