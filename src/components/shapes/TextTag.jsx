@@ -29,7 +29,8 @@ function TextTag(props) {
 
     const fontWeight = 700;
     const textTagRef = useRef();
-    const [position, setPosition] = useState(initialPosition);
+    const [position, setPosition] = useState(initialPosition || { x: 50, y: 50 });
+    console.log('position', position)
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
     const [fontSize, setFontSize] = useState(TEXT_SIZES.FONT.MAX);
@@ -54,17 +55,17 @@ function TextTag(props) {
             x: (position.x - initialImagePosition.x) / initialImageSize.width,
             y: (position.y - initialImagePosition.y) / initialImageSize.height,
         };
-
         const initialRelativeFontSize = fontSize / initialImageSize.width;
         const initialRelativeCheckMarkSize = checkMarkSize / initialImageSize.width;
-
         const handleResize = () => {
             const newImagePosition = { x: image.x(), y: image.y() };
             const newImageSize = { width: image.width(), height: image.height() };
-            setPosition({
-                x: initialRelativePosition.x * newImageSize.width + newImagePosition.x,
-                y: initialRelativePosition.y * newImageSize.height + newImagePosition.y,
-            });
+            if (position) {
+                setPosition({
+                    x: initialRelativePosition.x * newImageSize.width + newImagePosition.x,
+                    y: initialRelativePosition.y * newImageSize.height + newImagePosition.y,
+                });
+            }
             const newFontSize = Math.max(Math.min(initialRelativeFontSize * newImageSize.width, TEXT_SIZES.FONT.MAX), TEXT_SIZES.FONT.MIN);
             setFontSize(newFontSize);
             const newCheckMarkSize = Math.max(Math.min(initialRelativeCheckMarkSize * newImageSize.width, TEXT_SIZES.CHECK.MAX), TEXT_SIZES.CHECK.MIN);
@@ -75,6 +76,7 @@ function TextTag(props) {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
+
     }, [position, imageRef, checkMarkSize, fontSize]);
 
 
@@ -90,7 +92,9 @@ function TextTag(props) {
 
         setSelectedTextTags([selectedTextTag]);
         setSelectedTextTagID(id);
-        onTextTagChange(id, { color: selectedColor });
+        if (typeof onTextTagChange === 'function') {
+            onTextTagChange(id, { color: selectedColor });
+          }
         // console.log('Selected Text ID:', id);
     }
 
@@ -122,9 +126,11 @@ function TextTag(props) {
     };
 
     const handleDragEnd = (e) => {
-        //console.log(e.target.position());
+        // console.log(e.target.position());
+        if (e.target) {
         setPosition(e.target.position());
         onTextTagChange(id, { x: e.target.x(), y: e.target.y() });
+        }
         setIsDragging(false);
     };
 

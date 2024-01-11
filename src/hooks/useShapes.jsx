@@ -466,43 +466,61 @@ function useShapes(stageDimensions, imageRef) {
     };
 
 
-    // const [isUpDownFlipped, setIsUpDownFlipped] = useState(false);
-    // const [isLeftRightFlipped, setIsLeftRightFlipped] = useState(false);
-    // const flipAllShapes = (flipType) => {
-    //     console.log('Flip Type:', flipType);
-    //     const imageCenter = {
-    //         x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
-    //         y: imageRef.current.y() + (imageRef.current.height() / 2)
-    //     }
-    //          // Create a new array for the updated shapes
-    //          setShapes(prevShapes => {
-    //             // Create a new array for the updated shapes
-    //             let newShapes = [];
+//     const [isUpDownFlipped, setIsUpDownFlipped] = useState(false);
+//     const [isLeftRightFlipped, setIsLeftRightFlipped] = useState(false);
+//     const flipAllShapes = (flipType) => {
+//         console.log('Flip Type:', flipType);
+//         if(!flipType){
+//             console.log("I FOUND IT")
+//             return;
+//         }
+//         const imageCenter = {
+//             x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
+//             y: imageRef.current.y() + (imageRef.current.height() / 2)
+//         }
+//         setShapes(prevShapes => {
+//             // Create new text tags for all the text tags
+//             let newShapes = prevShapes.map(shape => {
+//                 let newPosition;
+//                 let newAttributes = {};
 
-    //             // Use forEach to iterate over the shapes and modify them
-    //             prevShapes.forEach(shape => {
-    //                 let newShape = { ...shape };
-    //                 if (flipType === 'Up/Down') {
-    //                     // Calculate the new y position
-    //                     let newY = imageCenter.y - (shape.initialPosition.y - imageCenter.y) + imageCenter.y;
-    //                     newShape.initialPosition = { ...shape.initialPosition, y: newY };
-    //                 } else if (flipType === 'Left/Right') {
-    //                     // Calculate the new x position
-    //                     let newX = imageCenter.x - (shape.initialPosition.x - imageCenter.x) + imageCenter.x;
-    //                     newShape.initialPosition = { ...shape.initialPosition, x: newX };
-    //                 }
-    //                 newShapes.push(newShape);
-    //             });
+//                 if (flipType === "Up/Down") {
+//                     if (shape && 'x' in shape && 'y' in shape) {
+//                         let newY = imageCenter.y - (shape.y - imageCenter.y);
+//                         newPosition = { x: shape.x, y: newY };
+//                         newAttributes = { x: newPosition.x, y: newPosition.y };
+//                     } else if (shape && shape.initialPosition) {
+//                         let newY = imageCenter.y - (shape.initialPosition.y - imageCenter.y);
+//                         newPosition = { ...shape.initialPosition, y: newY };
+//                     }
+//                 } else if (flipType === "Left/Right") {
+//                     if (shape && 'x' in shape && 'y' in shape) {
+//                         let newX = imageCenter.x - (shape.x - imageCenter.x);
+//                         newPosition = { x: newX, y: shape.y };
+//                         newAttributes = { x: newPosition.x, y: newPosition.y };
+//                     } else if (shape && shape.initialPosition) {
+//                         let newX = imageCenter.x - (shape.initialPosition.x - imageCenter.x);
+//                         newPosition = { ...shape.initialPosition, x: newX };
+//                     }
+//                 }
+//                 // Create a new text tag with the new position
+//                 const newShape = {
+//                     ...shape,
+//                     initialPosition: newPosition,
+//                     ...newAttributes
+//                 };
+//                 return newShape;
+//             });
 
-    //             // Return the new shapes array
-    //             return newShapes;
-    //         });
+//             return newShapes;
+//         });
 
-    // if (flipType === "Up/Down") {
-    //     setIsUpDownFlipped(!isUpDownFlipped);
-    // } else if (flipType === "Left/Right") {
-    //     setIsLeftRightFlipped(!isLeftRightFlipped);
-    // }
+//         if (flipType === "Up/Down") {
+//             setIsUpDownFlipped(!isUpDownFlipped);
+//         } else if (flipType === "Left/Right") {
+//             setIsLeftRightFlipped(!isLeftRightFlipped);
+//         }
+// };
 
 
 

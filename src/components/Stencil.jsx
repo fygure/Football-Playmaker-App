@@ -236,8 +236,6 @@ function Stencil(props) {
     };
 
     const [isProcessing, setIsProcessing] = useState(false);
-
-
     //Orientation handlers
     const handleOrientation = async (e) => {
         setIsProcessing(true);
@@ -245,7 +243,6 @@ function Stencil(props) {
         console.log('handle orientation', newOrientation);
         flipAllTextTags(newOrientation);
         //flipAllShapes(newOrientation);
-
         setIsProcessing(false);
     };
 
@@ -869,7 +866,7 @@ function Stencil(props) {
                     <Box sx={{ flexGrow: 1, marginLeft: '-3px', marginBottom: '-20px' }}>
                         <Grid container spacing={0}>
                             <Grid item xs={"auto"}>
-                                {['Up/Down', 'Left/Right'].map((orientation, index) => (
+                                {['Up/Down','Left/Right'].map((orientation, index) => (
                                     <Button
                                         key={index}
                                         value={orientation}

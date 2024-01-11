@@ -49,6 +49,10 @@ function useTextTags(imageRef, stageRef) {
     const [isUpDownFlipped, setIsUpDownFlipped] = useState(false);
     const [isLeftRightFlipped, setIsLeftRightFlipped] = useState(false);
     const flipAllTextTags = (flipType) => {
+        if(!flipType){
+            console.error("You're clicking too fast, flipType is undefined");
+            return;
+        }
         console.log('Flip Type:', flipType);
         const imageCenter = {
             x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
