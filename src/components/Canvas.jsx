@@ -180,6 +180,7 @@ function Canvas(props) {
                             //LoadedStage will render the stage similar to how its done below
                             currentLayerData={currentLayerData}
                             stageRef={stageRef}
+                            imageRef={imageRef}
                             containerRef={containerRef}
                             image={image}
                             handleImageClick={handleImageClick}
@@ -235,9 +236,7 @@ function Canvas(props) {
                                         initialColor={shape.initialColor}
                                         onShapeChange={onShapeChange}
                                         onShapeDelete={onShapeDelete}
-
                                         onLineDelete={onLineDelete}
-
                                         onHideContextMenu={onHideContextMenu}
                                         stageRef={stageRef}
                                         imageRef={imageRef}

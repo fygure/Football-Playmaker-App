@@ -86,6 +86,7 @@ function App() {
               <Stencil
                 // undo={undo}
                 // redo={redo}
+                textTags={textTags}
                 currentLayerData={currentLayerData}
                 setCurrentLayerData={setCurrentLayerData}
                 onAddFormation={addFormation}
@@ -112,6 +113,7 @@ function App() {
                 setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                 stageRef={stageRef}
                 flipAllTextTags={flipAllTextTags}
+                backgroundImage={backgroundImage}
               />
             </div>
             <div style={{

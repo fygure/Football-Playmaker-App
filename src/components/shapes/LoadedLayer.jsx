@@ -1,17 +1,23 @@
 //LoadedLayer.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Stage, Layer, Text, Image } from 'react-konva';
+import TextTag from './TextTag';
+// import useImage from 'use-image';
 
 const LoadedLayer = (props) => {
-    const imageRef = useRef(null);
-
     const {
         currentLayerData,
         stageRef,
-        containerRef,
+        // imageRef,
         image,
+        containerRef,
         handleImageClick,
     } = props;
+
+    const imageRef = useRef(null);
+    //FIXME: rendering image based on currentLayerData, problem is in useBackground and stencil
+    //const [image] = useImage(currentLayerData.backgroundImage);
+
 
 
     return (
@@ -27,7 +33,7 @@ const LoadedLayer = (props) => {
                     onClick={handleImageClick}
                 />
                 <Text
-                    text={currentLayerData.playName}
+                    text={currentLayerData.name}
                     x={50}
                     y={50}
                     fontSize={15}

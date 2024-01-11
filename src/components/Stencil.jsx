@@ -81,6 +81,7 @@ function Stencil(props) {
     const {
         // undo,
         // redo,
+        textTags,
         currentLayerData,
         setCurrentLayerData,
         onChangeLineStroke,
@@ -109,6 +110,7 @@ function Stencil(props) {
         setStrokeTypeButtonPressCount,
         stageRef,
         flipAllTextTags,
+        backgroundImage,
     } = props;
 
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
@@ -921,6 +923,8 @@ function Stencil(props) {
                             stageRef={stageRef}
                             setCurrentLayerData={setCurrentLayerData}
                             currentLayerData={currentLayerData}
+                            backgroundImage={backgroundImage}
+                            textTags={textTags}
                         />
                     </Grid>
                 </Box>

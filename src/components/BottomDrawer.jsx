@@ -17,13 +17,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Konva from 'konva';
 import { v4 as uuidv4 } from 'uuid';
+import _ from 'lodash';
 
 function BottomDrawer(props) {
     const {
         stageRef,
         currentLayerData,
         setCurrentLayerData,
-
+        backgroundImage,
+        textTags,
     } = props;
 
     const [state, setState] = useState({
@@ -75,7 +77,24 @@ function BottomDrawer(props) {
                     alert('A play with this name already exists.');
                 } else {
                     // If no list item with the same name exists, add the new item
-                    const newItem = { id: uuidv4(), name: newPlayName };
+                    //TODO: Add deep copy of shapes, textTags and lines to newItem
+                    console.log('Adding play with text tags:', textTags);
+
+                    // const shallowCopyTextTags = [...textTags];
+                    const deepCopyTextTags = _.cloneDeep(textTags);
+                    // console.log('Shallow copy comparison:', shallowCopyTextTags[0] === textTags[0]);
+                    // console.log('Deep copy comparison:', deepCopyTextTags[0] === textTags[0]);
+
+                    const newItem = {
+                        id: uuidv4(),
+                        name: newPlayName,
+                        backgroundImage: backgroundImage,
+                        textTagList: deepCopyTextTags,
+                        //shapeList:
+                        //textTagList:
+                        //lineList:
+                        //drawingLine: (startPos && endPos)
+                    };
                     setItems((prevItems) => [...prevItems, newItem]);
                 }
             }
@@ -110,13 +129,14 @@ function BottomDrawer(props) {
         console.log('Rendering play:', playName);
 
         console.log(currentLayerData);
-
-        const layerData = {
-            playName: playName,
-        }
+        //TODO:
+        //Extract the items list and find the item with playName associated
+        // create DEEP COPY of the item in layerData
+        const item = items.find(item => item.name === playName);
+        const layerData = _.cloneDeep(item);
+        //console.log(layerData);
 
         setCurrentLayerData(layerData);
-        console.log(layerData);
         setSelectedItem(text.id);
     };
 
