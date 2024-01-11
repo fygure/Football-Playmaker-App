@@ -17,6 +17,7 @@ import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
 import { GiZeusSword } from "react-icons/gi";
 import { SiJpeg } from "react-icons/si";
 import { PiFilePng } from "react-icons/pi";
+import FormatClearIcon from '@mui/icons-material/FormatClear';
 import './App.css';
 import useLines from './hooks/useLines';
 import { set } from 'lodash';
@@ -86,12 +87,17 @@ function App() {
     setIsSpeedDialOpen(!isSpeedDialOpen);
   };
 
+  const handleDeleteAllTextTags = () => {
+    deleteAllTextTags();
+  };
+
   const actions = [
     { icon: <DeleteForeverOutlinedIcon />, action: handleDeleteAll },
     { icon: < PiFilePng size={25} />, action: handleDownloadPNG },
     { icon: <SiJpeg size={20} />, action: handleDownloadJPEG },
     { icon: <GiZeusSword size={30}/>, action: handleDeleteOffenseFormation},
     { icon: <RemoveModeratorIcon />, action: handleDeleteDefenseFormation },
+    { icon: <FormatClearIcon />, action: handleDeleteAllTextTags}
   ];
 
   return (
