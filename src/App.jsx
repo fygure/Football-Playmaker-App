@@ -1,5 +1,5 @@
 // App.jsx
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import StageDimensionsContext from './contexts/StageDimensionsContext';
 import Canvas from './components/Canvas';
 import Stencil from './components/Stencil';
@@ -17,18 +17,80 @@ import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
 import { GiZeusSword } from "react-icons/gi";
 import { SiJpeg } from "react-icons/si";
 import { PiFilePng } from "react-icons/pi";
+import { LuLogOut } from "react-icons/lu";
 import './App.css';
 import useLines from './hooks/useLines';
 import { set } from 'lodash';
+import { jwtDecode } from "jwt-decode";
+import { Button, } from '@mui/material';
+
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
-TODO: add undo/redo
-TODO: footer navbar
+TODO: undo/redo
 TOOD: orientation
 */
 ////////////////////////////////////////////////////////////////////////////////////////
 function App() {
+
+  //FIXME: manage user objects in database with permissions attached
+  // this is ok for now, but not secure.
+  const [user, setUser] = useState(null);
+
+  function handleCallbackResponse(response) {
+    //console.log("Encoded JWT ID token: " + response.credential);
+    var userObject = jwtDecode(response.credential);
+    // console.log(userObject);
+    // setUser(userObject);
+    // document.getElementById("signInDiv").hidden = true;
+
+    //console.log(userObject);
+    const email = userObject.email;
+    //FIXME: DUMMY LOGIC FOR WHITELIST TESTING
+    const testUsers = ['test1@example.com', 'test2@example.com', 'max.chalitsios@gmail.com'];
+
+    if (!testUsers.includes(email)) {
+      handleSignOut();
+      console.log('Not whitelisted');
+    } else {
+      setUser(userObject);
+      document.getElementById("signInDiv").hidden = true;
+    }
+  }
+
+  function handleSignOut(event) {
+    /* global google */
+    setUser(null);
+    document.getElementById("signInDiv").hidden = false;
+    //window.location.href = 'https://accounts.google.com/Logout';
+    google.accounts.id.disableAutoSelect();
+    //handleCancel();
+  }
+
+  // function handleCancel() {
+  //   const signInDiv = document.getElementById('signInDiv');
+  //   signInDiv.innerHTML = 'Not whitelisted';
+  // }
+
+  useEffect(() => {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id: "473768208195-c18kgorq5k8rr6qkub9ck9k4lbk96ol3.apps.googleusercontent.com",
+      callback: handleCallbackResponse, //if someone logs in
+      cancel_on_tap_outside: true,
+      //prompt_parent_id: 'signInDiv', //option to display the sign-in prompt within a specific HTML element.
+    })
+
+    google.accounts.id.renderButton(
+      document.getElementById("signInDiv"),
+      { theme: "outline", size: "large", text: "continue_with" }
+    );
+    //google.accounts.id.prompt();
+  }, []);
+
+  // If !user: sign in button
+  // If user: log out button
+
   const imageRef = useRef(null);
   const stageRef = useRef(null);
   const [colorButtonPressCount, setColorButtonPressCount] = useState(0);
@@ -99,128 +161,133 @@ function App() {
     { icon: <RemoveModeratorIcon fontSize='medium' />, action: handleDeleteDefenseFormation },
     { icon: < PiFilePng size={30} />, action: handleDownloadPNG },
     { icon: <SiJpeg size={25} />, action: handleDownloadJPEG },
+    { icon: <LuLogOut size={25} />, action: handleSignOut },
   ];
 
   return (
     <>
+      <div id="signInDiv"></div>
       <ThemeProvider theme={theme}>
         <StageDimensionsContext.Provider value={{ stageDimensions }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            margin: '1vw',
-            height: '90vh',
-            width: '98vw',
-          }}>
-            <div className="custom-scrollbar">
-              <Stencil
-                shapes={shapes}
-                setShapes={setShapes}
-                textTags={textTags}
-                setTextTags={setTextTags}
-                setSelectedTextTags={setSelectedTextTags}
-                currentLayerData={currentLayerData}
-                setCurrentLayerData={setCurrentLayerData}
-                onAddFormation={addFormation}
-                onAddShape={addShape}
-                onAddTextTag={addTextTag}
-                fieldType={fieldType}
-                setFieldType={setFieldType}
-                setZone={setZone}
-                zone={zone}
-                setRedLine={setRedLine}
-                redLine={redLine}
-                onDeleteAllShapes={deleteAllShapes}
-                onChangeFormation={deleteFormation} //deletes all other formation shapes except one chosen
-                selectedColor={selectedColor}
-                setSelectedColor={setSelectedColor}
-                selectedLineStroke={selectedLineStroke}
-                setSelectedLineStroke={setSelectedLineStroke}
-                selectedLineEnd={selectedLineEnd}
-                setSelectedLineEnd={setSelectedLineEnd}
-                onDeleteAllTextTags={deleteAllTextTags}
-                onDeleteAllLines={deleteAllLines}
-                setColorButtonPressCount={setColorButtonPressCount}
-                setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
-                setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
-                stageRef={stageRef}
-                flipAllTextTags={flipAllTextTags}
-                flipAllShapes={flipAllShapes}
-                backgroundImage={backgroundImage}
-                lines={lines}
-                setLines={setLines}
-              />
-            </div>
+          {user && (<>
+            {/* <Button onClick={(e) => handleSignOut(e)}>Sign Out</Button> */}
             <div style={{
               display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flex: 1.8,
-              padding: '1vw',
-              maxWidth: 'calc(80% - 4vw)',
-              marginRight: '2vw',
-              borderTop: '1px solid black',
-              borderRight: '1px solid black',
-              borderBottom: '1px solid black',
-              height: '100%',
-              backgroundColor: '#dcdcdc', // See parent div
+              justifyContent: 'space-between',
+              margin: '1vw',
+              height: '90vh',
+              width: '98vw',
             }}>
-              <Canvas
-                imageRef={imageRef}
-                currentLayerData={currentLayerData}
-                setCurrentLayerData={setCurrentLayerData}
-                colorButtonPressCount={colorButtonPressCount}
-                strokeTypeButtonPressCount={strokeTypeButtonPressCount}
-                strokeEndButtonPressCount={strokeEndButtonPressCount}
-                lines={lines}
-                setLines={setLines}
-                startPos={startPos}
-                endPos={endPos}
-                startDrawing={startDrawing}
-                draw={draw}
-                stopDrawing={stopDrawing}
-                deleteAllLines={deleteAllLines}
-                onLineChange={updateLine}
-                onLineDelete={deleteLine}
-                shapes={shapes}
-                selectedShapes={selectedShapes}
-                setSelectedShapes={setSelectedShapes}
-                onShapeChange={updateShape}
-                onShapeDelete={deleteShape}
-                onHideContextMenu={hideShapeContextMenu}
-                textTags={textTags}
-                selectedTextTags={selectedTextTags}
-                setSelectedTextTags={setSelectedTextTags}
-                onTextTagChange={updateTextTag}
-                onTextTagDelete={deleteTextTag}
-                onHideTextTagContextMenu={hideTextTagContextMenu}
-                selectedColor={selectedColor}
-                selectedLineStroke={selectedLineStroke}
-                selectedLineEnd={selectedLineEnd}
-                backgroundImage={backgroundImage}
-                setStageDimensions={setStageDimensions}
-                stageRef={stageRef}
-              />
-              <SpeedDial
-                ariaLabel="SpeedDial"
-                icon={isSpeedDialOpen ? <CloseIcon sx={{ color: 'red' }} /> : <MoreVertIcon sx={{ color: 'black' }} />}
-                direction={'down'}
-                FabProps={{ size: 'small', color: 'white' }}
-                onClick={handleToggleSpeedDial}
-                open={isSpeedDialOpen}
-                sx={{ position: 'fixed', top: '20px', right: '15px', marginTop: '15px', marginRight: '2.5vw' }} // Update this line
-              >
-                {actions.map((action, index) => (
-                  <SpeedDialAction
-                    key={`dial-${index}`}
-                    icon={action.icon}
-                    onClick={action.action}
-                  />
-                ))}
-              </SpeedDial>
+              <div className="custom-scrollbar">
+                <Stencil
+                  shapes={shapes}
+                  setShapes={setShapes}
+                  textTags={textTags}
+                  setTextTags={setTextTags}
+                  setSelectedTextTags={setSelectedTextTags}
+                  currentLayerData={currentLayerData}
+                  setCurrentLayerData={setCurrentLayerData}
+                  onAddFormation={addFormation}
+                  onAddShape={addShape}
+                  onAddTextTag={addTextTag}
+                  fieldType={fieldType}
+                  setFieldType={setFieldType}
+                  setZone={setZone}
+                  zone={zone}
+                  setRedLine={setRedLine}
+                  redLine={redLine}
+                  onDeleteAllShapes={deleteAllShapes}
+                  onChangeFormation={deleteFormation} //deletes all other formation shapes except one chosen
+                  selectedColor={selectedColor}
+                  setSelectedColor={setSelectedColor}
+                  selectedLineStroke={selectedLineStroke}
+                  setSelectedLineStroke={setSelectedLineStroke}
+                  selectedLineEnd={selectedLineEnd}
+                  setSelectedLineEnd={setSelectedLineEnd}
+                  onDeleteAllTextTags={deleteAllTextTags}
+                  onDeleteAllLines={deleteAllLines}
+                  setColorButtonPressCount={setColorButtonPressCount}
+                  setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                  setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
+                  stageRef={stageRef}
+                  flipAllTextTags={flipAllTextTags}
+                  flipAllShapes={flipAllShapes}
+                  backgroundImage={backgroundImage}
+                  lines={lines}
+                  setLines={setLines}
+                />
+              </div>
+              <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1.8,
+                padding: '1vw',
+                maxWidth: 'calc(80% - 4vw)',
+                marginRight: '2vw',
+                borderTop: '1px solid black',
+                borderRight: '1px solid black',
+                borderBottom: '1px solid black',
+                height: '100%',
+                backgroundColor: '#dcdcdc', // See parent div
+              }}>
+                <Canvas
+                  imageRef={imageRef}
+                  currentLayerData={currentLayerData}
+                  setCurrentLayerData={setCurrentLayerData}
+                  colorButtonPressCount={colorButtonPressCount}
+                  strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                  strokeEndButtonPressCount={strokeEndButtonPressCount}
+                  lines={lines}
+                  setLines={setLines}
+                  startPos={startPos}
+                  endPos={endPos}
+                  startDrawing={startDrawing}
+                  draw={draw}
+                  stopDrawing={stopDrawing}
+                  deleteAllLines={deleteAllLines}
+                  onLineChange={updateLine}
+                  onLineDelete={deleteLine}
+                  shapes={shapes}
+                  selectedShapes={selectedShapes}
+                  setSelectedShapes={setSelectedShapes}
+                  onShapeChange={updateShape}
+                  onShapeDelete={deleteShape}
+                  onHideContextMenu={hideShapeContextMenu}
+                  textTags={textTags}
+                  selectedTextTags={selectedTextTags}
+                  setSelectedTextTags={setSelectedTextTags}
+                  onTextTagChange={updateTextTag}
+                  onTextTagDelete={deleteTextTag}
+                  onHideTextTagContextMenu={hideTextTagContextMenu}
+                  selectedColor={selectedColor}
+                  selectedLineStroke={selectedLineStroke}
+                  selectedLineEnd={selectedLineEnd}
+                  backgroundImage={backgroundImage}
+                  setStageDimensions={setStageDimensions}
+                  stageRef={stageRef}
+                />
+                <SpeedDial
+                  ariaLabel="SpeedDial"
+                  icon={isSpeedDialOpen ? <CloseIcon sx={{ color: 'red' }} /> : <MoreVertIcon sx={{ color: 'black' }} />}
+                  direction={'down'}
+                  FabProps={{ size: 'small', color: 'white' }}
+                  onClick={handleToggleSpeedDial}
+                  open={isSpeedDialOpen}
+                  sx={{ position: 'fixed', top: '20px', right: '15px', marginTop: '15px', marginRight: '2.5vw' }} // Update this line
+                >
+                  {actions.map((action, index) => (
+                    <SpeedDialAction
+                      key={`dial-${index}`}
+                      icon={action.icon}
+                      onClick={action.action}
+                    />
+                  ))}
+                </SpeedDial>
+              </div>
             </div>
-          </div>
+          </>)}
         </StageDimensionsContext.Provider>
       </ThemeProvider>
     </>
