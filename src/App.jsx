@@ -63,6 +63,23 @@ function App() {
       undo.current.values.push(values);
   }
 
+  const preformUndo = (index) => {
+    if(undo.current.values[index].type === "shape"){
+      undoShape(index);
+    }else {
+      undoText(index);
+    }
+  }
+
+  const undoText = (index) => {
+    const text = textTags.find(s => s.id === undo.current.values[index].id);
+    text.initialPosition = {x: undo.current.values[index].x, y: undo.current.values[index].y};
+    text.x = undo.current.values[index].x;
+    text.y = undo.current.values[index].y;
+    text.key = uuidv4();
+    updateTextTag(text.id, text);
+  }
+
   const undoShape = (index) => {
     const shape = shapes.find(shape => shape.id === undo.current.values[index].id);
     shape.initialPosition = {x: undo.current.values[index].x, y: undo.current.values[index].y};
@@ -71,13 +88,14 @@ function App() {
     shape.key = uuidv4();
     updateShape(shape.id, shape);
   }
+
   
   const handleUndo = () => {
     if(undo.current.index >= undo.current.values.length){
       return;
     }
     const index = undo.current.values.length-1-undo.current.index;
-    undoShape(index);
+    preformUndo(index);
     undo.current.index += 1;
   }
 
@@ -88,7 +106,7 @@ function App() {
       return;
     }
     const index = undo.current.values.length-undo.current.index;
-    undoShape(index);
+    preformUndo(index);
     undo.current.index -= 1;
   }
 
