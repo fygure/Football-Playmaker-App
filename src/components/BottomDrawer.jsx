@@ -237,29 +237,6 @@ function BottomDrawer(props) {
         setOpenSnackbar(true);
     };
 
-    const renameItem = (index, text) => {
-        //console.log(items[index].name);
-        openDialog('Rename Play', items[index].name, (newName) => {
-            if (newName !== null) {
-                // Check if a list item with the same name already exists
-                const itemExists = items.some((item, i) => item.name === newName && i !== index);
-                if (itemExists) {
-                    // If a list item with the same name exists, show an error message
-                    setSnackbarMessage('A play with this name already exists.');
-                    setSnackbarSeverity('error');
-                    setOpenSnackbar(true);
-                } else {
-                    // If no list item with the same name exists, rename the item
-                    setItems((prevItems) => prevItems.map((item, i) => i === index ? { ...item, name: newName } : item));
-                    setSnackbarMessage('Play renamed successfully.');
-                    setSnackbarSeverity('success');
-                    setOpenSnackbar(true);
-                }
-            }
-        });
-    };
-
-    //TODO: add button on play item to save current changes to play
     const handleItemClick = (text) => {
         //console.log('IM HERE', text);
         const playName = text.name;
@@ -295,7 +272,7 @@ function BottomDrawer(props) {
                             onClick={toggleDrawer('bottom', false)}
                             onContextMenu={(event) => {
                                 event.preventDefault();
-                                renameItem(index, text);
+                                updateItem(index);
                             }}
                             style={{
                                 padding: '0px 20px',
