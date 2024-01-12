@@ -83,6 +83,7 @@ function Stencil(props) {
         undo,
         // redo,
         handleUndo,
+        handleRedo,
         onChangeLineStroke,
         onChangeLineEnd,
         onAddFormation,
@@ -298,7 +299,7 @@ function Stencil(props) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
 
                      <Button onClick={handleUndo} variant='contained'>Undo</Button>
-                    <Button onClick={() => { }} variant='contained'>Redo</Button> 
+                    <Button onClick={handleRedo} variant='contained'>Redo</Button> 
 
                     <h3 style={{ marginBottom: '2px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                         Field

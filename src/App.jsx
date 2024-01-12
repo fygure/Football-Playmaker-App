@@ -70,6 +70,20 @@ function App() {
     undo.current.index += 1;
   }
 
+  const handleRedo = () => {
+    if(undo.current.index ===0) {
+      return;
+    }
+    const index = undo.current.values.length-undo.current.index;
+    const shape = shapes.find(shape => shape.id === undo.current.values[index].id);
+    shape.initialPosition = {x: undo.current.values[index].x, y: undo.current.values[index].y};
+    shape.x = undo.current.values[index].x;
+    shape.y = undo.current.values[index].y;
+    shape.key = uuidv4();
+    updateShape(shape.id, shape);
+    undo.current.index -= 1;
+  }
+
   const handleDeleteAll = () => {
     deleteAllShapes();
     deleteAllTextTags();
@@ -103,6 +117,7 @@ function App() {
                 undo={undo}
                 // redo={redo}
                 handleUndo={handleUndo}
+                handleRedo={handleRedo}
                 onAddFormation={addFormation}
                 onAddShape={addShape}
                 onAddTextTag={addTextTag}
