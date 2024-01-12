@@ -73,10 +73,7 @@ function App() {
   }
 
   const undoText = (index) => {
-    const text = textTags.find(s => s.id === undo.current.values[index].id);
-    text.initialPosition = {x: undo.current.values[index].x, y: undo.current.values[index].y};
-    text.x = undo.current.values[index].x;
-    text.y = undo.current.values[index].y;
+    const text = undo.current.values[index].state;
     text.key = uuidv4();
     updateTextTag(text.id, text);
   }
