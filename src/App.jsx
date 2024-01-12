@@ -63,31 +63,32 @@ function App() {
       undo.current.values.push(values);
   }
 
-  const handleUndo = () => {
-    if(undo.current.index >= undo.current.values.length){
-      return;
-    }
-    const index = undo.current.values.length-1-undo.current.index;
+  const undoShape = (index) => {
     const shape = shapes.find(shape => shape.id === undo.current.values[index].id);
     shape.initialPosition = {x: undo.current.values[index].x, y: undo.current.values[index].y};
     shape.x = undo.current.values[index].x;
     shape.y = undo.current.values[index].y;
     shape.key = uuidv4();
     updateShape(shape.id, shape);
+  }
+  
+  const handleUndo = () => {
+    if(undo.current.index >= undo.current.values.length){
+      return;
+    }
+    const index = undo.current.values.length-1-undo.current.index;
+    undoShape(index);
     undo.current.index += 1;
   }
+
+  
 
   const handleRedo = () => {
     if(undo.current.index ===0) {
       return;
     }
     const index = undo.current.values.length-undo.current.index;
-    const shape = shapes.find(shape => shape.id === undo.current.values[index].id);
-    shape.initialPosition = {x: undo.current.values[index].x, y: undo.current.values[index].y};
-    shape.x = undo.current.values[index].x;
-    shape.y = undo.current.values[index].y;
-    shape.key = uuidv4();
-    updateShape(shape.id, shape);
+    undoShape(index);
     undo.current.index -= 1;
   }
 
