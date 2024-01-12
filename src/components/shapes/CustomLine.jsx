@@ -219,12 +219,16 @@ function CustomLine(props) {
                                 : [line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]
                     }
                     stroke={line.color}
-                    strokeWidth={2.5}
+                    strokeWidth={
+                        isSelected && line.strokeType === 'dotted' ? 4 :
+                            line.strokeType === 'dotted' ? 4 :
+                                2.5
+                    }
                     tension={0.3} //Determines curvature intensity
                     lineCap="round"
                     name={`line-${line.id}`}
                     onClick={handleLineClick}
-                    dash={isSelected && line.strokeType === 'dashed' ? [10, 10] : isSelected && line.strokeType === 'dotted' ? [1, 7] : line.strokeType === 'dashed' ? [10, 10] : line.strokeType === 'dotted' ? [1, 7] : [0, 0]}
+                    dash={isSelected && line.strokeType === 'dashed' ? [10, 10] : isSelected && line.strokeType === 'dotted' ? [1.5, 9] : line.strokeType === 'dashed' ? [10, 10] : line.strokeType === 'dotted' ? [1.5, 9] : [0, 0]}
                 />
                 {/* Arrow Line End */}
                 {line.strokeEnd === 'arrow' && (
@@ -258,9 +262,11 @@ function CustomLine(props) {
                             y={line.endPos.y}
                             radius={haloCircleRadius}
                             stroke="black"
-                            strokeWidth={2}
+                            strokeWidth={0}
                             name="larger-circle"
-                            fill="grey"
+                            fill="white"
+                            shadowBlur={15}
+                            shadowColor='#184267'
                             onMouseDown={(e) => {
                                 const startPos = e.target.getStage().getPointerPosition();
                                 startDrawing(startPos, '$', id, null);

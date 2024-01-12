@@ -64,11 +64,10 @@ function BottomDrawer(props) {
     const checkIfDrawerEmpty = () => {
         if (items.length === 0) {
             console.log('Play drawer is empty');
-            //FIXME: ASK CLIENT ABOUT THIS NAMING
             // //Create empty objects for everything
             const newItem = {
                 id: uuidv4(),
-                name: 'Default',
+                name: 'Untitled',
                 backgroundImage: backgroundImage,
                 textTagList: [],
                 shapeList: [],
@@ -76,6 +75,7 @@ function BottomDrawer(props) {
                 //drawingLine: (startPos && endPos)
             };
             setItems([newItem]);
+            setCurrentLayerData(newItem);
         }
     };
 

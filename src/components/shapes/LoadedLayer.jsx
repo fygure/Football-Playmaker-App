@@ -56,7 +56,7 @@ const LoadedLayer = (props) => {
         height: imageRef.current.height()
     };
 
-    const playNamePos = { x: middlePosition.x - imageSize.width * 0.5, y: middlePosition.y - imageSize.height * 0.5 };
+    const playNamePos = { x: middlePosition.x - imageSize.width * 0.47, y: middlePosition.y - imageSize.height * 0.475 };
 
     //const imageRef = useRef(null);
     //FIXME: rendering image based on currentLayerData, problem is in useBackground and stencil
@@ -85,8 +85,8 @@ const LoadedLayer = (props) => {
                     text={currentLayerData.name}
                     x={playNamePos.x}
                     y={playNamePos.y}
-                    textDecoration='underline'
-                    fontSize={25}
+                    textDecoration='none'
+                    fontSize={22}
                     fontStyle='bold'
                     fontFamily='Inter, sans-serif'
                     fill={'black'}

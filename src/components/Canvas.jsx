@@ -288,7 +288,7 @@ function Canvas(props) {
                                 {startPos && endPos && (
                                     <Line
                                         points={[startPos.x, startPos.y, endPos.x, endPos.y]}
-                                        stroke="#7393B3"
+                                        stroke="#ACC8DD"
                                         strokeWidth={4}
                                         tension={0.5}
                                         lineCap="round"
