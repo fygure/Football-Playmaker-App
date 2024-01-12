@@ -124,7 +124,7 @@ function TextTag(props) {
         setShowContextMenu(false);
         setIsDragging(true);
         if(textTags.find(s => s.id === id).x == null)
-        logHistory({type: "text", state: {initialPosition: {x: e.target.x(), y: e.target.y()}, x: e.target.x(), y: e.target.y()}, id: id});
+            logHistory({type: "text", state: {initialPosition: {x: e.target.x(), y: e.target.y()}, x: e.target.x(), y: e.target.y()}, id: id});
     };
 
     const handleDragEnd = (e) => {

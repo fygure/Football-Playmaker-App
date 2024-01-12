@@ -167,7 +167,7 @@ function Shape(props) {
     }
 
     const handleTextChange = (newText) => {
-        logHistory({type: "shape", state: {initialPosition: {x: e.target.x(), y: e.target.y()}, x: e.target.x(), y: e.target.y()}, id: id});
+        logHistory({type: "shape", state: {text: text}, id: id});
         onShapeChange(id, { text: newText });
     };
 

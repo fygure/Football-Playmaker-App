@@ -156,9 +156,9 @@ function App() {
   }
 
   const undoText = (index) => {
-    const text = undo.current.values[index].state;
-    text.key = uuidv4();
-    updateTextTag(text.id, text);
+    const newText = undo.current.values[index].state;
+    newText.key = uuidv4();
+    updateTextTag(undo.current.values[index].id, newText);
   }
 
   const undoShape = (index) => {
