@@ -132,7 +132,7 @@ function Shape(props) {
   const handleDragStart = (e) => {
         setShowContextMenu(false);
         if(shapes.find(s => s.id === id).x == null)
-            logHistory({type: "shape", state: {initialPosition: {x: e.target.x(), y: e.target.y()}, x: e.target.x(), y: e.target.y()}, id: id});
+            logHistory({type: "shape", state: { x: e.target.x(), y: e.target.y()}, id: id});
         
     };
 
@@ -158,7 +158,7 @@ function Shape(props) {
         const newPos = e.target.position();
         setPosition(newPos);
         onShapeChange(id, { x: e.target.x(), y: e.target.y() });
-        logHistory({type: "shape", state: {initialPosition: {x: e.target.x(), y: e.target.y()}, x: e.target.x(), y: e.target.y()}, id: id});
+        logHistory({type: "shape", state: { x: e.target.x(), y: e.target.y()}, id: id});
         //setHistory([...history, { action : drag,  get shape object by id }]);
     };
 
@@ -167,7 +167,6 @@ function Shape(props) {
     }
 
     const handleTextChange = (newText) => {
-        logHistory({type: "shape", state: {text: text}, id: id});
         onShapeChange(id, { text: newText });
     };
 

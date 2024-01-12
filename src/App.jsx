@@ -140,6 +140,7 @@ function App() {
   };
 
   const logHistory = (values) =>{
+    console.log(values);
     for(var i =1; i< undo.current.index; i++)
             undo.current.values.pop();
       undo.current.index = 1;
@@ -158,12 +159,14 @@ function App() {
   const undoText = (index) => {
     const newText = undo.current.values[index].state;
     newText.key = uuidv4();
+    newText.initialPosition = {x: undo.current.values[index].state.x, y: undo.current.values[index].state.y}
     updateTextTag(undo.current.values[index].id, newText);
   }
 
   const undoShape = (index) => {
     const newShape = undo.current.values[index].state;
     newShape.key = uuidv4();
+    newShape.initialPosition = {x: undo.current.values[index].state.x, y: undo.current.values[index].state.y}
     updateShape(undo.current.values[index].id, newShape);
   }
 

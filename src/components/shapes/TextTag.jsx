@@ -124,7 +124,7 @@ function TextTag(props) {
         setShowContextMenu(false);
         setIsDragging(true);
         if(textTags.find(s => s.id === id).x == null)
-            logHistory({type: "text", state: {initialPosition: {x: e.target.x(), y: e.target.y()}, x: e.target.x(), y: e.target.y()}, id: id});
+            logHistory({type: "text", state: { x: e.target.x(), y: e.target.y()}, id: id});
     };
 
     const handleDragEnd = (e) => {
@@ -134,7 +134,7 @@ function TextTag(props) {
         onTextTagChange(id, { x: e.target.x(), y: e.target.y() });
         }
         setIsDragging(false);
-        logHistory({type: "text", state: {initialPosition: {x: e.target.x(), y: e.target.y()}, x: e.target.x(), y: e.target.y()}, id: id});
+        logHistory({type: "text", state: {x: e.target.x(), y: e.target.y()}, id: id});
     };
 
     const handleHideContextMenu = () => {
@@ -143,6 +143,7 @@ function TextTag(props) {
 
     const handleTextChange = (newText) => {
         onTextTagChange(id, { text: newText });
+        logHistory({type: "text", state: {text: newText, x: position.x, y: position.y}, id: id});
     };
 
     const dragBoundFunc = (pos) => {
