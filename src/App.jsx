@@ -56,6 +56,13 @@ function App() {
     document.body.removeChild(link);
   };
 
+  const logHistory = (values) =>{
+    for(var i =0; i< undo.current.index; i++)
+            undo.current.values.pop();
+      undo.current.index = 0;
+      undo.current.values.push(values);
+  }
+
   const handleUndo = () => {
     if(undo.current.index >= undo.current.values.length){
       return;
@@ -114,7 +121,7 @@ function App() {
           }}>
             <div className="custom-scrollbar">
               <Stencil
-                undo={undo}
+                logHistory={logHistory}
                 // redo={redo}
                 handleUndo={handleUndo}
                 handleRedo={handleRedo}
@@ -160,7 +167,7 @@ function App() {
               backgroundColor: '#dcdcdc', // See parent div
             }}>
               <Canvas
-                undo={undo}
+                logHistory={logHistory}
                 imageRef={imageRef}
                 colorButtonPressCount={colorButtonPressCount}
                 strokeTypeButtonPressCount={strokeTypeButtonPressCount}

@@ -118,6 +118,7 @@ function TextTag(props) {
         setSelectedTextTagID(id);
         setShowContextMenu(false);
         setIsDragging(true);
+        
     };
 
     const handleDragEnd = (e) => {

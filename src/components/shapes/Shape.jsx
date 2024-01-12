@@ -37,6 +37,7 @@ function Shape(props) {
         setSelectedShapes,
         selectedShapeID,
         setSelectedShapeID,
+        logHistory,
     } = props;
 
     const shapeRef = useRef();
@@ -129,11 +130,7 @@ function Shape(props) {
 
   const handleDragStart = (e) => {
         setShowContextMenu(false);
-        console.log(undo.current)
-        for(var i =0; i< undo.current.index; i++)
-            undo.current.values.pop();
-        undo.current.index = 0;
-        undo.current.values.push({action: "moved", x: e.target.x(), y: e.target.y(), id: id});
+        logHistory({type: "shape", action: "moved", x: e.target.x(), y: e.target.y(), id: id});
         
     };
 

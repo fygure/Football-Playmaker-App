@@ -80,8 +80,6 @@ const lineButtonStyle = {
 
 function Stencil(props) {
     const {
-        undo,
-        // redo,
         handleUndo,
         handleRedo,
         onChangeLineStroke,

@@ -8,7 +8,6 @@ import CustomLine from './shapes/CustomLine';
 
 function Canvas(props) {
     const {
-        undo,
         startPos,
         endPos,
         lines,
@@ -43,6 +42,7 @@ function Canvas(props) {
         backgroundImage,
         setStageDimensions,
         orientation,
+        logHistory,
     } = props;
 
     //const { stageDimensions } = useContext(StageDimensionsContext);
@@ -191,11 +191,12 @@ function Canvas(props) {
                                 startDrawing={startDrawing}
                                 stageRef={stageRef}
                                 imageRef={imageRef}
+                                logHistory={logHistory}
                             />
                         ))}
                         {shapes.map((shape) => (
                             <Shape
-                                undo={undo}
+                                logHistory={logHistory}
                                 lines={lines}
                                 setLines={setLines}
                                 setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
@@ -220,7 +221,8 @@ function Canvas(props) {
                         ))}
                         {textTags.map((textTag) => (
                             <TextTag
-                                key={textTag.id}
+                                logHistory={logHistory}
+                                key={textTag.key}
                                 id={textTag.id}
                                 text={textTag.text}
                                 textTags={textTags}
