@@ -25,8 +25,7 @@ TOOD: orientation
 */
 ////////////////////////////////////////////////////////////////////////////////////////
 function App() {
-  const undo = useRef([]);
-  const undoIndex = useState({count: 0});
+  const undo = useRef({index: 0, values: []});
   const imageRef = useRef(null);
   const stageRef = useRef(null);
   const [colorButtonPressCount, setColorButtonPressCount] = useState(0);
@@ -58,18 +57,17 @@ function App() {
   };
 
   const handleUndo = () => {
-    if(undoIndex[0].count >= undo.current.length){
+    if(undo.current.index >= undo.current.values.length){
       return;
     }
-    const index = undo.current.length-1-undoIndex[0].count;
-    console.log(undoIndex);
-    const shape = shapes.find(shape => shape.id === undo.current[index].id);
-    shape.initialPosition = {x: undo.current[index].x, y: undo.current[index].y}
-    shape.x = undo.current[index].x;
-    shape.y = undo.current[index].y;
+    const index = undo.current.values.length-1-undo.current.index;
+    const shape = shapes.find(shape => shape.id === undo.current.values[index].id);
+    shape.initialPosition = {x: undo.current.values[index].x, y: undo.current.values[index].y};
+    shape.x = undo.current.values[index].x;
+    shape.y = undo.current.values[index].y;
     shape.key = uuidv4();
     updateShape(shape.id, shape);
-    undoIndex[0].count += 1;
+    undo.current.index += 1;
   }
 
   const handleDeleteAll = () => {

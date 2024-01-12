@@ -1,5 +1,5 @@
 // Shape.jsx
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, setRef, useEffect, useMemo } from 'react';
 import CenterSquare from './shapeType/CenterSquare';
 import LinemanOval from './shapeType/LinemanOval';
 import ReceiverOval from './shapeType/ReceiverOval';
@@ -127,10 +127,14 @@ function Shape(props) {
 
     };
 
-    const handleDragStart = (e) => {
+  const handleDragStart = (e) => {
         setShowContextMenu(false);
-        console.log(e.target);
-        undo.current.push({action: "moved", x: e.target.x(), y: e.target.y(), id: id});
+        console.log(undo.current)
+        for(var i =0; i< undo.current.index; i++)
+            undo.current.values.pop();
+        undo.current.index = 0;
+        undo.current.values.push({action: "moved", x: e.target.x(), y: e.target.y(), id: id});
+        
     };
 
 
