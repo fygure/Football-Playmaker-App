@@ -40,22 +40,22 @@ function App() {
   function handleCallbackResponse(response) {
     //console.log("Encoded JWT ID token: " + response.credential);
     var userObject = jwtDecode(response.credential);
-    // console.log(userObject);
-    // setUser(userObject);
-    // document.getElementById("signInDiv").hidden = true;
+    console.log(userObject);
+    setUser(userObject);
+    document.getElementById("signInDiv").hidden = true;
 
     //console.log(userObject);
-    const email = userObject.email;
-    //FIXME: DUMMY LOGIC FOR WHITELIST TESTING
-    const testUsers = ['test1@example.com', 'test2@example.com', 'max.chalitsios@gmail.com'];
+    // const email = userObject.email;
+    // //FIXME: DUMMY LOGIC FOR WHITELIST TESTING
+    // const testUsers = ['test1@example.com', 'test2@example.com', 'max.chalitsios@gmail.com'];
 
-    if (!testUsers.includes(email)) {
-      handleSignOut();
-      console.log('Not whitelisted');
-    } else {
-      setUser(userObject);
-      document.getElementById("signInDiv").hidden = true;
-    }
+    // if (!testUsers.includes(email)) {
+    //   handleSignOut();
+    //   console.log('Not whitelisted');
+    // } else {
+    //   setUser(userObject);
+    //   document.getElementById("signInDiv").hidden = true;
+    // }
   }
 
   function handleSignOut(event) {
