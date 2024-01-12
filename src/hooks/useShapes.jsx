@@ -1,6 +1,7 @@
 // useShapes.jsx
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import cloneDeep from 'lodash/cloneDeep';
 
 function useShapes(imageRef) {
     const [shapes, setShapes] = useState([]);
@@ -210,17 +211,17 @@ function useShapes(imageRef) {
         //FIXME: add newShapes for defense formations
         else if (formationType === 'defense4-3L') {
             const newShapes = [
-                { id: uuidv4(), formationType: formationType, shapeType: 'DefenderSS', initialPosition: { x: middlePosition.x + imageSize.width * 0.00, y: middlePosition.y - imageSize.height * 0.09 }, initialColor, text: 'SS' },
-                { id: uuidv4(), formationType: formationType, shapeType: 'DefenderWS', initialPosition: { x: middlePosition.x + imageSize.width * 0.19, y: middlePosition.y - imageSize.height * 0.02 }, initialColor, text: 'WS' },
-                { id: uuidv4(), formationType: formationType, shapeType: 'DefenderC', initialPosition: { x: middlePosition.x - imageSize.width * 0.33, y: middlePosition.y + imageSize.height * 0.1 }, initialColor, text: 'C' },
-                { id: uuidv4(), formationType: formationType, shapeType: 'Defender$', initialPosition: { x: middlePosition.x - imageSize.width * 0.16, y: middlePosition.y + imageSize.height * 0.075 }, initialColor, text: '$' },
-                { id: uuidv4(), formationType: formationType, shapeType: 'DefenderM', initialPosition: { x: middlePosition.x - imageSize.width * 0.08, y: middlePosition.y + imageSize.height * 0.075 }, initialColor, text: 'M' },
-                { id: uuidv4(), formationType: formationType, shapeType: 'DefenderW', initialPosition: { x: middlePosition.x + imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.075 }, initialColor, text: 'W' },
-                { id: uuidv4(), formationType: formationType, shapeType: 'DefenderC', initialPosition: { x: middlePosition.x + imageSize.width * 0.33, y: middlePosition.y + imageSize.height * 0.1 }, initialColor, text: 'C' },
-                { id: uuidv4(), formationType: formationType, shapeType: 'DefenderE', initialPosition: { x: middlePosition.x - imageSize.width * 0.1, y: middlePosition.y + imageSize.height * 0.158 }, initialColor, text: 'E' },
-                { id: uuidv4(), formationType: formationType, shapeType: 'DefenderN', initialPosition: { x: middlePosition.x - imageSize.width * 0.025, y: middlePosition.y + imageSize.height * 0.158 }, initialColor, text: 'N' },
-                { id: uuidv4(), formationType: formationType, shapeType: 'DefenderT', initialPosition: { x: middlePosition.x + imageSize.width * 0.065, y: middlePosition.y + imageSize.height * 0.158 }, initialColor, text: 'T' },
-                { id: uuidv4(), formationType: formationType, shapeType: 'DefenderJ', initialPosition: { x: middlePosition.x + imageSize.width * 0.11, y: middlePosition.y + imageSize.height * 0.158 }, initialColor, text: 'J' },
+                { key:  uuidv4(), id: uuidv4(), formationType: formationType, shapeType: 'DefenderSS', initialPosition: { x: middlePosition.x + imageSize.width * 0.00, y: middlePosition.y - imageSize.height * 0.09 }, initialColor, text: 'SS' },
+                { key:  uuidv4(), id: uuidv4(), formationType: formationType, shapeType: 'DefenderWS', initialPosition: { x: middlePosition.x + imageSize.width * 0.19, y: middlePosition.y - imageSize.height * 0.02 }, initialColor, text: 'WS' },
+                { key:  uuidv4(), id: uuidv4(), formationType: formationType, shapeType: 'DefenderC', initialPosition: { x: middlePosition.x - imageSize.width * 0.33, y: middlePosition.y + imageSize.height * 0.1 }, initialColor, text: 'C' },
+                { key:  uuidv4(), id: uuidv4(), formationType: formationType, shapeType: 'Defender$', initialPosition: { x: middlePosition.x - imageSize.width * 0.16, y: middlePosition.y + imageSize.height * 0.075 }, initialColor, text: '$' },
+                { key:  uuidv4(), id: uuidv4(), formationType: formationType, shapeType: 'DefenderM', initialPosition: { x: middlePosition.x - imageSize.width * 0.08, y: middlePosition.y + imageSize.height * 0.075 }, initialColor, text: 'M' },
+                { key:  uuidv4(), id: uuidv4(), formationType: formationType, shapeType: 'DefenderW', initialPosition: { x: middlePosition.x + imageSize.width * 0.05, y: middlePosition.y + imageSize.height * 0.075 }, initialColor, text: 'W' },
+                { key:  uuidv4(), id: uuidv4(), formationType: formationType, shapeType: 'DefenderC', initialPosition: { x: middlePosition.x + imageSize.width * 0.33, y: middlePosition.y + imageSize.height * 0.1 }, initialColor, text: 'C' },
+                { key:  uuidv4(), id: uuidv4(), formationType: formationType, shapeType: 'DefenderE', initialPosition: { x: middlePosition.x - imageSize.width * 0.1, y: middlePosition.y + imageSize.height * 0.158 }, initialColor, text: 'E' },
+                { key:  uuidv4(), id: uuidv4(), formationType: formationType, shapeType: 'DefenderN', initialPosition: { x: middlePosition.x - imageSize.width * 0.025, y: middlePosition.y + imageSize.height * 0.158 }, initialColor, text: 'N' },
+                { key:  uuidv4(), id: uuidv4(), formationType: formationType, shapeType: 'DefenderT', initialPosition: { x: middlePosition.x + imageSize.width * 0.065, y: middlePosition.y + imageSize.height * 0.158 }, initialColor, text: 'T' },
+                { key:  uuidv4(), id: uuidv4(), formationType: formationType, shapeType: 'DefenderJ', initialPosition: { x: middlePosition.x + imageSize.width * 0.11, y: middlePosition.y + imageSize.height * 0.158 }, initialColor, text: 'J' },
             ];
 
             const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));

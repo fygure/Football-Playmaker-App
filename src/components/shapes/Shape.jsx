@@ -16,6 +16,7 @@ const SHAPE_SIZES = {
 
 function Shape(props) {
     const {
+        undo,
         lines,
         setLines,
         startDrawing,
@@ -126,8 +127,10 @@ function Shape(props) {
 
     };
 
-    const handleDragStart = () => {
+    const handleDragStart = (e) => {
         setShowContextMenu(false);
+        console.log(e.target);
+        undo.current.push({action: "moved", x: e.target.x(), y: e.target.y(), id: id});
     };
 
 
@@ -191,6 +194,7 @@ function Shape(props) {
     };
 
     const commonProps = {
+        undo,
         startDrawing,
         setIsMouseDownOnAnchor,
         id,

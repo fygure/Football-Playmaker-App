@@ -1,5 +1,5 @@
 // App.jsx
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef} from 'react';
 import StageDimensionsContext from './contexts/StageDimensionsContext';
 import Canvas from './components/Canvas';
 import Stencil from './components/Stencil';
@@ -16,6 +16,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import './App.css';
 import useLines from './hooks/useLines';
+import { v4 as uuidv4 } from 'uuid';
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: add undo/redo
@@ -24,6 +25,8 @@ TOOD: orientation
 */
 ////////////////////////////////////////////////////////////////////////////////////////
 function App() {
+  const undo = useRef([]);
+  const undoIndex = useState({count: 0});
   const imageRef = useRef(null);
   const stageRef = useRef(null);
   const [colorButtonPressCount, setColorButtonPressCount] = useState(0);
@@ -54,6 +57,21 @@ function App() {
     document.body.removeChild(link);
   };
 
+  const handleUndo = () => {
+    if(undoIndex[0].count >= undo.current.length){
+      return;
+    }
+    const index = undo.current.length-1-undoIndex[0].count;
+    console.log(undoIndex);
+    const shape = shapes.find(shape => shape.id === undo.current[index].id);
+    shape.initialPosition = {x: undo.current[index].x, y: undo.current[index].y}
+    shape.x = undo.current[index].x;
+    shape.y = undo.current[index].y;
+    shape.key = uuidv4();
+    updateShape(shape.id, shape);
+    undoIndex[0].count += 1;
+  }
+
   const handleDeleteAll = () => {
     deleteAllShapes();
     deleteAllTextTags();
@@ -63,6 +81,7 @@ function App() {
   const handleToggleSpeedDial = () => {
     setIsSpeedDialOpen(!isSpeedDialOpen);
   };
+
 
   const actions = [
     { icon: <DeleteForeverOutlinedIcon />, action: handleDeleteAll },
@@ -83,8 +102,9 @@ function App() {
           }}>
             <div className="custom-scrollbar">
               <Stencil
-                // undo={undo}
+                undo={undo}
                 // redo={redo}
+                handleUndo={handleUndo}
                 onAddFormation={addFormation}
                 onAddShape={addShape}
                 onAddTextTag={addTextTag}
@@ -127,6 +147,7 @@ function App() {
               backgroundColor: '#dcdcdc', // See parent div
             }}>
               <Canvas
+                undo={undo}
                 imageRef={imageRef}
                 colorButtonPressCount={colorButtonPressCount}
                 strokeTypeButtonPressCount={strokeTypeButtonPressCount}

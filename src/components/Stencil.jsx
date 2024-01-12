@@ -1,5 +1,5 @@
 // Stencil.jsx
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import FeedBackForm from './feedback/FeedBackForm.jsx';
@@ -80,8 +80,9 @@ const lineButtonStyle = {
 
 function Stencil(props) {
     const {
-        // undo,
+        undo,
         // redo,
+        handleUndo,
         onChangeLineStroke,
         onChangeLineEnd,
         onAddFormation,
@@ -131,6 +132,7 @@ function Stencil(props) {
         document.body.removeChild(link);
     }
 
+    
     // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
@@ -295,8 +297,8 @@ function Stencil(props) {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
 
-                    {/* <Button onClick={() => { }} variant='contained'>Undo</Button>
-                    <Button onClick={() => { }} variant='contained'>Redo</Button> */}
+                     <Button onClick={handleUndo} variant='contained'>Undo</Button>
+                    <Button onClick={() => { }} variant='contained'>Redo</Button> 
 
                     <h3 style={{ marginBottom: '2px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                         Field

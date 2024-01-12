@@ -8,6 +8,7 @@ import CustomLine from './shapes/CustomLine';
 
 function Canvas(props) {
     const {
+        undo,
         startPos,
         endPos,
         lines,
@@ -194,11 +195,12 @@ function Canvas(props) {
                         ))}
                         {shapes.map((shape) => (
                             <Shape
+                                undo={undo}
                                 lines={lines}
                                 setLines={setLines}
                                 setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
                                 startDrawing={startDrawing}
-                                key={shape.id}
+                                key={shape.key}
                                 id={shape.id}
                                 shapeType={shape.shapeType}
                                 shapes={shapes}
