@@ -57,13 +57,14 @@ function App() {
   };
 
   const logHistory = (values) =>{
-    for(var i =0; i< undo.current.index; i++)
+    for(var i =1; i< undo.current.index; i++)
             undo.current.values.pop();
-      undo.current.index = 0;
+      undo.current.index = 1;
       undo.current.values.push(values);
   }
 
   const preformUndo = (index) => {
+    console.log(undo.current.values);
     if(undo.current.values[index].type === "shape"){
       undoShape(index);
     }else {
@@ -81,12 +82,9 @@ function App() {
   }
 
   const undoShape = (index) => {
-    const shape = shapes.find(shape => shape.id === undo.current.values[index].id);
-    shape.initialPosition = {x: undo.current.values[index].x, y: undo.current.values[index].y};
-    shape.x = undo.current.values[index].x;
-    shape.y = undo.current.values[index].y;
-    shape.key = uuidv4();
-    updateShape(shape.id, shape);
+    const newShape = undo.current.values[index].state;
+    newShape.key = uuidv4();
+    updateShape(undo.current.values[index].id, newShape);
   }
 
   
@@ -102,10 +100,10 @@ function App() {
   
 
   const handleRedo = () => {
-    if(undo.current.index ===0) {
+    if(undo.current.index <= 1) {
       return;
     }
-    const index = undo.current.values.length-undo.current.index;
+    const index = undo.current.values.length+1-undo.current.index;
     preformUndo(index);
     undo.current.index -= 1;
   }
