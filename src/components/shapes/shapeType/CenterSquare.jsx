@@ -65,16 +65,18 @@ const CenterSquare = (props) => {
                     <Rect
                         width={rectSize.width + haloOffset}
                         height={rectSize.height + haloOffset}
-                        stroke={strokeOptions.color}
-                        fill='grey'
+                        //stroke={strokeOptions.color}
+                        fill='white'
                         strokeWidth={2}
                         cornerRadius={2}
+                        shadowBlur={15}
+                        shadowColor='#184267'
                         offsetX={(rectSize.width + haloOffset) / 2}
                         offsetY={(rectSize.height + haloOffset) / 2}
                         onMouseDown={(e) => {
                             const startPos = e.target.getStage().getPointerPosition();
                             console.log('Shape Halo onMouseDown', startPos);
-                            startDrawing(startPos, id, shapeRef.current);
+                            startDrawing(startPos, id, null, position);
                             setIsMouseDownOnAnchor(true);
                             e.cancelBubble = true;
                         }}

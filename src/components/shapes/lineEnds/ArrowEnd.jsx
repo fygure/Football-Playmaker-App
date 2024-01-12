@@ -26,8 +26,8 @@ const ArrowEnd = ({ line, controlPoint, color }) => {
     return (
         <Arrow
             points={[line.endPos.x, line.endPos.y, x, y]}
-            pointerLength={10}
-            pointerWidth={10}
+            pointerLength={9}
+            pointerWidth={7}
             fill={color}
             stroke={color}
         />

@@ -5,9 +5,12 @@ import useImage from 'use-image';
 import Shape from './shapes/Shape';
 import TextTag from './shapes/TextTag';
 import CustomLine from './shapes/CustomLine';
+import LoadedLayer from './shapes/LoadedLayer';
 
 function Canvas(props) {
     const {
+        currentLayerData,
+        setCurrentLayerData,
         startPos,
         endPos,
         lines,
@@ -53,6 +56,12 @@ function Canvas(props) {
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
     const [selectedLineID, setSelectedLineID] = useState('$');
 
+    // console.log('ChildComponent2 rendering', currentLayerData);
+    // useEffect(() => {
+    //     console.log('Current Stage Data:', currentLayerData);
+    // }, [currentLayerData]);
+
+
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
 
@@ -69,6 +78,8 @@ function Canvas(props) {
 
     useEffect(() => {
         function fitStageIntoParentContainer() {
+            // console.log('stageRef.current:', stageRef.current);
+            // console.log('containerRef.current:', containerRef.current);
             if (containerRef.current && stageRef.current) {
                 const { offsetWidth, offsetHeight } = containerRef.current;
 
@@ -111,6 +122,7 @@ function Canvas(props) {
         console.log('Shapes List:', shapes);
         console.log('Text Tags List:', textTags);
         console.log('Lines List:', lines);
+        console.log('Current Layer Data:', currentLayerData);
         // if clicked on empty area - remove all selections
         if (e.target === e.target.getStage()) {
             //setSelectedShapes([]);
@@ -138,7 +150,7 @@ function Canvas(props) {
 
     //completes drawing the line
     const handleStageMouseUp = (e) => {
-        const endPos = e.target.getStage().getPointerPosition();
+        //const endPos = e.target.getStage().getPointerPosition();
         //console.log('Stage onMouseUp', endPos);
         //console.log('Selected Line ID:', selectedLineID);
         stopDrawing();
@@ -157,100 +169,140 @@ function Canvas(props) {
                     onMouseMove={handleStageMouseMove}
                     onMouseUp={handleStageMouseUp}
                 >
-                    <Layer>
-                        {/* Image tag = background image (field type) */}
-                        <Image
-                            ref={imageRef}
-                            x={stageRef.current ? (stageRef.current.width() - (image ? image.width * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0)) / 2 : 0}
-                            y={stageRef.current ? (stageRef.current.height() - (image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0)) / 2 : 0}
+                    {currentLayerData ?
+                        <LoadedLayer
+                            currentLayerData={currentLayerData}
+                            stageRef={stageRef}
+                            imageRef={imageRef}
+                            containerRef={containerRef}
                             image={image}
-                            width={image ? image.width * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
-                            height={image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
-                            onClick={handleImageClick}
-                        />
-                        {/* Sorting causes lines to render later */}
-                        {lines.sort((a, b) => (a.id === selectedLineID ? 1 : -1)).map((line, index) => (
-                            <CustomLine
-                                key={line.id}
-                                id={line.id}
-                                line={line}
+                            handleImageClick={handleImageClick}
+                            textTags={textTags}
+                            selectedColor={selectedColor}
+                            onTextTagChange={onTextTagChange}
+                            onTextTagDelete={onTextTagDelete}
+                            onHideTextTagContextMenu={onHideTextTagContextMenu}
+                            setSelectedTextTags={setSelectedTextTags}
+                            selectedTextTagID={selectedTextTagID}
+                            setSelectedTextTagID={setSelectedTextTagID}
+                            shapes={shapes}
+                            onShapeChange={onShapeChange}
+                            onShapeDelete={onShapeDelete}
+                            onLineDelete={onLineDelete}
+                            onHideContextMenu={onHideContextMenu}
+                            setSelectedShapes={setSelectedShapes}
+                            selectedShapeID={selectedShapeID}
+                            setSelectedShapeID={setSelectedShapeID}
+                            lines={lines}
+                            setLines={setLines}
+                            setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
+                            startDrawing={startDrawing}
+                            startPos={startPos}
+                            endPos={endPos}
+                            selectedLineID={selectedLineID}
+                            setSelectedLineID={setSelectedLineID}
+                            colorButtonPressCount={colorButtonPressCount}
+                            strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                            strokeEndButtonPressCount={strokeEndButtonPressCount}
+                            onLineChange={onLineChange}
+                            selectedLineStroke={selectedLineStroke}
+                            selectedLineEnd={selectedLineEnd}
+                        /> : (
+                            <Layer>
+                                {/* TODO: add default text tag for play name HERE */}
+                                {/* Image tag = background image (field type) */}
+                                <Image
+                                    ref={imageRef}
+                                    x={stageRef.current ? (stageRef.current.width() - (image ? image.width * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0)) / 2 : 0}
+                                    y={stageRef.current ? (stageRef.current.height() - (image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0)) / 2 : 0}
+                                    image={image}
+                                    width={image ? image.width * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
+                                    height={image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
+                                    onClick={handleImageClick}
+                                />
+                                {/* Sorting causes lines to render later */}
+                                {lines.sort((a, b) => (a.id === selectedLineID ? 1 : -1)).map((line, index) => (
+                                    <CustomLine
+                                        key={line.id}
+                                        id={line.id}
+                                        line={line}
+                                        lines={lines}
+                                        color={line.color}
+                                        colorButtonPressCount={colorButtonPressCount}
+                                        strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                                        strokeEndButtonPressCount={strokeEndButtonPressCount}
+                                        selectedColor={selectedColor}
+                                        selectedLineStroke={selectedLineStroke}
+                                        selectedLineEnd={selectedLineEnd}
+                                        onLineDelete={onLineDelete}
+                                        onLineChange={onLineChange}
+                                        setLines={setLines}
+                                        selectedLineID={selectedLineID}
+                                        setSelectedLineID={setSelectedLineID}
+                                        setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
+                                        startDrawing={startDrawing}
+                                        stageRef={stageRef}
+                                        imageRef={imageRef}
+                                        logHistory={logHistory}
+                            />
+                                ))}
+                                {shapes.map((shape) => (
+                                    <Shape
+                                        logHistory={logHistory}
                                 lines={lines}
-                                color={line.color}
-                                colorButtonPressCount={colorButtonPressCount}
-                                strokeTypeButtonPressCount={strokeTypeButtonPressCount}
-                                strokeEndButtonPressCount={strokeEndButtonPressCount}
-                                selectedColor={selectedColor}
-                                selectedLineStroke={selectedLineStroke}
-                                selectedLineEnd={selectedLineEnd}
-                                onLineDelete={onLineDelete}
-                                onLineChange={onLineChange}
-                                setLines={setLines}
-                                selectedLineID={selectedLineID}
-                                setSelectedLineID={setSelectedLineID}
-                                setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
-                                startDrawing={startDrawing}
-                                stageRef={stageRef}
-                                imageRef={imageRef}
-                                logHistory={logHistory}
-                            />
-                        ))}
-                        {shapes.map((shape) => (
-                            <Shape
-                                logHistory={logHistory}
-                                lines={lines}
-                                setLines={setLines}
-                                setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
-                                startDrawing={startDrawing}
-                                key={shape.key}
-                                id={shape.id}
-                                shapeType={shape.shapeType}
-                                shapes={shapes}
-                                initialPosition={shape.initialPosition}
-                                initialColor={shape.initialColor}
-                                onShapeChange={onShapeChange}
-                                onShapeDelete={onShapeDelete}
+                                        setLines={setLines}
+                                        setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
+                                        startDrawing={startDrawing}
+                                        key={shape.key}
+                                        id={shape.id}
+                                        shapeType={shape.shapeType}
+                                        shapes={shapes}
+                                        initialPosition={shape.initialPosition}
+                                        initialColor={shape.initialColor}
+                                        onShapeChange={onShapeChange}
+                                        onShapeDelete={onShapeDelete}
+                                        onLineDelete={onLineDelete}
+                                        onHideContextMenu={onHideContextMenu}
+                                        stageRef={stageRef}
+                                        imageRef={imageRef}
+                                        setSelectedShapes={setSelectedShapes}
+                                        selectedShapeID={selectedShapeID}
+                                        setSelectedShapeID={setSelectedShapeID}
+                                    />
+                                ))}
+                                {textTags.map((textTag) => (
+                                    <TextTag
+                                        logHistory={logHistory}
+                                        key={textTag.key}
+                                        id={textTag.id}
+                                        text={textTag.text}
+                                        textTags={textTags}
+                                        initialPosition={textTag.initialPosition}
+                                        selectedColor={selectedColor}
+                                        color={textTag.color}
+                                        onTextTagChange={onTextTagChange}
+                                        onTextTagDelete={onTextTagDelete}
+                                        onHideTextTagContextMenu={onHideTextTagContextMenu}
+                                        imageRef={imageRef}
+                                        setSelectedTextTags={setSelectedTextTags}
+                                        selectedTextTagID={selectedTextTagID} setSelectedTextTagID={setSelectedTextTagID}
+                                    />
+                                ))}
+                                {/* drawing line */}
+                                {startPos && endPos && (
+                                    <Line
+                                        points={[startPos.x, startPos.y, endPos.x, endPos.y]}
+                                        stroke="#ACC8DD"
+                                        strokeWidth={4}
+                                        tension={0.5}
+                                        lineCap="round"
+                                    />
+                                )}
+                            </Layer>
 
-                                onLineDelete={onLineDelete}
-
-                                onHideContextMenu={onHideContextMenu}
-                                stageRef={stageRef}
-                                imageRef={imageRef}
-                                setSelectedShapes={setSelectedShapes}
-                                selectedShapeID={selectedShapeID} setSelectedShapeID={setSelectedShapeID}
-                            />
-                        ))}
-                        {textTags.map((textTag) => (
-                            <TextTag
-                                logHistory={logHistory}
-                                key={textTag.key}
-                                id={textTag.id}
-                                text={textTag.text}
-                                textTags={textTags}
-                                initialPosition={textTag.initialPosition}
-                                selectedColor={selectedColor}
-                                color={textTag.color}
-                                onTextTagChange={onTextTagChange}
-                                onTextTagDelete={onTextTagDelete}
-                                onHideTextTagContextMenu={onHideTextTagContextMenu}
-                                imageRef={imageRef}
-                                setSelectedTextTags={setSelectedTextTags}
-                                selectedTextTagID={selectedTextTagID} setSelectedTextTagID={setSelectedTextTagID}
-                            />
-                        ))}
-                        {/* drawing line */}
-                        {startPos && endPos && (
-                            <Line
-                                points={[startPos.x, startPos.y, endPos.x, endPos.y]}
-                                stroke="#7393B3"
-                                strokeWidth={4}
-                                tension={0.5}
-                                lineCap="round"
-                            />
                         )}
-
-
-                    </Layer>
                 </Stage>
+
             </div>
         </>
     );

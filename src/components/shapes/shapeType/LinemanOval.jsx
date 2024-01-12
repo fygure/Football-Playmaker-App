@@ -75,15 +75,17 @@ const LinemanOval = (props) => {
                     <Ellipse
                         x={0}
                         y={0}
-                        fill="grey"
+                        fill="white"
                         radiusX={haloRadiuses.x}
                         radiusY={haloRadiuses.y}
-                        stroke={'black'}
+                        //stroke={'black'}
                         strokeWidth={2}
+                        shadowBlur={15}
+                        shadowColor='#184267'
                         onMouseDown={(e) => {
                             const startPos = e.target.getStage().getPointerPosition();
                             console.log('Shape Halo onMouseDown', startPos);
-                            startDrawing(startPos, id, shapeRef.current);
+                            startDrawing(startPos, id, null, position);
                             setIsMouseDownOnAnchor(true);
                             e.cancelBubble = true;
                         }}
