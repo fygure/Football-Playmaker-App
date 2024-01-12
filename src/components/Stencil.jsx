@@ -80,6 +80,7 @@ const lineButtonStyle = {
 
 function Stencil(props) {
     const {
+        logHistory,
         handleUndo,
         handleRedo,
         onChangeLineStroke,
@@ -178,6 +179,7 @@ function Stencil(props) {
         //console.log(e.target.value);
         const newPlayer = e.target.value;
         onAddShape(newPlayer, shapeColor);
+        
     };
 
     // Toggle handlers
