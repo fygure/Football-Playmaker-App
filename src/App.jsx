@@ -35,7 +35,7 @@ function App() {
 
   //FIXME: manage user objects in database with permissions attached
   // this is ok for now, but not secure.
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(true);
 
   function handleCallbackResponse(response) {
     //console.log("Encoded JWT ID token: " + response.credential);
@@ -166,7 +166,7 @@ function App() {
 
   return (
     <>
-      <div id="signInDiv"></div>
+      {/* <div id="signInDiv"></div> */}
       <ThemeProvider theme={theme}>
         <StageDimensionsContext.Provider value={{ stageDimensions }}>
           {user && (<>
