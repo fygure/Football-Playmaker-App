@@ -20,11 +20,12 @@ import { PiFilePng } from "react-icons/pi";
 import { LuLogOut } from "react-icons/lu";
 import './App.css';
 import useLines from './hooks/useLines';
-import { set } from 'lodash';
 import { jwtDecode } from "jwt-decode";
-import { Button, } from '@mui/material';
-
-
+// import '@aws-amplify/ui-react/styles.css';
+// import { Amplify } from 'aws-amplify';
+// import { withAuthenticator } from '@aws-amplify/ui-react';
+// import config from './amplifyconfiguration.json';
+// Amplify.configure(config);
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: undo/redo
@@ -35,6 +36,7 @@ function App() {
 
   //FIXME: manage user objects in database with permissions attached
   // this is ok for now, but not secure.
+  //FIXME user = false will enable the google auth for now
   const [user, setUser] = useState(true);
 
   function handleCallbackResponse(response) {
@@ -174,9 +176,10 @@ function App() {
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
-              margin: '1vw',
-              height: '90vh',
-              width: '98vw',
+              margin: '0vw',
+              padding: '0vw',
+              height: '100vh',
+              width: '100vw',
             }}>
               <div className="custom-scrollbar">
                 <Stencil
@@ -224,8 +227,8 @@ function App() {
                 alignItems: 'center',
                 flex: 1.8,
                 padding: '1vw',
-                maxWidth: 'calc(80% - 4vw)',
-                marginRight: '2vw',
+                maxWidth: 'calc(80%)',
+                marginRight: '0vw',
                 borderTop: '1px solid black',
                 borderRight: '1px solid black',
                 borderBottom: '1px solid black',
