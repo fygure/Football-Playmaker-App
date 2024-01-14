@@ -1,8 +1,8 @@
-// LandingPage.jsx
+// CancelPage.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const LandingPage = () => {
+function CancelPage() {
     const navigate = useNavigate();
 
     const navigateToRoot = () => {
@@ -11,10 +11,10 @@ const LandingPage = () => {
 
     return (
         <>
-            LandingPage
+            CancelPage
             <button onClick={navigateToRoot}>Home</button>
         </>
     )
 }
 
-export default LandingPage;
+export default CancelPage;

@@ -32,67 +32,7 @@ TODO: undo/redo
 TOOD: orientation
 */
 ////////////////////////////////////////////////////////////////////////////////////////
-function App() {
-
-  //FIXME: manage user objects in database with permissions attached
-  // this is ok for now, but not secure.
-  //FIXME user = false will enable the google auth for now
-  const [user, setUser] = useState(true);
-
-  function handleCallbackResponse(response) {
-    //console.log("Encoded JWT ID token: " + response.credential);
-    var userObject = jwtDecode(response.credential);
-    console.log(userObject);
-    setUser(userObject);
-    document.getElementById("signInDiv").hidden = true;
-
-    //console.log(userObject);
-    // const email = userObject.email;
-    // //FIXME: DUMMY LOGIC FOR WHITELIST TESTING
-    // const testUsers = ['test1@example.com', 'test2@example.com', 'max.chalitsios@gmail.com'];
-
-    // if (!testUsers.includes(email)) {
-    //   handleSignOut();
-    //   console.log('Not whitelisted');
-    // } else {
-    //   setUser(userObject);
-    //   document.getElementById("signInDiv").hidden = true;
-    // }
-  }
-
-  function handleSignOut(event) {
-    /* global google */
-    setUser(null);
-    document.getElementById("signInDiv").hidden = false;
-    //window.location.href = 'https://accounts.google.com/Logout';
-    google.accounts.id.disableAutoSelect();
-    //handleCancel();
-  }
-
-  // function handleCancel() {
-  //   const signInDiv = document.getElementById('signInDiv');
-  //   signInDiv.innerHTML = 'Not whitelisted';
-  // }
-
-  useEffect(() => {
-    /* global google */
-    google.accounts.id.initialize({
-      client_id: "473768208195-c18kgorq5k8rr6qkub9ck9k4lbk96ol3.apps.googleusercontent.com",
-      callback: handleCallbackResponse, //if someone logs in
-      cancel_on_tap_outside: true,
-      //prompt_parent_id: 'signInDiv', //option to display the sign-in prompt within a specific HTML element.
-    })
-
-    google.accounts.id.renderButton(
-      document.getElementById("signInDiv"),
-      { theme: "outline", size: "large", text: "continue_with" }
-    );
-    //google.accounts.id.prompt();
-  }, []);
-
-  // If !user: sign in button
-  // If user: log out button
-
+function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator }) {
   const imageRef = useRef(null);
   const stageRef = useRef(null);
   const [colorButtonPressCount, setColorButtonPressCount] = useState(0);
@@ -157,6 +97,12 @@ function App() {
     setIsSpeedDialOpen(!isSpeedDialOpen);
   };
 
+  const handleSignOut = () => {
+    signOut();
+    setCurrentUser(null);
+    setShowAuthenticator(!showAuthenticator);
+  }
+
   const actions = [
     { icon: <DeleteForeverOutlinedIcon fontSize='large' />, action: handleDeleteAll },
     { icon: <GiZeusSword size={30} />, action: handleDeleteOffenseFormation },
@@ -166,12 +112,14 @@ function App() {
     { icon: <LuLogOut size={25} />, action: handleSignOut },
   ];
 
+
   return (
     <>
+      {/* <button onClick={() => { signOut(); setCurrentUser(null); setShowAuthenticator(!showAuthenticator) }}>Sign out</button> */}
       {/* <div id="signInDiv"></div> */}
       <ThemeProvider theme={theme}>
         <StageDimensionsContext.Provider value={{ stageDimensions }}>
-          {user && (<>
+          <>
             {/* <Button onClick={(e) => handleSignOut(e)}>Sign Out</Button> */}
             <div style={{
               display: 'flex',
@@ -290,7 +238,7 @@ function App() {
                 </SpeedDial>
               </div>
             </div>
-          </>)}
+          </>
         </StageDimensionsContext.Provider>
       </ThemeProvider>
     </>

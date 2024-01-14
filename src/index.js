@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import RouterComponent from './RouterComponent';
+import RouterContainer from './RouterContainer';
 import { Amplify } from 'aws-amplify';
 import '@aws-amplify/ui-react/styles.css';
-// import config from './amplifyconfiguration.json';
-// Amplify.configure(config);
+import config from './amplifyconfiguration.json';
+Amplify.configure(config);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterComponent />
+    <RouterContainer />
   </React.StrictMode>
 );
