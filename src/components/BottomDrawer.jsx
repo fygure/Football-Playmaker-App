@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ButtonBase from '@mui/material/ButtonBase';
+import UpdateIcon from '@mui/icons-material/Update';
 import Grid from '@mui/material/Grid';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -18,6 +19,8 @@ import TextField from '@mui/material/TextField';
 import Konva from 'konva';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 function BottomDrawer(props) {
     const {
@@ -44,6 +47,16 @@ function BottomDrawer(props) {
     const [dialogText, setDialogText] = useState('');
     const [dialogAction, setDialogAction] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('info');
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+    };
 
     const openDialog = (title, text, action) => {
         setDialogTitle(title);
@@ -64,11 +77,10 @@ function BottomDrawer(props) {
     const checkIfDrawerEmpty = () => {
         if (items.length === 0) {
             console.log('Play drawer is empty');
-            //FIXME: ASK CLIENT ABOUT THIS NAMING
             // //Create empty objects for everything
             const newItem = {
                 id: uuidv4(),
-                name: 'Default',
+                name: 'Untitled',
                 backgroundImage: backgroundImage,
                 textTagList: [],
                 shapeList: [],
@@ -76,6 +88,7 @@ function BottomDrawer(props) {
                 //drawingLine: (startPos && endPos)
             };
             setItems([newItem]);
+            setCurrentLayerData(newItem);
         }
     };
 
@@ -100,9 +113,13 @@ function BottomDrawer(props) {
             if (newPlayName !== null) {
                 const itemExists = items.some(item => item.name === newPlayName);
                 if (itemExists) {
-                    alert('A play with this name already exists.');
+                    setSnackbarMessage('A play with this name already exists.');
+                    setSnackbarSeverity('error');
+                    setOpenSnackbar(true);
                 } else if (newPlayName === '') {
-                    alert('Please enter a name for the play.');
+                    setSnackbarMessage('Please enter a name for the play.');
+                    setSnackbarSeverity('warning');
+                    setOpenSnackbar(true);
                 } else {
                     //TODO: Add deep copy of shapes and lines to newItem
                     // const shallowCopyTextTags = [...textTags];
@@ -149,6 +166,64 @@ function BottomDrawer(props) {
                     setLines(newItem.lineList);
                     setCurrentLayerData(newItem);
                     setSelectedItem(newItem.id);
+                    setSnackbarMessage('Play added successfully.');
+                    setSnackbarSeverity('success');
+                    setOpenSnackbar(true);
+                }
+            }
+        });
+    };
+
+    const updateItem = (index) => {
+        setSelectedTextTags([]);
+        openDialog('Update Play', items[index].name, (updatedName) => {
+            if (updatedName !== null) {
+                const itemExists = items.some((item, i) => item.name === updatedName && i !== index);
+                if (itemExists) {
+                    setSnackbarMessage('A play with this name already exists.');
+                    setSnackbarSeverity('error');
+                    setOpenSnackbar(true);
+                } else if (updatedName === '') {
+                    setSnackbarMessage('Please enter a name for the play.');
+                    setSnackbarSeverity('warning');
+                    setOpenSnackbar(true);
+                } else {
+                    const deepCopyTextTags = _.cloneDeep(textTags).map(tag => ({ ...tag, id: uuidv4() }));
+
+                    let shapeIdMapping = {};
+                    const deepCopyShapes = _.cloneDeep(shapes).map(shape => {
+                        const newId = uuidv4();
+                        shapeIdMapping[shape.id] = newId;
+                        return { ...shape, id: newId };
+                    });
+
+                    let lineIdMapping = {};
+                    const deepCopyLines = _.cloneDeep(lines).map(line => {
+                        const newId = uuidv4();
+                        lineIdMapping[line.id] = newId;
+                        return { ...line, id: newId, attachedShapeId: shapeIdMapping[line.attachedShapeId] };
+                    });
+                    const deepCopyLinesAgain = _.cloneDeep(deepCopyLines).map(line => {
+                        return { ...line, drawnFromId: lineIdMapping[line.drawnFromId] || line.drawnFromId };
+                    });
+
+                    const updatedItem = {
+                        ...items[index],
+                        name: updatedName,
+                        textTagList: deepCopyTextTags,
+                        shapeList: deepCopyShapes,
+                        lineList: deepCopyLinesAgain,
+                    };
+
+                    setItems((prevItems) => prevItems.map((item, i) => i === index ? updatedItem : item));
+                    setTextTags(updatedItem.textTagList);
+                    setShapes(updatedItem.shapeList);
+                    setLines(updatedItem.lineList);
+                    setCurrentLayerData(updatedItem);
+                    setSelectedItem(updatedItem.id);
+                    setSnackbarMessage('Play updated successfully.');
+                    setSnackbarSeverity('success');
+                    setOpenSnackbar(true);
                 }
             }
         });
@@ -157,28 +232,13 @@ function BottomDrawer(props) {
     const removeItem = (index) => {
         setItems(items.filter((item, i) => i !== index));
         checkIfDrawerEmpty();
+        setSnackbarMessage('Play removed successfully.');
+        setSnackbarSeverity('info');
+        setOpenSnackbar(true);
     };
 
-    const renameItem = (index) => {
-        //console.log(items[index].name);
-        openDialog('Rename Play', items[index].name, (newName) => {
-            if (newName !== null) {
-                // Check if a list item with the same name already exists
-                const itemExists = items.some((item, i) => item.name === newName && i !== index);
-                if (itemExists) {
-                    // If a list item with the same name exists, show an error message
-                    alert('A list item with this name already exists.');
-                } else {
-                    // If no list item with the same name exists, rename the item
-                    setItems((prevItems) => prevItems.map((item, i) => i === index ? { ...item, name: newName } : item));
-                }
-            }
-        });
-    };
-
-    //TODO: add button on play item to save current changes to play
     const handleItemClick = (text) => {
-        console.log('IM HERE', text);
+        //console.log('IM HERE', text);
         const playName = text.name;
         //Pass playName to a function that can render 
         //the stage with that playName as the ID
@@ -212,7 +272,7 @@ function BottomDrawer(props) {
                             onClick={toggleDrawer('bottom', false)}
                             onContextMenu={(event) => {
                                 event.preventDefault();
-                                renameItem(index);
+                                updateItem(index);
                             }}
                             style={{
                                 padding: '0px 20px',
@@ -234,6 +294,17 @@ function BottomDrawer(props) {
                             >
                                 <ListItemText primary={text.name} />
                             </ButtonBase>
+                            <IconButton
+                                style={{ border: '1px solid #000', margin: '0px 5px', }}
+                                edge="end"
+                                aria-label="update"
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    updateItem(index);
+                                }}
+                            >
+                                <UpdateIcon />
+                            </IconButton>
                             <IconButton
                                 style={{ border: '1px solid #000', }}
                                 edge="end"
@@ -294,6 +365,11 @@ function BottomDrawer(props) {
                     <Button onClick={handleDialogSubmit}>Submit</Button>
                 </DialogActions>
             </Dialog>
+            <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
+                <MuiAlert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </MuiAlert>
+            </Snackbar>
         </div>
     );
 }

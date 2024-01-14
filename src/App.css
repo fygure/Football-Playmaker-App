@@ -1,7 +1,7 @@
 .custom-scrollbar {
     flex: 0.2;
     padding: 1vw;
-    min-width: 15%;
+    min-width: 20%;
     border: 1px solid black;
     height: 100%;
     overflow: auto;

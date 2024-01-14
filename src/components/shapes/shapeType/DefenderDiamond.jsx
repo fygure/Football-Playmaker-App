@@ -57,10 +57,12 @@ const DefenderDiamond = (props) => {
                         width={rectSize.width + haloOffset}
                         height={rectSize.height + haloOffset}
                         rotation={45}
-                        stroke={strokeOptions.color}
+                        //stroke={strokeOptions.color}
                         strokeWidth={2}
                         cornerRadius={2}
-                        fill='grey'
+                        fill='white'
+                        shadowBlur={15}
+                        shadowColor='#184267'
                         offsetX={(rectSize.width + haloOffset) / 2}
                         offsetY={(rectSize.height + haloOffset) / 2}
                         onMouseDown={(e) => {
