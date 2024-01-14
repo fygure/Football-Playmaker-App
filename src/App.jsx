@@ -21,7 +21,7 @@ import FormatClearIcon from '@mui/icons-material/FormatClear';
 import './App.css';
 import useLines from './hooks/useLines';
 import { set } from 'lodash';
-
+import Tooltip from '@mui/material/Tooltip';
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: add undo/redo
@@ -46,7 +46,7 @@ function App() {
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes } = useShapes(imageRef);
   const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
-  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef);
+  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine, flipAllLines } = useLines(imageRef,shapes);
 
 
   //TODO: Name of download should be play's name from user input
@@ -93,15 +93,31 @@ function App() {
     deleteAllTextTags();
   };
 
+
+
   const actions = [
-    { icon: <DeleteForeverOutlinedIcon />, action: handleDeleteAll },
-    { icon: < PiFilePng size={25} />, action: handleDownloadPNG },
-    { icon: <SiJpeg size={20} />, action: handleDownloadJPEG },
-    { icon: <GiZeusSword size={30}/>, action: handleDeleteOffenseFormation},
-    { icon: <RemoveModeratorIcon />, action: handleDeleteDefenseFormation },
-    { icon: <FormatClearIcon />, action: handleDeleteAllTextTags}
+    { name:"Delete All" , icon: <DeleteForeverOutlinedIcon />, action: handleDeleteAll },
+    { name: "Download PNG.", icon: < PiFilePng size={25} />, action: handleDownloadPNG },
+    { name: "Download JPEG.", icon: <SiJpeg size={20} />, action: handleDownloadJPEG },
+    { name:"Delete Offense Formation" , icon: <GiZeusSword size={30}/>, action: handleDeleteOffenseFormation},
+    { name: "Delete Defense Formation" , icon: <RemoveModeratorIcon />, action: handleDeleteDefenseFormation },
+    { name: "Delete All Text Tags", icon: <FormatClearIcon />, action: handleDeleteAllTextTags}
   ];
 
+const [tooltipOpen, setTooltipOpen] = useState(false);
+const [tooltipTimeoutId, setTooltipTimeoutId] = useState(null);
+
+const handleMouseEnter = (index) => {
+  const timeoutId = setTimeout(() => {
+    setTooltipOpen(prevState => ({ ...prevState, [index]: true }));
+  }, 500); // delay time
+  setTooltipTimeoutId(timeoutId);
+};
+
+const handleMouseLeave = (index) => {
+  clearTimeout(tooltipTimeoutId);
+  setTooltipOpen(prevState => ({ ...prevState, [index]: false }));
+};
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -147,6 +163,7 @@ function App() {
                 stageRef={stageRef}
                 flipAllTextTags={flipAllTextTags}
                 flipAllShapes={flipAllShapes}
+                flipAllLines={flipAllLines}
                 backgroundImage={backgroundImage}
                 lines={lines}
                 setLines={setLines}
@@ -217,6 +234,9 @@ function App() {
                     key={`dial-${index}`}
                     icon={action.icon}
                     onClick={action.action}
+                    tooltipTitle={tooltipOpen[index] ? action.name : ""}
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseLeave={() => handleMouseLeave(index)}
                   />
                 ))}
               </SpeedDial>
