@@ -110,13 +110,16 @@ const [tooltipTimeoutId, setTooltipTimeoutId] = useState(null);
 const handleMouseEnter = (index) => {
   const timeoutId = setTimeout(() => {
     setTooltipOpen(prevState => ({ ...prevState, [index]: true }));
-  }, 500); // delay time
+  }, 400); // delay time
   setTooltipTimeoutId(timeoutId);
 };
 
 const handleMouseLeave = (index) => {
   clearTimeout(tooltipTimeoutId);
-  setTooltipOpen(prevState => ({ ...prevState, [index]: false }));
+  const timeoutId = setTimeout(() => {
+    setTooltipOpen(prevState => ({ ...prevState, [index]: false }));
+  }, 300); // delay time
+  setTooltipTimeoutId(timeoutId);
 };
   return (
     <>
