@@ -8,7 +8,7 @@ import App from './App';
 const RouterContainer = () => (
     <Router>
         <Routes>
-            <Route path="/demo" element={<App />} />
+            {/* <Route path="/demo" element={<App />} /> */}
             <Route path="/app" element={<CTA />} />
             <Route path="/cancel" element={<CancelPage />} />
             <Route path="/" element={<Navigate to="/app" />} />
