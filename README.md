@@ -1,5 +1,6 @@
 # Football Playmaking CAD Software
-[Documentation](https://konvajs.org/)
+This application was made with the following:
+[Konva Library](https://konvajs.org/)
 
 ## Available Scripts
 
