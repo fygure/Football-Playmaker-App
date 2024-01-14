@@ -13,8 +13,8 @@ function Subscribe() {
                     quantity: 1,
                 }],
                 mode: 'subscription',
-                successUrl: 'http://localhost:3000/test',
-                cancelUrl: 'http://localhost:3000/cancel',
+                successUrl: 'https://www.chlkapp.com/app',
+                cancelUrl: 'https://www.chlkapp.com/app/cancel',
             });
         } catch (err) {
             console.log('error occured while trying to subscribe', err);
