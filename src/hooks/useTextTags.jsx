@@ -50,11 +50,10 @@ function useTextTags(imageRef, stageRef) {
         }
     };
 
-
     const [isUpDownFlipped, setIsUpDownFlipped] = useState(false);
     const [isLeftRightFlipped, setIsLeftRightFlipped] = useState(false);
     const flipAllTextTags = (flipType) => {
-        if(!flipType){
+        if (!flipType) {
             console.error("You're clicking too fast, flipType is undefined");
             return;
         }
@@ -114,4 +113,5 @@ function useTextTags(imageRef, stageRef) {
 
     return { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags };
 }
+
 export default useTextTags;

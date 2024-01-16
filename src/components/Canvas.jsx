@@ -45,6 +45,8 @@ function Canvas(props) {
         backgroundImage,
         setStageDimensions,
         orientation,
+        selectedLineID,
+        setSelectedLineID,
     } = props;
 
     //const { stageDimensions } = useContext(StageDimensionsContext);
@@ -53,7 +55,7 @@ function Canvas(props) {
     const [isMouseDownOnAnchor, setIsMouseDownOnAnchor] = useState(false);
     const [selectedShapeID, setSelectedShapeID] = useState('$');
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
-    const [selectedLineID, setSelectedLineID] = useState('$');
+    const [hasBeenSelected, setHasBeenSelected] = useState(false);
 
     // console.log('ChildComponent2 rendering', currentLayerData);
     // useEffect(() => {
@@ -116,6 +118,7 @@ function Canvas(props) {
         deselectTextTag();
         setSelectedTextTags([]);
         setSelectedLineID('$');
+        setHasBeenSelected(false);
     }
 
     const handleStageClick = (e) => {
@@ -131,6 +134,7 @@ function Canvas(props) {
             deselectTextTag();
             setSelectedTextTags([]);
             setSelectedLineID('$');
+            setHasBeenSelected(false);
         }
     };
 
@@ -155,7 +159,10 @@ function Canvas(props) {
         //console.log('Stage onMouseUp', endPos);
         //console.log('Selected Line ID:', selectedLineID);
         stopDrawing();
+        //TODO: select the line after it is drawn
+        //setSelectedLineID();
         setIsMouseDownOnAnchor(false);
+        setSelectedShapeID('$');
     };
     return (
         <>
@@ -171,6 +178,8 @@ function Canvas(props) {
                 >
                     {currentLayerData ?
                         <LoadedLayer
+                            hasBeenSelected={hasBeenSelected}
+                            setHasBeenSelected={setHasBeenSelected}
                             currentLayerData={currentLayerData}
                             stageRef={stageRef}
                             imageRef={imageRef}
@@ -247,6 +256,8 @@ function Canvas(props) {
                                 ))}
                                 {shapes.map((shape) => (
                                     <Shape
+                                        hasBeenSelected={hasBeenSelected}
+                                        setHasBeenSelected={setHasBeenSelected}
                                         lines={lines}
                                         setLines={setLines}
                                         setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
@@ -289,7 +300,7 @@ function Canvas(props) {
                                 {startPos && endPos && (
                                     <Line
                                         points={[startPos.x, startPos.y, endPos.x, endPos.y]}
-                                        stroke="#7393B3"
+                                        stroke="#ACC8DD"
                                         strokeWidth={4}
                                         tension={0.5}
                                         lineCap="round"

@@ -10,8 +10,8 @@ const calculateWaveLinePoints = (line, controlPoint) => {
     const perp_dy = dx / distance;
 
     // Define the frequency and amplitude of the waves
-    const waves = 8;
-    const amplitude = 8;
+    const waves = 12;
+    const amplitude = 3;
 
     // Calculate the number of points based on the distance
     const pointsCount = Math.floor(distance / 5); // Adjust the divisor to change the density of the points

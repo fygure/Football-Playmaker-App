@@ -1,5 +1,5 @@
 import React from 'react';
-import { Rect } from 'react-konva';
+import { Rect, Arrow } from 'react-konva';
 
 const PerpendicularEnd = ({ line, controlPoint, color }) => {
     // Calculate the tangent of the curve at the end point
@@ -13,24 +13,22 @@ const PerpendicularEnd = ({ line, controlPoint, color }) => {
         angle += 360;
     }
 
-    // Add 90 degrees to the angle to make the rectangle perpendicular to the line
-    angle += 90;
-
     // Ensure the angle is still in the range 0 to 360 degrees
     if (angle >= 360) {
         angle -= 360;
     }
 
+    // Calculate the position of the arrow
+    let x = line.endPos.x + 10 * Math.cos(angle * Math.PI / 180);
+    let y = line.endPos.y + 10 * Math.sin(angle * Math.PI / 180);
+
     return (
-        <Rect
-            x={line.endPos.x}
-            y={line.endPos.y - 1}
-            width={10}
-            height={2}
+        <Arrow
+            points={[line.endPos.x, line.endPos.y, x, y]}
+            pointerLength={0.5}
+            pointerWidth={20}
             fill={color}
-            rotation={angle}
-            offsetX={5}
-            offsetY={1}
+            stroke={color}
         />
     );
 };

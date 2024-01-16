@@ -78,6 +78,18 @@ function TextTag(props) {
 
     }, [position, imageRef, checkMarkSize, fontSize]);
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Delete' && selectedTextTagID === id) {
+                handleDeleteClick();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [selectedTextTagID, id]);
 
 
     const handleOnClick = () => {
@@ -93,7 +105,7 @@ function TextTag(props) {
         setSelectedTextTagID(id);
         if (typeof onTextTagChange === 'function') {
             onTextTagChange(id, { color: selectedColor });
-          }
+        }
         // console.log('Selected Text ID:', id);
     }
 
@@ -127,8 +139,8 @@ function TextTag(props) {
     const handleDragEnd = (e) => {
         // console.log(e.target.position());
         if (e.target) {
-        setPosition(e.target.position());
-        onTextTagChange(id, { x: e.target.x(), y: e.target.y() });
+            setPosition(e.target.position());
+            onTextTagChange(id, { x: e.target.x(), y: e.target.y() });
         }
         setIsDragging(false);
     };

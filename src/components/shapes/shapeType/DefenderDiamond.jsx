@@ -23,7 +23,7 @@ const DefenderDiamond = (props) => {
         handleHideContextMenu,
         fontSize,
         handleTextChange,
-        rectSize,
+        diamondSize,
         text,
         dragBoundFunc,
         selectedShapeID,
@@ -32,7 +32,7 @@ const DefenderDiamond = (props) => {
 
     const isSelected = selectedShapeID === id;
     const haloOffset = 12;
-    const strokeOptions = { color: 'black', strokeWidth: .2 };
+    const strokeOptions = { color: 'black', strokeWidth: .3 };
     var textAlignment = -5;
     if (text.length > 1) {
         textAlignment -= 5;
@@ -54,15 +54,17 @@ const DefenderDiamond = (props) => {
             >
                 {isSelected && (
                     <Rect
-                        width={rectSize.width + haloOffset}
-                        height={rectSize.height + haloOffset}
+                        width={diamondSize.width + haloOffset}
+                        height={diamondSize.height + haloOffset}
                         rotation={45}
-                        stroke={strokeOptions.color}
+                        //stroke={strokeOptions.color}
                         strokeWidth={2}
                         cornerRadius={2}
-                        fill='grey'
-                        offsetX={(rectSize.width + haloOffset) / 2}
-                        offsetY={(rectSize.height + haloOffset) / 2}
+                        fill='white'
+                        shadowBlur={15}
+                        shadowColor='#184267'
+                        offsetX={(diamondSize.width + haloOffset) / 2}
+                        offsetY={(diamondSize.height + haloOffset) / 2}
                         onMouseDown={(e) => {
                             const startPos = e.target.getStage().getPointerPosition();
                             console.log('Shape Halo onMouseDown', startPos);
@@ -83,15 +85,15 @@ const DefenderDiamond = (props) => {
                     />
                 )}
                 <Rect
-                    width={rectSize.width}
-                    height={rectSize.height}
+                    width={diamondSize.width}
+                    height={diamondSize.height}
                     rotation={45}
                     stroke={strokeOptions.color}
-                    offsetX={rectSize.width / 2}
-                    offsetY={rectSize.height / 2}
+                    offsetX={diamondSize.width / 2}
+                    offsetY={diamondSize.height / 2}
                     strokeWidth={strokeOptions.strokeWidth}
                     cornerRadius={2}
-                    fill={initialColor}
+                    fill={'transparent'}
                 />
                 <EditableText
                     initialText={text}

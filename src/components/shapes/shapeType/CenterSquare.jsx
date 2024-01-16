@@ -23,10 +23,12 @@ const CenterSquare = (props) => {
         dragBoundFunc,
         selectedShapeID,
         setSelectedShapeID,
+        setHasBeenSelected,
+        hasBeenSelected,
     } = props;
 
     const isSelected = selectedShapeID === id;
-    const strokeOptions = { color: 'black', strokeWidth: 1 };
+    const strokeOptions = { color: 'black', strokeWidth: 2 };
     const centerLineWidth = 3.5;
     const haloOffset = 13;
 
@@ -41,11 +43,18 @@ const CenterSquare = (props) => {
     const [state, setState] = useState(states[stateIndex]);
 
     const handleCenterClick = () => {
-        const newIndex = (stateIndex + 1) % states.length;
-        setStateIndex(newIndex);
-        setState(states[newIndex]);
         setSelectedShapeID(id);
+
         console.log('Selected Shape ID:', id);
+        if (hasBeenSelected && id === selectedShapeID) {
+            const newIndex = (stateIndex + 1) % states.length;
+            setStateIndex(newIndex);
+            setState(states[newIndex]);
+        }
+
+        if (!hasBeenSelected) {
+            setHasBeenSelected(true);
+        }
     };
 
     return (
@@ -65,10 +74,12 @@ const CenterSquare = (props) => {
                     <Rect
                         width={rectSize.width + haloOffset}
                         height={rectSize.height + haloOffset}
-                        stroke={strokeOptions.color}
-                        fill='grey'
+                        //stroke={strokeOptions.color}
+                        fill='white'
                         strokeWidth={2}
                         cornerRadius={2}
+                        shadowBlur={15}
+                        shadowColor='#184267'
                         offsetX={(rectSize.width + haloOffset) / 2}
                         offsetY={(rectSize.height + haloOffset) / 2}
                         onMouseDown={(e) => {

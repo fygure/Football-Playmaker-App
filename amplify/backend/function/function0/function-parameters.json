@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "auth": {
+      "footballplaymakerapp3be24419": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "secretNames": [
+    "stripe_key"
+  ]
+}

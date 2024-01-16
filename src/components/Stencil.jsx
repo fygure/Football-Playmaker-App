@@ -308,14 +308,21 @@ function Stencil(props) {
 
     return (
         <>
-
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                color: 'white',
+                /* top | right | bottom | left */
+                paddingLeft: '22px',
+                paddingTop: '12px',
+                paddingBottom: '0px',
+            }}>
 
                 {/* <Button onClick={() => { }} variant='contained'>Undo</Button>
                     <Button onClick={() => { }} variant='contained'>Redo</Button> */}
 
-                <h3 style={{ marginBottom: '2px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                <h3 style={{ marginBottom: '-8px', paddingBottom: '0px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                     Field
                 </h3>
                 <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
@@ -390,10 +397,10 @@ function Stencil(props) {
 
                 <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
                     <h3 style={{
-                        marginBottom: '2px',
+                        marginBottom: '-8px',
                         fontFamily: 'Inter, sans-serif',
                         fontWeight: 500,
-                        marginTop: '-5px',
+                        marginTop: '0px',
                         maxWidth: '100%',
                         marginRight: '10px',
                         whiteSpace: 'normal',
@@ -404,7 +411,13 @@ function Stencil(props) {
                         color="white"
                         value="OffenseExtra"
                         sx={{
-                            background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
+                            marginBottom: '-12px',
+                            background: '#333',
+                            borderColor: '#333',
+                            padding: '0px 5px',
+                            fontFamily: 'Inter, sans-serif',
+                            fontSize: '0.7rem',
+                            transition: 'text-shadow 0.3s',
                             ':hover': {
                                 textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
                             },
@@ -533,10 +546,10 @@ function Stencil(props) {
 
                 <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
                     <h3 style={{
-                        marginBottom: '2px',
+                        marginBottom: '-8px',
                         fontFamily: 'Inter, sans-serif',
                         fontWeight: 500,
-                        marginTop: '-5px',
+                        marginTop: '0px',
                         maxWidth: '100%',
                         marginRight: '10px',
                         whiteSpace: 'normal',
@@ -547,7 +560,13 @@ function Stencil(props) {
                         color="white"
                         value="DefenseExtra"
                         sx={{
-                            background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
+                            marginBottom: '-12px',
+                            background: '#333',
+                            borderColor: '#333',
+                            padding: '1px 5px',
+                            fontFamily: 'Inter, sans-serif',
+                            fontSize: '0.7rem',
+                            transition: 'text-shadow 0.3s',
                             ':hover': {
                                 textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
                             },
@@ -666,8 +685,8 @@ function Stencil(props) {
                         </div>
                     </div>
                 </div>
-                <h3 style={{ marginBottom: '0px', marginTop: '-5px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Color</h3>
-                <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px', marginBottom: '-20px' }}>
+                <h3 style={{ marginBottom: '-8px', marginTop: '0px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Color</h3>
+                <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-4px', marginBottom: '-15px' }}>
                     <Grid container spacing={0}>
                         {colorButtons.map((color, index) => (
                             <Grid item xs={"auto"} key={index}>
@@ -701,7 +720,7 @@ function Stencil(props) {
                     <Grid container spacing={1}>
                         <Grid item xs={12}>
                             <Grid container spacing={0}>
-                                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '5px' }}>Stroke</h3>
+                                <h3 style={{ marginBottom: '10px', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '10px' }}>Stroke</h3>
                                 {lineButtons
                                     .filter((button) => button.type === 'stroke')
                                     .map((button, index) => (
@@ -712,6 +731,8 @@ function Stencil(props) {
                                                     ...lineButtonStyle,
                                                     borderRadius: '25px',
                                                     marginRight: '5px',
+                                                    marginBottom: '10px',
+                                                    marginTop: '-15px',
                                                     border: selectedStrokeButton === index ? '2px solid white' : 'none'
                                                 }}
                                                 sx={{
@@ -735,7 +756,7 @@ function Stencil(props) {
 
                         <Grid item xs={12}>
                             <Grid container spacing={0}>
-                                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '5px' }}>End</h3>
+                                <h3 style={{ marginBottom: '20px', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '10px' }}>End</h3>
                                 {lineButtons
                                     .filter((button) => button.type === 'end')
                                     .map((button, index) => (
@@ -746,6 +767,8 @@ function Stencil(props) {
                                                     ...lineButtonStyle,
                                                     borderRadius: '25px',
                                                     marginRight: '5px',
+                                                    marginBottom: '10px',
+                                                    marginTop: '-18px',
                                                     border: selectedEndButton === index ? '2px solid white' : 'none'
                                                 }}
                                                 sx={{
@@ -770,7 +793,7 @@ function Stencil(props) {
                     </Grid>
                 </Box>
 
-                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                <h3 style={{ marginBottom: '-10px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                     QB Progression
                 </h3>
                 <Box sx={{ flexGrow: 1, marginLeft: '-3px' }}>
@@ -817,7 +840,7 @@ function Stencil(props) {
                 </Box>
 
 
-                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                <h3 style={{ marginTop: '16px', marginBottom: '-10px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                     Text Tags
                 </h3>
                 <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
@@ -898,44 +921,11 @@ function Stencil(props) {
                             </ToggleButtonGroup>
                         </div>
                     </div>
-                    {/* I NEED to use list shapes AND textTags */}
-                    {/* <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '0' }}>
-                        Orientation
-                    </h3>
-                    <Box sx={{ flexGrow: 1, marginLeft: '-3px', marginBottom: '-20px' }}>
-                        <Grid container spacing={0}>
-                            <Grid item xs={"auto"}>
-                                {['Up/Down','Left/Right'].map((orientation, index) => (
-                                    <Button
-                                        key={index}
-                                        value={orientation}
-                                        variant="text"
-                                        style={{
-                                            ...QBProgressionButtonStyle,
-                                            marginRight: '2px',
-                                        }}
-                                        sx={QBProgressionButtonStyle}
-                                        size="small"
-                                        disabled={isProcessing}
-                                        onClick={handleOrientation}
-                                        startIcon={
-                                            orientation === 'Up/Down' ?
-                                                <FlipIcon style={{ transform: 'rotate(90deg)' }} /> :
-                                                <FlipIcon />
-                                        }
-                                    >
-                                        {orientation}
-                                    </Button>
-                                ))}
-                            </Grid>
-                        </Grid>
-                    </Box> */}
                 </div>
-                {/* I NEED to use list shapes AND textTags */}
-                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '1rem' }}>
+
+                <h3 style={{ marginBottom: '-10px', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '1rem' }}>
                     Orientation
                 </h3>
-
                 <Box sx={{ flexGrow: 1, marginLeft: '-3px', marginBottom: '-20px' }}>
                     <Grid container spacing={0}>
                         <Grid item xs={"auto"}>
