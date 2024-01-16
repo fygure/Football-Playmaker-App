@@ -44,6 +44,8 @@ const LoadedLayer = (props) => {
         onLineChange,
         selectedLineStroke,
         selectedLineEnd,
+        hasBeenSelected,
+        setHasBeenSelected,
     } = props;
 
     const middlePosition = {
@@ -118,6 +120,8 @@ const LoadedLayer = (props) => {
                 ))}
                 {shapes.map((shape) => (
                     <Shape
+                        hasBeenSelected={hasBeenSelected}
+                        setHasBeenSelected={setHasBeenSelected}
                         lines={lines}
                         setLines={setLines}
                         setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}

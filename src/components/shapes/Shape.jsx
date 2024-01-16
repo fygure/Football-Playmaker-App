@@ -28,15 +28,15 @@ function Shape(props) {
         initialColor,
         onShapeChange,
         onShapeDelete,
-
         onLineDelete,
-
         onHideContextMenu,
         imageRef,
         stageRef,
         setSelectedShapes,
         selectedShapeID,
         setSelectedShapeID,
+        hasBeenSelected,
+        setHasBeenSelected,
     } = props;
 
     const shapeRef = useRef();
@@ -230,6 +230,8 @@ function Shape(props) {
         selectedShapeID,
         setSelectedShapeID,
         handleTextChange,
+        setHasBeenSelected,
+        hasBeenSelected,
     };
 
     switch (shapeType) {

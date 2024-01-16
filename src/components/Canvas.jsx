@@ -54,6 +54,7 @@ function Canvas(props) {
     const [selectedShapeID, setSelectedShapeID] = useState('$');
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
     const [selectedLineID, setSelectedLineID] = useState('$');
+    const [hasBeenSelected, setHasBeenSelected] = useState(false);
 
     // console.log('ChildComponent2 rendering', currentLayerData);
     // useEffect(() => {
@@ -114,6 +115,7 @@ function Canvas(props) {
         deselectTextTag();
         setSelectedTextTags([]);
         setSelectedLineID('$');
+        setHasBeenSelected(false);
     }
 
     const handleStageClick = (e) => {
@@ -129,6 +131,7 @@ function Canvas(props) {
             deselectTextTag();
             setSelectedTextTags([]);
             setSelectedLineID('$');
+            setHasBeenSelected(false);
         }
     };
 
@@ -172,6 +175,8 @@ function Canvas(props) {
                 >
                     {currentLayerData ?
                         <LoadedLayer
+                            hasBeenSelected={hasBeenSelected}
+                            setHasBeenSelected={setHasBeenSelected}
                             currentLayerData={currentLayerData}
                             stageRef={stageRef}
                             imageRef={imageRef}
@@ -248,6 +253,8 @@ function Canvas(props) {
                                 ))}
                                 {shapes.map((shape) => (
                                     <Shape
+                                        hasBeenSelected={hasBeenSelected}
+                                        setHasBeenSelected={setHasBeenSelected}
                                         lines={lines}
                                         setLines={setLines}
                                         setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}

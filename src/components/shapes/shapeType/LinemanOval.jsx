@@ -23,12 +23,15 @@ const LinemanOval = (props) => {
         dragBoundFunc,
         selectedShapeID,
         setSelectedShapeID,
+        setHasBeenSelected,
+        hasBeenSelected,
     } = props;
 
     const isSelected = selectedShapeID === id;
     const haloRadiuses = { x: ellipseRadiuses.x + 8, y: ellipseRadiuses.y + 8 };
     const strokeOptions = { color: 'black', strokeWidth: 2 };
     const centerLineWidth = 3.5;
+    const [selectionStates, setSelectionStates] = useState({});
 
     const states = [
         { leftState: 0, rightState: 200 }, // fully initialColor
@@ -50,12 +53,21 @@ const LinemanOval = (props) => {
     const [lineIndex, setLineIndex] = useState(0);
     const [state, setState] = useState({ colorState: states[stateIndex], lineState: lineStates[lineIndex] });
 
-    const handleLinemanClick = () => {
-        const newIndex = (stateIndex + 1) % states.length;
-        setStateIndex(newIndex);
-        setState({ colorState: states[newIndex], lineState: lineStates[lineIndex] });
+    const handleLinemanClick = (id) => {
         setSelectedShapeID(id);
         console.log('Selected Shape ID:', id);
+
+        //only change the state if the shape has been selected before and the id is the same as the selected id
+        if (hasBeenSelected && id === selectedShapeID) {
+            const newIndex = (stateIndex + 1) % states.length;
+            setStateIndex(newIndex);
+            setState({ colorState: states[newIndex], lineState: lineStates[lineIndex] });
+        }
+
+        //set hasBeenSelected to true after the initial selection
+        if (!hasBeenSelected) {
+            setHasBeenSelected(true);
+        }
     };
 
     return (
@@ -108,7 +120,7 @@ const LinemanOval = (props) => {
                     radiusY={ellipseRadiuses.y}
                     stroke={strokeOptions.color}
                     strokeWidth={strokeOptions.strokeWidth}
-                    onClick={handleLinemanClick}
+                    onClick={() => handleLinemanClick(id)}
                     fillLinearGradientStartPoint={{ x: state.colorState.leftState, y: 0 }}
                     fillLinearGradientEndPoint={{ x: state.colorState.rightState, y: 0 }}
                     fillLinearGradientColorStops={[0, initialColor, 1, 'black']}
