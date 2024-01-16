@@ -31,7 +31,6 @@ const LinemanOval = (props) => {
     const haloRadiuses = { x: ellipseRadiuses.x + 8, y: ellipseRadiuses.y + 8 };
     const strokeOptions = { color: 'black', strokeWidth: 2 };
     const centerLineWidth = 3.5;
-    const [selectionStates, setSelectionStates] = useState({});
 
     const states = [
         { leftState: 0, rightState: 200 }, // fully initialColor
