@@ -11,7 +11,7 @@ const RouterContainer = () => (
             <Route path="/demo" element={<App />} />
             <Route path="/app" element={<CTA />} />
             <Route path="/cancel" element={<CancelPage />} />
-            <Route path="/" element={<Navigate to="/app" />} />
+            <Route path="/" element={<Navigate to="/demo" />} />
             <Route path="*" element={<h1>404 Page Not Found</h1>} />
         </Routes>
     </Router>
