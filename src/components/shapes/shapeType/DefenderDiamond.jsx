@@ -32,7 +32,7 @@ const DefenderDiamond = (props) => {
 
     const isSelected = selectedShapeID === id;
     const haloOffset = 12;
-    const strokeOptions = { color: 'black', strokeWidth: .2 };
+    const strokeOptions = { color: 'black', strokeWidth: .3 };
     var textAlignment = -5;
     if (text.length > 1) {
         textAlignment -= 5;
