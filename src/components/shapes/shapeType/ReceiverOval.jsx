@@ -63,7 +63,7 @@ function ReceiverOval(props) {
                         radiusX={haloRadiuses.x}
                         radiusY={haloRadiuses.y}
                         // stroke={'black'}
-                        strokeWidth={2}
+                        strokeWidth={5}
                         shadowBlur={15}
                         shadowColor='#184267'
                         onMouseDown={(e) => {
