@@ -159,6 +159,7 @@ function Canvas(props) {
         //TODO: select the line after it is drawn
         //setSelectedLineID();
         setIsMouseDownOnAnchor(false);
+        setSelectedShapeID('$');
     };
 
     return (
