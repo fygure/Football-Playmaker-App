@@ -93,7 +93,8 @@ function ReceiverOval(props) {
                     radiusY={ellipseRadiuses.y}
                     stroke={strokeOptions.color}
                     strokeWidth={strokeOptions.strokeWidth}
-                    fill={initialColor}
+                    fill={'transparent'}
+                    opacity={1}
                 />
                 <EditableText
                     initialText={text}
