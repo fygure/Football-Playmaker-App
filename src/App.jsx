@@ -181,7 +181,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                 borderRight: '1px solid black',
                 borderBottom: '1px solid black',
                 height: '100%',
-                backgroundColor: '#dcdcdc', // See parent div
+                backgroundColor: '#1e1e1e', // See parent div
               }}>
                 <Canvas
                   imageRef={imageRef}
