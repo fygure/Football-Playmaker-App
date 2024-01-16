@@ -26,7 +26,7 @@ const CenterSquare = (props) => {
     } = props;
 
     const isSelected = selectedShapeID === id;
-    const strokeOptions = { color: 'black', strokeWidth: 1 };
+    const strokeOptions = { color: 'black', strokeWidth: 2 };
     const centerLineWidth = 3.5;
     const haloOffset = 13;
 

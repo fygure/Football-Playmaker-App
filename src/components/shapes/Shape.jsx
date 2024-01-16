@@ -4,7 +4,7 @@ import CenterSquare from './shapeType/CenterSquare';
 import LinemanOval from './shapeType/LinemanOval';
 import ReceiverOval from './shapeType/ReceiverOval';
 import DefenderDiamond from './shapeType/DefenderDiamond';
-import { throttle } from 'lodash';
+import { set, throttle } from 'lodash';
 
 // Shape Sizes Configuration
 const SHAPE_SIZES = {
@@ -12,6 +12,7 @@ const SHAPE_SIZES = {
     ELLIPSE: { X: { MIN: 8, MAX: 18 }, Y: { MIN: 5, MAX: 12 } },
     FONT: { MIN: 6, MAX: 13 },
     RECT: { WIDTH: { MIN: 10, MAX: 28 }, HEIGHT: { MIN: 10, MAX: 28 } },
+    DIAMOND: { WIDTH: { MIN: 10, MAX: 28 }, HEIGHT: { MIN: 10, MAX: 28 } },
 };
 
 function Shape(props) {
@@ -52,6 +53,10 @@ function Shape(props) {
         width: SHAPE_SIZES.RECT.WIDTH.MAX,
         height: SHAPE_SIZES.RECT.HEIGHT.MAX
     }); // initial rectangle size
+    const [diamondSize, setDiamondSize] = useState({
+        width: SHAPE_SIZES.DIAMOND.WIDTH.MAX,
+        height: SHAPE_SIZES.DIAMOND.HEIGHT.MAX
+    }); // initial diamond size
 
     useEffect(() => {
         const image = imageRef.current;
@@ -68,6 +73,10 @@ function Shape(props) {
         const initialRelativeRectSize = {
             width: rectSize.width / initialImageSize.width,
             height: rectSize.height / initialImageSize.height,
+        };
+        const initialRelativeDiamondSize = {
+            width: diamondSize.width / initialImageSize.width,
+            height: diamondSize.height / initialImageSize.height,
         };
 
         const handleResize = () => {
@@ -87,6 +96,9 @@ function Shape(props) {
             const newRectWidth = Math.max(Math.min(initialRelativeRectSize.width * newImageSize.width, SHAPE_SIZES.RECT.WIDTH.MAX), SHAPE_SIZES.RECT.WIDTH.MIN);
             const newRectHeight = Math.max(Math.min(initialRelativeRectSize.height * newImageSize.height, SHAPE_SIZES.RECT.HEIGHT.MAX), SHAPE_SIZES.RECT.HEIGHT.MIN);
             setRectSize({ width: newRectWidth, height: newRectHeight });
+            const newDiamondWidth = Math.max(Math.min(initialRelativeDiamondSize.width * newImageSize.width, SHAPE_SIZES.DIAMOND.WIDTH.MAX), SHAPE_SIZES.DIAMOND.WIDTH.MIN);
+            const newDiamondHeight = Math.max(Math.min(initialRelativeDiamondSize.height * newImageSize.height, SHAPE_SIZES.DIAMOND.HEIGHT.MAX), SHAPE_SIZES.DIAMOND.HEIGHT.MIN);
+            setDiamondSize({ width: newDiamondWidth, height: newDiamondHeight });
 
         };
 
@@ -213,6 +225,7 @@ function Shape(props) {
         circleRadius,
         fontSize,
         rectSize,
+        diamondSize,
         dragBoundFunc,
         selectedShapeID,
         setSelectedShapeID,
