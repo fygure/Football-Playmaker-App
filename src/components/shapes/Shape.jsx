@@ -12,7 +12,7 @@ const SHAPE_SIZES = {
     ELLIPSE: { X: { MIN: 8, MAX: 18 }, Y: { MIN: 5, MAX: 12 } },
     FONT: { MIN: 6, MAX: 13 },
     RECT: { WIDTH: { MIN: 10, MAX: 28 }, HEIGHT: { MIN: 10, MAX: 28 } },
-    DIAMOND: { WIDTH: { MIN: 10, MAX: 28 }, HEIGHT: { MIN: 10, MAX: 28 } },
+    DIAMOND: { WIDTH: { MIN: 10, MAX: 22 }, HEIGHT: { MIN: 10, MAX: 22 } },
 };
 
 function Shape(props) {

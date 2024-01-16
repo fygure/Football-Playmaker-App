@@ -223,7 +223,7 @@ function CustomLine(props) {
 
     //3. new start point
     const cutOffLengthX = 18; //ellipse radiusX
-    const cutOffLengthY = 18; //ellipse radiusY
+    const cutOffLengthY = 12; //ellipse radiusY
     const newStartPoint = {
         x: line.startPos.x + normalizedDirection.x * cutOffLengthX,
         y: line.startPos.y + normalizedDirection.y * cutOffLengthY
