@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const useLines = (imageRef) => {
+const useLines = (imageRef, setSelectedLineID, selectedLineID) => {
     const [startPos, setStartPos] = useState(null);
     const [endPos, setEndPos] = useState(null);
     const [lines, setLines] = useState([]);
@@ -70,6 +70,7 @@ const useLines = (imageRef) => {
             setEndPos(null);
             setAttachedShapeId('$');
             setDrawnFromId('$');
+            setSelectedLineID(newLine.id);
         }
     };
 

@@ -40,6 +40,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const [strokeEndButtonPressCount, setStrokeEndButtonPressCount] = useState(0);
   const [selectedShapes, setSelectedShapes] = useState([]); //This is for Selection Rectangle
   const [selectedTextTags, setSelectedTextTags] = useState([]);
+  const [selectedLineID, setSelectedLineID] = useState('$');
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
   const [selectedLineStroke, setSelectedLineStroke] = useState('straight'); // default straight line
   const [selectedLineEnd, setSelectedLineEnd] = useState('straight'); // default arrow line end
@@ -49,7 +50,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes } = useShapes(imageRef);
   const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
-  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef);
+  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, setSelectedLineID, selectedLineID);
 
   const handleDownloadPNG = () => {
     var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
@@ -185,6 +186,8 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
               }}>
                 <Canvas
                   imageRef={imageRef}
+                  selectedLineID={selectedLineID}
+                  setSelectedLineID={setSelectedLineID}
                   currentLayerData={currentLayerData}
                   setCurrentLayerData={setCurrentLayerData}
                   colorButtonPressCount={colorButtonPressCount}

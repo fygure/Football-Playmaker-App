@@ -45,6 +45,8 @@ function Canvas(props) {
         backgroundImage,
         setStageDimensions,
         orientation,
+        selectedLineID,
+        setSelectedLineID,
     } = props;
 
     //const { stageDimensions } = useContext(StageDimensionsContext);
@@ -53,7 +55,6 @@ function Canvas(props) {
     const [isMouseDownOnAnchor, setIsMouseDownOnAnchor] = useState(false);
     const [selectedShapeID, setSelectedShapeID] = useState('$');
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
-    const [selectedLineID, setSelectedLineID] = useState('$');
     const [hasBeenSelected, setHasBeenSelected] = useState(false);
 
     // console.log('ChildComponent2 rendering', currentLayerData);
