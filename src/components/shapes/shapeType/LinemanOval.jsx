@@ -52,7 +52,7 @@ const LinemanOval = (props) => {
     const [lineIndex, setLineIndex] = useState(0);
     const [state, setState] = useState({ colorState: states[stateIndex], lineState: lineStates[lineIndex] });
 
-    const handleLinemanClick = (id) => {
+    const handleLinemanClick = () => {
         setSelectedShapeID(id);
         console.log('Selected Shape ID:', id);
 
@@ -119,7 +119,7 @@ const LinemanOval = (props) => {
                     radiusY={ellipseRadiuses.y}
                     stroke={strokeOptions.color}
                     strokeWidth={strokeOptions.strokeWidth}
-                    onClick={() => handleLinemanClick(id)}
+                    onClick={handleLinemanClick}
                     fillLinearGradientStartPoint={{ x: state.colorState.leftState, y: 0 }}
                     fillLinearGradientEndPoint={{ x: state.colorState.rightState, y: 0 }}
                     fillLinearGradientColorStops={[0, initialColor, 1, 'black']}
