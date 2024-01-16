@@ -115,6 +115,7 @@ function Stencil(props) {
         stageRef,
         flipAllTextTags,
         flipAllShapes,
+        flipAllLines,
         backgroundImage,
         lines,
         setLines,
@@ -258,6 +259,7 @@ function Stencil(props) {
         console.log('handle orientation', newOrientation);
         flipAllTextTags(newOrientation);
         flipAllShapes(newOrientation);
+        flipAllLines(newOrientation);
         setIsProcessing(false);
     };
 

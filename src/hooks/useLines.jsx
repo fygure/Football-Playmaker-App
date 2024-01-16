@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const useLines = (imageRef) => {
+const useLines = (imageRef,shapes) => {
     const [startPos, setStartPos] = useState(null);
     const [endPos, setEndPos] = useState(null);
     const [lines, setLines] = useState([]);
@@ -133,6 +133,61 @@ const useLines = (imageRef) => {
         }
     }, [lines, imageRef]);
 
+    const [isUpDownFlipped, setIsUpDownFlipped] = useState(false);
+    const [isLeftRightFlipped, setIsLeftRightFlipped] = useState(false);
+    const flipAllLines = (flipType) => {
+        if(!flipType){
+            console.error("You're clicking too fast, flipType in flipAllLines is undefined");
+            return;
+        }
+        console.log('Flip Type:', flipType);
+        const imageCenter = {
+            x: imageRef.current.x() + (imageRef.current.width() / 2),
+            y: imageRef.current.y() + (imageRef.current.height() / 2)
+        }
+        setLines(prevLines => {
+            // Create new Lines for all the Lines
+            let newLines = prevLines.map(line => {
+                let newStartPos, newEndPos, newControlPoint;
+                const attachedShape = shapes.find(shape => shape.id === line.attachedShapeId);
+                if (flipType === "Up/Down") {
+                    newStartPos = {
+                        x: attachedShape.x,
+                        y: imageCenter.y - (line.startPos.y - imageCenter.y),
+                    };
+                    newEndPos = {
+                        x: line.endPos.x,
+                        y: imageCenter.y - (line.endPos.y - imageCenter.y),
+                    };
+                } else if (flipType === "Left/Right") {
+                    newStartPos = {
+                        x: imageCenter.x - (line.startPos.x - imageCenter.x),
+                        y: line.startPos.y,
+                    };
+                    newEndPos = {
+                        x: imageCenter.x - (line.endPos.x - imageCenter.x),
+                        y: line.endPos.y,
+                    };
+                }
+                // Create a new line with the new position
+                const newLine = {
+                    ...line,
+                    startPos: newStartPos,
+                    endPos: newEndPos,
+                };
+                return newLine;
+            });
+
+            return newLines;
+        });
+
+        if (flipType === "Up/Down") {
+            setIsUpDownFlipped(!isUpDownFlipped);
+        } else if (flipType === "Left/Right") {
+            setIsLeftRightFlipped(!isLeftRightFlipped);
+        }
+    };
+
     return {
         lines,
         startPos,
@@ -144,6 +199,7 @@ const useLines = (imageRef) => {
         setLines,
         deleteLine,
         updateLine,
+        flipAllLines,
     };
 };
 

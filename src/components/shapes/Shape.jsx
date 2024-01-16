@@ -27,7 +27,6 @@ function Shape(props) {
         initialColor,
         onShapeChange,
         onShapeDelete,
-
         onLineDelete,
 
         onHideContextMenu,

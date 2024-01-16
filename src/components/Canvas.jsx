@@ -101,7 +101,9 @@ function Canvas(props) {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-
+    useEffect(() => {
+        // Redraw the canvas
+    }, [shapes]);
 
     const handleImageClick = (e) => {
         console.log('BG Image Clicked', backgroundImage);
@@ -155,7 +157,6 @@ function Canvas(props) {
         stopDrawing();
         setIsMouseDownOnAnchor(false);
     };
-
     return (
         <>
             <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>

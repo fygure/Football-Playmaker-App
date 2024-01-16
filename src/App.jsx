@@ -12,16 +12,20 @@ import CloseIcon from '@mui/icons-material/Close';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import { BsTrash3Fill } from "react-icons/bs";
 import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
-import { GiZeusSword } from "react-icons/gi";
-import { SiJpeg } from "react-icons/si";
+import FlashOffIcon from '@mui/icons-material/FlashOff';
+import { PiFileJpg } from "react-icons/pi";
 import { PiFilePng } from "react-icons/pi";
-import FormatClearIcon from '@mui/icons-material/FormatClear';
+import FontDownloadOffIcon from '@mui/icons-material/FontDownloadOff';
+import  {AiOutlineDeleteColumn}  from "react-icons/ai";
+////////////////////////////////////////////////////////////////////////////////////////
+import { IoIosAdd } from "react-icons/io";
+import BottomDrawer from './components/BottomDrawer';
+////////////////////////////////////////////////////////////////////////////////////////
 import './App.css';
 import useLines from './hooks/useLines';
 import { set } from 'lodash';
-import Tooltip from '@mui/material/Tooltip';
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: add undo/redo
@@ -61,10 +65,10 @@ function App() {
     document.body.removeChild(link);
   };
 
-  const handleDownloadJPEG = () => {
-    var dataURL = stageRef.current.toDataURL({ pixelRatio: 3, mimeType: "image/jpeg" });
+  const handleDownloadJPG = () => {
+    var dataURL = stageRef.current.toDataURL({ pixelRatio: 3, mimeType: "image/jpg" });
     var link = document.createElement('a');
-    link.download = 'stage.jpeg';
+    link.download = 'stage.jpg';
     link.href = dataURL;
     document.body.appendChild(link);
     link.click();
@@ -93,16 +97,26 @@ function App() {
     deleteAllTextTags();
   };
 
+  const handleDeleteAllLines = () => {
+    deleteAllLines();
+  };
 
 
   const actions = [
-    { name:"Delete All" , icon: <DeleteForeverOutlinedIcon />, action: handleDeleteAll },
+    { name:"Delete All" , icon: <BsTrash3Fill size={20}   />, action: handleDeleteAll },
     { name: "Download PNG.", icon: < PiFilePng size={25} />, action: handleDownloadPNG },
-    { name: "Download JPEG.", icon: <SiJpeg size={20} />, action: handleDownloadJPEG },
-    { name:"Delete Offense Formation" , icon: <GiZeusSword size={30}/>, action: handleDeleteOffenseFormation},
+    { name: "Download JPG.", icon: < PiFileJpg size={25} />, action: handleDownloadJPG },
+    { name:"Delete Offense Formation" , icon: <FlashOffIcon  size={30}/>, action: handleDeleteOffenseFormation},
     { name: "Delete Defense Formation" , icon: <RemoveModeratorIcon />, action: handleDeleteDefenseFormation },
-    { name: "Delete All Text Tags", icon: <FormatClearIcon />, action: handleDeleteAllTextTags}
+    { name: "Delete All Text Tags", icon: <FontDownloadOffIcon />, action: handleDeleteAllTextTags},
+    { name: "Delete All Lines", icon: <AiOutlineDeleteColumn size={20}/>, action: handleDeleteAllLines},
   ];
+
+const handleOnClickButton = () =>
+{
+  console.log("Button Clicked");
+
+};
 
 const [tooltipOpen, setTooltipOpen] = useState(false);
 const [tooltipTimeoutId, setTooltipTimeoutId] = useState(null);
@@ -121,6 +135,9 @@ const handleMouseLeave = (index) => {
   }, 300); // delay time
   setTooltipTimeoutId(timeoutId);
 };
+
+
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -243,6 +260,13 @@ const handleMouseLeave = (index) => {
                   />
                 ))}
               </SpeedDial>
+              <SpeedDial
+                ariaLabel="AddPlay"
+                sx={{ position: 'fixed', bottom: '60px', right: '20px',  marginTop: '15px', marginRight: '2.5vw' }}
+                icon={<IoIosAdd color = '#2B76BA' style={{ fontSize: '30px' }}/>}
+                FabProps={{ size: 'small', color: 'white' }}
+                onClick = {handleOnClickButton}
+              />
             </div>
           </div>
         </StageDimensionsContext.Provider>

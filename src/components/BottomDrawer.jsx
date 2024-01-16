@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ButtonBase from '@mui/material/ButtonBase';
 import Grid from '@mui/material/Grid';
+
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -18,6 +19,7 @@ import TextField from '@mui/material/TextField';
 import Konva from 'konva';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
+// import {ReactComponent as openPlaybookIcon} from '../../public/static/assets/CHLK_Icon_Open_Playbook.svg';
 
 function BottomDrawer(props) {
     const {
@@ -37,6 +39,7 @@ function BottomDrawer(props) {
     const [state, setState] = useState({
         bottom: false,
     });
+    const [openPlaybookIcon, setOpenPlaybookIcon] = useState(process.env.PUBLIC_URL+ '/static/assets/CHLK_Icon_Open_Playbook_small.png');
 
     const [items, setItems] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -180,7 +183,7 @@ function BottomDrawer(props) {
     const handleItemClick = (text) => {
         console.log('IM HERE', text);
         const playName = text.name;
-        //Pass playName to a function that can render 
+        //Pass playName to a function that can render
         //the stage with that playName as the ID
         console.log('Rendering play:', playName);
         console.log(currentLayerData);
@@ -254,20 +257,13 @@ function BottomDrawer(props) {
 
     return (
         <div>
-            <Button
-                variant='contained'
+            <IconButton
                 size='small'
+                color='white'
                 onClick={toggleDrawer('bottom', true)}
             >
-                {'Open PlayBook'}
-            </Button>
-            <Button
-                variant='contained'
-                size='small'
-                onClick={addItem}
-            >
-                {'Add Play'}
-            </Button>
+              <img src={openPlaybookIcon} alt="Open Playbook" />
+            </IconButton>
             <Drawer
                 anchor={'bottom'}
                 open={state['bottom']}
@@ -275,6 +271,14 @@ function BottomDrawer(props) {
             >
                 {list('bottom')}
             </Drawer>
+
+            <Button
+                variant='contained'
+                size='small'
+                onClick={addItem}
+            >
+                {'Add Play'}
+            </Button>
             <Dialog open={dialogOpen} onClose={closeDialog}>
                 <DialogTitle>{dialogTitle}</DialogTitle>
                 <DialogContent>

@@ -1,10 +1,10 @@
 // useShapes.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
-
+import useLines from './useLines';
 function useShapes(imageRef) {
-
+    const {setLines} = useLines(imageRef);
     const [shapes, setShapes] = useState([]);
 
     //Shape Handlers
@@ -510,13 +510,9 @@ function useShapes(imageRef) {
                 }
                 // Create a new text tag with the new position
                 const newShape = {
-                    id: uuidv4(),
-                    initialPosition: newPosition,
-                    initialColor: shape.initialColor,
+                    ...shape,
                     ...newAttributes,
-                    formationType: shape.formationType,
-                    shapeType: shape.shapeType,
-                    text: shape.text,
+                    initialPosition: newPosition,
                 };
                 return newShape;
             });
