@@ -14,7 +14,7 @@ function Subscribe() {
                 }],
                 mode: 'subscription',
                 successUrl: 'https://www.chlkapp.com/app',
-                cancelUrl: 'https://www.chlkapp.com/app/cancel',
+                cancelUrl: 'https://www.chlkapp.com/cancel',
             });
         } catch (err) {
             console.log('error occured while trying to subscribe', err);
