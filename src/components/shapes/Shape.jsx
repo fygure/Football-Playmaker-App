@@ -142,15 +142,25 @@ function Shape(props) {
     const handleDeleteClick = () => {
         setShowContextMenu(false);
         onShapeDelete(id);
-        // Delete all lines associated with the shape
+
+        const deleteLineAndChildren = (lineId) => {
+            //delete the line
+            onLineDelete(lineId);
+
+            //delete all lines that are drawn from the deleted line
+            lines.forEach((childLine) => {
+                if (childLine.drawnFromId === lineId) {
+                    deleteLineAndChildren(childLine.id);
+                }
+            });
+        };
+
+        //delete all lines associated with the shape
         lines.forEach((line) => {
             if (line.attachedShapeId === id) {
-                onLineDelete(line.id);
-                //TODO: propogate delete to all lines attached to this
+                deleteLineAndChildren(line.id);
             }
         });
-
-
     };
 
     const handleDragStart = () => {
