@@ -6,7 +6,7 @@ import ReceiverOval from './shapeType/ReceiverOval';
 import DefenderDiamond from './shapeType/DefenderDiamond';
 import { set, throttle } from 'lodash';
 
-// Shape Sizes Configuration
+//shape sizes configuration
 const SHAPE_SIZES = {
     CIRCLE: { MIN: 10, MAX: 30 },
     ELLIPSE: { X: { MIN: 8, MAX: 18 }, Y: { MIN: 5, MAX: 12 } },
@@ -109,6 +109,19 @@ function Shape(props) {
         };
     }, [position, imageRef]);
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Delete' && selectedShapeID === id) {
+                handleDeleteClick();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [selectedShapeID, id]);
+
     const selectedShape = useMemo(() => shapes.find(shape => shape.id === id), [shapes, id]);
     const handleOnClick = () => {
         setSelectedShapes([]);
@@ -133,6 +146,7 @@ function Shape(props) {
         lines.forEach((line) => {
             if (line.attachedShapeId === id) {
                 onLineDelete(line.id);
+                //TODO: propogate delete to all lines attached to this
             }
         });
 

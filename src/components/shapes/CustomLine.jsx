@@ -96,6 +96,20 @@ function CustomLine(props) {
         }
     }, [selectedColor, selectedLineStroke, selectedLineEnd, colorButtonPressCount, strokeTypeButtonPressCount, strokeEndButtonPressCount]);
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Delete' && selectedLineID === id) {
+                handleDeleteClick();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [selectedLineID, id]);
+
     const handleLineClick = () => {
         console.log(selectedLineStroke);
         setSelectedLineID(isSelected ? '$' : id);
