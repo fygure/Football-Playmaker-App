@@ -12,12 +12,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import { BsTrash3Fill } from "react-icons/bs";
 import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
-import { GiZeusSword } from "react-icons/gi";
-import { SiJpeg } from "react-icons/si";
+import FlashOffIcon from '@mui/icons-material/FlashOff';
+import { PiFileJpg } from "react-icons/pi";
 import { PiFilePng } from "react-icons/pi";
+import FontDownloadOffIcon from '@mui/icons-material/FontDownloadOff';
+import  {AiOutlineDeleteColumn}  from "react-icons/ai";
 import { LuLogOut } from "react-icons/lu";
+import { IoIosAdd } from "react-icons/io";
 import './App.css';
 import useLines from './hooks/useLines';
 import { jwtDecode } from "jwt-decode";
@@ -40,6 +43,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const [strokeEndButtonPressCount, setStrokeEndButtonPressCount] = useState(0);
   const [selectedShapes, setSelectedShapes] = useState([]); //This is for Selection Rectangle
   const [selectedTextTags, setSelectedTextTags] = useState([]);
+  const [selectedLineID, setSelectedLineID] = useState('$');
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
   const [selectedLineStroke, setSelectedLineStroke] = useState('straight'); // default straight line
   const [selectedLineEnd, setSelectedLineEnd] = useState('straight'); // default arrow line end
@@ -49,7 +53,10 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes } = useShapes(imageRef);
   const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
-  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef);
+  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, setSelectedLineID, selectedLineID);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [tooltipTimeoutId, setTooltipTimeoutId] = useState(null);
+
 
   const handleDownloadPNG = () => {
     var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
@@ -65,13 +72,13 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
     document.body.removeChild(link);
   };
 
-  const handleDownloadJPEG = () => {
-    var dataURL = stageRef.current.toDataURL({ pixelRatio: 3, mimeType: "image/jpeg" });
+  const handleDownloadJPG = () => {
+    var dataURL = stageRef.current.toDataURL({ pixelRatio: 3, mimeType: "image/jpg" });
     var link = document.createElement('a');
     if (currentLayerData === null) {
-      link.download = 'untitled.jpeg';
+      link.download = 'untitled.jpg';
     } else {
-      link.download = `${currentLayerData.name}.jpeg`
+      link.download = `${currentLayerData.name}.jpg`
     }
     link.href = dataURL;
     document.body.appendChild(link);
@@ -92,6 +99,13 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const handleDeleteOffenseFormation = () => {
     setShapes(shapes.filter(shape => !shape.formationType.toLowerCase().startsWith('offense')));
   }
+  const handleDeleteAllTextTags = () => {
+    deleteAllTextTags();
+  };
+
+  const handleDeleteAllLines = () => {
+    deleteAllLines();
+  };
 
   const handleToggleSpeedDial = () => {
     setIsSpeedDialOpen(!isSpeedDialOpen);
@@ -104,14 +118,34 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   }
 
   const actions = [
-    { icon: <DeleteForeverOutlinedIcon fontSize='large' />, action: handleDeleteAll },
-    { icon: <GiZeusSword size={30} />, action: handleDeleteOffenseFormation },
-    { icon: <RemoveModeratorIcon fontSize='medium' />, action: handleDeleteDefenseFormation },
-    { icon: < PiFilePng size={30} />, action: handleDownloadPNG },
-    { icon: <SiJpeg size={25} />, action: handleDownloadJPEG },
-    { icon: <LuLogOut size={25} />, action: handleSignOut },
+    { name:"Delete All" , icon: <BsTrash3Fill size={20}   />, action: handleDeleteAll },
+    { name: "Download PNG.", icon: < PiFilePng size={25} />, action: handleDownloadPNG },
+    { name: "Download JPG.", icon: < PiFileJpg size={25} />, action: handleDownloadJPG },
+    { name:"Delete Offense Formation" , icon: <FlashOffIcon  size={30}/>, action: handleDeleteOffenseFormation},
+    { name: "Delete Defense Formation" , icon: <RemoveModeratorIcon />, action: handleDeleteDefenseFormation },
+    { name: "Delete All Text Tags", icon: <FontDownloadOffIcon />, action: handleDeleteAllTextTags},
+    { name: "Delete All Lines", icon: <AiOutlineDeleteColumn size={20}/>, action: handleDeleteAllLines},
+    { name: "Sign Out", icon: <LuLogOut size={25} />, action: handleSignOut },
   ];
 
+  const handleOnClickAddPlay = () => {
+    console.log("Add Play Clicked");
+  }
+
+  const handleMouseEnter = (index) => {
+    const timeoutId = setTimeout(() => {
+      setTooltipOpen(prevState => ({ ...prevState, [index]: true }));
+    }, 400); // delay time
+    setTooltipTimeoutId(timeoutId);
+  };
+
+  const handleMouseLeave = (index) => {
+    clearTimeout(tooltipTimeoutId);
+    const timeoutId = setTimeout(() => {
+      setTooltipOpen(prevState => ({ ...prevState, [index]: false }));
+    }, 300); // delay time
+    setTooltipTimeoutId(timeoutId);
+  };
 
   return (
     <>
@@ -181,10 +215,12 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                 borderRight: '1px solid black',
                 borderBottom: '1px solid black',
                 height: '100%',
-                backgroundColor: '#dcdcdc', // See parent div
+                backgroundColor: '#1e1e1e', // See parent div
               }}>
                 <Canvas
                   imageRef={imageRef}
+                  selectedLineID={selectedLineID}
+                  setSelectedLineID={setSelectedLineID}
                   currentLayerData={currentLayerData}
                   setCurrentLayerData={setCurrentLayerData}
                   colorButtonPressCount={colorButtonPressCount}
@@ -219,23 +255,33 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                   setStageDimensions={setStageDimensions}
                   stageRef={stageRef}
                 />
-                <SpeedDial
-                  ariaLabel="SpeedDial"
-                  icon={isSpeedDialOpen ? <CloseIcon sx={{ color: 'red' }} /> : <MoreVertIcon sx={{ color: 'black' }} />}
-                  direction={'down'}
-                  FabProps={{ size: 'small', color: 'white' }}
-                  onClick={handleToggleSpeedDial}
-                  open={isSpeedDialOpen}
-                  sx={{ position: 'fixed', top: '20px', right: '15px', marginTop: '15px', marginRight: '2.5vw' }} // Update this line
-                >
-                  {actions.map((action, index) => (
-                    <SpeedDialAction
-                      key={`dial-${index}`}
-                      icon={action.icon}
-                      onClick={action.action}
-                    />
-                  ))}
-                </SpeedDial>
+                 <SpeedDial
+                ariaLabel="SpeedDial"
+                icon={isSpeedDialOpen ? <CloseIcon sx={{ color: 'red' }} /> : <MoreVertIcon sx={{ color: 'black' }} />}
+                direction={'down'}
+                FabProps={{ size: 'small', color: 'white' }}
+                onClick={handleToggleSpeedDial}
+                open={isSpeedDialOpen}
+                sx={{ position: 'fixed', top: '20px', right: '15px', marginTop: '15px', marginRight: '2.5vw' }} // Update this line
+              >
+                {actions.map((action, index) => (
+                  <SpeedDialAction
+                    key={`dial-${index}`}
+                    icon={action.icon}
+                    onClick={action.action}
+                    tooltipTitle={tooltipOpen[index] ? action.name : ""}
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseLeave={() => handleMouseLeave(index)}
+                  />
+                ))}
+              </SpeedDial>
+              <SpeedDial
+                ariaLabel="AddPlay"
+                sx={{ position: 'fixed', bottom: '60px', right: '20px',  marginTop: '15px', marginRight: '2.5vw' }}
+                icon={<IoIosAdd color = '#2B76BA' style={{ fontSize: '30px' }}/>}
+                FabProps={{ size: 'small', color: 'white' }}
+                onClick = {handleOnClickAddPlay}
+              />
               </div>
             </div>
           </>

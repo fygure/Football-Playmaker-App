@@ -50,6 +50,7 @@ function BottomDrawer(props) {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('info');
+    const [openPlaybookIcon, setOpenPlaybookIcon] = useState(process.env.PUBLIC_URL+ '/static/assets/CHLK_Icon_Open_Playbook_small.png');
 
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
@@ -240,7 +241,7 @@ function BottomDrawer(props) {
     const handleItemClick = (text) => {
         //console.log('IM HERE', text);
         const playName = text.name;
-        //Pass playName to a function that can render 
+        //Pass playName to a function that can render
         //the stage with that playName as the ID
         console.log('Rendering play:', playName);
         console.log(currentLayerData);
@@ -325,13 +326,13 @@ function BottomDrawer(props) {
 
     return (
         <div>
-            <Button
-                variant='contained'
+         <IconButton
                 size='small'
+                color='white'
                 onClick={toggleDrawer('bottom', true)}
             >
-                {'Open PlayBook'}
-            </Button>
+              <img src={openPlaybookIcon} alt="Open Playbook" />
+            </IconButton>
             <Button
                 variant='contained'
                 size='small'

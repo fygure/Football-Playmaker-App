@@ -1,12 +1,13 @@
 // CustomLine.jsx
 import React, { useState, useRef, useEffect } from 'react';
-import { Line, Circle, Group } from 'react-konva';
+import { Line, Circle, Group, Ellipse } from 'react-konva';
 import ContextMenu from '../menus/ContextMenu';
 import PerpendicularEnd from './lineEnds/PerpendicularEnd';
 import DottedEnd from './lineEnds/DottedEnd';
 import ArrowEnd from './lineEnds/ArrowEnd';
 import calculateWaveLinePoints from './lineEnds/calculateWaveLinePoints';
 import { v4 as uuidv4 } from 'uuid';
+import Konva from 'konva';
 
 const CIRCLE_SIZES = {
     CONTROL: { MIN: 5, MAX: 5 },
@@ -94,6 +95,20 @@ function CustomLine(props) {
             });
         }
     }, [selectedColor, selectedLineStroke, selectedLineEnd, colorButtonPressCount, strokeTypeButtonPressCount, strokeEndButtonPressCount]);
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Delete' && selectedLineID === id) {
+                handleDeleteClick();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [selectedLineID, id]);
 
     const handleLineClick = () => {
         console.log(selectedLineStroke);
@@ -192,6 +207,29 @@ function CustomLine(props) {
         };
     };
 
+    //Achieve line start cut off
+    //1. calculate the direction from the line's start point to the controlPoint
+    const direction = {
+        x: controlPoint.x - line.startPos.x,
+        y: controlPoint.y - line.startPos.y
+    };
+
+    //2. normalize direction
+    const length = Math.sqrt(direction.x * direction.x + direction.y * direction.y);
+    const normalizedDirection = {
+        x: direction.x / length,
+        y: direction.y / length
+    };
+
+    //3. new start point
+    const cutOffLengthX = 18; //ellipse radiusX
+    const cutOffLengthY = 12; //ellipse radiusY
+    const newStartPoint = {
+        x: line.startPos.x + normalizedDirection.x * cutOffLengthX,
+        y: line.startPos.y + normalizedDirection.y * cutOffLengthY
+    };
+
+
     let waveLinePoints = calculateWaveLinePoints(line, controlPoint);
     return (
         <>
@@ -216,7 +254,9 @@ function CustomLine(props) {
                             ? waveLinePoints
                             : (line.strokeType === 'squiggle')
                                 ? waveLinePoints
-                                : [line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]
+                                : (line.attachedShapeId === null || line.attachedShapeId === '$' || line.attachedShapeId === undefined)
+                                    ? [line.startPos.x, line.startPos.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]
+                                    : [newStartPoint.x, newStartPoint.y, controlPoint.x, controlPoint.y, line.endPos.x, line.endPos.y]
                     }
                     stroke={line.color}
                     strokeWidth={

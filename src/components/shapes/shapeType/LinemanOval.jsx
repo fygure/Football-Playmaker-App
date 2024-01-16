@@ -1,6 +1,6 @@
 // LinemanOval.jsx
 import React, { useState } from 'react';
-import { Ellipse, Group } from 'react-konva';
+import { Ellipse, Group, Rect } from 'react-konva';
 import ContextMenu from '../../menus/ContextMenu';
 
 const LinemanOval = (props) => {
@@ -23,17 +23,20 @@ const LinemanOval = (props) => {
         dragBoundFunc,
         selectedShapeID,
         setSelectedShapeID,
+        setHasBeenSelected,
+        hasBeenSelected,
     } = props;
 
     const isSelected = selectedShapeID === id;
     const haloRadiuses = { x: ellipseRadiuses.x + 8, y: ellipseRadiuses.y + 8 };
-    const strokeOptions = { color: 'black', strokeWidth: 1 };
+    const strokeOptions = { color: 'black', strokeWidth: 2 };
+    const centerLineWidth = 3.5;
 
     const states = [
         { leftState: 0, rightState: 200 }, // fully initialColor
         { leftState: 0, rightState: -1 }, // right fill
         { leftState: 0, rightState: 1 }, // left fill
-        { leftState: -200, rightState: 1 } // all fill
+        { leftState: 0, rightState: 0 } // all white TODO: add line
     ];
 
     const lineStates = [
@@ -50,11 +53,20 @@ const LinemanOval = (props) => {
     const [state, setState] = useState({ colorState: states[stateIndex], lineState: lineStates[lineIndex] });
 
     const handleLinemanClick = () => {
-        const newIndex = (stateIndex + 1) % states.length;
-        setStateIndex(newIndex);
-        setState({ colorState: states[newIndex], lineState: lineStates[lineIndex] });
         setSelectedShapeID(id);
         console.log('Selected Shape ID:', id);
+
+        //only change the state if the shape has been selected before and the id is the same as the selected id
+        if (hasBeenSelected && id === selectedShapeID) {
+            const newIndex = (stateIndex + 1) % states.length;
+            setStateIndex(newIndex);
+            setState({ colorState: states[newIndex], lineState: lineStates[lineIndex] });
+        }
+
+        //set hasBeenSelected to true after the initial selection
+        if (!hasBeenSelected) {
+            setHasBeenSelected(true);
+        }
     };
 
     return (
@@ -112,6 +124,16 @@ const LinemanOval = (props) => {
                     fillLinearGradientEndPoint={{ x: state.colorState.rightState, y: 0 }}
                     fillLinearGradientColorStops={[0, initialColor, 1, 'black']}
                 />
+                {stateIndex === 3 && (
+                    <Rect
+                        x={-1.6}
+                        y={-ellipseRadiuses.y}
+                        onClick={handleLinemanClick}
+                        width={centerLineWidth}
+                        height={ellipseRadiuses.y * 2}
+                        fill="black"
+                    />
+                )}
 
             </Group>
             {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
