@@ -1,13 +1,12 @@
 // CustomLine.jsx
 import React, { useState, useRef, useEffect } from 'react';
-import { Line, Circle, Group, Ellipse } from 'react-konva';
+import { Line, Circle, Group } from 'react-konva';
 import ContextMenu from '../menus/ContextMenu';
 import PerpendicularEnd from './lineEnds/PerpendicularEnd';
 import DottedEnd from './lineEnds/DottedEnd';
 import ArrowEnd from './lineEnds/ArrowEnd';
 import calculateWaveLinePoints from './lineEnds/calculateWaveLinePoints';
-import { v4 as uuidv4 } from 'uuid';
-import Konva from 'konva';
+import LineContextMenu from '../menus/LineContextMenu';
 
 const CIRCLE_SIZES = {
     CONTROL: { MIN: 5, MAX: 5 },
@@ -26,6 +25,7 @@ function CustomLine(props) {
         strokeEndButtonPressCount,
         selectedColor,
         selectedLineStroke,
+        setSelectedLineEnd,
         selectedLineEnd,
         onLineDelete,
         onLineChange,
@@ -116,6 +116,7 @@ function CustomLine(props) {
     };
 
     const handleRightClick = (e) => {
+        setSelectedLineID(id);
         e.evt.preventDefault();
         const stage = e.target.getStage();
         const mousePos = stage.getPointerPosition();
@@ -125,6 +126,7 @@ function CustomLine(props) {
 
     const handleHideContextMenu = () => {
         setShowContextMenu(false);
+        setSelectedLineID('$');
     }
 
     const handleDeleteClick = () => {
@@ -346,7 +348,7 @@ function CustomLine(props) {
                         />
                     </Group>
                 )}
-                {showContextMenu && <ContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} />}
+                {showContextMenu && <LineContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} setSelectedLineEnd={setSelectedLineEnd} selectedLineEnd={selectedLineEnd} />}
             </Group>
         </>
     );

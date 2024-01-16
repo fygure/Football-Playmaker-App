@@ -51,14 +51,14 @@ const colorButtons = [
 ];
 
 const lineButtons = [
-    { id: 1, label: 'straight', type: 'stroke', icon: '/static/assets/stroke-straight.png' },
-    { id: 2, label: 'dashed', type: 'stroke', icon: '/static/assets/stroke-dashed.png' },
-    { id: 3, label: 'squiggle', type: 'stroke', icon: '/static/assets/stroke-wavy.png' },
-    { id: 4, label: 'dotted', type: 'stroke', icon: '/static/assets/stroke-dotted.png' },
-    { id: 5, label: 'arrow', type: 'end', icon: '/static/assets/end-arrow.png' },
-    { id: 6, label: 'perpendicular', type: 'end', icon: '/static/assets/end-perpendicular.png' },
-    { id: 7, label: 'dotted', type: 'end', icon: '/static/assets/end-dotted.png' },
-    { id: 8, label: 'straight', type: 'end', icon: '/static/assets/end-straight.png' },
+    { id: 1, label: 'straight', type: 'stroke', icon: process.env.PUBLIC_URL + '/static/assets/stroke-straight.png' },
+    { id: 2, label: 'dashed', type: 'stroke', icon: process.env.PUBLIC_URL + '/static/assets/stroke-dashed.png' },
+    { id: 3, label: 'squiggle', type: 'stroke', icon: process.env.PUBLIC_URL + '/static/assets/stroke-wavy.png' },
+    { id: 4, label: 'dotted', type: 'stroke', icon: process.env.PUBLIC_URL + '/static/assets/stroke-dotted.png' },
+    { id: 5, label: 'arrow', type: 'end', icon: process.env.PUBLIC_URL + '/static/assets/end-arrow.png' },
+    { id: 6, label: 'perpendicular', type: 'end', icon: process.env.PUBLIC_URL + '/static/assets/end-perpendicular.png' },
+    { id: 7, label: 'dotted', type: 'end', icon: process.env.PUBLIC_URL + '/static/assets/end-dotted.png' },
+    { id: 8, label: 'straight', type: 'end', icon: process.env.PUBLIC_URL + '/static/assets/end-straight.png' },
 ];
 
 const lineButtonStyle = {

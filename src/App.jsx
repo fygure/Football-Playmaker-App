@@ -226,6 +226,8 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                   colorButtonPressCount={colorButtonPressCount}
                   strokeTypeButtonPressCount={strokeTypeButtonPressCount}
                   strokeEndButtonPressCount={strokeEndButtonPressCount}
+                  selectedLineEnd={selectedLineEnd}
+                  setSelectedLineEnd={setSelectedLineEnd}
                   lines={lines}
                   setLines={setLines}
                   startPos={startPos}
@@ -250,7 +252,6 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                   onHideTextTagContextMenu={hideTextTagContextMenu}
                   selectedColor={selectedColor}
                   selectedLineStroke={selectedLineStroke}
-                  selectedLineEnd={selectedLineEnd}
                   backgroundImage={backgroundImage}
                   setStageDimensions={setStageDimensions}
                   stageRef={stageRef}

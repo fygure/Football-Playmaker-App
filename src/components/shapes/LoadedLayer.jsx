@@ -44,6 +44,7 @@ const LoadedLayer = (props) => {
         onLineChange,
         selectedLineStroke,
         selectedLineEnd,
+        setSelectedLineEnd,
         hasBeenSelected,
         setHasBeenSelected,
     } = props;
@@ -107,6 +108,7 @@ const LoadedLayer = (props) => {
                         selectedColor={selectedColor}
                         selectedLineStroke={selectedLineStroke}
                         selectedLineEnd={selectedLineEnd}
+                        setSelectedLineEnd={setSelectedLineEnd}
                         onLineDelete={onLineDelete}
                         onLineChange={onLineChange}
                         setLines={setLines}
