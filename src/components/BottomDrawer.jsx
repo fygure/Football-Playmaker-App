@@ -50,7 +50,7 @@ function BottomDrawer(props) {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('info');
-    const [openPlaybookIcon, setOpenPlaybookIcon] = useState(process.env.PUBLIC_URL+ '/static/assets/CHLK_Icon_Open_Playbook_small.png');
+    const [openPlaybookIcon, setOpenPlaybookIcon] = useState(process.env.PUBLIC_URL + '/static/assets/CHLK_Icon_Open_Playbook_small.png');
 
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
@@ -326,12 +326,13 @@ function BottomDrawer(props) {
 
     return (
         <div>
-         <IconButton
+            <IconButton
+                style={{ marginTop: '0px', marginBottom: '0px' }}
                 size='small'
                 color='white'
                 onClick={toggleDrawer('bottom', true)}
             >
-              <img src={openPlaybookIcon} alt="Open Playbook" />
+                <img src={openPlaybookIcon} alt="Open Playbook" />
             </IconButton>
             <Button
                 variant='contained'
