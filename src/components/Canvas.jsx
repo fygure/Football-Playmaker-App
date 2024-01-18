@@ -22,7 +22,9 @@ function Canvas(props) {
         deleteAllLines,
         colorButtonPressCount,
         strokeTypeButtonPressCount,
+        setStrokeTypeButtonPressCount,
         strokeEndButtonPressCount,
+        setStrokeEndButtonPressCount,
         onLineDelete,
         imageRef,
         stageRef,
@@ -214,6 +216,8 @@ function Canvas(props) {
                             setSelectedLineID={setSelectedLineID}
                             colorButtonPressCount={colorButtonPressCount}
                             strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                            setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                            setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                             strokeEndButtonPressCount={strokeEndButtonPressCount}
                             onLineChange={onLineChange}
                             selectedLineStroke={selectedLineStroke}
@@ -242,6 +246,8 @@ function Canvas(props) {
                                         colorButtonPressCount={colorButtonPressCount}
                                         strokeTypeButtonPressCount={strokeTypeButtonPressCount}
                                         strokeEndButtonPressCount={strokeEndButtonPressCount}
+                                        setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                                        setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                                         selectedColor={selectedColor}
                                         selectedLineStroke={selectedLineStroke}
                                         selectedLineEnd={selectedLineEnd}

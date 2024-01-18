@@ -23,6 +23,8 @@ function CustomLine(props) {
         colorButtonPressCount,
         strokeTypeButtonPressCount,
         strokeEndButtonPressCount,
+        setStrokeTypeButtonPressCount,
+        setStrokeEndButtonPressCount,
         selectedColor,
         selectedLineStroke,
         setSelectedLineEnd,
@@ -348,7 +350,18 @@ function CustomLine(props) {
                         />
                     </Group>
                 )}
-                {showContextMenu && <LineContextMenu position={contextMenuPosition} onDelete={handleDeleteClick} onMouseLeave={handleHideContextMenu} setSelectedLineEnd={setSelectedLineEnd} selectedLineEnd={selectedLineEnd} />}
+                {showContextMenu &&
+                    <LineContextMenu
+                        position={contextMenuPosition}
+                        onDelete={handleDeleteClick}
+                        onMouseLeave={handleHideContextMenu}
+                        setSelectedLineEnd={setSelectedLineEnd}
+                        selectedLineEnd={selectedLineEnd}
+                        setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
+                        //below not implemented yet
+                        setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                    />
+                }
             </Group>
         </>
     );

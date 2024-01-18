@@ -225,7 +225,9 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                   setCurrentLayerData={setCurrentLayerData}
                   colorButtonPressCount={colorButtonPressCount}
                   strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                  setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
                   strokeEndButtonPressCount={strokeEndButtonPressCount}
+                  setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                   selectedLineEnd={selectedLineEnd}
                   setSelectedLineEnd={setSelectedLineEnd}
                   lines={lines}

@@ -10,6 +10,7 @@ function LineContextMenu(props) {
         onMouseLeave,
         selectedLineEnd,
         setSelectedLineEnd,
+        setStrokeEndButtonPressCount,
     } = props;
 
     const rectWidth = 60;
@@ -22,6 +23,11 @@ function LineContextMenu(props) {
     const [dotted] = useImage(process.env.PUBLIC_URL + '/static/assets/end-dotted.png');
     const [straight] = useImage(process.env.PUBLIC_URL + '/static/assets/end-straight.png');
     const [perpendicular] = useImage(process.env.PUBLIC_URL + '/static/assets/end-perpendicular.png');
+
+    //Function to update the state to force a re-render of the same clicked line end button
+    const handleStrokeEndButtonPress = () => {
+        setStrokeEndButtonPressCount(prevCount => prevCount + 1);
+    };
 
     return (
         <Group
@@ -51,7 +57,7 @@ function LineContextMenu(props) {
                     image={arrow}
                     width={rectWidth / 2}
                     height={rectHeight}
-                    onClick={() => { setSelectedLineEnd('arrow') }} // index 0
+                    onClick={() => { setSelectedLineEnd('arrow'); handleStrokeEndButtonPress(); }} // index 0
                 />
                 <Rect
                     x={rectWidth / 2}
@@ -68,7 +74,7 @@ function LineContextMenu(props) {
                     x={rectWidth / 2}
                     width={rectWidth / 2}
                     height={rectHeight}
-                    onClick={() => { setSelectedLineEnd('dotted') }} // index 2
+                    onClick={() => { setSelectedLineEnd('dotted'); handleStrokeEndButtonPress(); }} // index 2
                 />
             </Group>
             <Group y={rectHeight}>
@@ -85,7 +91,7 @@ function LineContextMenu(props) {
                     image={straight}
                     width={rectWidth / 2}
                     height={rectHeight}
-                    onClick={() => { setSelectedLineEnd('straight') }} // index 3
+                    onClick={() => { setSelectedLineEnd('straight'); handleStrokeEndButtonPress(); }} // index 3
                 />
                 <Rect
                     x={rectWidth / 2}
@@ -102,7 +108,7 @@ function LineContextMenu(props) {
                     x={rectWidth / 2}
                     width={rectWidth / 2}
                     height={rectHeight}
-                    onClick={() => { setSelectedLineEnd('perpendicular') }} // index 1
+                    onClick={() => { setSelectedLineEnd('perpendicular'); handleStrokeEndButtonPress(); }} // index 1
                 />
             </Group>
             <Group y={rectHeight * 2}>

@@ -41,6 +41,8 @@ const LoadedLayer = (props) => {
         colorButtonPressCount,
         strokeTypeButtonPressCount,
         strokeEndButtonPressCount,
+        setStrokeTypeButtonPressCount,
+        setStrokeEndButtonPressCount,
         onLineChange,
         selectedLineStroke,
         selectedLineEnd,
@@ -105,6 +107,8 @@ const LoadedLayer = (props) => {
                         colorButtonPressCount={colorButtonPressCount}
                         strokeTypeButtonPressCount={strokeTypeButtonPressCount}
                         strokeEndButtonPressCount={strokeEndButtonPressCount}
+                        setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                        setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                         selectedColor={selectedColor}
                         selectedLineStroke={selectedLineStroke}
                         selectedLineEnd={selectedLineEnd}
