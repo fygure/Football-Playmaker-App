@@ -289,7 +289,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
             </div>
           </>
         </StageDimensionsContext.Provider>
-      </ThemeProvider>
+      </ThemeProvider >
     </>
   );
 }
