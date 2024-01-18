@@ -200,8 +200,11 @@ function TextTag(props) {
                         y={text.trim() === 'Check Mark' ? -13 : -2}
                         width={text.trim() === 'Check Mark' ? fontSize * 2 : fontSize * text.length * 0.85}
                         height={text.trim() === 'Check Mark' ? fontSize * 2 : fontSize * 1.2}
-                        stroke='red'
-                        strokeWidth={1}
+                        //stroke='red'
+                        fill="white"
+                        strokeWidth={5}
+                        shadowBlur={15}
+                        shadowColor='#184267'
                     />
                 )}
                 {checkMarkImage && text.trim() === 'Check Mark' ? (

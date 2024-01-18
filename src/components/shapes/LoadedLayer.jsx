@@ -41,9 +41,12 @@ const LoadedLayer = (props) => {
         colorButtonPressCount,
         strokeTypeButtonPressCount,
         strokeEndButtonPressCount,
+        setStrokeTypeButtonPressCount,
+        setStrokeEndButtonPressCount,
         onLineChange,
         selectedLineStroke,
         selectedLineEnd,
+        setSelectedLineEnd,
         hasBeenSelected,
         setHasBeenSelected,
     } = props;
@@ -59,10 +62,6 @@ const LoadedLayer = (props) => {
     };
 
     const playNamePos = { x: middlePosition.x - imageSize.width * 0.47, y: middlePosition.y - imageSize.height * 0.475 };
-
-    //const imageRef = useRef(null);
-    //FIXME: rendering image based on currentLayerData, problem is in useBackground and stencil
-    //const [image] = useImage(currentLayerData.backgroundImage);
 
     //TESTING
     useEffect(() => {
@@ -104,9 +103,12 @@ const LoadedLayer = (props) => {
                         colorButtonPressCount={colorButtonPressCount}
                         strokeTypeButtonPressCount={strokeTypeButtonPressCount}
                         strokeEndButtonPressCount={strokeEndButtonPressCount}
+                        setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                        setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                         selectedColor={selectedColor}
                         selectedLineStroke={selectedLineStroke}
                         selectedLineEnd={selectedLineEnd}
+                        setSelectedLineEnd={setSelectedLineEnd}
                         onLineDelete={onLineDelete}
                         onLineChange={onLineChange}
                         setLines={setLines}

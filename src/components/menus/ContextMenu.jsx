@@ -22,11 +22,9 @@ function ContextMenu(props) {
             <Rect
                 width={rectWidth}
                 height={rectHeight}
-                fill="#f0f0f0" // Light gray background color
-                stroke="#888" // Gray border color
-                cornerRadius={5} // Rounded corners
-                shadowBlur={5}
-                shadowColor="#aaa" // Shadow color
+                fill="#0D1A22"
+                stroke="darkgrey"
+                cornerRadius={10}
             />
             <Text
                 text="Delete"
@@ -36,9 +34,9 @@ function ContextMenu(props) {
                 align="center"
                 verticalAlign="middle"
                 onClick={onDelete}
-                fill="#333" // Text color
-                fontFamily="Arial" // Specify a font family
-                fontSize={14} // Specify a font size
+                fill="white"
+                fontFamily="Inter, sans-serif"
+                fontSize={14}
             />
         </Group>
     );

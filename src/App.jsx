@@ -18,21 +18,17 @@ import FlashOffIcon from '@mui/icons-material/FlashOff';
 import { PiFileJpg } from "react-icons/pi";
 import { PiFilePng } from "react-icons/pi";
 import FontDownloadOffIcon from '@mui/icons-material/FontDownloadOff';
-import  {AiOutlineDeleteColumn}  from "react-icons/ai";
+import { AiOutlineDeleteColumn } from "react-icons/ai";
 import { LuLogOut } from "react-icons/lu";
 import { IoIosAdd } from "react-icons/io";
 import './App.css';
 import useLines from './hooks/useLines';
-import { jwtDecode } from "jwt-decode";
-// import '@aws-amplify/ui-react/styles.css';
-// import { Amplify } from 'aws-amplify';
-// import { withAuthenticator } from '@aws-amplify/ui-react';
-// import config from './amplifyconfiguration.json';
-// Amplify.configure(config);
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: undo/redo
-TOOD: orientation
+TODO: orientation
+TODO: selection rectangle
+TODO: add item to playbook button (lift from BottomDrawer);
 */
 ////////////////////////////////////////////////////////////////////////////////////////
 function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator }) {
@@ -111,20 +107,24 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
     setIsSpeedDialOpen(!isSpeedDialOpen);
   };
 
-  const handleSignOut = () => {
-    signOut();
-    setCurrentUser(null);
-    setShowAuthenticator(!showAuthenticator);
+  const handleSignOut = async () => {
+    try {
+      setCurrentUser(null);
+      setShowAuthenticator(!showAuthenticator);
+      await signOut();
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
   }
 
   const actions = [
-    { name:"Delete All" , icon: <BsTrash3Fill size={20}   />, action: handleDeleteAll },
-    { name: "Download PNG.", icon: < PiFilePng size={25} />, action: handleDownloadPNG },
-    { name: "Download JPG.", icon: < PiFileJpg size={25} />, action: handleDownloadJPG },
-    { name:"Delete Offense Formation" , icon: <FlashOffIcon  size={30}/>, action: handleDeleteOffenseFormation},
-    { name: "Delete Defense Formation" , icon: <RemoveModeratorIcon />, action: handleDeleteDefenseFormation },
-    { name: "Delete All Text Tags", icon: <FontDownloadOffIcon />, action: handleDeleteAllTextTags},
-    { name: "Delete All Lines", icon: <AiOutlineDeleteColumn size={20}/>, action: handleDeleteAllLines},
+    { name: "Delete All", icon: <BsTrash3Fill size={20} />, action: handleDeleteAll },
+    { name: "Download PNG", icon: < PiFilePng size={25} />, action: handleDownloadPNG },
+    { name: "Download JPG", icon: < PiFileJpg size={25} />, action: handleDownloadJPG },
+    { name: "Delete Offense Formation", icon: <FlashOffIcon size={30} />, action: handleDeleteOffenseFormation },
+    { name: "Delete Defense Formation", icon: <RemoveModeratorIcon />, action: handleDeleteDefenseFormation },
+    { name: "Delete All Text Tags", icon: <FontDownloadOffIcon />, action: handleDeleteAllTextTags },
+    { name: "Delete All Lines", icon: <AiOutlineDeleteColumn size={20} />, action: handleDeleteAllLines },
     { name: "Sign Out", icon: <LuLogOut size={25} />, action: handleSignOut },
   ];
 
@@ -225,7 +225,11 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                   setCurrentLayerData={setCurrentLayerData}
                   colorButtonPressCount={colorButtonPressCount}
                   strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                  setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
                   strokeEndButtonPressCount={strokeEndButtonPressCount}
+                  setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
+                  selectedLineEnd={selectedLineEnd}
+                  setSelectedLineEnd={setSelectedLineEnd}
                   lines={lines}
                   setLines={setLines}
                   startPos={startPos}
@@ -250,43 +254,42 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                   onHideTextTagContextMenu={hideTextTagContextMenu}
                   selectedColor={selectedColor}
                   selectedLineStroke={selectedLineStroke}
-                  selectedLineEnd={selectedLineEnd}
                   backgroundImage={backgroundImage}
                   setStageDimensions={setStageDimensions}
                   stageRef={stageRef}
                 />
-                 <SpeedDial
-                ariaLabel="SpeedDial"
-                icon={isSpeedDialOpen ? <CloseIcon sx={{ color: 'red' }} /> : <MoreVertIcon sx={{ color: 'black' }} />}
-                direction={'down'}
-                FabProps={{ size: 'small', color: 'white' }}
-                onClick={handleToggleSpeedDial}
-                open={isSpeedDialOpen}
-                sx={{ position: 'fixed', top: '20px', right: '15px', marginTop: '15px', marginRight: '2.5vw' }} // Update this line
-              >
-                {actions.map((action, index) => (
-                  <SpeedDialAction
-                    key={`dial-${index}`}
-                    icon={action.icon}
-                    onClick={action.action}
-                    tooltipTitle={tooltipOpen[index] ? action.name : ""}
-                    onMouseEnter={() => handleMouseEnter(index)}
-                    onMouseLeave={() => handleMouseLeave(index)}
-                  />
-                ))}
-              </SpeedDial>
-              <SpeedDial
-                ariaLabel="AddPlay"
-                sx={{ position: 'fixed', bottom: '60px', right: '20px',  marginTop: '15px', marginRight: '2.5vw' }}
-                icon={<IoIosAdd color = '#2B76BA' style={{ fontSize: '30px' }}/>}
-                FabProps={{ size: 'small', color: 'white' }}
-                onClick = {handleOnClickAddPlay}
-              />
+                <SpeedDial
+                  ariaLabel="SpeedDial"
+                  icon={isSpeedDialOpen ? <CloseIcon sx={{ color: 'red' }} /> : <MoreVertIcon sx={{ color: 'black' }} />}
+                  direction={'down'}
+                  FabProps={{ size: 'small', color: 'white' }}
+                  onClick={handleToggleSpeedDial}
+                  open={isSpeedDialOpen}
+                  sx={{ position: 'fixed', top: '20px', right: '15px', marginTop: '15px', marginRight: '2.5vw' }} // Update this line
+                >
+                  {actions.map((action, index) => (
+                    <SpeedDialAction
+                      key={`dial-${index}`}
+                      icon={action.icon}
+                      onClick={action.action}
+                      tooltipTitle={tooltipOpen[index] ? action.name : ""}
+                      onMouseEnter={() => handleMouseEnter(index)}
+                      onMouseLeave={() => handleMouseLeave(index)}
+                    />
+                  ))}
+                </SpeedDial>
+                <SpeedDial
+                  ariaLabel="AddPlay"
+                  sx={{ position: 'fixed', bottom: '60px', right: '15px', marginTop: '15px', marginRight: '2.5vw' }}
+                  icon={<IoIosAdd color='#2B76BA' style={{ fontSize: '30px' }} />}
+                  FabProps={{ size: 'small', color: 'white' }}
+                  onClick={handleOnClickAddPlay}
+                />
               </div>
             </div>
           </>
         </StageDimensionsContext.Provider>
-      </ThemeProvider>
+      </ThemeProvider >
     </>
   );
 }
