@@ -63,10 +63,6 @@ const LoadedLayer = (props) => {
 
     const playNamePos = { x: middlePosition.x - imageSize.width * 0.47, y: middlePosition.y - imageSize.height * 0.475 };
 
-    //const imageRef = useRef(null);
-    //FIXME: rendering image based on currentLayerData, problem is in useBackground and stencil
-    //const [image] = useImage(currentLayerData.backgroundImage);
-
     //TESTING
     useEffect(() => {
         console.log('currentLayerData:', currentLayerData);

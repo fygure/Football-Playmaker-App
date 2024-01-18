@@ -132,16 +132,6 @@ function Stencil(props) {
 
     const shapeColor = 'white';
 
-    function handleDownload() {
-        var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
-        var link = document.createElement('a');
-        link.download = 'stage.png';
-        link.href = dataURL;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-
     // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
@@ -215,11 +205,11 @@ function Stencil(props) {
     };
 
     // Delete handlers
-    const handleDeleteAll = () => {
-        onDeleteAllShapes();
-        onDeleteAllTextTags();
-        onDeleteAllLines();
-    };
+    // const handleDeleteAll = () => {
+    //     onDeleteAllShapes();
+    //     onDeleteAllTextTags();
+    //     onDeleteAllLines();
+    // };
 
     // Field handlers
     const handleSetFieldType = (e) => {
@@ -273,8 +263,6 @@ function Stencil(props) {
         setStrokeEndButtonPressCount(prevCount => prevCount + 1);
     };
 
-    //     const [selectedFeedback, setSelectedFeedback] = useState(false);
-
     const handleFeedbackFormOpen = () => {
         setSelectedFeedback(true);
     };
@@ -316,9 +304,6 @@ function Stencil(props) {
                 paddingTop: '12px',
                 paddingBottom: '0px',
             }}>
-
-                {/* <Button onClick={() => { }} variant='contained'>Undo</Button>
-                    <Button onClick={() => { }} variant='contained'>Redo</Button> */}
 
                 <h3 style={{ marginBottom: '-8px', paddingBottom: '0px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                     Field

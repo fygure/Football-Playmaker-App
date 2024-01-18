@@ -60,12 +60,6 @@ function Canvas(props) {
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
     const [hasBeenSelected, setHasBeenSelected] = useState(false);
 
-    // console.log('ChildComponent2 rendering', currentLayerData);
-    // useEffect(() => {
-    //     console.log('Current Stage Data:', currentLayerData);
-    // }, [currentLayerData]);
-
-
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
 
@@ -160,8 +154,6 @@ function Canvas(props) {
         //console.log('Stage onMouseUp', endPos);
         //console.log('Selected Line ID:', selectedLineID);
         stopDrawing();
-        //TODO: select the line after it is drawn
-        //setSelectedLineID();
         setIsMouseDownOnAnchor(false);
         setSelectedShapeID('$');
     };
