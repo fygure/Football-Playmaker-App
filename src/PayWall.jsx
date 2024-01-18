@@ -16,8 +16,8 @@ const subscribe = async (event) => {
                 quantity: 1,
             }],
             mode: 'subscription',
-            successUrl: 'https://www.chlkapp.com/app',
-            cancelUrl: 'https://www.chlkapp.com/cancel',
+            successUrl: 'https://www.chlk.football/editor',
+            cancelUrl: 'https://www.chlk.football/cancel',
         });
     } catch (err) {
         console.log('error occured while trying to subscribe', err);
