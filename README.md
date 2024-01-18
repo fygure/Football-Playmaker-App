@@ -1,5 +1,9 @@
 # Football Playmaking CAD Software
-[Documentation](https://konvajs.org/)
+This application was made with the following:
+[Konva Library](https://konvajs.org/)
+
+### TODO 2024
+Refactor code and remove prop drilling by using a state management tool
 
 ## Available Scripts
 
