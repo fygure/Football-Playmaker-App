@@ -107,13 +107,13 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
     setIsSpeedDialOpen(!isSpeedDialOpen);
   };
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     try {
-      signOut();
       setCurrentUser(null);
       setShowAuthenticator(!showAuthenticator);
+      await signOut();
     } catch (error) {
-      console.error('Bypassed Auth', error);
+      console.log('error signing out: ', error);
     }
   }
 
