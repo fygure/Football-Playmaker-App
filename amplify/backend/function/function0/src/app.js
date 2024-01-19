@@ -73,6 +73,38 @@ app.post('/webhook', async function (req, res) {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
+  if (event.type === 'customer.subscription.deleted') {
+    const customer = await stripeInstance.customers.retrieve(event.data.object.customer);
+    const userEmail = customer.email;
+
+    //AWS Cognito
+    const cognito = new aws.CognitoIdentityServiceProvider({ apiVersion: '2016-04-18' });
+
+    //list all users in the user pool
+    const users = await cognito.listUsers({
+      UserPoolId: process.env.AUTH_FOOTBALLPLAYMAKERAPP3BE24419_USERPOOLID,
+      Filter: `email = "${userEmail}"`,
+    }).promise();
+
+    if (users.Users.length > 0) {
+      const user = users.Users[0];
+
+      //deactivate the user
+      await cognito.adminDisableUser({
+        UserPoolId: process.env.AUTH_FOOTBALLPLAYMAKERAPP3BE24419_USERPOOLID,
+        Username: user.Username,
+      }).promise();
+
+      // Or to delete the user
+      // await cognito.adminDeleteUser({
+      //   UserPoolId: process.env.AUTH_FOOTBALLPLAYMAKERAPP3BE24419_USERPOOLID,
+      //   Username: user.Username,
+      // }).promise();
+    }
+
+    res.sendStatus(200);
+  }
+
   if (event.type === 'payment_intent.succeeded') {
     const customer = await stripeInstance.customers.retrieve(req.body.data.object.customer);
     const userEmail = customer.email;

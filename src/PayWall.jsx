@@ -5,6 +5,10 @@ import App from "./App";
 import { Button, IconButton } from '@mui/material';
 import { loadStripe } from "@stripe/stripe-js";
 
+/* To add subscription with trial, we need to send a POST to our server
+that creates a checkout session with a trial period ID then uses that 
+to redirectToCheckout */
+
 const subscribe = async (event) => {
     try {
         //TODO: replace with prod publishable key (exposure is ok)
