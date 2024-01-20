@@ -9,6 +9,7 @@ import App from './App';
 const RouterContainer = () => (
     <Router>
         <Routes>
+            <Route path="/bypass" element={<App />} />
             <Route path="/editor" element={<PayWall />} />
             <Route path="/coming-soon" element={<ComingSoon />} />
             <Route path="/cancel" element={<CancelPage />} />
