@@ -5,6 +5,10 @@ import App from "./App";
 import { Button, IconButton } from '@mui/material';
 import { loadStripe } from "@stripe/stripe-js";
 
+/* To add subscription with trial, we need to send a POST to our server
+that creates a checkout session with a trial period ID then uses that 
+to redirectToCheckout */
+
 const subscribe = async (event) => {
     try {
         //TODO: replace with prod publishable key (exposure is ok)
@@ -16,8 +20,8 @@ const subscribe = async (event) => {
                 quantity: 1,
             }],
             mode: 'subscription',
-            successUrl: 'https://www.chlkapp.com/app',
-            cancelUrl: 'https://www.chlkapp.com/cancel',
+            successUrl: 'https://www.chlk.football/editor',
+            cancelUrl: 'https://www.chlk.football/cancel',
         });
     } catch (err) {
         console.log('error occured while trying to subscribe', err);
