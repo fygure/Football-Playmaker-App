@@ -5,7 +5,6 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import FeedBackForm from './feedback/FeedBackForm.jsx';
 import FlipIcon from '@mui/icons-material/Flip';
 import theme from '../config/theme.js';
-import { set } from 'lodash';
 import BottomDrawer from './BottomDrawer.jsx';
 
 
@@ -51,14 +50,14 @@ const colorButtons = [
 ];
 
 const lineButtons = [
-    { id: 1, label: 'straight', type: 'stroke', icon: '/static/assets/stroke-straight.png' },
-    { id: 2, label: 'dashed', type: 'stroke', icon: '/static/assets/stroke-dashed.png' },
-    { id: 3, label: 'squiggle', type: 'stroke', icon: '/static/assets/stroke-wavy.png' },
-    { id: 4, label: 'dotted', type: 'stroke', icon: '/static/assets/stroke-dotted.png' },
-    { id: 5, label: 'arrow', type: 'end', icon: '/static/assets/end-arrow.png' },
-    { id: 6, label: 'perpendicular', type: 'end', icon: '/static/assets/end-perpendicular.png' },
-    { id: 7, label: 'dotted', type: 'end', icon: '/static/assets/end-dotted.png' },
-    { id: 8, label: 'straight', type: 'end', icon: '/static/assets/end-straight.png' },
+    { id: 1, label: 'straight', type: 'stroke', icon: process.env.PUBLIC_URL + '/static/assets/stroke-straight.png' },
+    { id: 2, label: 'dashed', type: 'stroke', icon: process.env.PUBLIC_URL + '/static/assets/stroke-dashed.png' },
+    { id: 3, label: 'squiggle', type: 'stroke', icon: process.env.PUBLIC_URL + '/static/assets/stroke-wavy.png' },
+    { id: 4, label: 'dotted', type: 'stroke', icon: process.env.PUBLIC_URL + '/static/assets/stroke-dotted.png' },
+    { id: 5, label: 'arrow', type: 'end', icon: process.env.PUBLIC_URL + '/static/assets/end-arrow.png' },
+    { id: 6, label: 'perpendicular', type: 'end', icon: process.env.PUBLIC_URL + '/static/assets/end-perpendicular.png' },
+    { id: 7, label: 'dotted', type: 'end', icon: process.env.PUBLIC_URL + '/static/assets/end-dotted.png' },
+    { id: 8, label: 'straight', type: 'end', icon: process.env.PUBLIC_URL + '/static/assets/end-straight.png' },
 ];
 
 const lineButtonStyle = {
@@ -150,16 +149,6 @@ function Stencil(props) {
 
     const shapeColor = 'white';
 
-    function handleDownload() {
-        var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
-        var link = document.createElement('a');
-        link.download = 'stage.png';
-        link.href = dataURL;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-
     // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
@@ -233,11 +222,11 @@ function Stencil(props) {
     };
 
     // Delete handlers
-    const handleDeleteAll = () => {
-        onDeleteAllShapes();
-        onDeleteAllTextTags();
-        onDeleteAllLines();
-    };
+    // const handleDeleteAll = () => {
+    //     onDeleteAllShapes();
+    //     onDeleteAllTextTags();
+    //     onDeleteAllLines();
+    // };
 
     // Field handlers
     const handleSetFieldType = (e) => {
@@ -291,8 +280,6 @@ function Stencil(props) {
         setStrokeEndButtonPressCount(prevCount => prevCount + 1);
     };
 
-    //     const [selectedFeedback, setSelectedFeedback] = useState(false);
-
     const handleFeedbackFormOpen = () => {
         setSelectedFeedback(true);
     };
@@ -334,9 +321,6 @@ function Stencil(props) {
                 paddingTop: '12px',
                 paddingBottom: '0px',
             }}>
-
-                {/* <Button onClick={() => { }} variant='contained'>Undo</Button>
-                    <Button onClick={() => { }} variant='contained'>Redo</Button> */}
 
                 <h3 style={{ marginBottom: '-8px', paddingBottom: '0px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                     Field
@@ -534,28 +518,6 @@ function Stencil(props) {
                                     <span style={{ display: 'flex', marginLeft: '10px', marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
                                 </div>
                             )}
-
-                            {/* <div style={{ display: 'flex', justifyContent: "space-between", marginLeft: '0px', marginTop: '0px', paddingLeft: '0' }}>
-                                    <Button
-                                        color="white"
-                                        sx={{
-                                            background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
-                                            ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                            textDecoration: 'underline',
-                                            '&:hover': {
-                                                textDecoration: 'underline',
-                                            },
-                                            '&:focus': {
-                                                outline: 'none',
-                                            },
-                                        }}
-                                        onClick={() => { console.log("Adding offensive player") }}
-                                    >
-                                        +Add Player
-                                    </Button>
-                                </div> */}
                         </div>
                     </div>
                 </div>
@@ -677,27 +639,6 @@ function Stencil(props) {
                                     <span style={{ display: 'flex', marginLeft: '10px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
                                 </div>
                             )}
-                            {/* <div style={{ display: 'flex', justifyContent: "space-between", marginLeft: '0px', marginTop: '0px' }}>
-                                    <Button
-                                        color="white"
-                                        sx={{
-                                            background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
-                                            ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                            textDecoration: 'underline',
-                                            '&:hover': {
-                                                textDecoration: 'underline',
-                                            },
-                                            '&:focus': {
-                                                outline: 'none',
-                                            },
-                                        }}
-                                        onClick={() => { console.log("Adding defensive player") }}
-                                    >
-                                        +Add Player
-                                    </Button>
-                                </div> */}
                         </div>
                     </div>
                 </div>
@@ -970,7 +911,7 @@ function Stencil(props) {
                     </Grid>
                 </Box>
 
-                <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '40px', marginBottom: '0px' }}>
+                <Box sx={{ flexGrow: 1, marginLeft: '-5px', marginTop: '35px', marginBottom: '0px' }}>
                     <Grid container spacing={0}>
                         <BottomDrawer
                             stageRef={stageRef}
@@ -1007,14 +948,14 @@ function Stencil(props) {
                     </Grid>
                 </Box>
 
-                <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '0px', marginBottom: '0px' }}>
+                <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '20px', marginBottom: '0px' }}>
                     <Grid container spacing={0}>
                         <Button
                             color="white"
                             value="feedback"
                             style={{
-                                marginTop: '2rem',
-                                marginBottom: '1rem',
+                                marginTop: '0',
+                                marginBottom: '0',
                                 padding: '1px 3px',
                                 textAlign: 'left', // align text to the left
                                 fontSize: '0.5rem', // make text smaller

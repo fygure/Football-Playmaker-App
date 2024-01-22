@@ -22,7 +22,9 @@ function Canvas(props) {
         deleteAllLines,
         colorButtonPressCount,
         strokeTypeButtonPressCount,
+        setStrokeTypeButtonPressCount,
         strokeEndButtonPressCount,
+        setStrokeEndButtonPressCount,
         onLineDelete,
         imageRef,
         stageRef,
@@ -42,6 +44,7 @@ function Canvas(props) {
         selectedColor,
         selectedLineStroke,
         selectedLineEnd,
+        setSelectedLineEnd,
         backgroundImage,
         setStageDimensions,
         orientation,
@@ -56,12 +59,6 @@ function Canvas(props) {
     const [selectedShapeID, setSelectedShapeID] = useState('$');
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
     const [hasBeenSelected, setHasBeenSelected] = useState(false);
-
-    // console.log('ChildComponent2 rendering', currentLayerData);
-    // useEffect(() => {
-    //     console.log('Current Stage Data:', currentLayerData);
-    // }, [currentLayerData]);
-
 
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
@@ -157,8 +154,6 @@ function Canvas(props) {
         //console.log('Stage onMouseUp', endPos);
         //console.log('Selected Line ID:', selectedLineID);
         stopDrawing();
-        //TODO: select the line after it is drawn
-        //setSelectedLineID();
         setIsMouseDownOnAnchor(false);
         setSelectedShapeID('$');
     };
@@ -177,6 +172,8 @@ function Canvas(props) {
                 >
                     {currentLayerData ?
                         <LoadedLayer
+                            selectedLineEnd={selectedLineEnd}
+                            setSelectedLineEnd={setSelectedLineEnd}
                             hasBeenSelected={hasBeenSelected}
                             setHasBeenSelected={setHasBeenSelected}
                             currentLayerData={currentLayerData}
@@ -211,10 +208,11 @@ function Canvas(props) {
                             setSelectedLineID={setSelectedLineID}
                             colorButtonPressCount={colorButtonPressCount}
                             strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                            setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                            setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                             strokeEndButtonPressCount={strokeEndButtonPressCount}
                             onLineChange={onLineChange}
                             selectedLineStroke={selectedLineStroke}
-                            selectedLineEnd={selectedLineEnd}
                         /> : (
                             <Layer>
                                 {/* TODO: add default text tag for play name HERE */}
@@ -236,9 +234,12 @@ function Canvas(props) {
                                         line={line}
                                         lines={lines}
                                         color={line.color}
+                                        setSelectedLineEnd={setSelectedLineEnd}
                                         colorButtonPressCount={colorButtonPressCount}
                                         strokeTypeButtonPressCount={strokeTypeButtonPressCount}
                                         strokeEndButtonPressCount={strokeEndButtonPressCount}
+                                        setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                                        setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                                         selectedColor={selectedColor}
                                         selectedLineStroke={selectedLineStroke}
                                         selectedLineEnd={selectedLineEnd}
@@ -255,6 +256,8 @@ function Canvas(props) {
                                 ))}
                                 {shapes.map((shape) => (
                                     <Shape
+                                        selectedLineEnd={selectedLineEnd}
+                                        setSelectedLineEnd={setSelectedLineEnd}
                                         hasBeenSelected={hasBeenSelected}
                                         setHasBeenSelected={setHasBeenSelected}
                                         lines={lines}

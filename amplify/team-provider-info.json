@@ -19,7 +19,7 @@
         "function0": {
           "secretsPathAmplifyAppId": "d3egm90vctn7qw",
           "deploymentBucketName": "amplify-amplifyf270917d9fc94-staging-220633-deployment",
-          "s3Key": "amplify-builds/function0-70484744336644736433-build.zip"
+          "s3Key": "amplify-builds/function0-317a35654f783846594d-build.zip"
         }
       },
       "api": {

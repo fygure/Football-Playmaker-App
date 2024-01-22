@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Button from '@mui/material/Button';
@@ -13,10 +12,8 @@ import Grid from '@mui/material/Grid';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import Konva from 'konva';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import Snackbar from '@mui/material/Snackbar';
@@ -72,6 +69,7 @@ function BottomDrawer(props) {
     const [openPlaybookIcon, setOpenPlaybookIcon] = useState(process.env.PUBLIC_URL+ '/static/assets/CHLK_Icon_Open_Playbook_small.png');
     //pass in items, setItems, openDialog, setDialogOpen, setSelectedItem, setOpenSnackbar, setSnackbarMessage, setSnackbarSeverity,
     //GOOD
+
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -346,12 +344,13 @@ function BottomDrawer(props) {
 
     return (
         <div>
-         <IconButton
+            <IconButton
+                style={{ marginTop: '0px', marginBottom: '0px' }}
                 size='small'
                 color='white'
                 onClick={toggleDrawer('bottom', true)}
             >
-              <img src={openPlaybookIcon} alt="Open Playbook" />
+                <img src={openPlaybookIcon} alt="Open Playbook" />
             </IconButton>
             <Drawer
                 anchor={'bottom'}
