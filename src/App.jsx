@@ -23,6 +23,14 @@ import { LuLogOut } from "react-icons/lu";
 import { IoIosAdd } from "react-icons/io";
 import './App.css';
 import useLines from './hooks/useLines';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import { v4 as uuidv4 } from 'uuid';
+import _ from 'lodash';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: undo/redo
@@ -52,7 +60,15 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, setSelectedLineID, selectedLineID);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tooltipTimeoutId, setTooltipTimeoutId] = useState(null);
-
+  const [items, setItems] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogTitle, setDialogTitle] = useState('');
+  const [dialogText, setDialogText] = useState('');
+  const [dialogAction, setDialogAction] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('info');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleDownloadPNG = () => {
     var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
@@ -128,9 +144,6 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
     { name: "Sign Out", icon: <LuLogOut size={25} />, action: handleSignOut },
   ];
 
-  const handleOnClickAddPlay = () => {
-    console.log("Add Play Clicked");
-  }
 
   const handleMouseEnter = (index) => {
     const timeoutId = setTimeout(() => {
@@ -146,6 +159,87 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
     }, 300); // delay time
     setTooltipTimeoutId(timeoutId);
   };
+
+
+
+const openDialog = (title, text, action) => {
+  setDialogTitle(title);
+  setDialogText(text);
+  setDialogAction(() => action);
+  setDialogOpen(true);
+};
+
+  const handleOnClickAddPlay = () => {
+    console.log("Add Play Clicked");
+    setSelectedTextTags([]);
+    openDialog('Add Play', '', (newPlayName) => {
+        if (newPlayName !== null) {
+            const itemExists = items.some(item => item.name === newPlayName);
+            if (itemExists) {
+                setSnackbarMessage('A play with this name already exists.');
+                setSnackbarSeverity('error');
+                setOpenSnackbar(true);
+            } else if (newPlayName === '') {
+                setSnackbarMessage('Please enter a name for the play.');
+                setSnackbarSeverity('warning');
+                setOpenSnackbar(true);
+            } else {
+                //TODO: Add deep copy of shapes and lines to newItem
+                // const shallowCopyTextTags = [...textTags];
+
+                // console.log('Shallow copy comparison:', shallowCopyTextTags[0] === textTags[0]);
+                // console.log('Deep copy comparison:', deepCopyTextTags[0] === textTags[0]);
+                const deepCopyTextTags = _.cloneDeep(textTags).map(tag => ({ ...tag, id: uuidv4() }));
+
+                let shapeIdMapping = {};
+                const deepCopyShapes = _.cloneDeep(shapes).map(shape => {
+                    const newId = uuidv4();
+                    shapeIdMapping[shape.id] = newId;
+                    return { ...shape, id: newId };
+                });
+
+                let lineIdMapping = {};
+                //Mapping of old line IDs to new line IDs
+                const deepCopyLines = _.cloneDeep(lines).map(line => {
+                    const newId = uuidv4();
+                    lineIdMapping[line.id] = newId;
+                    return { ...line, id: newId, attachedShapeId: shapeIdMapping[line.attachedShapeId] };
+                });
+                //update drawnFromId to new line IDs
+                const deepCopyLinesAgain = _.cloneDeep(deepCopyLines).map(line => {
+                    return { ...line, drawnFromId: lineIdMapping[line.drawnFromId] || line.drawnFromId };
+                });
+
+                console.log('Adding play:', newPlayName);
+                console.log('||', newPlayName, 'Text Tags:', deepCopyTextTags);
+                console.log('||', newPlayName, 'Shapes:', deepCopyShapes);
+                console.log('||', newPlayName, 'Lines:', deepCopyLines);
+                const newItem = {
+                    id: uuidv4(),
+                    name: newPlayName,
+                    backgroundImage: backgroundImage,
+                    textTagList: deepCopyTextTags,
+                    shapeList: deepCopyShapes,
+                    lineList: deepCopyLinesAgain,
+                    //drawingLine: (startPos && endPos)
+                };
+                setItems((prevItems) => [...prevItems, newItem]);
+                setTextTags(newItem.textTagList);
+                setShapes(newItem.shapeList);
+                setLines(newItem.lineList);
+                setCurrentLayerData(newItem);
+                setSelectedItem(newItem.id);
+                setSnackbarMessage('Play added successfully.');
+                setSnackbarSeverity('success');
+                setOpenSnackbar(true);
+            }
+        }
+    });
+  };
+
+
+
+
 
   return (
     <>
@@ -200,6 +294,25 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                   backgroundImage={backgroundImage}
                   lines={lines}
                   setLines={setLines}
+                  items={items}
+                  setItems={setItems}
+                  dialogOpen={dialogOpen}
+                  setDialogOpen={setDialogOpen}
+                  dialogTitle={dialogTitle}
+                  setDialogTitle={setDialogTitle}
+                  dialogText={dialogText}
+                  setDialogText={setDialogText}
+                  dialogAction={dialogAction}
+                  setDialogAction={setDialogAction}
+                  selectedItem={selectedItem}
+                  setSelectedItem={setSelectedItem}
+                  openSnackbar={openSnackbar}
+                  setOpenSnackbar={setOpenSnackbar}
+                  snackbarMessage={snackbarMessage}
+                  setSnackbarMessage={setSnackbarMessage}
+                  snackbarSeverity={snackbarSeverity}
+                  setSnackbarSeverity={setSnackbarSeverity}
+                  openDialog={openDialog}
                 />
               </div>
               <div style={{

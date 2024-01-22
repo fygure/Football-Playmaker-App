@@ -117,7 +117,25 @@ function Stencil(props) {
         backgroundImage,
         lines,
         setLines,
-
+        items,
+        setItems,
+        dialogOpen,
+        setDialogOpen,
+        dialogTitle,
+        setDialogTitle,
+        dialogText,
+        setDialogText,
+        dialogAction,
+        setDialogAction,
+        selectedItem,
+        setSelectedItem,
+        openSnackbar,
+        setOpenSnackbar,
+        snackbarMessage,
+        setSnackbarMessage,
+        snackbarSeverity,
+        setSnackbarSeverity,
+        openDialog
     } = props;
 
     const [selectedOffenseFormation, setSelectedOffenseFormation] = useState("");
@@ -907,6 +925,25 @@ function Stencil(props) {
                             setShapes={setShapes}
                             lines={lines}
                             setLines={setLines}
+                            items = {items}
+                            setItems = {setItems}
+                            dialogOpen={dialogOpen}
+                            setDialogOpen={setDialogOpen}
+                            dialogTitle={dialogTitle}
+                            setDialogTitle={setDialogTitle}
+                            dialogText={dialogText}
+                            setDialogText={setDialogText}
+                            dialogAction = {dialogAction}
+                            setDialogAction = {setDialogAction}
+                            selectedItem = {selectedItem}
+                            setSelectedItem = {setSelectedItem}
+                            openSnackbar = {openSnackbar}
+                            setOpenSnackbar = {setOpenSnackbar}
+                            snackbarMessage = {snackbarMessage}
+                            setSnackbarMessage = {setSnackbarMessage}
+                            snackbarSeverity = {snackbarSeverity}
+                            setSnackbarSeverity = {setSnackbarSeverity}
+                            openDialog = {openDialog}
                         />
                     </Grid>
                 </Box>
