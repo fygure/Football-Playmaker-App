@@ -5,7 +5,6 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import FeedBackForm from './feedback/FeedBackForm.jsx';
 import FlipIcon from '@mui/icons-material/Flip';
 import theme from '../config/theme.js';
-import { set } from 'lodash';
 import BottomDrawer from './BottomDrawer.jsx';
 
 
@@ -51,14 +50,14 @@ const colorButtons = [
 ];
 
 const lineButtons = [
-    { id: 1, label: 'straight', type: 'stroke', icon: '/static/assets/stroke-straight.png' },
-    { id: 2, label: 'dashed', type: 'stroke', icon: '/static/assets/stroke-dashed.png' },
-    { id: 3, label: 'squiggle', type: 'stroke', icon: '/static/assets/stroke-wavy.png' },
-    { id: 4, label: 'dotted', type: 'stroke', icon: '/static/assets/stroke-dotted.png' },
-    { id: 5, label: 'arrow', type: 'end', icon: '/static/assets/end-arrow.png' },
-    { id: 6, label: 'perpendicular', type: 'end', icon: '/static/assets/end-perpendicular.png' },
-    { id: 7, label: 'dotted', type: 'end', icon: '/static/assets/end-dotted.png' },
-    { id: 8, label: 'straight', type: 'end', icon: '/static/assets/end-straight.png' },
+    { id: 1, label: 'straight', type: 'stroke', icon: process.env.PUBLIC_URL + '/static/assets/stroke-straight.png' },
+    { id: 2, label: 'dashed', type: 'stroke', icon: process.env.PUBLIC_URL + '/static/assets/stroke-dashed.png' },
+    { id: 3, label: 'squiggle', type: 'stroke', icon: process.env.PUBLIC_URL + '/static/assets/stroke-wavy.png' },
+    { id: 4, label: 'dotted', type: 'stroke', icon: process.env.PUBLIC_URL + '/static/assets/stroke-dotted.png' },
+    { id: 5, label: 'arrow', type: 'end', icon: process.env.PUBLIC_URL + '/static/assets/end-arrow.png' },
+    { id: 6, label: 'perpendicular', type: 'end', icon: process.env.PUBLIC_URL + '/static/assets/end-perpendicular.png' },
+    { id: 7, label: 'dotted', type: 'end', icon: process.env.PUBLIC_URL + '/static/assets/end-dotted.png' },
+    { id: 8, label: 'straight', type: 'end', icon: process.env.PUBLIC_URL + '/static/assets/end-straight.png' },
 ];
 
 const lineButtonStyle = {
@@ -135,17 +134,6 @@ function Stencil(props) {
 
     const shapeColor = 'white';
 
-    function handleDownload() {
-        var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
-        var link = document.createElement('a');
-        link.download = 'stage.png';
-        link.href = dataURL;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-
-    
     // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
         var newFormation = e.target.value;
@@ -220,11 +208,11 @@ function Stencil(props) {
     };
 
     // Delete handlers
-    const handleDeleteAll = () => {
-        onDeleteAllShapes();
-        onDeleteAllTextTags();
-        onDeleteAllLines();
-    };
+    // const handleDeleteAll = () => {
+    //     onDeleteAllShapes();
+    //     onDeleteAllTextTags();
+    //     onDeleteAllLines();
+    // };
 
     // Field handlers
     const handleSetFieldType = (e) => {
@@ -278,8 +266,6 @@ function Stencil(props) {
         setStrokeEndButtonPressCount(prevCount => prevCount + 1);
     };
 
-    //     const [selectedFeedback, setSelectedFeedback] = useState(false);
-
     const handleFeedbackFormOpen = () => {
         setSelectedFeedback(true);
     };
@@ -313,12 +299,24 @@ function Stencil(props) {
         <>
 
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
 
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
                      <Button onClick={handleUndo} variant='contained'>Undo</Button>
                     <Button onClick={handleRedo} variant='contained'>Redo</Button> 
+            </div>
 
-                <h3 style={{ marginBottom: '2px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                color: 'white',
+                /* top | right | bottom | left */
+                paddingLeft: '22px',
+                paddingTop: '12px',
+                paddingBottom: '0px',
+            }}>
+
+                <h3 style={{ marginBottom: '-8px', paddingBottom: '0px', marginTop: '2px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                     Field
                 </h3>
                 <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
@@ -393,10 +391,10 @@ function Stencil(props) {
 
                 <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
                     <h3 style={{
-                        marginBottom: '2px',
+                        marginBottom: '-8px',
                         fontFamily: 'Inter, sans-serif',
                         fontWeight: 500,
-                        marginTop: '-5px',
+                        marginTop: '0px',
                         maxWidth: '100%',
                         marginRight: '10px',
                         whiteSpace: 'normal',
@@ -407,7 +405,13 @@ function Stencil(props) {
                         color="white"
                         value="OffenseExtra"
                         sx={{
-                            background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
+                            marginBottom: '-12px',
+                            background: '#333',
+                            borderColor: '#333',
+                            padding: '0px 5px',
+                            fontFamily: 'Inter, sans-serif',
+                            fontSize: '0.7rem',
+                            transition: 'text-shadow 0.3s',
                             ':hover': {
                                 textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
                             },
@@ -508,38 +512,16 @@ function Stencil(props) {
                                     <span style={{ display: 'flex', marginLeft: '10px', marginBottom: '0px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
                                 </div>
                             )}
-
-                            {/* <div style={{ display: 'flex', justifyContent: "space-between", marginLeft: '0px', marginTop: '0px', paddingLeft: '0' }}>
-                                    <Button
-                                        color="white"
-                                        sx={{
-                                            background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
-                                            ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                            textDecoration: 'underline',
-                                            '&:hover': {
-                                                textDecoration: 'underline',
-                                            },
-                                            '&:focus': {
-                                                outline: 'none',
-                                            },
-                                        }}
-                                        onClick={() => { console.log("Adding offensive player") }}
-                                    >
-                                        +Add Player
-                                    </Button>
-                                </div> */}
                         </div>
                     </div>
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
                     <h3 style={{
-                        marginBottom: '2px',
+                        marginBottom: '-8px',
                         fontFamily: 'Inter, sans-serif',
                         fontWeight: 500,
-                        marginTop: '-5px',
+                        marginTop: '0px',
                         maxWidth: '100%',
                         marginRight: '10px',
                         whiteSpace: 'normal',
@@ -550,7 +532,13 @@ function Stencil(props) {
                         color="white"
                         value="DefenseExtra"
                         sx={{
-                            background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
+                            marginBottom: '-12px',
+                            background: '#333',
+                            borderColor: '#333',
+                            padding: '1px 5px',
+                            fontFamily: 'Inter, sans-serif',
+                            fontSize: '0.7rem',
+                            transition: 'text-shadow 0.3s',
                             ':hover': {
                                 textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
                             },
@@ -645,32 +633,11 @@ function Stencil(props) {
                                     <span style={{ display: 'flex', marginLeft: '10px', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}> R </span>
                                 </div>
                             )}
-                            {/* <div style={{ display: 'flex', justifyContent: "space-between", marginLeft: '0px', marginTop: '0px' }}>
-                                    <Button
-                                        color="white"
-                                        sx={{
-                                            background: '#333', borderColor: '#333', padding: '1px 5px', fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', transition: 'text-shadow 0.3s',
-                                            ':hover': {
-                                                textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
-                                            },
-                                            textDecoration: 'underline',
-                                            '&:hover': {
-                                                textDecoration: 'underline',
-                                            },
-                                            '&:focus': {
-                                                outline: 'none',
-                                            },
-                                        }}
-                                        onClick={() => { console.log("Adding defensive player") }}
-                                    >
-                                        +Add Player
-                                    </Button>
-                                </div> */}
                         </div>
                     </div>
                 </div>
-                <h3 style={{ marginBottom: '0px', marginTop: '-5px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Color</h3>
-                <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-5px', marginBottom: '-20px' }}>
+                <h3 style={{ marginBottom: '-8px', marginTop: '0px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>Color</h3>
+                <Box sx={{ flexGrow: 1, marginLeft: '-4px', marginTop: '-4px', marginBottom: '-15px' }}>
                     <Grid container spacing={0}>
                         {colorButtons.map((color, index) => (
                             <Grid item xs={"auto"} key={index}>
@@ -704,7 +671,7 @@ function Stencil(props) {
                     <Grid container spacing={1}>
                         <Grid item xs={12}>
                             <Grid container spacing={0}>
-                                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '5px' }}>Stroke</h3>
+                                <h3 style={{ marginBottom: '10px', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '10px' }}>Stroke</h3>
                                 {lineButtons
                                     .filter((button) => button.type === 'stroke')
                                     .map((button, index) => (
@@ -715,6 +682,8 @@ function Stencil(props) {
                                                     ...lineButtonStyle,
                                                     borderRadius: '25px',
                                                     marginRight: '5px',
+                                                    marginBottom: '10px',
+                                                    marginTop: '-15px',
                                                     border: selectedStrokeButton === index ? '2px solid white' : 'none'
                                                 }}
                                                 sx={{
@@ -738,7 +707,7 @@ function Stencil(props) {
 
                         <Grid item xs={12}>
                             <Grid container spacing={0}>
-                                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '5px' }}>End</h3>
+                                <h3 style={{ marginBottom: '20px', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '10px' }}>End</h3>
                                 {lineButtons
                                     .filter((button) => button.type === 'end')
                                     .map((button, index) => (
@@ -749,6 +718,8 @@ function Stencil(props) {
                                                     ...lineButtonStyle,
                                                     borderRadius: '25px',
                                                     marginRight: '5px',
+                                                    marginBottom: '10px',
+                                                    marginTop: '-18px',
                                                     border: selectedEndButton === index ? '2px solid white' : 'none'
                                                 }}
                                                 sx={{
@@ -773,7 +744,7 @@ function Stencil(props) {
                     </Grid>
                 </Box>
 
-                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                <h3 style={{ marginBottom: '-10px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                     QB Progression
                 </h3>
                 <Box sx={{ flexGrow: 1, marginLeft: '-3px' }}>
@@ -820,7 +791,7 @@ function Stencil(props) {
                 </Box>
 
 
-                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+                <h3 style={{ marginTop: '16px', marginBottom: '-10px', fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
                     Text Tags
                 </h3>
                 <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row' }}>
@@ -903,7 +874,7 @@ function Stencil(props) {
                     </div>
                 </div>
 
-                <h3 style={{ marginBottom: '0', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '1rem' }}>
+                <h3 style={{ marginBottom: '-10px', fontFamily: 'Inter, sans-serif', fontWeight: 500, marginTop: '1rem' }}>
                     Orientation
                 </h3>
                 <Box sx={{ flexGrow: 1, marginLeft: '-3px', marginBottom: '-20px' }}>
@@ -934,7 +905,7 @@ function Stencil(props) {
                     </Grid>
                 </Box>
 
-                <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '40px', marginBottom: '0px' }}>
+                <Box sx={{ flexGrow: 1, marginLeft: '-5px', marginTop: '35px', marginBottom: '0px' }}>
                     <Grid container spacing={0}>
                         <BottomDrawer
                             stageRef={stageRef}
@@ -952,14 +923,14 @@ function Stencil(props) {
                     </Grid>
                 </Box>
 
-                <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '0px', marginBottom: '0px' }}>
+                <Box sx={{ flexGrow: 1, marginLeft: '0px', marginTop: '20px', marginBottom: '0px' }}>
                     <Grid container spacing={0}>
                         <Button
                             color="white"
                             value="feedback"
                             style={{
-                                marginTop: '2rem',
-                                marginBottom: '1rem',
+                                marginTop: '0',
+                                marginBottom: '0',
                                 padding: '1px 3px',
                                 textAlign: 'left', // align text to the left
                                 fontSize: '0.5rem', // make text smaller

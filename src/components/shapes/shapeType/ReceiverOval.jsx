@@ -63,7 +63,7 @@ function ReceiverOval(props) {
                         radiusX={haloRadiuses.x}
                         radiusY={haloRadiuses.y}
                         // stroke={'black'}
-                        strokeWidth={2}
+                        strokeWidth={5}
                         shadowBlur={15}
                         shadowColor='#184267'
                         onMouseDown={(e) => {
@@ -93,7 +93,8 @@ function ReceiverOval(props) {
                     radiusY={ellipseRadiuses.y}
                     stroke={strokeOptions.color}
                     strokeWidth={strokeOptions.strokeWidth}
-                    fill={initialColor}
+                    fill={'transparent'}
+                    opacity={1}
                 />
                 <EditableText
                     initialText={text}

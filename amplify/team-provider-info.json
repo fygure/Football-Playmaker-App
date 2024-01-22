@@ -1,0 +1,30 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplifyf270917d9fc94-staging-220633-authRole",
+      "UnauthRoleArn": "arn:aws:iam::637423337222:role/amplify-amplifyf270917d9fc94-staging-220633-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::637423337222:role/amplify-amplifyf270917d9fc94-staging-220633-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-amplifyf270917d9fc94-staging-220633-deployment",
+      "UnauthRoleName": "amplify-amplifyf270917d9fc94-staging-220633-unauthRole",
+      "StackName": "amplify-amplifyf270917d9fc94-staging-220633",
+      "StackId": "arn:aws:cloudformation:us-east-1:637423337222:stack/amplify-amplifyf270917d9fc94-staging-220633/03881ac0-b260-11ee-9e37-0a8ff4b8f10d",
+      "AmplifyAppId": "d3egm90vctn7qw"
+    },
+    "categories": {
+      "auth": {
+        "footballplaymakerapp3be24419": {}
+      },
+      "function": {
+        "function0": {
+          "secretsPathAmplifyAppId": "d3egm90vctn7qw",
+          "deploymentBucketName": "amplify-amplifyf270917d9fc94-staging-220633-deployment",
+          "s3Key": "amplify-builds/function0-317a35654f783846594d-build.zip"
+        }
+      },
+      "api": {
+        "api0": {}
+      }
+    }
+  }
+}

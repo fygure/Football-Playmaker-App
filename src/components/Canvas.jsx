@@ -22,7 +22,9 @@ function Canvas(props) {
         deleteAllLines,
         colorButtonPressCount,
         strokeTypeButtonPressCount,
+        setStrokeTypeButtonPressCount,
         strokeEndButtonPressCount,
+        setStrokeEndButtonPressCount,
         onLineDelete,
         imageRef,
         stageRef,
@@ -42,10 +44,13 @@ function Canvas(props) {
         selectedColor,
         selectedLineStroke,
         selectedLineEnd,
+        setSelectedLineEnd,
         backgroundImage,
         setStageDimensions,
         orientation,
         logHistory,
+        selectedLineID,
+        setSelectedLineID,
     } = props;
 
     //const { stageDimensions } = useContext(StageDimensionsContext);
@@ -54,13 +59,7 @@ function Canvas(props) {
     const [isMouseDownOnAnchor, setIsMouseDownOnAnchor] = useState(false);
     const [selectedShapeID, setSelectedShapeID] = useState('$');
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
-    const [selectedLineID, setSelectedLineID] = useState('$');
-
-    // console.log('ChildComponent2 rendering', currentLayerData);
-    // useEffect(() => {
-    //     console.log('Current Stage Data:', currentLayerData);
-    // }, [currentLayerData]);
-
+    const [hasBeenSelected, setHasBeenSelected] = useState(false);
 
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
@@ -115,6 +114,7 @@ function Canvas(props) {
         deselectTextTag();
         setSelectedTextTags([]);
         setSelectedLineID('$');
+        setHasBeenSelected(false);
     }
 
     const handleStageClick = (e) => {
@@ -130,6 +130,7 @@ function Canvas(props) {
             deselectTextTag();
             setSelectedTextTags([]);
             setSelectedLineID('$');
+            setHasBeenSelected(false);
         }
     };
 
@@ -155,6 +156,7 @@ function Canvas(props) {
         //console.log('Selected Line ID:', selectedLineID);
         stopDrawing();
         setIsMouseDownOnAnchor(false);
+        setSelectedShapeID('$');
     };
 
     return (
@@ -171,6 +173,10 @@ function Canvas(props) {
                 >
                     {currentLayerData ?
                         <LoadedLayer
+                            selectedLineEnd={selectedLineEnd}
+                            setSelectedLineEnd={setSelectedLineEnd}
+                            hasBeenSelected={hasBeenSelected}
+                            setHasBeenSelected={setHasBeenSelected}
                             currentLayerData={currentLayerData}
                             stageRef={stageRef}
                             imageRef={imageRef}
@@ -203,10 +209,11 @@ function Canvas(props) {
                             setSelectedLineID={setSelectedLineID}
                             colorButtonPressCount={colorButtonPressCount}
                             strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                            setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                            setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                             strokeEndButtonPressCount={strokeEndButtonPressCount}
                             onLineChange={onLineChange}
                             selectedLineStroke={selectedLineStroke}
-                            selectedLineEnd={selectedLineEnd}
                         /> : (
                             <Layer>
                                 {/* TODO: add default text tag for play name HERE */}
@@ -228,9 +235,12 @@ function Canvas(props) {
                                         line={line}
                                         lines={lines}
                                         color={line.color}
+                                        setSelectedLineEnd={setSelectedLineEnd}
                                         colorButtonPressCount={colorButtonPressCount}
                                         strokeTypeButtonPressCount={strokeTypeButtonPressCount}
                                         strokeEndButtonPressCount={strokeEndButtonPressCount}
+                                        setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                                        setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
                                         selectedColor={selectedColor}
                                         selectedLineStroke={selectedLineStroke}
                                         selectedLineEnd={selectedLineEnd}
@@ -249,7 +259,11 @@ function Canvas(props) {
                                 {shapes.map((shape) => (
                                     <Shape
                                         logHistory={logHistory}
-                                lines={lines}
+                                        selectedLineEnd={selectedLineEnd}
+                                        setSelectedLineEnd={setSelectedLineEnd}
+                                        hasBeenSelected={hasBeenSelected}
+                                        setHasBeenSelected={setHasBeenSelected}
+                                        lines={lines}
                                         setLines={setLines}
                                         setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
                                         startDrawing={startDrawing}

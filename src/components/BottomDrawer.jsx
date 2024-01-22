@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Button from '@mui/material/Button';
@@ -13,10 +12,8 @@ import Grid from '@mui/material/Grid';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import Konva from 'konva';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import Snackbar from '@mui/material/Snackbar';
@@ -50,6 +47,7 @@ function BottomDrawer(props) {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('info');
+    const [openPlaybookIcon, setOpenPlaybookIcon] = useState(process.env.PUBLIC_URL + '/static/assets/CHLK_Icon_Open_Playbook_small.png');
 
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
@@ -240,7 +238,7 @@ function BottomDrawer(props) {
     const handleItemClick = (text) => {
         //console.log('IM HERE', text);
         const playName = text.name;
-        //Pass playName to a function that can render 
+        //Pass playName to a function that can render
         //the stage with that playName as the ID
         console.log('Rendering play:', playName);
         console.log(currentLayerData);
@@ -325,13 +323,14 @@ function BottomDrawer(props) {
 
     return (
         <div>
-            <Button
-                variant='contained'
+            <IconButton
+                style={{ marginTop: '0px', marginBottom: '0px' }}
                 size='small'
+                color='white'
                 onClick={toggleDrawer('bottom', true)}
             >
-                {'Open PlayBook'}
-            </Button>
+                <img src={openPlaybookIcon} alt="Open Playbook" />
+            </IconButton>
             <Button
                 variant='contained'
                 size='small'

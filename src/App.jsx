@@ -12,87 +12,32 @@ import CloseIcon from '@mui/icons-material/Close';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import { BsTrash3Fill } from "react-icons/bs";
 import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
-import { GiZeusSword } from "react-icons/gi";
-import { SiJpeg } from "react-icons/si";
+import FlashOffIcon from '@mui/icons-material/FlashOff';
+import { PiFileJpg } from "react-icons/pi";
 import { PiFilePng } from "react-icons/pi";
+import FontDownloadOffIcon from '@mui/icons-material/FontDownloadOff';
+import { AiOutlineDeleteColumn } from "react-icons/ai";
 import { LuLogOut } from "react-icons/lu";
+import { IoIosAdd } from "react-icons/io";
 import './App.css';
 import useLines from './hooks/useLines';
 import { set } from 'lodash';
 import { jwtDecode } from "jwt-decode";
 import { Button, } from '@mui/material';
-
-
 import { v4 as uuidv4 } from 'uuid';
+
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: undo/redo
-TOOD: orientation
+TODO: orientation
+TODO: selection rectangle
+TODO: add item to playbook button (lift from BottomDrawer);
 */
 ////////////////////////////////////////////////////////////////////////////////////////
-function App() {
+function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator }) {
   const undo = useRef({index: 0, values: []});
-
-  //FIXME: manage user objects in database with permissions attached
-  // this is ok for now, but not secure.
-  const [user, setUser] = useState(null);
-
-  function handleCallbackResponse(response) {
-    //console.log("Encoded JWT ID token: " + response.credential);
-    var userObject = jwtDecode(response.credential);
-    console.log(userObject);
-    setUser(userObject);
-    document.getElementById("signInDiv").hidden = true;
-
-    //console.log(userObject);
-    // const email = userObject.email;
-    // //FIXME: DUMMY LOGIC FOR WHITELIST TESTING
-    // const testUsers = ['test1@example.com', 'test2@example.com', 'max.chalitsios@gmail.com'];
-
-    // if (!testUsers.includes(email)) {
-    //   handleSignOut();
-    //   console.log('Not whitelisted');
-    // } else {
-    //   setUser(userObject);
-    //   document.getElementById("signInDiv").hidden = true;
-    // }
-  }
-
-  function handleSignOut(event) {
-    /* global google */
-    setUser(null);
-    document.getElementById("signInDiv").hidden = false;
-    //window.location.href = 'https://accounts.google.com/Logout';
-    google.accounts.id.disableAutoSelect();
-    //handleCancel();
-  }
-
-  // function handleCancel() {
-  //   const signInDiv = document.getElementById('signInDiv');
-  //   signInDiv.innerHTML = 'Not whitelisted';
-  // }
-
-  useEffect(() => {
-    /* global google */
-    google.accounts.id.initialize({
-      client_id: "473768208195-c18kgorq5k8rr6qkub9ck9k4lbk96ol3.apps.googleusercontent.com",
-      callback: handleCallbackResponse, //if someone logs in
-      cancel_on_tap_outside: true,
-      //prompt_parent_id: 'signInDiv', //option to display the sign-in prompt within a specific HTML element.
-    })
-
-    google.accounts.id.renderButton(
-      document.getElementById("signInDiv"),
-      { theme: "outline", size: "large", text: "continue_with" }
-    );
-    //google.accounts.id.prompt();
-  }, []);
-
-  // If !user: sign in button
-  // If user: log out button
-
   const imageRef = useRef(null);
   const stageRef = useRef(null);
   const [colorButtonPressCount, setColorButtonPressCount] = useState(0);
@@ -100,6 +45,7 @@ function App() {
   const [strokeEndButtonPressCount, setStrokeEndButtonPressCount] = useState(0);
   const [selectedShapes, setSelectedShapes] = useState([]); //This is for Selection Rectangle
   const [selectedTextTags, setSelectedTextTags] = useState([]);
+  const [selectedLineID, setSelectedLineID] = useState('$');
   const [selectedColor, setSelectedColor] = useState(theme.palette.pitchBlack.main); //default color
   const [selectedLineStroke, setSelectedLineStroke] = useState('straight'); // default straight line
   const [selectedLineEnd, setSelectedLineEnd] = useState('straight'); // default arrow line end
@@ -109,7 +55,10 @@ function App() {
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes } = useShapes(imageRef);
   const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
-  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef);
+  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, setSelectedLineID, selectedLineID);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [tooltipTimeoutId, setTooltipTimeoutId] = useState(null);
+
 
   const handleDownloadPNG = () => {
     var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
@@ -125,13 +74,13 @@ function App() {
     document.body.removeChild(link);
   };
 
-  const handleDownloadJPEG = () => {
-    var dataURL = stageRef.current.toDataURL({ pixelRatio: 3, mimeType: "image/jpeg" });
+  const handleDownloadJPG = () => {
+    var dataURL = stageRef.current.toDataURL({ pixelRatio: 3, mimeType: "image/jpg" });
     var link = document.createElement('a');
     if (currentLayerData === null) {
-      link.download = 'untitled.jpeg';
+      link.download = 'untitled.jpg';
     } else {
-      link.download = `${currentLayerData.name}.jpeg`
+      link.download = `${currentLayerData.name}.jpg`
     }
     link.href = dataURL;
     document.body.appendChild(link);
@@ -203,34 +152,74 @@ function App() {
   const handleDeleteOffenseFormation = () => {
     setShapes(shapes.filter(shape => !shape.formationType.toLowerCase().startsWith('offense')));
   }
+  const handleDeleteAllTextTags = () => {
+    deleteAllTextTags();
+  };
+
+  const handleDeleteAllLines = () => {
+    deleteAllLines();
+  };
 
   const handleToggleSpeedDial = () => {
     setIsSpeedDialOpen(!isSpeedDialOpen);
   };
 
 
+  const handleSignOut = async () => {
+    try {
+      setCurrentUser(null);
+      setShowAuthenticator(!showAuthenticator);
+      await signOut();
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
+  }
+
   const actions = [
-    { icon: <DeleteForeverOutlinedIcon fontSize='large' />, action: handleDeleteAll },
-    { icon: <GiZeusSword size={30} />, action: handleDeleteOffenseFormation },
-    { icon: <RemoveModeratorIcon fontSize='medium' />, action: handleDeleteDefenseFormation },
-    { icon: < PiFilePng size={30} />, action: handleDownloadPNG },
-    { icon: <SiJpeg size={25} />, action: handleDownloadJPEG },
-    { icon: <LuLogOut size={25} />, action: handleSignOut },
+    { name: "Delete All", icon: <BsTrash3Fill size={20} />, action: handleDeleteAll },
+    { name: "Download PNG", icon: < PiFilePng size={25} />, action: handleDownloadPNG },
+    { name: "Download JPG", icon: < PiFileJpg size={25} />, action: handleDownloadJPG },
+    { name: "Delete Offense Formation", icon: <FlashOffIcon size={30} />, action: handleDeleteOffenseFormation },
+    { name: "Delete Defense Formation", icon: <RemoveModeratorIcon />, action: handleDeleteDefenseFormation },
+    { name: "Delete All Text Tags", icon: <FontDownloadOffIcon />, action: handleDeleteAllTextTags },
+    { name: "Delete All Lines", icon: <AiOutlineDeleteColumn size={20} />, action: handleDeleteAllLines },
+    { name: "Sign Out", icon: <LuLogOut size={25} />, action: handleSignOut },
   ];
+
+  const handleOnClickAddPlay = () => {
+    console.log("Add Play Clicked");
+  }
+
+  const handleMouseEnter = (index) => {
+    const timeoutId = setTimeout(() => {
+      setTooltipOpen(prevState => ({ ...prevState, [index]: true }));
+    }, 400); // delay time
+    setTooltipTimeoutId(timeoutId);
+  };
+
+  const handleMouseLeave = (index) => {
+    clearTimeout(tooltipTimeoutId);
+    const timeoutId = setTimeout(() => {
+      setTooltipOpen(prevState => ({ ...prevState, [index]: false }));
+    }, 300); // delay time
+    setTooltipTimeoutId(timeoutId);
+  };
 
   return (
     <>
-      <div id="signInDiv"></div>
+      {/* <button onClick={() => { signOut(); setCurrentUser(null); setShowAuthenticator(!showAuthenticator) }}>Sign out</button> */}
+      {/* <div id="signInDiv"></div> */}
       <ThemeProvider theme={theme}>
         <StageDimensionsContext.Provider value={{ stageDimensions }}>
-          {user && (<>
+          <>
             {/* <Button onClick={(e) => handleSignOut(e)}>Sign Out</Button> */}
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
-              margin: '1vw',
-              height: '90vh',
-              width: '98vw',
+              margin: '0vw',
+              padding: '0vw',
+              height: '100vh',
+              width: '100vw',
             }}>
               <div className="custom-scrollbar">
                 <Stencil
@@ -281,22 +270,28 @@ function App() {
                 alignItems: 'center',
                 flex: 1.8,
                 padding: '1vw',
-                maxWidth: 'calc(80% - 4vw)',
-                marginRight: '2vw',
+                maxWidth: 'calc(80%)',
+                marginRight: '0vw',
                 borderTop: '1px solid black',
                 borderRight: '1px solid black',
                 borderBottom: '1px solid black',
                 height: '100%',
-                backgroundColor: '#dcdcdc', // See parent div
+                backgroundColor: '#1e1e1e', // See parent div
               }}>
                 <Canvas
                   logHistory={logHistory}
                   imageRef={imageRef}
+                  selectedLineID={selectedLineID}
+                  setSelectedLineID={setSelectedLineID}
                   currentLayerData={currentLayerData}
                   setCurrentLayerData={setCurrentLayerData}
                   colorButtonPressCount={colorButtonPressCount}
                   strokeTypeButtonPressCount={strokeTypeButtonPressCount}
+                  setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
                   strokeEndButtonPressCount={strokeEndButtonPressCount}
+                  setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
+                  selectedLineEnd={selectedLineEnd}
+                  setSelectedLineEnd={setSelectedLineEnd}
                   lines={lines}
                   setLines={setLines}
                   startPos={startPos}
@@ -321,7 +316,6 @@ function App() {
                   onHideTextTagContextMenu={hideTextTagContextMenu}
                   selectedColor={selectedColor}
                   selectedLineStroke={selectedLineStroke}
-                  selectedLineEnd={selectedLineEnd}
                   backgroundImage={backgroundImage}
                   setStageDimensions={setStageDimensions}
                   stageRef={stageRef}
@@ -340,14 +334,24 @@ function App() {
                       key={`dial-${index}`}
                       icon={action.icon}
                       onClick={action.action}
+                      tooltipTitle={tooltipOpen[index] ? action.name : ""}
+                      onMouseEnter={() => handleMouseEnter(index)}
+                      onMouseLeave={() => handleMouseLeave(index)}
                     />
                   ))}
                 </SpeedDial>
+                <SpeedDial
+                  ariaLabel="AddPlay"
+                  sx={{ position: 'fixed', bottom: '60px', right: '15px', marginTop: '15px', marginRight: '2.5vw' }}
+                  icon={<IoIosAdd color='#2B76BA' style={{ fontSize: '30px' }} />}
+                  FabProps={{ size: 'small', color: 'white' }}
+                  onClick={handleOnClickAddPlay}
+                />
               </div>
             </div>
-          </>)}
+          </>
         </StageDimensionsContext.Provider>
-      </ThemeProvider>
+      </ThemeProvider >
     </>
   );
 }

@@ -79,6 +79,18 @@ function TextTag(props) {
 
     }, [position, imageRef, checkMarkSize, fontSize]);
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Delete' && selectedTextTagID === id) {
+                handleDeleteClick();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [selectedTextTagID, id]);
 
 
     const handleOnClick = () => {
@@ -94,7 +106,7 @@ function TextTag(props) {
         setSelectedTextTagID(id);
         if (typeof onTextTagChange === 'function') {
             onTextTagChange(id, { color: selectedColor });
-          }
+        }
         // console.log('Selected Text ID:', id);
     }
 
@@ -130,8 +142,8 @@ function TextTag(props) {
     const handleDragEnd = (e) => {
         // console.log(e.target.position());
         if (e.target) {
-        setPosition(e.target.position());
-        onTextTagChange(id, { x: e.target.x(), y: e.target.y() });
+            setPosition(e.target.position());
+            onTextTagChange(id, { x: e.target.x(), y: e.target.y() });
         }
         setIsDragging(false);
         logHistory({type: "text", state: {x: e.target.x(), y: e.target.y()}, id: id});
@@ -193,8 +205,11 @@ function TextTag(props) {
                         y={text.trim() === 'Check Mark' ? -13 : -2}
                         width={text.trim() === 'Check Mark' ? fontSize * 2 : fontSize * text.length * 0.85}
                         height={text.trim() === 'Check Mark' ? fontSize * 2 : fontSize * 1.2}
-                        stroke='red'
-                        strokeWidth={1}
+                        //stroke='red'
+                        fill="white"
+                        strokeWidth={5}
+                        shadowBlur={15}
+                        shadowColor='#184267'
                     />
                 )}
                 {checkMarkImage && text.trim() === 'Check Mark' ? (

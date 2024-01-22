@@ -4,14 +4,15 @@ import CenterSquare from './shapeType/CenterSquare';
 import LinemanOval from './shapeType/LinemanOval';
 import ReceiverOval from './shapeType/ReceiverOval';
 import DefenderDiamond from './shapeType/DefenderDiamond';
-import { throttle } from 'lodash';
+import { set, throttle } from 'lodash';
 
-// Shape Sizes Configuration
+//shape sizes configuration
 const SHAPE_SIZES = {
     CIRCLE: { MIN: 10, MAX: 30 },
     ELLIPSE: { X: { MIN: 8, MAX: 18 }, Y: { MIN: 5, MAX: 12 } },
     FONT: { MIN: 6, MAX: 13 },
     RECT: { WIDTH: { MIN: 10, MAX: 28 }, HEIGHT: { MIN: 10, MAX: 28 } },
+    DIAMOND: { WIDTH: { MIN: 10, MAX: 22 }, HEIGHT: { MIN: 10, MAX: 22 } },
 };
 
 function Shape(props) {
@@ -28,9 +29,7 @@ function Shape(props) {
         initialColor,
         onShapeChange,
         onShapeDelete,
-
         onLineDelete,
-
         onHideContextMenu,
         imageRef,
         stageRef,
@@ -38,6 +37,8 @@ function Shape(props) {
         selectedShapeID,
         setSelectedShapeID,
         logHistory,
+        hasBeenSelected,
+        setHasBeenSelected,
     } = props;
 
     const shapeRef = useRef();
@@ -54,6 +55,10 @@ function Shape(props) {
         width: SHAPE_SIZES.RECT.WIDTH.MAX,
         height: SHAPE_SIZES.RECT.HEIGHT.MAX
     }); // initial rectangle size
+    const [diamondSize, setDiamondSize] = useState({
+        width: SHAPE_SIZES.DIAMOND.WIDTH.MAX,
+        height: SHAPE_SIZES.DIAMOND.HEIGHT.MAX
+    }); // initial diamond size
 
     useEffect(() => {
         const image = imageRef.current;
@@ -70,6 +75,10 @@ function Shape(props) {
         const initialRelativeRectSize = {
             width: rectSize.width / initialImageSize.width,
             height: rectSize.height / initialImageSize.height,
+        };
+        const initialRelativeDiamondSize = {
+            width: diamondSize.width / initialImageSize.width,
+            height: diamondSize.height / initialImageSize.height,
         };
 
         const handleResize = () => {
@@ -89,6 +98,9 @@ function Shape(props) {
             const newRectWidth = Math.max(Math.min(initialRelativeRectSize.width * newImageSize.width, SHAPE_SIZES.RECT.WIDTH.MAX), SHAPE_SIZES.RECT.WIDTH.MIN);
             const newRectHeight = Math.max(Math.min(initialRelativeRectSize.height * newImageSize.height, SHAPE_SIZES.RECT.HEIGHT.MAX), SHAPE_SIZES.RECT.HEIGHT.MIN);
             setRectSize({ width: newRectWidth, height: newRectHeight });
+            const newDiamondWidth = Math.max(Math.min(initialRelativeDiamondSize.width * newImageSize.width, SHAPE_SIZES.DIAMOND.WIDTH.MAX), SHAPE_SIZES.DIAMOND.WIDTH.MIN);
+            const newDiamondHeight = Math.max(Math.min(initialRelativeDiamondSize.height * newImageSize.height, SHAPE_SIZES.DIAMOND.HEIGHT.MAX), SHAPE_SIZES.DIAMOND.HEIGHT.MIN);
+            setDiamondSize({ width: newDiamondWidth, height: newDiamondHeight });
 
         };
 
@@ -98,6 +110,19 @@ function Shape(props) {
             window.removeEventListener('resize', handleResize);
         };
     }, [position, imageRef]);
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Delete' && selectedShapeID === id) {
+                handleDeleteClick();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [selectedShapeID, id]);
 
     const selectedShape = useMemo(() => shapes.find(shape => shape.id === id), [shapes, id]);
     const handleOnClick = () => {
@@ -119,14 +144,25 @@ function Shape(props) {
     const handleDeleteClick = () => {
         setShowContextMenu(false);
         onShapeDelete(id);
-        // Delete all lines associated with the shape
+
+        const deleteLineAndChildren = (lineId) => {
+            //delete the line
+            onLineDelete(lineId);
+
+            //delete all lines that are drawn from the deleted line
+            lines.forEach((childLine) => {
+                if (childLine.drawnFromId === lineId) {
+                    deleteLineAndChildren(childLine.id);
+                }
+            });
+        };
+
+        //delete all lines associated with the shape
         lines.forEach((line) => {
             if (line.attachedShapeId === id) {
-                onLineDelete(line.id);
+                deleteLineAndChildren(line.id);
             }
         });
-
-
     };
 
   const handleDragStart = (e) => {
@@ -220,10 +256,13 @@ function Shape(props) {
         circleRadius,
         fontSize,
         rectSize,
+        diamondSize,
         dragBoundFunc,
         selectedShapeID,
         setSelectedShapeID,
         handleTextChange,
+        setHasBeenSelected,
+        hasBeenSelected,
     };
 
     switch (shapeType) {
