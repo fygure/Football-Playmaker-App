@@ -134,7 +134,7 @@ function PayWall() {
                                 },
                             }}
                             onClick={() => { subscribe(); }}
-                        >Try One Week Free</Button>
+                        >Get Access Now</Button>
                     </div >
                 )}
             </div>
