@@ -1,5 +1,5 @@
 // Shape.jsx
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, setRef, useEffect, useMemo } from 'react';
 import CenterSquare from './shapeType/CenterSquare';
 import LinemanOval from './shapeType/LinemanOval';
 import ReceiverOval from './shapeType/ReceiverOval';
@@ -17,6 +17,7 @@ const SHAPE_SIZES = {
 
 function Shape(props) {
     const {
+        undo,
         lines,
         setLines,
         startDrawing,
@@ -35,6 +36,7 @@ function Shape(props) {
         setSelectedShapes,
         selectedShapeID,
         setSelectedShapeID,
+        logHistory,
         hasBeenSelected,
         setHasBeenSelected,
     } = props;
@@ -163,8 +165,11 @@ function Shape(props) {
         });
     };
 
-    const handleDragStart = () => {
+  const handleDragStart = (e) => {
         setShowContextMenu(false);
+        if(shapes.find(s => s.id === id).x == null)
+            logHistory({type: "shape", state: { x: e.target.x(), y: e.target.y()}, id: id});
+        
     };
 
 
@@ -189,6 +194,7 @@ function Shape(props) {
         const newPos = e.target.position();
         setPosition(newPos);
         onShapeChange(id, { x: e.target.x(), y: e.target.y() });
+        logHistory({type: "shape", state: { x: e.target.x(), y: e.target.y()}, id: id});
         //setHistory([...history, { action : drag,  get shape object by id }]);
     };
 
@@ -228,6 +234,7 @@ function Shape(props) {
     };
 
     const commonProps = {
+        undo,
         startDrawing,
         setIsMouseDownOnAnchor,
         id,

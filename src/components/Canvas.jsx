@@ -48,6 +48,7 @@ function Canvas(props) {
         backgroundImage,
         setStageDimensions,
         orientation,
+        logHistory,
         selectedLineID,
         setSelectedLineID,
     } = props;
@@ -252,10 +253,12 @@ function Canvas(props) {
                                         startDrawing={startDrawing}
                                         stageRef={stageRef}
                                         imageRef={imageRef}
-                                    />
+                                        logHistory={logHistory}
+                            />
                                 ))}
                                 {shapes.map((shape) => (
                                     <Shape
+                                        logHistory={logHistory}
                                         selectedLineEnd={selectedLineEnd}
                                         setSelectedLineEnd={setSelectedLineEnd}
                                         hasBeenSelected={hasBeenSelected}
@@ -264,7 +267,7 @@ function Canvas(props) {
                                         setLines={setLines}
                                         setIsMouseDownOnAnchor={setIsMouseDownOnAnchor}
                                         startDrawing={startDrawing}
-                                        key={shape.id}
+                                        key={shape.key}
                                         id={shape.id}
                                         shapeType={shape.shapeType}
                                         shapes={shapes}
@@ -283,7 +286,8 @@ function Canvas(props) {
                                 ))}
                                 {textTags.map((textTag) => (
                                     <TextTag
-                                        key={textTag.id}
+                                        logHistory={logHistory}
+                                        key={textTag.key}
                                         id={textTag.id}
                                         text={textTag.text}
                                         textTags={textTags}

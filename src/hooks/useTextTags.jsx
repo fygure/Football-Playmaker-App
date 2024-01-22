@@ -15,12 +15,13 @@ function useTextTags(imageRef, stageRef) {
 
             const whichPosition = position ? position : startPosition;
 
-            const newTextTag = {
-                id: uuidv4(),
-                initialPosition: whichPosition,
-                color: newColor,
-                text: text,
-            };
+        const newTextTag = {
+            key: uuidv4(),
+            id: uuidv4(),
+            initialPosition: whichPosition,
+            color: newColor,
+            text: text,
+        };
 
             setTextTags([...textTags, newTextTag]);
         }
@@ -90,6 +91,7 @@ function useTextTags(imageRef, stageRef) {
                 }
                 // Create a new text tag with the new position
                 const newTextTag = {
+                    key: uuidv4(),
                     id: uuidv4(),
                     initialPosition: newPosition,
                     color: textTag.color,

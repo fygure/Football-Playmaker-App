@@ -1,5 +1,5 @@
 // Stencil.jsx
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import FeedBackForm from './feedback/FeedBackForm.jsx';
@@ -87,6 +87,9 @@ function Stencil(props) {
         setSelectedTextTags,
         currentLayerData,
         setCurrentLayerData,
+        logHistory,
+        handleUndo,
+        handleRedo,
         onChangeLineStroke,
         onChangeLineEnd,
         onAddFormation,
@@ -177,6 +180,7 @@ function Stencil(props) {
         //console.log(e.target.value);
         const newPlayer = e.target.value;
         onAddShape(newPlayer, shapeColor);
+        
     };
 
     // Toggle handlers
@@ -293,6 +297,14 @@ function Stencil(props) {
 
     return (
         <>
+
+
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', color: 'white' }}>
+                     <Button onClick={handleUndo} variant='contained'>Undo</Button>
+                    <Button onClick={handleRedo} variant='contained'>Redo</Button> 
+            </div>
+
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',

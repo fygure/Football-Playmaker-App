@@ -10,6 +10,7 @@ const TEXT_SIZES = {
 };
 function TextTag(props) {
     const {
+        logHistory,
         textTags,
         id,
         text,
@@ -122,7 +123,7 @@ function TextTag(props) {
         onTextTagDelete(id);
     };
 
-    const handleDragStart = () => {
+    const handleDragStart = (e) => {
 
         setSelectedTextTags([]);
         setSelectedTextTagID([]);
@@ -134,6 +135,8 @@ function TextTag(props) {
         setSelectedTextTagID(id);
         setShowContextMenu(false);
         setIsDragging(true);
+        if(textTags.find(s => s.id === id).x == null)
+            logHistory({type: "text", state: { x: e.target.x(), y: e.target.y()}, id: id});
     };
 
     const handleDragEnd = (e) => {
@@ -143,6 +146,7 @@ function TextTag(props) {
             onTextTagChange(id, { x: e.target.x(), y: e.target.y() });
         }
         setIsDragging(false);
+        logHistory({type: "text", state: {x: e.target.x(), y: e.target.y()}, id: id});
     };
 
     const handleHideContextMenu = () => {
@@ -151,6 +155,7 @@ function TextTag(props) {
 
     const handleTextChange = (newText) => {
         onTextTagChange(id, { text: newText });
+        logHistory({type: "text", state: {text: newText, x: position.x, y: position.y}, id: id});
     };
 
     const dragBoundFunc = (pos) => {

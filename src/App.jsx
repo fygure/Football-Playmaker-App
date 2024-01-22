@@ -23,6 +23,11 @@ import { LuLogOut } from "react-icons/lu";
 import { IoIosAdd } from "react-icons/io";
 import './App.css';
 import useLines from './hooks/useLines';
+import { set } from 'lodash';
+import { jwtDecode } from "jwt-decode";
+import { Button, } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
+
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: undo/redo
@@ -32,6 +37,7 @@ TODO: add item to playbook button (lift from BottomDrawer);
 */
 ////////////////////////////////////////////////////////////////////////////////////////
 function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator }) {
+  const undo = useRef({index: 0, values: []});
   const imageRef = useRef(null);
   const stageRef = useRef(null);
   const [colorButtonPressCount, setColorButtonPressCount] = useState(0);
@@ -82,6 +88,57 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
     document.body.removeChild(link);
   };
 
+  const logHistory = (values) =>{
+    console.log(values);
+    for(var i =1; i< undo.current.index; i++)
+            undo.current.values.pop();
+      undo.current.index = 1;
+      undo.current.values.push(values);
+  }
+
+  const preformUndo = (index) => {
+    console.log(undo.current.values);
+    if(undo.current.values[index].type === "shape"){
+      undoShape(index);
+    }else {
+      undoText(index);
+    }
+  }
+
+  const undoText = (index) => {
+    const newText = undo.current.values[index].state;
+    newText.key = uuidv4();
+    newText.initialPosition = {x: undo.current.values[index].state.x, y: undo.current.values[index].state.y}
+    updateTextTag(undo.current.values[index].id, newText);
+  }
+
+  const undoShape = (index) => {
+    const newShape = undo.current.values[index].state;
+    newShape.key = uuidv4();
+    newShape.initialPosition = {x: undo.current.values[index].state.x, y: undo.current.values[index].state.y}
+    updateShape(undo.current.values[index].id, newShape);
+  }
+
+  
+  const handleUndo = () => {
+    if(undo.current.index >= undo.current.values.length){
+      return;
+    }
+    const index = undo.current.values.length-1-undo.current.index;
+    preformUndo(index);
+    undo.current.index += 1;
+  }
+
+  
+
+  const handleRedo = () => {
+    if(undo.current.index <= 1) {
+      return;
+    }
+    const index = undo.current.values.length+1-undo.current.index;
+    preformUndo(index);
+    undo.current.index -= 1;
+  }
 
   const handleDeleteAll = () => {
     deleteAllShapes();
@@ -106,6 +163,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const handleToggleSpeedDial = () => {
     setIsSpeedDialOpen(!isSpeedDialOpen);
   };
+
 
   const handleSignOut = async () => {
     try {
@@ -165,6 +223,9 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
             }}>
               <div className="custom-scrollbar">
                 <Stencil
+                  logHistory={logHistory}
+                  handleUndo={handleUndo}
+                  handleRedo={handleRedo}
                   shapes={shapes}
                   setShapes={setShapes}
                   textTags={textTags}
@@ -218,6 +279,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                 backgroundColor: '#1e1e1e', // See parent div
               }}>
                 <Canvas
+                  logHistory={logHistory}
                   imageRef={imageRef}
                   selectedLineID={selectedLineID}
                   setSelectedLineID={setSelectedLineID}

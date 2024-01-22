@@ -5,6 +5,7 @@ import ContextMenu from '../../menus/ContextMenu';
 
 const LinemanOval = (props) => {
     const {
+        undo,
         id,
         startDrawing,
         setIsMouseDownOnAnchor,
