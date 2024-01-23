@@ -18,6 +18,7 @@ const calculateWaveLinePoints = (line, controlPoint) => {
 
     // Generate the points for the wavy line
     const waveLinePoints = [];
+    const cutOffLength = 2.5;
     for (let i = 0; i <= pointsCount; i++) {
         const t = i / pointsCount;
         const wave = amplitude * Math.sin(t * 2 * Math.PI * waves);
@@ -35,9 +36,12 @@ const calculateWaveLinePoints = (line, controlPoint) => {
         p.y += tt * line.endPos.y;
 
         // Add the sine wave along the direction perpendicular to the curve
-        const x = p.x + perp_dx * wave;
-        const y = p.y + perp_dy * wave;
-        waveLinePoints.push(x, y);
+        let x = p.x + perp_dx * wave;
+        let y = p.y + perp_dy * wave;
+
+        if (i >= cutOffLength) {
+            waveLinePoints.push(x, y);
+        }
     }
 
     return waveLinePoints;
