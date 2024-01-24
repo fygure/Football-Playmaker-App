@@ -348,7 +348,7 @@ function BottomDrawer(props) {
         <div>
             <Button
             variant="contained"
-            style={{ backgroundColor: '#333', color: 'white', border: '1px solid white', width: '300px',  borderRadius: '25px'   }}
+            style={{ backgroundColor: '#333', color: 'white', border: '1px solid white', width: '15vw',  borderRadius: '25px'   }}
             startIcon={<img src={openPlaybookIcon} alt="Open Playbook" style={{ width: '30px', height: '30px' }} />}
             onClick={toggleDrawer('bottom', true)}
             >
