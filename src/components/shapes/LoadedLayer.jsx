@@ -51,22 +51,44 @@ const LoadedLayer = (props) => {
         setHasBeenSelected,
     } = props;
 
-    const middlePosition = {
-        x: imageRef.current.x() + (imageRef.current.width() / 2),
-        y: imageRef.current.height() / 2
-    };
+    // const middlePosition = {
+    //     x: imageRef.current.x() + (imageRef.current.width() / 2),
+    //     y: imageRef.current.height() / 2
+    // };
 
-    const imageSize = {
-        width: imageRef.current.width(),
-        height: imageRef.current.height()
-    };
+    // const imageSize = {
+    //     width: imageRef.current.width(),
+    //     height: imageRef.current.height()
+    // };
 
-    const playNamePos = { x: middlePosition.x - imageSize.width * 0.47, y: middlePosition.y - imageSize.height * 0.475 };
+    // const playNamePos = { x: middlePosition.x - imageSize.width * 0.47, y: middlePosition.y - imageSize.height * 0.475 };
 
     //TESTING
     useEffect(() => {
         console.log('currentLayerData:', currentLayerData);
     }, [currentLayerData]);
+
+    //Used for when field selection is changed
+    const [playNamePos, setPlayNamePos] = useState({ x: 0, y: 0 });
+
+    useEffect(() => {
+        if (imageRef.current) {
+            const middlePosition = {
+                x: imageRef.current.x() + (imageRef.current.width() / 2),
+                y: imageRef.current.height() / 2
+            };
+
+            const imageSize = {
+                width: imageRef.current.width(),
+                height: imageRef.current.height()
+            };
+
+            setPlayNamePos({
+                x: middlePosition.x - imageSize.width * 0.47,
+                y: middlePosition.y - imageSize.height * 0.475
+            });
+        }
+    }, [imageRef.current]);
 
     //NOTE: if x and y are undefined, use initialPosition else use x and y
     return (
