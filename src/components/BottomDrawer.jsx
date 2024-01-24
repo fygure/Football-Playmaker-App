@@ -20,7 +20,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import SvgIcon from '@mui/material/SvgIcon';
 import { ReactComponent as PlayBookSvg } from './assets/playbook-icon.svg';
-
+import openPlaybookIcon from './assets/playbook-icon.svg';
 function BottomDrawer(props) {
     const {
         stageRef,
@@ -68,7 +68,7 @@ function BottomDrawer(props) {
     // const [openSnackbar, setOpenSnackbar] = useState(false);
     // const [snackbarMessage, setSnackbarMessage] = useState('');
     // const [snackbarSeverity, setSnackbarSeverity] = useState('info');
-    const [openPlaybookIcon, setOpenPlaybookIcon] = useState(process.env.PUBLIC_URL + '/static/assets/CHLK_Icon_Open_Playbook_small.png');
+    // const [openPlaybookIcon, setOpenPlaybookIcon] = useState(process.env.PUBLIC_URL + '/static/assets/CHLK_Icon_Open_Playbook_small.png');
     //pass in items, setItems, openDialog, setDialogOpen, setSelectedItem, setOpenSnackbar, setSnackbarMessage, setSnackbarSeverity,
     //GOOD
 
@@ -346,14 +346,14 @@ function BottomDrawer(props) {
 
     return (
         <div>
-            <IconButton
-                style={{ marginTop: '0px', marginBottom: '0px' }}
-                size='small'
-                color='white'
-                onClick={toggleDrawer('bottom', true)}
+            <Button
+            variant="contained"
+            style={{ backgroundColor: '#333', color: 'white', border: '1px solid white', width: '300px',  borderRadius: '25px'   }}
+            startIcon={<img src={openPlaybookIcon} alt="Open Playbook" style={{ width: '30px', height: '30px' }} />}
+            onClick={toggleDrawer('bottom', true)}
             >
-                <img src={openPlaybookIcon} alt="Open Playbook" />
-            </IconButton>
+            Open Playbook
+            </Button>
             <Drawer
                 anchor={'bottom'}
                 open={state['bottom']}
