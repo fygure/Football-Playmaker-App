@@ -23,14 +23,8 @@ import { LuLogOut } from "react-icons/lu";
 import { IoIosAdd } from "react-icons/io";
 import './App.css';
 import useLines from './hooks/useLines';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
 ////////////////////////////////////////////////////////////////////////////////////////
 /*
 TODO: undo/redo
@@ -71,31 +65,47 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleDownloadPNG = () => {
-    var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
-    var link = document.createElement('a');
-    if (currentLayerData === null) {
-      link.download = 'untitled.png';
-    } else {
-      link.download = `${currentLayerData.name}.png`
-    }
-    link.href = dataURL;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    setSnackbarMessage('Downloading PNG...');
+    setSnackbarSeverity('info');
+    setOpenSnackbar(true);
+
+    setTimeout(() => {
+      var dataURL = stageRef.current.toDataURL({ pixelRatio: 3 });
+      var link = document.createElement('a');
+      if (currentLayerData === null) {
+        link.download = 'untitled.png';
+      } else {
+        link.download = `${currentLayerData.name}.png`
+      }
+      link.href = dataURL;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      setOpenSnackbar(false);
+    }, 1000);
   };
 
   const handleDownloadJPG = () => {
-    var dataURL = stageRef.current.toDataURL({ pixelRatio: 3, mimeType: "image/jpg" });
-    var link = document.createElement('a');
-    if (currentLayerData === null) {
-      link.download = 'untitled.jpg';
-    } else {
-      link.download = `${currentLayerData.name}.jpg`
-    }
-    link.href = dataURL;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    setSnackbarMessage('Downloading JPG...');
+    setSnackbarSeverity('info');
+    setOpenSnackbar(true);
+
+    setTimeout(() => {
+      var dataURL = stageRef.current.toDataURL({ pixelRatio: 3, mimeType: "image/jpg" });
+      var link = document.createElement('a');
+      if (currentLayerData === null) {
+        link.download = 'untitled.jpg';
+      } else {
+        link.download = `${currentLayerData.name}.jpg`
+      }
+      link.href = dataURL;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      setOpenSnackbar(false);
+    }, 1000);
   };
 
 
@@ -180,7 +190,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
           setSnackbarSeverity('error');
           setOpenSnackbar(true);
         } else if (newPlayName === '') {
-          setSnackbarMessage('Please enter a name for the play.');
+          setSnackbarMessage('Please enter a Play Name.');
           setSnackbarSeverity('warning');
           setOpenSnackbar(true);
         } else {
@@ -229,7 +239,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
           setLines(newItem.lineList);
           setCurrentLayerData(newItem);
           setSelectedItem(newItem.id);
-          setSnackbarMessage('Play added successfully.');
+          setSnackbarMessage('Play Added Successfully.');
           setSnackbarSeverity('success');
           setOpenSnackbar(true);
         }
@@ -378,7 +388,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                   FabProps={{ size: 'small', color: 'white' }}
                   onClick={handleToggleSpeedDial}
                   open={isSpeedDialOpen}
-                  sx={{ position: 'fixed', top: '20px', right: '15px', marginTop: '15px', marginRight: '2.5vw' }} // Update this line
+                  sx={{ position: 'fixed', top: '20px', right: '40px', marginTop: '15px' }} // Update this line
                 >
                   {actions.map((action, index) => (
                     <SpeedDialAction
@@ -393,7 +403,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                 </SpeedDial>
                 <SpeedDial
                   ariaLabel="AddPlay"
-                  sx={{ position: 'fixed', bottom: '60px', right: '15px', marginTop: '15px', marginRight: '2.5vw' }}
+                  sx={{ position: 'fixed', bottom: '30px', right: '50px', marginTop: '15px' }}
                   icon={<IoIosAdd color='#2B76BA' style={{ fontSize: '30px' }} />}
                   FabProps={{ size: 'small', color: 'white' }}
                   onClick={handleOnClickAddPlay}
