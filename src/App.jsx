@@ -393,7 +393,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                 </SpeedDial>
                 <SpeedDial
                   ariaLabel="AddPlay"
-                  sx={{ position: 'fixed', bottom: '60px', right: '15px', marginTop: '15px', marginRight: '2.5vw' }}
+                  sx={{ position: 'fixed', bottom: '25px', right: '23px', marginTop: '15px', marginRight: '2.5vw' }}
                   icon={<IoIosAdd color='#2B76BA' style={{ fontSize: '30px' }} />}
                   FabProps={{ size: 'small', color: 'white' }}
                   onClick={handleOnClickAddPlay}
