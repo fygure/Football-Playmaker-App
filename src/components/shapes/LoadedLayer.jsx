@@ -1,5 +1,5 @@
 //LoadedLayer.jsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { Layer, Text, Image, Line } from 'react-konva';
 import TextTag from './TextTag';
 import Shape from './Shape';
@@ -50,45 +50,44 @@ const LoadedLayer = (props) => {
         hasBeenSelected,
         setHasBeenSelected,
     } = props;
+    const [oldPlayNamePos, setOldPlayNamePos] = useState({ x: 0, y: 0 });
+    const [imageLoaded, setImageLoaded] = useState(false);
+    useEffect(() => {
+        setOldPlayNamePos(playNamePos);
+        setImageLoaded(false);
+    }, [image]);
 
-    // const middlePosition = {
-    //     x: imageRef.current.x() + (imageRef.current.width() / 2),
-    //     y: imageRef.current.height() / 2
-    // };
+    //simulate image loading
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setImageLoaded(true);
+        }, 1000);
 
-    // const imageSize = {
-    //     width: imageRef.current.width(),
-    //     height: imageRef.current.height()
-    // };
+        return () => clearTimeout(timer);
+    }, [image]);
 
-    // const playNamePos = { x: middlePosition.x - imageSize.width * 0.47, y: middlePosition.y - imageSize.height * 0.475 };
+    const middlePosition = {
+        x: imageRef.current.x() + (imageRef.current.width() / 2),
+        y: imageRef.current.height() / 2
+    };
 
+    const imageSize = {
+        width: imageRef.current.width(),
+        height: imageRef.current.height()
+    };
+
+    const playNamePos = imageLoaded
+        ? { x: middlePosition.x - imageSize.width * 0.47, y: middlePosition.y - imageSize.height * 0.475 }
+        : oldPlayNamePos;
+
+    // console.log('here:', playNamePos);
     //TESTING
     useEffect(() => {
         console.log('currentLayerData:', currentLayerData);
     }, [currentLayerData]);
 
     //Used for when field selection is changed
-    const [playNamePos, setPlayNamePos] = useState({ x: 0, y: 0 });
-
-    useEffect(() => {
-        if (imageRef.current) {
-            const middlePosition = {
-                x: imageRef.current.x() + (imageRef.current.width() / 2),
-                y: imageRef.current.height() / 2
-            };
-
-            const imageSize = {
-                width: imageRef.current.width(),
-                height: imageRef.current.height()
-            };
-
-            setPlayNamePos({
-                x: middlePosition.x - imageSize.width * 0.47,
-                y: middlePosition.y - imageSize.height * 0.475
-            });
-        }
-    }, [imageRef.current]);
+    // const [playNamePos, setPlayNamePos] = useState({ x: 0, y: 0 });
 
     //NOTE: if x and y are undefined, use initialPosition else use x and y
     return (

@@ -242,7 +242,7 @@ function BottomDrawer(props) {
                     setLines(updatedItem.lineList);
                     setCurrentLayerData(updatedItem);
                     setSelectedItem(updatedItem.id);
-                    setSnackbarMessage('Play updated successfully.');
+                    setSnackbarMessage('Play Updated Successfully.');
                     setSnackbarSeverity('success');
                     setOpenSnackbar(true);
                 }
@@ -253,8 +253,8 @@ function BottomDrawer(props) {
     const removeItem = (index) => {
         setItems(items.filter((item, i) => i !== index));
         checkIfDrawerEmpty();
-        setSnackbarMessage('Play removed successfully.');
-        setSnackbarSeverity('info');
+        setSnackbarMessage('Play Removed.');
+        setSnackbarSeverity('warning');
         setOpenSnackbar(true);
     };
 
