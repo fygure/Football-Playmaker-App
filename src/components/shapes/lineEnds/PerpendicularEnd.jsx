@@ -1,7 +1,7 @@
 import React from 'react';
 import { Arrow } from 'react-konva';
 
-const PerpendicularEnd = ({ line, controlPoint, color }) => {
+const PerpendicularEnd = ({ line, controlPoint, color, handleLineClick }) => {
     // tangent of the curve at the end point
     let t = 1;
     let dx2 = (1 - t) * (controlPoint.x - line.startPos.x) + t * (line.endPos.x - controlPoint.x);
@@ -27,6 +27,7 @@ const PerpendicularEnd = ({ line, controlPoint, color }) => {
             pointerWidth={20}
             fill={color}
             stroke={color}
+            onClick={handleLineClick}
         />
     );
 };

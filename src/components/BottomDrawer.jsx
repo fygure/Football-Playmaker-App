@@ -18,6 +18,8 @@ import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import SvgIcon from '@mui/material/SvgIcon';
+import { ReactComponent as PlayBookSvg } from './assets/playbook-icon.svg';
 
 function BottomDrawer(props) {
     const {
@@ -66,7 +68,7 @@ function BottomDrawer(props) {
     // const [openSnackbar, setOpenSnackbar] = useState(false);
     // const [snackbarMessage, setSnackbarMessage] = useState('');
     // const [snackbarSeverity, setSnackbarSeverity] = useState('info');
-    const [openPlaybookIcon, setOpenPlaybookIcon] = useState(process.env.PUBLIC_URL+ '/static/assets/CHLK_Icon_Open_Playbook_small.png');
+    const [openPlaybookIcon, setOpenPlaybookIcon] = useState(process.env.PUBLIC_URL + '/static/assets/CHLK_Icon_Open_Playbook_small.png');
     //pass in items, setItems, openDialog, setDialogOpen, setSelectedItem, setOpenSnackbar, setSnackbarMessage, setSnackbarSeverity,
     //GOOD
 

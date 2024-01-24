@@ -33,7 +33,10 @@ function LineContextMenu(props) {
         <Group
             x={position.x}
             y={position.y}
-            onMouseLeave={onMouseLeave}
+            onMouseLeave={() => {
+                onMouseLeave();
+                setSelectedLineEnd('straight');
+            }}
         >
             <Rect
                 width={rectWidth}
@@ -57,7 +60,10 @@ function LineContextMenu(props) {
                     image={arrow}
                     width={rectWidth / 2}
                     height={rectHeight}
-                    onClick={() => { setSelectedLineEnd('arrow'); handleStrokeEndButtonPress(); }} // index 0
+                    onClick={() => {
+                        setSelectedLineEnd('arrow');
+                        handleStrokeEndButtonPress();
+                    }} // index 0
                 />
                 <Rect
                     x={rectWidth / 2}
