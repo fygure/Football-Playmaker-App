@@ -925,25 +925,25 @@ function Stencil(props) {
                             setShapes={setShapes}
                             lines={lines}
                             setLines={setLines}
-                            items = {items}
-                            setItems = {setItems}
+                            items={items}
+                            setItems={setItems}
                             dialogOpen={dialogOpen}
                             setDialogOpen={setDialogOpen}
                             dialogTitle={dialogTitle}
                             setDialogTitle={setDialogTitle}
                             dialogText={dialogText}
                             setDialogText={setDialogText}
-                            dialogAction = {dialogAction}
-                            setDialogAction = {setDialogAction}
-                            selectedItem = {selectedItem}
-                            setSelectedItem = {setSelectedItem}
-                            openSnackbar = {openSnackbar}
-                            setOpenSnackbar = {setOpenSnackbar}
-                            snackbarMessage = {snackbarMessage}
-                            setSnackbarMessage = {setSnackbarMessage}
-                            snackbarSeverity = {snackbarSeverity}
-                            setSnackbarSeverity = {setSnackbarSeverity}
-                            openDialog = {openDialog}
+                            dialogAction={dialogAction}
+                            setDialogAction={setDialogAction}
+                            selectedItem={selectedItem}
+                            setSelectedItem={setSelectedItem}
+                            openSnackbar={openSnackbar}
+                            setOpenSnackbar={setOpenSnackbar}
+                            snackbarMessage={snackbarMessage}
+                            setSnackbarMessage={setSnackbarMessage}
+                            snackbarSeverity={snackbarSeverity}
+                            setSnackbarSeverity={setSnackbarSeverity}
+                            openDialog={openDialog}
                         />
                     </Grid>
                 </Box>

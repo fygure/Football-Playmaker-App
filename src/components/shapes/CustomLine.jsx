@@ -10,8 +10,8 @@ import LineContextMenu from '../menus/LineContextMenu';
 
 const CIRCLE_SIZES = {
     CONTROL: { MIN: 5, MAX: 5 },
-    HALO: { MIN: 14, MAX: 14 },
-    ANCHOR: { MIN: 8, MAX: 8 },
+    HALO: { MIN: 10, MAX: 10 },
+    ANCHOR: { MIN: 5, MAX: 5 },
 };
 
 function CustomLine(props) {
@@ -38,10 +38,12 @@ function CustomLine(props) {
         setSelectedLineID,
         imageRef,
         stageRef,
+        setContextMenuPosition,
+        setShowContextMenu,
     } = props;
     const isSelected = selectedLineID === id;
-    const [showContextMenu, setShowContextMenu] = useState(false);
-    const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+    //const [showContextMenu, setShowContextMenu] = useState(false);
+    //const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
     const [controlPoint, setControlPoint] = useState({
         x: (line.controlPoint.x + line.controlPoint.x) / 2,
         y: (line.controlPoint.y + line.controlPoint.y) / 2,
@@ -98,19 +100,19 @@ function CustomLine(props) {
         }
     }, [selectedColor, selectedLineStroke, selectedLineEnd, colorButtonPressCount, strokeTypeButtonPressCount, strokeEndButtonPressCount]);
 
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === 'Delete' && selectedLineID === id) {
-                handleDeleteClick();
-            }
-        };
+    // useEffect(() => {
+    //     const handleKeyDown = (event) => {
+    //         if (event.key === 'Delete' && selectedLineID === id) {
+    //             handleDeleteClick();
+    //         }
+    //     };
 
-        window.addEventListener('keydown', handleKeyDown);
+    //     window.addEventListener('keydown', handleKeyDown);
 
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [selectedLineID, id]);
+    //     return () => {
+    //         window.removeEventListener('keydown', handleKeyDown);
+    //     };
+    // }, [selectedLineID, id]);
 
     const handleLineClick = () => {
         console.log(selectedLineStroke);
@@ -126,15 +128,15 @@ function CustomLine(props) {
         setShowContextMenu(true);
     };
 
-    const handleHideContextMenu = () => {
-        setShowContextMenu(false);
-        setSelectedLineID('$');
-    }
+    // const handleHideContextMenu = () => {
+    //     setShowContextMenu(false);
+    //     setSelectedLineID('$');
+    // }
 
-    const handleDeleteClick = () => {
-        setShowContextMenu(false);
-        onLineDelete(id);
-    };
+    // const handleDeleteClick = () => {
+    //     setShowContextMenu(false);
+    //     onLineDelete(id);
+    // };
 
     const handleAnchorDragMove = (e) => {
         const newEndPos = e.target.position();
@@ -276,15 +278,15 @@ function CustomLine(props) {
                 />
                 {/* Arrow Line End */}
                 {line.strokeEnd === 'arrow' && (
-                    <ArrowEnd line={line} controlPoint={controlPoint} color={line.color} />
+                    <ArrowEnd line={line} controlPoint={controlPoint} color={line.color} handleLineClick={handleLineClick} />
                 )}
                 {/* Perpendicular Line End */}
                 {line.strokeEnd === 'perpendicular' && (
-                    <PerpendicularEnd line={line} controlPoint={controlPoint} color={line.color} />
+                    <PerpendicularEnd line={line} controlPoint={controlPoint} color={line.color} handleLineClick={handleLineClick} />
                 )}
                 {/* Dotted Line End */}
                 {line.strokeEnd === 'dotted' && (
-                    <DottedEnd line={line} color={line.color} />
+                    <DottedEnd line={line} color={line.color} handleLineClick={handleLineClick} />
                 )}
                 {/* Line end anchor */}
                 {isSelected && (
@@ -350,7 +352,7 @@ function CustomLine(props) {
                         />
                     </Group>
                 )}
-                {showContextMenu &&
+                {/* {showContextMenu &&
                     <LineContextMenu
                         position={contextMenuPosition}
                         onDelete={handleDeleteClick}
@@ -361,7 +363,7 @@ function CustomLine(props) {
                         //below not implemented yet
                         setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
                     />
-                }
+                } */}
             </Group>
         </>
     );

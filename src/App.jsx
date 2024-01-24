@@ -162,78 +162,78 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
 
 
 
-const openDialog = (title, text, action) => {
-  setDialogTitle(title);
-  setDialogText(text);
-  setDialogAction(() => action);
-  setDialogOpen(true);
-};
+  const openDialog = (title, text, action) => {
+    setDialogTitle(title);
+    setDialogText(text);
+    setDialogAction(() => action);
+    setDialogOpen(true);
+  };
 
   const handleOnClickAddPlay = () => {
     console.log("Add Play Clicked");
     setSelectedTextTags([]);
     openDialog('Add Play', '', (newPlayName) => {
-        if (newPlayName !== null) {
-            const itemExists = items.some(item => item.name === newPlayName);
-            if (itemExists) {
-                setSnackbarMessage('A play with this name already exists.');
-                setSnackbarSeverity('error');
-                setOpenSnackbar(true);
-            } else if (newPlayName === '') {
-                setSnackbarMessage('Please enter a name for the play.');
-                setSnackbarSeverity('warning');
-                setOpenSnackbar(true);
-            } else {
-                //TODO: Add deep copy of shapes and lines to newItem
-                // const shallowCopyTextTags = [...textTags];
+      if (newPlayName !== null) {
+        const itemExists = items.some(item => item.name === newPlayName);
+        if (itemExists) {
+          setSnackbarMessage('A play with this name already exists.');
+          setSnackbarSeverity('error');
+          setOpenSnackbar(true);
+        } else if (newPlayName === '') {
+          setSnackbarMessage('Please enter a name for the play.');
+          setSnackbarSeverity('warning');
+          setOpenSnackbar(true);
+        } else {
+          //TODO: Add deep copy of shapes and lines to newItem
+          // const shallowCopyTextTags = [...textTags];
 
-                // console.log('Shallow copy comparison:', shallowCopyTextTags[0] === textTags[0]);
-                // console.log('Deep copy comparison:', deepCopyTextTags[0] === textTags[0]);
-                const deepCopyTextTags = _.cloneDeep(textTags).map(tag => ({ ...tag, id: uuidv4() }));
+          // console.log('Shallow copy comparison:', shallowCopyTextTags[0] === textTags[0]);
+          // console.log('Deep copy comparison:', deepCopyTextTags[0] === textTags[0]);
+          const deepCopyTextTags = _.cloneDeep(textTags).map(tag => ({ ...tag, id: uuidv4() }));
 
-                let shapeIdMapping = {};
-                const deepCopyShapes = _.cloneDeep(shapes).map(shape => {
-                    const newId = uuidv4();
-                    shapeIdMapping[shape.id] = newId;
-                    return { ...shape, id: newId };
-                });
+          let shapeIdMapping = {};
+          const deepCopyShapes = _.cloneDeep(shapes).map(shape => {
+            const newId = uuidv4();
+            shapeIdMapping[shape.id] = newId;
+            return { ...shape, id: newId };
+          });
 
-                let lineIdMapping = {};
-                //Mapping of old line IDs to new line IDs
-                const deepCopyLines = _.cloneDeep(lines).map(line => {
-                    const newId = uuidv4();
-                    lineIdMapping[line.id] = newId;
-                    return { ...line, id: newId, attachedShapeId: shapeIdMapping[line.attachedShapeId] };
-                });
-                //update drawnFromId to new line IDs
-                const deepCopyLinesAgain = _.cloneDeep(deepCopyLines).map(line => {
-                    return { ...line, drawnFromId: lineIdMapping[line.drawnFromId] || line.drawnFromId };
-                });
+          let lineIdMapping = {};
+          //Mapping of old line IDs to new line IDs
+          const deepCopyLines = _.cloneDeep(lines).map(line => {
+            const newId = uuidv4();
+            lineIdMapping[line.id] = newId;
+            return { ...line, id: newId, attachedShapeId: shapeIdMapping[line.attachedShapeId] };
+          });
+          //update drawnFromId to new line IDs
+          const deepCopyLinesAgain = _.cloneDeep(deepCopyLines).map(line => {
+            return { ...line, drawnFromId: lineIdMapping[line.drawnFromId] || line.drawnFromId };
+          });
 
-                console.log('Adding play:', newPlayName);
-                console.log('||', newPlayName, 'Text Tags:', deepCopyTextTags);
-                console.log('||', newPlayName, 'Shapes:', deepCopyShapes);
-                console.log('||', newPlayName, 'Lines:', deepCopyLines);
-                const newItem = {
-                    id: uuidv4(),
-                    name: newPlayName,
-                    backgroundImage: backgroundImage,
-                    textTagList: deepCopyTextTags,
-                    shapeList: deepCopyShapes,
-                    lineList: deepCopyLinesAgain,
-                    //drawingLine: (startPos && endPos)
-                };
-                setItems((prevItems) => [...prevItems, newItem]);
-                setTextTags(newItem.textTagList);
-                setShapes(newItem.shapeList);
-                setLines(newItem.lineList);
-                setCurrentLayerData(newItem);
-                setSelectedItem(newItem.id);
-                setSnackbarMessage('Play added successfully.');
-                setSnackbarSeverity('success');
-                setOpenSnackbar(true);
-            }
+          console.log('Adding play:', newPlayName);
+          console.log('||', newPlayName, 'Text Tags:', deepCopyTextTags);
+          console.log('||', newPlayName, 'Shapes:', deepCopyShapes);
+          console.log('||', newPlayName, 'Lines:', deepCopyLines);
+          const newItem = {
+            id: uuidv4(),
+            name: newPlayName,
+            backgroundImage: backgroundImage,
+            textTagList: deepCopyTextTags,
+            shapeList: deepCopyShapes,
+            lineList: deepCopyLinesAgain,
+            //drawingLine: (startPos && endPos)
+          };
+          setItems((prevItems) => [...prevItems, newItem]);
+          setTextTags(newItem.textTagList);
+          setShapes(newItem.shapeList);
+          setLines(newItem.lineList);
+          setCurrentLayerData(newItem);
+          setSelectedItem(newItem.id);
+          setSnackbarMessage('Play added successfully.');
+          setSnackbarSeverity('success');
+          setOpenSnackbar(true);
         }
+      }
     });
   };
 

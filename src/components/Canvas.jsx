@@ -6,6 +6,7 @@ import Shape from './shapes/Shape';
 import TextTag from './shapes/TextTag';
 import CustomLine from './shapes/CustomLine';
 import LoadedLayer from './shapes/LoadedLayer';
+import LineContextMenu from '../components/menus/LineContextMenu';
 
 function Canvas(props) {
     const {
@@ -101,6 +102,38 @@ function Canvas(props) {
         };
     }, []);
 
+    //Line context menu functions//
+    const [showContextMenu, setShowContextMenu] = useState(false);
+    const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            const line = lines.find(line => line.id === selectedLineID);
+
+            if (event.key === 'Delete' && line) {
+                handleDeleteClick();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [selectedLineID, lines]);
+
+    const handleDeleteClick = () => {
+        const line = lines.find(line => line.id === selectedLineID);
+
+        if (line) {
+            setShowContextMenu(false);
+            onLineDelete(selectedLineID);
+        }
+    };
+
+    const handleHideContextMenu = () => {
+        setShowContextMenu(false);
+        setSelectedLineID('$');
+    }
+    ///////////////////////////////////////////
 
     const handleImageClick = (e) => {
         console.log('BG Image Clicked', backgroundImage);
@@ -252,6 +285,8 @@ function Canvas(props) {
                                         startDrawing={startDrawing}
                                         stageRef={stageRef}
                                         imageRef={imageRef}
+                                        setContextMenuPosition={setContextMenuPosition}
+                                        setShowContextMenu={setShowContextMenu}
                                     />
                                 ))}
                                 {shapes.map((shape) => (
@@ -308,6 +343,18 @@ function Canvas(props) {
                                         lineCap="round"
                                     />
                                 )}
+                                {showContextMenu &&
+                                    <LineContextMenu
+                                        position={contextMenuPosition}
+                                        onDelete={handleDeleteClick}
+                                        onMouseLeave={handleHideContextMenu}
+                                        setSelectedLineEnd={setSelectedLineEnd}
+                                        selectedLineEnd={selectedLineEnd}
+                                        setStrokeEndButtonPressCount={setStrokeEndButtonPressCount}
+                                        //below not implemented yet
+                                        setStrokeTypeButtonPressCount={setStrokeTypeButtonPressCount}
+                                    />
+                                }
                             </Layer>
 
                         )}
