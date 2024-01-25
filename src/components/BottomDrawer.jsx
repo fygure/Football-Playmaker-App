@@ -18,8 +18,6 @@ import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import SvgIcon from '@mui/material/SvgIcon';
-import { ReactComponent as PlayBookSvg } from './assets/playbook-icon.svg';
 import openPlaybookIcon from './assets/playbook-icon.svg';
 function BottomDrawer(props) {
     const {
@@ -347,12 +345,12 @@ function BottomDrawer(props) {
     return (
         <div>
             <Button
-            variant="contained"
-            style={{ backgroundColor: '#333', color: 'white', border: '1px solid white', width: '15vw',  borderRadius: '25px'   }}
-            startIcon={<img src={openPlaybookIcon} alt="Open Playbook" style={{ width: '30px', height: '30px' }} />}
-            onClick={toggleDrawer('bottom', true)}
+                variant="contained"
+                style={{ backgroundColor: '#333', color: 'white', border: '1px solid white', width: '15vw', borderRadius: '25px' }}
+                startIcon={<img src={openPlaybookIcon} alt="Open Playbook" style={{ width: '30px', height: '30px' }} />}
+                onClick={toggleDrawer('bottom', true)}
             >
-            Open Playbook
+                Open Playbook
             </Button>
             <Drawer
                 anchor={'bottom'}

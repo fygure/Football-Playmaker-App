@@ -1,5 +1,5 @@
 // LineContextMenu.jsx
-import React, { useState } from 'react';
+import React from 'react';
 import { Group, Rect, Text, Image } from 'react-konva';
 import useImage from 'use-image';
 

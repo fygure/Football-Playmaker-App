@@ -1,5 +1,5 @@
 // App.jsx
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import StageDimensionsContext from './contexts/StageDimensionsContext';
 import Canvas from './components/Canvas';
 import Stencil from './components/Stencil';
