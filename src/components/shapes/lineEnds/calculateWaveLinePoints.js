@@ -1,29 +1,29 @@
 // waveLinePoints.js
 const calculateWaveLinePoints = (line, controlPoint) => {
-    // Calculate the direction of the line
+    //calculate the direction of the line
     const dx = line.endPos.x - line.startPos.x;
     const dy = line.endPos.y - line.startPos.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    // Calculate the direction perpendicular to the line
+    //calculate the direction perpendicular to the line
     const perp_dx = -dy / distance;
     const perp_dy = dx / distance;
 
-    // Define the frequency and amplitude of the waves
+    //define the frequency and amplitude of the waves
     const waves = 12;
     const amplitude = 3;
 
-    // Calculate the number of points based on the distance
-    const pointsCount = Math.floor(distance / 5); // Adjust the divisor to change the density of the points
+    //calculate the number of points based on the distance
+    const pointsCount = Math.floor(distance / 5); //adjust the divisor to change the density of the points
 
-    // Generate the points for the wavy line
+    //generate the points for the wavy line
     const waveLinePoints = [];
     const cutOffLength = 2.5;
     for (let i = 0; i <= pointsCount; i++) {
         const t = i / pointsCount;
         const wave = amplitude * Math.sin(t * 2 * Math.PI * waves);
 
-        // Calculate the position along the curve defined by the control point
+        //calculate the position along the curve defined by the control point
         const u = 1 - t;
         const tt = t * t;
         const uu = u * u;
@@ -35,7 +35,7 @@ const calculateWaveLinePoints = (line, controlPoint) => {
         p.x += tt * line.endPos.x; //influence of the end point
         p.y += tt * line.endPos.y;
 
-        // Add the sine wave along the direction perpendicular to the curve
+        //add the sine wave along the direction perpendicular to the curve
         let x = p.x + perp_dx * wave;
         let y = p.y + perp_dy * wave;
 

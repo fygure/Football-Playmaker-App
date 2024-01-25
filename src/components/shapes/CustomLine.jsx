@@ -1,12 +1,10 @@
 // CustomLine.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import { Line, Circle, Group } from 'react-konva';
-import ContextMenu from '../menus/ContextMenu';
 import PerpendicularEnd from './lineEnds/PerpendicularEnd';
 import DottedEnd from './lineEnds/DottedEnd';
 import ArrowEnd from './lineEnds/ArrowEnd';
 import calculateWaveLinePoints from './lineEnds/calculateWaveLinePoints';
-import LineContextMenu from '../menus/LineContextMenu';
 
 const CIRCLE_SIZES = {
     CONTROL: { MIN: 5, MAX: 5 },

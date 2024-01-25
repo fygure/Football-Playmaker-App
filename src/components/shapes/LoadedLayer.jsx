@@ -1,5 +1,5 @@
 //LoadedLayer.jsx
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layer, Text, Image, Line } from 'react-konva';
 import TextTag from './TextTag';
 import Shape from './Shape';
