@@ -711,7 +711,7 @@ function Stencil(props) {
                             </Grid>
                         </Grid>
 
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                             <Grid container spacing={0}>
                                 <h3 style={{ marginBottom: '20px', fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '12px', paddingRight: '10px' }}>End</h3>
                                 {lineButtons
@@ -745,7 +745,7 @@ function Stencil(props) {
                                         </Grid>
                                     ))}
                             </Grid>
-                        </Grid>
+                        </Grid> */}
 
                     </Grid>
                 </Box>
