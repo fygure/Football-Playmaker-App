@@ -29,6 +29,7 @@ const DefenderDiamond = (props) => {
         selectedShapeID,
         setSelectedShapeID,
     } = props;
+    //Note: initialColor is set inside the stencil
 
     const isSelected = selectedShapeID === id;
     const haloOffset = 12;
@@ -93,7 +94,7 @@ const DefenderDiamond = (props) => {
                     offsetY={diamondSize.height / 2}
                     strokeWidth={strokeOptions.strokeWidth}
                     cornerRadius={2}
-                    fill={'transparent'}
+                    fill={initialColor}
                 />
                 <EditableText
                     initialText={text}

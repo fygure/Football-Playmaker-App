@@ -36,7 +36,7 @@ const CenterSquare = (props) => {
         { leftState: 0, rightState: 100, colorOne: initialColor, colorTwo: "black" }, // fully initialColor
         { leftState: 0, rightState: rectSize.width / 2, colorOne: "black", colorTwo: initialColor }, // right fill
         { leftState: 0, rightState: rectSize.width / 2, colorOne: initialColor, colorTwo: "black" }, // left fill
-        { leftState: -1, rightState: 0, colorOne: initialColor, colorTwo: "white" } // all fill
+        { leftState: -1, rightState: 0, colorOne: initialColor, colorTwo: initialColor } // all fill
     ];
 
     const [stateIndex, setStateIndex] = useState(0);

@@ -7,6 +7,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 //TODO: mail to an email address
+//TODO: use EmailJS (200 free emails per month)
+//TODO: regain access to account
 export default function FeedBackForm({ open, handleFeedbackFormClose, handleFeedbackFormSubmit }) {
 
   return (
