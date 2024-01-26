@@ -147,7 +147,7 @@ function Stencil(props) {
     const [selectedFeedback, setSelectedFeedback] = useState(false);
     const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
 
-    const shapeColor = 'white';
+    const shapeColor = 'transparent';
 
     // Formation handlers
     const handleOffenseFormationToggleGroup = (e) => {
