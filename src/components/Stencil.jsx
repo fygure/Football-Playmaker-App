@@ -981,7 +981,17 @@ function Stencil(props) {
                         </Button>
                     </Grid>
                 </Box>
-                <FeedBackForm open={selectedFeedback} handleFeedbackFormClose={handleFeedbackFormClose} handleFeedbackFormSubmit={handleFeedbackSubmit}></FeedBackForm>
+                <FeedBackForm
+                    openSnackbar={openSnackbar}
+                    setOpenSnackbar={setOpenSnackbar}
+                    snackbarMessage={snackbarMessage}
+                    setSnackbarMessage={setSnackbarMessage}
+                    snackbarSeverity={snackbarSeverity}
+                    setSnackbarSeverity={setSnackbarSeverity}
+                    open={selectedFeedback}
+                    handleFeedbackFormClose={handleFeedbackFormClose}
+                    handleFeedbackFormSubmit={handleFeedbackSubmit}>
+                </FeedBackForm>
 
 
             </div>
