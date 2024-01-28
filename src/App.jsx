@@ -55,7 +55,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
   const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes } = useShapes(imageRef);
   const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
-  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, setSelectedLineID, selectedLineID);
+  const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine, updateAttachedLine} = useLines(imageRef, setSelectedLineID, selectedLineID);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tooltipTimeoutId, setTooltipTimeoutId] = useState(null);
 
@@ -96,14 +96,6 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
       undo.current.values.push(values);
   }
 
-  const preformUndo = (index) => {
-    console.log(undo.current.values);
-    if(undo.current.values[index].type === "shape"){
-      undoShape(index);
-    }else {
-      undoText(index);
-    }
-  }
 
   const undoText = (index) => {
     const newText = undo.current.values[index].state;
@@ -117,6 +109,8 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
     newShape.key = uuidv4();
     newShape.initialPosition = {x: undo.current.values[index].state.x, y: undo.current.values[index].state.y}
     updateShape(undo.current.values[index].id, newShape);
+
+    updateAttachedLine(undo.current.values[index].id, undo.current.values[index].state.x, undo.current.values[index].state.y);
   }
 
   
@@ -125,7 +119,12 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
       return;
     }
     const index = undo.current.values.length-1-undo.current.index;
-    preformUndo(index);
+    console.log(undo.current.values);
+    if(undo.current.values[index].type === "shape"){
+      undoShape(index);
+    }else {
+      undoText(index);
+    }
     undo.current.index += 1;
   }
 
@@ -136,7 +135,12 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
       return;
     }
     const index = undo.current.values.length+1-undo.current.index;
-    preformUndo(index);
+    console.log(undo.current.values);
+    if(undo.current.values[index].type === "shape"){
+      undoShape(index);
+    }else {
+      undoText(index);
+    }
     undo.current.index -= 1;
   }
 

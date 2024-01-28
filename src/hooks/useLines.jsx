@@ -78,6 +78,10 @@ const useLines = (imageRef, setSelectedLineID, selectedLineID) => {
         setLines(lines.map(line => line.id === id ? { ...line, ...newAttributes } : line));
     };
 
+    const updateAttachedLine = (attachedShapeId, x, y) => {
+        setLines(lines.map(line => line.attachedShapeId === attachedShapeId ? { ...line, ...{key: uuidv4(),startPos: {x: x, y: y} } } : line));
+    }
+
     const deleteAllLines = () => {
         setLines([]);
     };
@@ -145,6 +149,7 @@ const useLines = (imageRef, setSelectedLineID, selectedLineID) => {
         setLines,
         deleteLine,
         updateLine,
+        updateAttachedLine,
     };
 };
 
