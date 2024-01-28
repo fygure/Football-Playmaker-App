@@ -240,7 +240,7 @@ function Stencil(props) {
         const newText = e.target.value;
         //console.log(newText);
         // setSelectedText(newText);
-        onAddTextTag(newText, selectedColor);
+        onAddTextTag(newText, selectedColor, newText == "CUSTOM");
     };
 
     const [isProcessing, setIsProcessing] = useState(false);

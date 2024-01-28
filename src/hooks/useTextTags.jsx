@@ -5,7 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 function useTextTags(imageRef, stageRef) {
     const [textTags, setTextTags] = useState([]);
 
-    const addTextTag = (text, newColor, position) => {
+    const addTextTag = (text, newColor, isCustomText, position) => {
+        console.log("it is "+isCustomText);
         if (imageRef.current) {
             console.log('Creating text tag:', text);
             const startPosition = {
@@ -21,6 +22,7 @@ function useTextTags(imageRef, stageRef) {
             initialPosition: whichPosition,
             color: newColor,
             text: text,
+            isCustomText: isCustomText,
         };
 
             setTextTags([...textTags, newTextTag]);

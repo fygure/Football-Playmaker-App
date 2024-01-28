@@ -100,14 +100,16 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const undoText = (index) => {
     const newText = undo.current.values[index].state;
     newText.key = uuidv4();
-    newText.initialPosition = {x: undo.current.values[index].state.x, y: undo.current.values[index].state.y}
+    if(undo.current.values[index].state.x != null)
+      newText.initialPosition = {x: undo.current.values[index].state.x, y: undo.current.values[index].state.y}
     updateTextTag(undo.current.values[index].id, newText);
   }
 
   const undoShape = (index) => {
     const newShape = undo.current.values[index].state;
     newShape.key = uuidv4();
-    newShape.initialPosition = {x: undo.current.values[index].state.x, y: undo.current.values[index].state.y}
+    if(undo.current.values[index].state.x != null)
+      newShape.initialPosition = {x: undo.current.values[index].state.x, y: undo.current.values[index].state.y}
     updateShape(undo.current.values[index].id, newShape);
 
     updateAttachedLine(undo.current.values[index].id, undo.current.values[index].state.x, undo.current.values[index].state.y);

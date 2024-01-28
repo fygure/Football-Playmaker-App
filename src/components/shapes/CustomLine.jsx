@@ -184,6 +184,8 @@ function CustomLine(props) {
             l.id === id ? { ...l, points: newPoints, controlPoint: newControlPoint } : l
         );
         setLines(updatedLines);
+
+        
     };
 
     const dragBoundFunc = (pos) => {
