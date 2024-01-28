@@ -115,6 +115,15 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
     updateAttachedLine(undo.current.values[index].id, undo.current.values[index].state.x, undo.current.values[index].state.y);
   }
 
+  const undoLine = (index) => {
+    const newLine = undo.current.values[index].state;
+    newLine.key = uuidv4();
+    if(undo.current.values[index].state.points == null)
+      lines.
+    updateLine(undo.current.values[index].id, newLine);
+
+    updateAttachedLine(undo.current.values[index].id, undo.current.values[index].state.x, undo.current.values[index].state.y);
+  }
   
   const handleUndo = () => {
     if(undo.current.index >= undo.current.values.length){
@@ -124,8 +133,10 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
     console.log(undo.current.values);
     if(undo.current.values[index].type === "shape"){
       undoShape(index);
-    }else {
+    }else if(undo.current.values[index].type === "text"){
       undoText(index);
+    }else {
+      undoLine(index);
     }
     undo.current.index += 1;
   }
@@ -140,8 +151,10 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
     console.log(undo.current.values);
     if(undo.current.values[index].type === "shape"){
       undoShape(index);
-    }else {
+    }else if(undo.current.values[index].type === "text"){
       undoText(index);
+    }else {
+      undoLine(index);
     }
     undo.current.index -= 1;
   }

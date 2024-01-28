@@ -38,6 +38,7 @@ function CustomLine(props) {
         setSelectedLineID,
         imageRef,
         stageRef,
+        logHistory,
     } = props;
     const isSelected = selectedLineID === id;
     const [showContextMenu, setShowContextMenu] = useState(false);
@@ -179,13 +180,17 @@ function CustomLine(props) {
         setControlPoint(newControlPoint);
 
         // Update the line's points to create a quadratic curve
+        if(customLineRef.current.findOne(`.line-${line.id}`).points != null)
+            logHistory({type: "line", state: {points: customLineRef.current.findOne(`.line-${line.id}`).points, controlPoint: controlPoint}, id: id});
+        else
+            logHistory({type: "line", state: {points: null, controlPoint: controlPoint}, id: id})
         const newPoints = [line.startPos.x, line.startPos.y, newControlPoint.x, newControlPoint.y, line.endPos.x, line.endPos.y];
         const updatedLines = lines.map(l =>
             l.id === id ? { ...l, points: newPoints, controlPoint: newControlPoint } : l
         );
         setLines(updatedLines);
 
-        
+
     };
 
     const dragBoundFunc = (pos) => {
