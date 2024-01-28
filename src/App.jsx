@@ -30,7 +30,6 @@ import _ from 'lodash';
 TODO: undo/redo
 TODO: orientation
 TODO: selection rectangle
-TODO: add item to playbook button (lift from BottomDrawer);
 */
 ////////////////////////////////////////////////////////////////////////////////////////
 function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator }) {
@@ -194,11 +193,6 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
           setSnackbarSeverity('warning');
           setOpenSnackbar(true);
         } else {
-          //TODO: Add deep copy of shapes and lines to newItem
-          // const shallowCopyTextTags = [...textTags];
-
-          // console.log('Shallow copy comparison:', shallowCopyTextTags[0] === textTags[0]);
-          // console.log('Deep copy comparison:', deepCopyTextTags[0] === textTags[0]);
           const deepCopyTextTags = _.cloneDeep(textTags).map(tag => ({ ...tag, id: uuidv4() }));
 
           let shapeIdMapping = {};
