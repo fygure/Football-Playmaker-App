@@ -5,6 +5,7 @@
   "dependencies": {
     "@aws-amplify/core": "^6.0.12",
     "@aws-amplify/ui-react": "^6.1.1",
+    "@emailjs/browser": "^3.12.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.2",
@@ -15,6 +16,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "aws-amplify": "^6.0.12",
+    "email-js": "^2.0.2",
     "i": "^0.3.7",
     "jwt-decode": "^4.0.0",
     "konva": "^9.2.3",
