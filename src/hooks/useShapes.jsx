@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 
-function useShapes(imageRef) {
+function useShapes(imageRef, lines, setLines) {
 
     const [shapes, setShapes] = useState([]);
 
@@ -477,52 +477,114 @@ function useShapes(imageRef) {
             console.error("You're clicking too fast, flipType in flipAllShapes is undefined");
             return;
         }
-        console.log('Flip Type:', flipType);
         const imageCenter = {
             x: imageRef.current.x() + (imageRef.current.width() / 2),
             y: imageRef.current.y() + (imageRef.current.height() / 2)
         }
-        setShapes(prevShapes => {
+        let shapeIdMapping = {};
             // Create new shapes for all the shapes
-            let newShapes = prevShapes.map(shape => {
-                let newPosition;
-                let newAttributes = {};
-                if (flipType === "Up/Down") {
-                    if (shape && 'x' in shape && 'y' in shape) {
-                        let newY = imageCenter.y - (shape.y - imageCenter.y);
-                        newPosition = { x: shape.x, y: newY };
-                        newAttributes = { x: newPosition.x, y: newPosition.y };
-                        console.log("shape initial newAttributes: ", newAttributes);
-                    } else if (shape && shape.initialPosition) {
-                        let newY = imageCenter.y - (shape.initialPosition.y - imageCenter.y);
-                        newPosition = { x: shape.initialPosition.x, y: newY };
-                        console.log("shape initial newPosition: ", newPosition);
-                    }
-                } else if (flipType === "Left/Right") {
-                    if (shape && 'x' in shape && 'y' in shape) {
-                        let newX = imageCenter.x - (shape.x - imageCenter.x);
-                        newPosition = { x: newX, y: shape.y };
-                        newAttributes = { x: newPosition.x, y: newPosition.y };
-                    } else if (shape && shape.initialPosition) {
-                        let newX = imageCenter.x - (shape.initialPosition.x - imageCenter.x);
-                        newPosition = { y: shape.initialPosition.y, x: newX };
-                    }
+        let newShapes = shapes.map(shape => {
+            let newPosition;
+            let newAttributes = {};
+            if (flipType === "Up/Down") {
+                if (shape && 'x' in shape && 'y' in shape) {
+                    let newY = imageCenter.y - (shape.y - imageCenter.y);
+                    newPosition = { x: shape.x, y: newY };
+                    newAttributes = { x: newPosition.x, y: newPosition.y };
+                } else if (shape && shape.initialPosition) {
+                    let newY = imageCenter.y - (shape.initialPosition.y - imageCenter.y);
+                    newPosition = { x: shape.initialPosition.x, y: newY };
                 }
-                // Create a new text tag with the new position
-                const newShape = {
-                    id: uuidv4(),
-                    initialPosition: newPosition,
-                    initialColor: shape.initialColor,
-                    ...newAttributes,
-                    formationType: shape.formationType,
-                    shapeType: shape.shapeType,
-                    text: shape.text,
-                };
-                return newShape;
-            });
-
-            return newShapes;
+            }
+            else if (flipType === "Left/Right") {
+                if (shape && 'x' in shape && 'y' in shape) {
+                    let newX = imageCenter.x - (shape.x - imageCenter.x);
+                    newPosition = { x: newX, y: shape.y };
+                    newAttributes = { x: newPosition.x, y: newPosition.y };
+                } else if (shape && shape.initialPosition) {
+                    let newX = imageCenter.x - (shape.initialPosition.x - imageCenter.x);
+                    newPosition = { y: shape.initialPosition.y, x: newX };
+                }
+            }
+            // Create a new shape with the new position
+            const newId = uuidv4();
+            shapeIdMapping[shape.id] = newId;
+            const newShape = {
+            id: newId,
+            initialPosition: newPosition,
+            initialColor: shape.initialColor,
+            ...newAttributes,
+            formationType: shape.formationType,
+            shapeType: shape.shapeType,
+            text: shape.text,
+            };
+            return newShape;
         });
+        // Set the new shapes
+        setShapes(newShapes);
+        console.log("shapeIdMapping: ", shapeIdMapping);
+
+        let lineIdMapping = {};
+        //Shapes hasn't been updated yet, to the respective new shapes
+        const deepCopyLines = _.cloneDeep(lines).map(line => {
+            // console.log("shapeIdMapping: ", shapeIdMapping[line.attachedShapeId])
+            // console.log('newShapes current state:', newShapes)
+            const flippedShape = newShapes.find(shape => shape.id === shapeIdMapping[line.drawnFromId]);
+            // let flippedLine;
+            // if (!flippedShape) {
+            //     flippedLine = self.find(line => line.id === lineIdMapping[line.drawnFromId]);
+            //     console.log("flippedLine: ", flippedLine);
+            // }
+            // if (flippedShape) {
+            //     console.log("flippedShape: ", flippedShape);
+            // } else {
+            //     console.log("No shape found with the given id", flippedShape);
+            // }
+            let newStartPos;
+            if (flippedShape && 'x' in flippedShape && 'y' in flippedShape) {
+                newStartPos = {x: flippedShape.x, y: flippedShape.y};
+            } else if (flippedShape && flippedShape.initialPosition) {
+                newStartPos = {x: flippedShape.initialPosition.x, y: flippedShape.initialPosition.y};
+            }
+            else{
+                newStartPos = line.endPos;
+            }
+            // console.log('newStartLinePos', newStartLinePos);
+            // console.log('This line endPos', line.endPos)
+            // console.log('This line controlPoint', line.controlPoint)
+            let newEndPos;
+            let newControlPos;
+            if (flipType === "Up/Down") {
+                newEndPos = {x: line.endPos.x, y: imageCenter.y - (line.endPos.y - imageCenter.y)};
+                newControlPos = {x: line.controlPoint.x, y: imageCenter.y - (line.controlPoint.y - imageCenter.y)};
+            } else if (flipType === "Left/Right") {
+                newEndPos = {x: imageCenter.x - (line.endPos.x- imageCenter.x), y: line.endPos.y};
+                newControlPos = {x: imageCenter.x - (line.controlPoint.x - imageCenter.x), y: line.controlPoint.y};
+            }
+            const newId = uuidv4();
+            lineIdMapping[line.id] = newId;
+            return {...line,
+                id: newId,
+                attachedShapeId: shapeIdMapping[line.attachedShapeId],
+                startPos: newStartPos,
+                endPos: newEndPos,
+                controlPoint: newControlPos,
+                drawnFromId: line.drawnFromId
+            };
+        });
+        console.log('deepCopyLines', deepCopyLines)
+
+        const deepCopyLinesAgain = _.cloneDeep(deepCopyLines).map(line => {
+            const flippedLine = deepCopyLines.find(l => l.id === lineIdMapping[line.drawnFromId]);
+            if (flippedLine) {
+                line.startPos = flippedLine.endPos;
+            }
+            return { ...line,
+                drawnFromId: line.attachedShapeId || lineIdMapping[line.drawnFromId] || line.drawnFromId
+            };
+        });
+
+        setLines(deepCopyLinesAgain);
 
         if (flipType === "Up/Down") {
             setIsUpDownFlipped(!isUpDownFlipped);

@@ -49,9 +49,9 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
   const [currentLayerData, setCurrentLayerData] = useState(null);
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
-  const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes } = useShapes(imageRef);
-  const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
   const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, setSelectedLineID, selectedLineID);
+  const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes } = useShapes(imageRef, lines, setLines);
+  const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tooltipTimeoutId, setTooltipTimeoutId] = useState(null);
   const [items, setItems] = useState([]);
@@ -194,11 +194,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
           setSnackbarSeverity('warning');
           setOpenSnackbar(true);
         } else {
-          //TODO: Add deep copy of shapes and lines to newItem
-          // const shallowCopyTextTags = [...textTags];
 
-          // console.log('Shallow copy comparison:', shallowCopyTextTags[0] === textTags[0]);
-          // console.log('Deep copy comparison:', deepCopyTextTags[0] === textTags[0]);
           const deepCopyTextTags = _.cloneDeep(textTags).map(tag => ({ ...tag, id: uuidv4() }));
 
           let shapeIdMapping = {};
