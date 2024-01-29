@@ -11,6 +11,8 @@ function useTextTags(imageRef, stageRef) {
             const startPosition = {
                 x: imageRef.current.x() + (imageRef.current.width() / 2) - 30,
                 y: imageRef.current.height() - 60
+                // x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
+                // y: imageRef.current.y() + (imageRef.current.height() / 2)
             };
 
             const whichPosition = position ? position : startPosition;
@@ -57,11 +59,12 @@ function useTextTags(imageRef, stageRef) {
             console.error("You're clicking too fast, flipType is undefined");
             return;
         }
-        console.log('Flip Type:', flipType);
+        // console.log('Flip Type:', flipType);
         const imageCenter = {
             x: imageRef.current.x() + (imageRef.current.width() / 2) - 20,
             y: imageRef.current.y() + (imageRef.current.height() / 2)
         }
+        console.log('Image Center:', imageCenter);
 
         setTextTags(prevTextTags => {
             // Create new text tags for all the text tags
@@ -91,9 +94,9 @@ function useTextTags(imageRef, stageRef) {
                 // Create a new text tag with the new position
                 const newTextTag = {
                     id: uuidv4(),
-                    initialPosition: newPosition,
                     color: textTag.color,
                     text: textTag.text,
+                    initialPosition: newPosition,
                     ...newAttributes
                 };
 
@@ -109,6 +112,7 @@ function useTextTags(imageRef, stageRef) {
             return newTextTags;
         });
     };
+
 
     return { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags };
 }
