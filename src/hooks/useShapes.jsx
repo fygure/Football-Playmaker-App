@@ -40,7 +40,16 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.207 }, initialColor },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     // Then, add the new shapes
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
                     // Then, add the new shapes
@@ -64,7 +73,16 @@ function useShapes(imageRef, lines, setLines) {
                 ];
 
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     // Then, add the new shapes
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
                     // Then, add the new shapes
@@ -86,7 +104,16 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.207 }, initialColor },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     // Then, add the new shapes
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
                     // Then, add the new shapes
@@ -109,7 +136,16 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.207 }, initialColor },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     // Then, add the new shapes
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
                     // Then, add the new shapes
@@ -132,7 +168,16 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.207 }, initialColor },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     // Then, add the new shapes
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
                     // Then, add the new shapes
@@ -154,7 +199,16 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.207 }, initialColor },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     // Then, add the new shapes
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
                     // Then, add the new shapes
@@ -176,7 +230,16 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.207 }, initialColor },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     // Then, add the new shapes
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
                     // Then, add the new shapes
@@ -199,7 +262,16 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'Lineman', initialPosition: { x: middlePosition.x - imageSize.width * 0.09, y: middlePosition.y + imageSize.height * 0.207 }, initialColor },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     // Then, add the new shapes
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
                     // Then, add the new shapes
@@ -226,9 +298,18 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'DefenderJ', initialPosition: { x: middlePosition.x + imageSize.width * 0.11, y: middlePosition.y + imageSize.height * 0.144 }, initialColor, text: 'J' },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                    // Then, add the new shapes
                     setShapes([...filteredShapes, ...newShapes]);
                 }
             } else if (formationType === 'defense4-3R') {
@@ -246,9 +327,18 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'DefenderJ', initialPosition: { x: middlePosition.x - imageSize.width * 0.11, y: middlePosition.y + imageSize.height * 0.144 }, initialColor, text: 'J' },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                    // Then, add the new shapes
                     setShapes([...filteredShapes, ...newShapes]);
                 }
 
@@ -267,9 +357,18 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'DefenderJ', initialPosition: { x: middlePosition.x + imageSize.width * 0.20, y: middlePosition.y + imageSize.height * 0.1 }, initialColor, text: 'J' },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                    // Then, add the new shapes
                     setShapes([...filteredShapes, ...newShapes]);
                 }
 
@@ -288,9 +387,18 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'DefenderJ', initialPosition: { x: middlePosition.x - imageSize.width * 0.20, y: middlePosition.y + imageSize.height * 0.1 }, initialColor, text: 'J' },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                    // Then, add the new shapes
                     setShapes([...filteredShapes, ...newShapes]);
                 }
 
@@ -309,9 +417,18 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'DefenderJ', initialPosition: { x: middlePosition.x + imageSize.width * 0.11, y: middlePosition.y + imageSize.height * 0.144 }, initialColor, text: 'J' },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                    // Then, add the new shapes
                     setShapes([...filteredShapes, ...newShapes]);
                 }
 
@@ -330,9 +447,18 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'DefenderJ', initialPosition: { x: middlePosition.x - imageSize.width * 0.11, y: middlePosition.y + imageSize.height * 0.144 }, initialColor, text: 'J' },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                    // Then, add the new shapes
                     setShapes([...filteredShapes, ...newShapes]);
                 }
 
@@ -351,9 +477,18 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'DefenderJ', initialPosition: { x: middlePosition.x + imageSize.width * 0.105, y: middlePosition.y + imageSize.height * 0.075 }, initialColor, text: 'J' },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                    // Then, add the new shapes
                     setShapes([...filteredShapes, ...newShapes]);
                 }
 
@@ -372,9 +507,18 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'DefenderJ', initialPosition: { x: middlePosition.x - imageSize.width * 0.1, y: middlePosition.y + imageSize.height * 0.075 }, initialColor, text: 'J' },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                    // Then, add the new shapes
                     setShapes([...filteredShapes, ...newShapes]);
                 }
 
@@ -393,9 +537,18 @@ function useShapes(imageRef, lines, setLines) {
                     { id: uuidv4(), formationType: formationType, shapeType: 'DefenderJ', initialPosition: { x: middlePosition.x - imageSize.width * 0.15, y: middlePosition.y + imageSize.height * 0.075 }, initialColor, text: 'J' },
                 ];
 
-                const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+                // const filteredShapes = shapes.filter(shape => !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense'));
+
+                // if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                //     setShapes([...filteredShapes, ...newShapes]);
+                // }
+                const filteredShapes = shapes.filter(shape =>
+                    !shape.formationType.startsWith(isOffenseFormation ? 'offense' : 'defense') ||
+                    ['OffenseExtra', 'DefenseExtra'].includes(shape.shapeType)
+                );
 
                 if (!filteredShapes.some(shape => shape.formationType === formationType)) {
+                    // Then, add the new shapes
                     setShapes([...filteredShapes, ...newShapes]);
                 }
             }
