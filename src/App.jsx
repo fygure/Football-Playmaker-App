@@ -209,11 +209,16 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
           const deepCopyLines = _.cloneDeep(lines).map(line => {
             const newId = uuidv4();
             lineIdMapping[line.id] = newId;
-            return { ...line, id: newId, attachedShapeId: shapeIdMapping[line.attachedShapeId] };
+            return { ...line,
+              id: newId,
+              attachedShapeId: shapeIdMapping[line.attachedShapeId],
+            };
           });
           //update drawnFromId to new line IDs
           const deepCopyLinesAgain = _.cloneDeep(deepCopyLines).map(line => {
-            return { ...line, drawnFromId: lineIdMapping[line.drawnFromId] || line.drawnFromId };
+            return { ...line,
+              drawnFromId: line.attachedShapeId || lineIdMapping[line.drawnFromId] || line.drawnFromId
+            };
           });
 
           console.log('Adding play:', newPlayName);
@@ -242,11 +247,6 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
       }
     });
   };
-
-
-
-
-
   return (
     <>
       {/* <button onClick={() => { signOut(); setCurrentUser(null); setShowAuthenticator(!showAuthenticator) }}>Sign out</button> */}

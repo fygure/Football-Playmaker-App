@@ -535,7 +535,7 @@ function useShapes(imageRef, lines, setLines) {
             const deepCopyLines = _.cloneDeep(lines).map(line => {
                 // console.log("shapeIdMapping: ", shapeIdMapping[line.attachedShapeId])
                 // console.log('newShapes current state:', newShapes)
-                const flippedShape = newShapes.find(shape => shape.id === shapeIdMapping[line.drawnFromId]);
+                const flippedShape = newShapes.find(shape => shape.id === shapeIdMapping[line.attachedShapeId]);
                 // let flippedLine;
                 // if (!flippedShape) {
                 //     flippedLine = self.find(line => line.id === lineIdMapping[line.drawnFromId]);
@@ -572,11 +572,9 @@ function useShapes(imageRef, lines, setLines) {
                     startPos: newStartPos,
                     endPos: newEndPos,
                     controlPoint: newControlPos,
-                    drawnFromId: line.drawnFromId
                 };
             });
             console.log('deepCopyLines', deepCopyLines)
-
             const deepCopyLinesAgain = _.cloneDeep(deepCopyLines).map(line => {
                 const flippedLine = deepCopyLines.find(l => l.id === lineIdMapping[line.drawnFromId]);
                 if (flippedLine) {
@@ -586,9 +584,7 @@ function useShapes(imageRef, lines, setLines) {
                     drawnFromId: line.attachedShapeId || lineIdMapping[line.drawnFromId] || line.drawnFromId
                 };
             });
-
             setLines(deepCopyLinesAgain);
-
             if (flipType === "Up/Down") {
                 setIsUpDownFlipped(!isUpDownFlipped);
             } else if (flipType === "Left/Right") {
