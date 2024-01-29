@@ -127,9 +127,12 @@ const useLines = (imageRef, setSelectedLineID, selectedLineID) => {
                             x: line.controlPoint.x * newImageSize.width + newImagePosition.x,
                             y: line.controlPoint.y * newImageSize.height + newImagePosition.y,
                         };
-                        return { ...line, startPos: newStartPos, endPos: newEndPos, controlPoint: newControlPoint };
+                        return { ...line,
+                            startPos: newStartPos,
+                            endPos: newEndPos,
+                            controlPoint: newControlPoint
+                        };
                     });
-
                     setLines(newLines);
                 }
             };

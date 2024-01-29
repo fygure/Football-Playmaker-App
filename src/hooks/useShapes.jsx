@@ -6,56 +6,6 @@ import _, { flip } from 'lodash';
 function useShapes(imageRef, lines, setLines) {
 
 
-    useEffect(() => {
-        if (imageRef.current) {
-            const image = imageRef.current;
-            const initialImageSize = { width: image.width(), height: image.height() };
-
-            let initialRelativeLines = lines.map(line => {
-                let initialRelativeStartPos = {
-                    x: line.startPos.x / initialImageSize.width,
-                    y: line.startPos.y / initialImageSize.height,
-                };
-                let initialRelativeEndPos = {
-                    x: line.endPos.x / initialImageSize.width,
-                    y: line.endPos.y / initialImageSize.height,
-                };
-                let initialRelativeControlPoint = {
-                    x: line.controlPoint.x / initialImageSize.width,
-                    y: line.controlPoint.y / initialImageSize.height,
-                };
-                return { ...line, startPos: initialRelativeStartPos, endPos: initialRelativeEndPos, controlPoint: initialRelativeControlPoint };
-            });
-            const handleResize = () => {
-                if (imageRef.current) {
-                    const newImageSize = { width: image.width(), height: image.height() };
-
-                    const newLines = initialRelativeLines.map(line => {
-                        const newStartPos = {
-                            x: line.startPos.x * newImageSize.width,
-                            y: line.startPos.y * newImageSize.height,
-                        };
-                        const newEndPos = {
-                            x: line.endPos.x * newImageSize.width,
-                            y: line.endPos.y * newImageSize.height,
-                        };
-                        const newControlPoint = {
-                            x: line.controlPoint.x * newImageSize.width,
-                            y: line.controlPoint.y * newImageSize.height,
-                        };
-                        return { ...line, startPos: newStartPos, endPos: newEndPos, controlPoint: newControlPoint };
-                    });
-                    setLines(newLines);
-                }
-            };
-            window.addEventListener('resize', handleResize);
-
-            return () => {
-                window.removeEventListener('resize', handleResize);
-            };
-        }
-    }, [lines, imageRef]);
-
     const [shapes, setShapes] = useState([]);
     //Shape Handlers
     const addFormation = (formationType, initialColor) => {
@@ -602,9 +552,6 @@ function useShapes(imageRef, lines, setLines) {
                 } else if (flippedShape && flippedShape.initialPosition) {
                     newStartPos = {x: flippedShape.initialPosition.x, y: flippedShape.initialPosition.y};
                 }
-                else{
-                    newStartPos = line.endPos;
-                }
                 // console.log('newStartLinePos', newStartLinePos);
                 // console.log('This line endPos', line.endPos)
                 // console.log('This line controlPoint', line.controlPoint)
@@ -649,6 +596,59 @@ function useShapes(imageRef, lines, setLines) {
             }
         }
     };
+    useEffect(() => {
+    if (imageRef.current) {
+        const image = imageRef.current;
+        let initialImagePosition = { x: image.x(), y: image.y() };
+        let initialImageSize = { width: image.width(), height: image.height() };
+
+        let initialRelativeShapes = shapes.map(shape => {
+            if(shape && 'x' in shape && 'y' in shape) {
+                let initialRelativePos = {
+                    x: (shape.x - initialImagePosition.x) / initialImageSize.width,
+                    y: (shape.y - initialImagePosition.y) / initialImageSize.height
+                };
+                return { ...shape, x:initialRelativePos.x, y:initialRelativePos.y};
+            }
+            else if (shape && shape.initialPosition) {
+                let initialRelativePos = {
+                    x: (shape.initialPosition.x - initialImagePosition.x) / initialImageSize.width,
+                    y: (shape.initialPosition.y - initialImagePosition.y) / initialImageSize.height
+                };
+                return { ...shape, initialPosition: initialRelativePos};
+            }
+        });
+        const handleResize = () => {
+            if (imageRef.current) {
+                const newImagePosition = { x: image.x(), y: image.y() };
+                const newImageSize = { width: image.width(), height: image.height() };
+
+                const newShapes = initialRelativeShapes.map(shape => {
+                    if(shape && 'x' in shape && 'y' in shape) {
+                        let newRelativePos = {
+                            x: shape.x * newImageSize.width + newImagePosition.x,
+                            y: shape.y * newImageSize.height + newImagePosition.y
+                        };
+                        return { ...shape, x:newRelativePos.x, y:newRelativePos.y};
+                    }
+                    else if (shape && shape.initialPosition) {
+                        let newRelativePos = {
+                            x: shape.initialPosition.x * newImageSize.width + newImagePosition.x,
+                            y: shape.initialPosition.y * newImageSize.height + newImagePosition.y
+                        };
+                        return { ...shape, initialPosition: newRelativePos};
+                    }
+                });
+                setShapes(newShapes);
+            }
+        };
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }
+}, [shapes, imageRef]);
 
 
 
