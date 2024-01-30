@@ -102,7 +102,11 @@ const useLines = (imageRef, setSelectedLineID, selectedLineID) => {
                     x: (line.endPos.x - initialImagePosition.x) / initialImageSize.width,
                     y: (line.endPos.y - initialImagePosition.y) / initialImageSize.height,
                 };
-                return { ...line, startPos: initialRelativeStartPos, endPos: initialRelativeEndPos };
+                let initialRelativeControlPoint = {
+                    x: (line.controlPoint.x - initialImagePosition.x) / initialImageSize.width,
+                    y: (line.controlPoint.y - initialImagePosition.y) / initialImageSize.height,
+                };
+                return { ...line, startPos: initialRelativeStartPos, endPos: initialRelativeEndPos, controlPoint: initialRelativeControlPoint };
             });
 
             const handleResize = () => {
@@ -119,9 +123,16 @@ const useLines = (imageRef, setSelectedLineID, selectedLineID) => {
                             x: line.endPos.x * newImageSize.width + newImagePosition.x,
                             y: line.endPos.y * newImageSize.height + newImagePosition.y,
                         };
-                        return { ...line, startPos: newStartPos, endPos: newEndPos };
+                        const newControlPoint = {
+                            x: line.controlPoint.x * newImageSize.width + newImagePosition.x,
+                            y: line.controlPoint.y * newImageSize.height + newImagePosition.y,
+                        };
+                        return { ...line,
+                            startPos: newStartPos,
+                            endPos: newEndPos,
+                            controlPoint: newControlPoint
+                        };
                     });
-
                     setLines(newLines);
                 }
             };

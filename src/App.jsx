@@ -48,9 +48,9 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
   const [currentLayerData, setCurrentLayerData] = useState(null);
   const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
-  const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes } = useShapes(imageRef);
-  const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
   const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, setSelectedLineID, selectedLineID);
+  const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes } = useShapes(imageRef, lines, setLines);
+  const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tooltipTimeoutId, setTooltipTimeoutId] = useState(null);
   const [items, setItems] = useState([]);
@@ -193,6 +193,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
           setSnackbarSeverity('warning');
           setOpenSnackbar(true);
         } else {
+
           const deepCopyTextTags = _.cloneDeep(textTags).map(tag => ({ ...tag, id: uuidv4() }));
 
           let shapeIdMapping = {};
@@ -207,11 +208,16 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
           const deepCopyLines = _.cloneDeep(lines).map(line => {
             const newId = uuidv4();
             lineIdMapping[line.id] = newId;
-            return { ...line, id: newId, attachedShapeId: shapeIdMapping[line.attachedShapeId] };
+            return { ...line,
+              id: newId,
+              attachedShapeId: shapeIdMapping[line.attachedShapeId],
+            };
           });
           //update drawnFromId to new line IDs
           const deepCopyLinesAgain = _.cloneDeep(deepCopyLines).map(line => {
-            return { ...line, drawnFromId: lineIdMapping[line.drawnFromId] || line.drawnFromId };
+            return { ...line,
+              drawnFromId: line.attachedShapeId || lineIdMapping[line.drawnFromId] || line.drawnFromId
+            };
           });
 
           console.log('Adding play:', newPlayName);
@@ -240,11 +246,6 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
       }
     });
   };
-
-
-
-
-
   return (
     <>
       {/* <button onClick={() => { signOut(); setCurrentUser(null); setShowAuthenticator(!showAuthenticator) }}>Sign out</button> */}
