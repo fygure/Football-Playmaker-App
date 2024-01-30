@@ -286,6 +286,7 @@ function Canvas(props) {
                                 ))}
                                 {textTags.map((textTag) => (
                                     <TextTag
+                                        isCustomText={textTag.isCustomText}
                                         logHistory={logHistory}
                                         key={textTag.key}
                                         id={textTag.id}

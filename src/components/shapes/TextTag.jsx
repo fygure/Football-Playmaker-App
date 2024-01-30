@@ -25,6 +25,7 @@ function TextTag(props) {
         setSelectedTextTags,
         selectedTextTagID,
         setSelectedTextTagID,
+        isCustomText,
     } = props;
 
     const fontWeight = 700;
@@ -37,7 +38,6 @@ function TextTag(props) {
     const [checkMarkSize, setCheckMarkSize] = useState(TEXT_SIZES.CHECK.MAX);
     const [isDragging, setIsDragging] = useState(false);
     const [checkMarkImage, setCheckMarkImage] = useState(null);
-    const [isCustomText, setIsCustomText] = useState(text === 'CUSTOM');
 
     useEffect(() => {
         const img = new window.Image();
@@ -136,7 +136,7 @@ function TextTag(props) {
         setShowContextMenu(false);
         setIsDragging(true);
         if(textTags.find(s => s.id === id).x == null)
-            logHistory({type: "text", state: { x: e.target.x(), y: e.target.y()}, id: id});
+            logHistory({type: "text", state: {text: text, x: e.target.x(), y: e.target.y()}, id: id});
     };
 
     const handleDragEnd = (e) => {
@@ -146,7 +146,7 @@ function TextTag(props) {
             onTextTagChange(id, { x: e.target.x(), y: e.target.y() });
         }
         setIsDragging(false);
-        logHistory({type: "text", state: {x: e.target.x(), y: e.target.y()}, id: id});
+        logHistory({type: "text", state: {text: text, x: e.target.x(), y: e.target.y()}, id: id});
     };
 
     const handleHideContextMenu = () => {
@@ -155,7 +155,8 @@ function TextTag(props) {
 
     const handleTextChange = (newText) => {
         onTextTagChange(id, { text: newText });
-        logHistory({type: "text", state: {text: newText, x: position.x, y: position.y}, id: id});
+        logHistory({type: "text", state: {text: text}, id: id});
+
     };
 
     const dragBoundFunc = (pos) => {
