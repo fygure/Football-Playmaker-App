@@ -1,14 +1,8 @@
-# Football Playmaking CAD Software
-This application was made with the following:
-[Konva Library](https://konvajs.org/)
+# Football Playmaking Editor Application
 
-### TODO 2024
-Refactor code and remove prop drilling by using a state management tool
+[Client's Site](https://www.chlkapp.com/)
 
-## Available Scripts
+[Demo](https://demo.chlk.football/bypass)
 
-In the project directory, you can run:
-### `npm install`
 
-### `npm start`
 
