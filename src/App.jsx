@@ -30,7 +30,6 @@ import _ from 'lodash';
 TODO: undo/redo
 TODO: orientation
 TODO: selection rectangle
-TODO: add item to playbook button (lift from BottomDrawer);
 */
 ////////////////////////////////////////////////////////////////////////////////////////
 function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator }) {
