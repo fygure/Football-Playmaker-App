@@ -7,6 +7,8 @@ import TextTag from './shapes/TextTag';
 import CustomLine from './shapes/CustomLine';
 import LoadedLayer from './shapes/LoadedLayer';
 import LineContextMenu from '../components/menus/LineContextMenu';
+import waterMarkIcon from './assets/chlk-watermark.png';
+
 
 function Canvas(props) {
     const {
@@ -60,6 +62,16 @@ function Canvas(props) {
     const [selectedShapeID, setSelectedShapeID] = useState('$');
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
     const [hasBeenSelected, setHasBeenSelected] = useState(false);
+    const [watermark, setWatermark] = useState(null);
+
+    useEffect(() => {
+        const img = new window.Image();
+        img.src = waterMarkIcon;
+        img.onload = () => {
+            setWatermark(img);
+        };
+    }, []);
+
 
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
@@ -259,6 +271,16 @@ function Canvas(props) {
                                     height={image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
                                     onClick={handleImageClick}
                                 />
+                                {watermark && (
+                                    <Image
+                                        image={watermark}
+                                        width={watermark ? watermark.width /9 * (containerRef.current ? containerRef.current.offsetHeight / watermark.height : 0) : 0}
+                                        height={watermark ? watermark.height /9 * (containerRef.current ? containerRef.current.offsetHeight / watermark.height : 0) : 0}
+                                        x={stageRef.current ? (stageRef.current.width()  + (watermark ? watermark.width / 1.4  * (containerRef.current ? containerRef.current.offsetHeight / watermark.height: 0) : 0)) / 2 : 0}
+                                        y={stageRef.current ? (stageRef.current.height() + (watermark ? watermark.height  / 1.4 * (containerRef.current ? containerRef.current.offsetHeight / watermark.height : 0) : 0)) / 2 : 0}
+                                    />
+                                )
+                                }
                                 {/* Sorting causes lines to render later */}
                                 {lines.sort((a, b) => (a.id === selectedLineID ? 1 : -1)).map((line, index) => (
                                     <CustomLine
