@@ -47,7 +47,7 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
   const [stageDimensions, setStageDimensions] = useState({ width: 0, height: 0 });
   const [isSpeedDialOpen, setIsSpeedDialOpen] = useState(false);
   const [currentLayerData, setCurrentLayerData] = useState(null);
-  const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine } = useBackground();
+  const { backgroundImage, fieldType, setFieldType, setZone, zone, setRedLine, redLine, waterMark, setWatermark} = useBackground();
   const { lines, startPos, endPos, startDrawing, draw, stopDrawing, deleteAllLines, setLines, deleteLine, updateLine } = useLines(imageRef, setSelectedLineID, selectedLineID);
   const { shapes, setShapes, addFormation, addShape, updateShape, deleteShape, deleteFormation, deleteAllShapes, hideShapeContextMenu, flipAllShapes } = useShapes(imageRef, lines, setLines);
   const { textTags, setTextTags, addTextTag, updateTextTag, deleteTextTag, deleteAllTextTags, hideTextTagContextMenu, flipAllTextTags } = useTextTags(imageRef);
@@ -375,6 +375,8 @@ function App({ signOut, setCurrentUser, showAuthenticator, setShowAuthenticator 
                   backgroundImage={backgroundImage}
                   setStageDimensions={setStageDimensions}
                   stageRef={stageRef}
+                  waterMark={waterMark}
+                  setWatermark={setWatermark}
                 />
                 <SpeedDial
                   ariaLabel="SpeedDial"
