@@ -49,6 +49,7 @@ const LoadedLayer = (props) => {
         setSelectedLineEnd,
         hasBeenSelected,
         setHasBeenSelected,
+        waterMark,
     } = props;
     const [oldPlayNamePos, setOldPlayNamePos] = useState({ x: 0, y: 0 });
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -102,6 +103,15 @@ const LoadedLayer = (props) => {
                     height={image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
                     onClick={handleImageClick}
                 />
+                {waterMark && (
+                            <Image
+                                image={waterMark}
+                                width={waterMark ? waterMark.width /9 * (containerRef.current ? containerRef.current.offsetHeight / waterMark.height : 0) : 0}
+                                height={waterMark ? waterMark.height /9 * (containerRef.current ? containerRef.current.offsetHeight / waterMark.height : 0) : 0}
+                                x={stageRef.current ? (stageRef.current.width()  + (waterMark ? waterMark.width / 1.4  * (containerRef.current ? containerRef.current.offsetHeight / waterMark.height: 0) : 0)) / 2 : 0}
+                                y={stageRef.current ? (stageRef.current.height() + (waterMark ? waterMark.height  / 1.4 * (containerRef.current ? containerRef.current.offsetHeight / waterMark.height : 0) : 0)) / 2 : 0}
+                            />
+                        )}
                 {/* Play Name Text */}
                 <Text
                     text={currentLayerData.name}
