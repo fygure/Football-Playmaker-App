@@ -8,6 +8,8 @@ import CustomLine from './shapes/CustomLine';
 import LoadedLayer from './shapes/LoadedLayer';
 import LineContextMenu from '../components/menus/LineContextMenu';
 
+
+
 function Canvas(props) {
     const {
         currentLayerData,
@@ -51,6 +53,8 @@ function Canvas(props) {
         orientation,
         selectedLineID,
         setSelectedLineID,
+        waterMark,
+        setWatermark,
     } = props;
 
     //const { stageDimensions } = useContext(StageDimensionsContext);
@@ -60,6 +64,7 @@ function Canvas(props) {
     const [selectedShapeID, setSelectedShapeID] = useState('$');
     const [selectedTextTagID, setSelectedTextTagID] = useState('$');
     const [hasBeenSelected, setHasBeenSelected] = useState(false);
+
 
     const deselectShape = () => setSelectedShapeID('$');
     const deselectTextTag = () => setSelectedTextTagID('$');
@@ -246,6 +251,7 @@ function Canvas(props) {
                             strokeEndButtonPressCount={strokeEndButtonPressCount}
                             onLineChange={onLineChange}
                             selectedLineStroke={selectedLineStroke}
+                            waterMark={waterMark}
                         /> : (
                             <Layer>
                                 {/* TODO: add default text tag for play name HERE */}
@@ -259,6 +265,15 @@ function Canvas(props) {
                                     height={image ? image.height * (containerRef.current ? containerRef.current.offsetHeight / image.height : 0) : 0}
                                     onClick={handleImageClick}
                                 />
+                                {waterMark && (
+                                    <Image
+                                        image={waterMark}
+                                        width={waterMark ? waterMark.width /9 * (containerRef.current ? containerRef.current.offsetHeight / waterMark.height : 0) : 0}
+                                        height={waterMark ? waterMark.height /9 * (containerRef.current ? containerRef.current.offsetHeight / waterMark.height : 0) : 0}
+                                        x={stageRef.current ? (stageRef.current.width()  + (waterMark ? waterMark.width / 1.4  * (containerRef.current ? containerRef.current.offsetHeight / waterMark.height: 0) : 0)) / 2 : 0}
+                                        y={stageRef.current ? (stageRef.current.height() + (waterMark ? waterMark.height  / 1.4 * (containerRef.current ? containerRef.current.offsetHeight / waterMark.height : 0) : 0)) / 2 : 0}
+                                    />
+                                )}
                                 {/* Sorting causes lines to render later */}
                                 {lines.sort((a, b) => (a.id === selectedLineID ? 1 : -1)).map((line, index) => (
                                     <CustomLine
@@ -356,6 +371,7 @@ function Canvas(props) {
                                     />
                                 }
                             </Layer>
+
 
                         )}
                 </Stage>

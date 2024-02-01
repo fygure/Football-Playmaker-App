@@ -57,42 +57,22 @@ function BottomDrawer(props) {
         bottom: false,
     });
 
-    // const [items, setItems] = useState([]);
-    // const [dialogOpen, setDialogOpen] = useState(false);
-    // const [dialogTitle, setDialogTitle] = useState('');
-    // const [dialogText, setDialogText] = useState('');
-    // const [dialogAction, setDialogAction] = useState(null);
-    // const [selectedItem, setSelectedItem] = useState(null);
-    // const [openSnackbar, setOpenSnackbar] = useState(false);
-    // const [snackbarMessage, setSnackbarMessage] = useState('');
-    // const [snackbarSeverity, setSnackbarSeverity] = useState('info');
-    // const [openPlaybookIcon, setOpenPlaybookIcon] = useState(process.env.PUBLIC_URL + '/static/assets/CHLK_Icon_Open_Playbook_small.png');
-    //pass in items, setItems, openDialog, setDialogOpen, setSelectedItem, setOpenSnackbar, setSnackbarMessage, setSnackbarSeverity,
-    //GOOD
-
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setOpenSnackbar(false);
     };
-    //GOOD
-    // const openDialog = (title, text, action) => {
-    //     setDialogTitle(title);
-    //     setDialogText(text);
-    //     setDialogAction(() => action);
-    //     setDialogOpen(true);
-    // };
-    //GOOD
+
     const closeDialog = () => {
         setDialogOpen(false);
     };
-    //GOOD
+
     const handleDialogSubmit = () => {
         dialogAction(dialogText);
         closeDialog();
     };
-    //GOOD
+
     const checkIfDrawerEmpty = () => {
         if (items.length === 0) {
             console.log('Play drawer is empty');
@@ -110,7 +90,7 @@ function BottomDrawer(props) {
             setCurrentLayerData(newItem);
         }
     };
-    //GOOD
+
     const toggleDrawer = (anchor, open) => (event) => {
         setSelectedTextTags([]);
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -126,73 +106,6 @@ function BottomDrawer(props) {
         // console.log(stageJson);
     };
 
-    // const addItem = () => {
-    //     setSelectedTextTags([]);
-    //     openDialog('Add Play', '', (newPlayName) => {
-    //         if (newPlayName !== null) {
-    //             const itemExists = items.some(item => item.name === newPlayName);
-    //             if (itemExists) {
-    //                 setSnackbarMessage('A play with this name already exists.');
-    //                 setSnackbarSeverity('error');
-    //                 setOpenSnackbar(true);
-    //             } else if (newPlayName === '') {
-    //                 setSnackbarMessage('Please enter a name for the play.');
-    //                 setSnackbarSeverity('warning');
-    //                 setOpenSnackbar(true);
-    //             } else {
-    //                 //TODO: Add deep copy of shapes and lines to newItem
-    //                 // const shallowCopyTextTags = [...textTags];
-
-    //                 // console.log('Shallow copy comparison:', shallowCopyTextTags[0] === textTags[0]);
-    //                 // console.log('Deep copy comparison:', deepCopyTextTags[0] === textTags[0]);
-    //                 const deepCopyTextTags = _.cloneDeep(textTags).map(tag => ({ ...tag, id: uuidv4() }));
-
-    //                 let shapeIdMapping = {};
-    //                 const deepCopyShapes = _.cloneDeep(shapes).map(shape => {
-    //                     const newId = uuidv4();
-    //                     shapeIdMapping[shape.id] = newId;
-    //                     return { ...shape, id: newId };
-    //                 });
-
-    //                 let lineIdMapping = {};
-    //                 //Mapping of old line IDs to new line IDs
-    //                 const deepCopyLines = _.cloneDeep(lines).map(line => {
-    //                     const newId = uuidv4();
-    //                     lineIdMapping[line.id] = newId;
-    //                     return { ...line, id: newId, attachedShapeId: shapeIdMapping[line.attachedShapeId] };
-    //                 });
-    //                 //update drawnFromId to new line IDs
-    //                 const deepCopyLinesAgain = _.cloneDeep(deepCopyLines).map(line => {
-    //                     return { ...line, drawnFromId: lineIdMapping[line.drawnFromId] || line.drawnFromId };
-    //                 });
-
-    //                 console.log('Adding play:', newPlayName);
-    //                 console.log('||', newPlayName, 'Text Tags:', deepCopyTextTags);
-    //                 console.log('||', newPlayName, 'Shapes:', deepCopyShapes);
-    //                 console.log('||', newPlayName, 'Lines:', deepCopyLines);
-    //                 const newItem = {
-    //                     id: uuidv4(),
-    //                     name: newPlayName,
-    //                     backgroundImage: backgroundImage,
-    //                     textTagList: deepCopyTextTags,
-    //                     shapeList: deepCopyShapes,
-    //                     lineList: deepCopyLinesAgain,
-    //                     //drawingLine: (startPos && endPos)
-    //                 };
-    //                 setItems((prevItems) => [...prevItems, newItem]);
-    //                 setTextTags(newItem.textTagList);
-    //                 setShapes(newItem.shapeList);
-    //                 setLines(newItem.lineList);
-    //                 setCurrentLayerData(newItem);
-    //                 setSelectedItem(newItem.id);
-    //                 setSnackbarMessage('Play added successfully.');
-    //                 setSnackbarSeverity('success');
-    //                 setOpenSnackbar(true);
-    //             }
-    //         }
-    //     });
-    // };
-    //GOOD
     const updateItem = (index) => {
         setSelectedTextTags([]);
         openDialog('Update Play', items[index].name, (updatedName) => {
@@ -247,7 +160,6 @@ function BottomDrawer(props) {
             }
         });
     };
-    //GOOD
     const removeItem = (index) => {
         setItems(items.filter((item, i) => i !== index));
         checkIfDrawerEmpty();

@@ -262,7 +262,6 @@ function Stencil(props) {
     const handleOrientation = async (e) => {
         setIsProcessing(true);
         const newOrientation = e.target.value;
-        console.log('handle orientation', newOrientation);
         flipAllTextTags(newOrientation);
         flipAllShapes(newOrientation);
         setIsProcessing(false);
@@ -981,7 +980,17 @@ function Stencil(props) {
                         </Button>
                     </Grid>
                 </Box>
-                <FeedBackForm open={selectedFeedback} handleFeedbackFormClose={handleFeedbackFormClose} handleFeedbackFormSubmit={handleFeedbackSubmit}></FeedBackForm>
+                <FeedBackForm
+                    openSnackbar={openSnackbar}
+                    setOpenSnackbar={setOpenSnackbar}
+                    snackbarMessage={snackbarMessage}
+                    setSnackbarMessage={setSnackbarMessage}
+                    snackbarSeverity={snackbarSeverity}
+                    setSnackbarSeverity={setSnackbarSeverity}
+                    open={selectedFeedback}
+                    handleFeedbackFormClose={handleFeedbackFormClose}
+                    handleFeedbackFormSubmit={handleFeedbackSubmit}>
+                </FeedBackForm>
 
 
             </div>
