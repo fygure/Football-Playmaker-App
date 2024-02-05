@@ -56,7 +56,7 @@ export default function FeedBackForm(props) {
       return;
     }
 
-    if (!process.env.EMAILJS_SERVICE_ID || !process.env.EMAILJS_TEMPLATE_ID || !process.env.EMAILJS_USER_ID) {
+    if (!process.env.REACT_APP_EMAILJS_SERVICE_ID || !process.env.REACT_APP_EMAILJS_TEMPLATE_ID || !process.env.REACT_APP_EMAILJS_USER_ID) {
       console.error('Environment variables are not defined!');
       setSnackbarMessage('Failed to send feedback due to server error!');
       setSnackbarSeverity('error');
@@ -65,10 +65,10 @@ export default function FeedBackForm(props) {
     }
 
     emailjs.sendForm(
-      process.env.EMAILJS_SERVICE_ID,
-      process.env.EMAILJS_TEMPLATE_ID,
+      process.env.REACT_APP_EMAILJS_SERVICE_ID,
+      process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
       form.current,
-      process.env.EMAILJS_USER_ID
+      process.env.REACT_APP_EMAILJS_USER_ID
     )
       .then((result) => {
         console.log('SUCCESS!', result.text);

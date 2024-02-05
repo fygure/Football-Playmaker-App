@@ -17,14 +17,14 @@ const PerpendicularEnd = ({ line, controlPoint, color, handleLineClick }) => {
     }
 
     //position of the arrow
-    let x = line.endPos.x + 10 * Math.cos(angle * Math.PI / 180);
-    let y = line.endPos.y + 10 * Math.sin(angle * Math.PI / 180);
+    let x = line.endPos.x + 1 * Math.cos(angle * Math.PI / 180);
+    let y = line.endPos.y + 1 * Math.sin(angle * Math.PI / 180);
 
     return (
         <Arrow
             points={[line.endPos.x, line.endPos.y, x, y]}
-            pointerLength={0.5}
-            pointerWidth={20}
+            pointerLength={0}
+            pointerWidth={16}
             fill={color}
             stroke={color}
             onClick={handleLineClick}
