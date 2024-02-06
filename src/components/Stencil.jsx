@@ -1,5 +1,5 @@
 // Stencil.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormControlLabel, Switch, Typography, Button, ToggleButton, ToggleButtonGroup, Grid, Box, } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import FeedBackForm from './feedback/FeedBackForm.jsx';
@@ -146,7 +146,7 @@ function Stencil(props) {
     const [selectedStrokeButton, setSelectedStrokeButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'stroke'));
     const [selectedFeedback, setSelectedFeedback] = useState(false);
     const [selectedEndButton, setSelectedEndButton] = useState(lineButtons.findIndex(button => button.label === 'straight' && button.type === 'end') - lineButtons.findIndex(button => button.type === 'end'));
-
+    const [previousZone, setPreviousZone] = useState('middle');
     const shapeColor = 'transparent';
 
     // Formation handlers
@@ -233,11 +233,22 @@ function Stencil(props) {
         const newFieldType = e.target.value;
         setFieldType(newFieldType);
     };
+
     const handleToggleRedZone = () => {
         const newZone = zone === 'middle' ? 'redzone' : 'middle';
         // console.log(newZone);
         setZone(newZone);
+        if (fieldType !== 'blank') {
+            setPreviousZone(newZone);
+        }
     };
+    useEffect(() => {
+        if (fieldType === 'blank') {
+            setZone('middle');
+        } else {
+            setZone(previousZone);
+        }
+    }, [fieldType]); // This effect runs whenever fieldType changes
     const handleToggleRedLine = () => {
         const newRedLine = !redLine;
         setRedLine(newRedLine);
@@ -666,6 +677,7 @@ function Stencil(props) {
                                         setSelectedColorButton(index);
                                         handleColorButtonPress();
                                     }}
+
                                 />
                             </Grid>
                         ))}
